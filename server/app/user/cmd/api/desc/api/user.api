@@ -1,0 +1,29 @@
+syntax = "v1"
+
+info(
+    title: "user api file"
+    desc: "用户相关 api "
+    author: "SliverFlow"
+    email: "202606540@qq.com"
+    version: "v1.0"
+)
+
+type (
+    NilReq {}
+    NilReply {}
+)
+
+type (
+    HealthReply {
+        Message string `json:"message"`
+    }
+)
+
+type (
+    UserInfoReq {
+        UserID string `json:"userId"`
+    }
+    UserInfoReply {
+        UserID string `json:"userId"`
+    }
+)

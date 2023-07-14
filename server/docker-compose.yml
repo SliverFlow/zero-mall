@@ -1,51 +1,22 @@
 version: '3.5'
 # 网络配置
 networks:
-  backend:
+  shop_server:
     driver: bridge
 
 # 服务容器配置
 services:
-  gateway: # 自定义容器名称
+  user-api: # 自定义容器名称
     build:
       context: ./                 # 指定构建使用的 Dockerfile 文件
-      dockerfile: app/gateway/cmd/Dockerfile
+      dockerfile: app/user/cmd/api/Dockerfile
     environment: # 设置环境变量
       - TZ=Asia/Shanghai
     privileged: true
     ports: # 设置端口映射
-      - "7777:7777"  # 课件服务rpc端口
+      - "5550:5550"  # 课件服务rpc端口
     stdin_open: true                     # 打开标准输入，可以接受外部输入
     tty: true
     networks:
-      - backend
-    restart: always                      # 指定容器退出后的重启策略为始终重启
-
-  product-rpc: # 自定义容器名称
-    build:
-      context: ./                  # 指定构建使用的 Dockerfile 文件
-      dockerfile: app/product/cmd/rpc/Dockerfile
-    environment: # 设置环境变量
-      - TZ=Asia/Shanghai
-    privileged: true
-    ports: # 设置端口映射
-      - "9002:9002"  # 课件服务api端口
-    stdin_open: true                     # 打开标准输入，可以接受外部输入
-    tty: true
-    networks:
-      - backend
-    restart: always                      # 指定容器退出后的重启策略为始终重启
-  user-rpc: # 自定义容器名称
-    build:
-      context: ./                  # 指定构建使用的 Dockerfile 文件
-      dockerfile: app/product/cmd/rpc/Dockerfile
-    environment: # 设置环境变量
-      - TZ=Asia/Shanghai
-    privileged: true
-    ports: # 设置端口映射
-      - "9001:9001"  # 课件服务api端口
-    stdin_open: true                     # 打开标准输入，可以接受外部输入
-    tty: true
-    networks:
-      - backend
+      - shop_server
     restart: always                      # 指定容器退出后的重启策略为始终重启
