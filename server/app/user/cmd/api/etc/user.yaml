@@ -1,3 +1,17 @@
 Name: user
 Host: 0.0.0.0
 Port: 5550
+
+Log:
+
+  Level: info
+  ServiceName: user-api
+#  Mode: file
+#  Level: error
+
+# user rpc 配置
+UserRpc:
+  Etcd:
+    Hosts:
+      - 120.77.237.246:32379
+    Key: user.rpc
