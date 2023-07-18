@@ -1,11 +1,14 @@
 package middleware
 
 import (
+	"context"
 	"github.com/zeromicro/go-zero/core/logx"
 	"net/http"
 	"server/common/result"
 	"server/common/xerr"
 	"server/common/xjwt"
+	"strconv"
+	"time"
 )
 
 // Auth
@@ -37,13 +40,19 @@ func (m *Auth) Handle(next http.HandlerFunc) http.HandlerFunc {
 		}
 		// 解析 token
 		jwt := xjwt.NewXJwt([]byte(m.Secret), m.Expire, m.Buffer, m.Isuser)
-		_, err := jwt.ParseToken(authorization)
+		claims, err := jwt.ParseToken(authorization)
 		if err != nil {
 			result.HttpResult(r, w, nil, xerr.NewErrMsg(err.Error()))
 			return
 		}
-
+		if claims.ExpiresAt-time.Now().Unix() < claims.BufferTime { // 更换 token
+			token, _ := jwt.Renewal(authorization)
+			w.Header().Set("new-token", token)                                                       // 新 token
+			w.Header().Set("new-expire", strconv.FormatInt(time.Now().Unix()+claims.BufferTime, 10)) // 新的 token 过期时间
+		}
+		// 传递 claims
+		ctx := context.WithValue(r.Context(), "claims", claims)
 		// Passthrough to next handler if need
-		next(w, r)
+		next(w, r.WithContext(ctx))
 	}
 }

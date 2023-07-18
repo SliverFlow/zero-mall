@@ -2,8 +2,10 @@ package private
 
 import (
 	"context"
+	"fmt"
 	"server/app/user/cmd/rpc/pb"
 	"server/common/xerr"
+	"server/common/xjwt"
 	"strconv"
 
 	"server/app/user/cmd/api/internal/svc"
@@ -27,7 +29,8 @@ func NewGetUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUs
 }
 
 func (l *GetUserInfoLogic) GetUserInfo(req *types.UserInfoReq) (resp *types.UserInfoReply, err error) {
-	// todo: add your logic here and delete this line
+	claims := l.ctx.Value("claims").(*xjwt.CustomClaims)
+	fmt.Println(claims)
 	if l.svcCtx.UserRpc == nil {
 		return nil, xerr.NewCodeError(100001)
 	}
