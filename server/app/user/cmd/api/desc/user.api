@@ -16,6 +16,9 @@ import "api/user.api"
 service user {
 	@handler health
 	get /health (NilReq) returns (HealthReply)
+	
+	@handler login
+	post /login (LoginReq) returns (LoginReply)
 }
 
 @server(

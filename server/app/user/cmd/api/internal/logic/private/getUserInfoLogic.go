@@ -2,6 +2,9 @@ package private
 
 import (
 	"context"
+	"server/app/user/cmd/rpc/pb"
+	"server/common/xerr"
+	"strconv"
 
 	"server/app/user/cmd/api/internal/svc"
 	"server/app/user/cmd/api/internal/types"
@@ -25,6 +28,12 @@ func NewGetUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUs
 
 func (l *GetUserInfoLogic) GetUserInfo(req *types.UserInfoReq) (resp *types.UserInfoReply, err error) {
 	// todo: add your logic here and delete this line
-
-	return
+	if l.svcCtx.UserRpc == nil {
+		return nil, xerr.NewCodeError(100001)
+	}
+	info, err := l.svcCtx.UserRpc.GetUserInfoById(l.ctx, &pb.UserInfoReq{ID: 1})
+	if err != nil {
+		return nil, xerr.NewCodeError(100001)
+	}
+	return &types.UserInfoReply{UserID: strconv.Itoa(int(info.ID))}, nil
 }

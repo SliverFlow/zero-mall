@@ -18,9 +18,11 @@ type ServiceContext struct {
 
 func NewServiceContext(c config.Config) *ServiceContext {
 
+	jwtConf := c.XJwt
+
 	return &ServiceContext{
 		Config:  c,
-		Auth:    middleware.NewAuthMiddleware().Handle, // 认证中间件
+		Auth:    middleware.NewAuthMiddleware(jwtConf.Secret, jwtConf.Expire, jwtConf.Buffer, jwtConf.Isuser).Handle, // 认证中间件
 		UserRpc: NewUserRpc(c.UserRpc),
 	}
 }

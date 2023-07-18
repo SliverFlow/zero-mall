@@ -15,3 +15,8 @@ UserRpc:
     Hosts:
       - 120.77.237.246:32379
     Key: user.rpc
+XJwt:
+  Secret: zhengjunxing
+  Isuser: zjx
+  Expire: 300
+  Buffer: 160

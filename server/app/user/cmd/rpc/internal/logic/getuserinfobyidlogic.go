@@ -26,5 +26,8 @@ func NewGetUserInfoByIdLogic(ctx context.Context, svcCtx *svc.ServiceContext) *G
 func (l *GetUserInfoByIdLogic) GetUserInfoById(in *pb.UserInfoReq) (*pb.UserInfoReply, error) {
 	// todo: add your logic here and delete this line
 
-	return &pb.UserInfoReply{}, nil
+	return &pb.UserInfoReply{
+		ID:       1,
+		Username: "shiji",
+	}, nil
 }

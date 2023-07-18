@@ -7,6 +7,13 @@ import (
 
 type Config struct {
 	rest.RestConf
-
 	UserRpc zrpc.RpcClientConf
+
+	// jwt 相关配置
+	XJwt struct {
+		Isuser string // 签发者
+		Secret string // 加密字符串
+		Expire int64  // 过期时间
+		Buffer int64  // 续期时间
+	}
 }
