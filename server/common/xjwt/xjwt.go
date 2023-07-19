@@ -1,7 +1,9 @@
 package xjwt
 
 import (
+	"context"
 	"errors"
+	"github.com/go-redis/redis/v8"
 	"github.com/golang-jwt/jwt"
 	"time"
 )
@@ -15,14 +17,15 @@ var (
 
 type XJwt struct {
 	// 签名秘钥
-	secret []byte
-	expire int64
-	buffer int64
-	isuser string
+	secret          []byte
+	expire          int64
+	buffer          int64
+	isuser          string
+	blackListPrefix string
 }
 
-func NewXJwt(secret []byte, expire, buffer int64, isuser string) *XJwt {
-	return &XJwt{secret: secret, expire: expire, buffer: buffer, isuser: isuser}
+func NewXJwt(secret []byte, expire, buffer int64, isuser, blackListPrefix string) *XJwt {
+	return &XJwt{secret: secret, expire: expire, buffer: buffer, isuser: isuser, blackListPrefix: blackListPrefix}
 }
 
 // CustomClaims
@@ -115,4 +118,32 @@ func (x *XJwt) Renewal(oldToken string) (token string, err error) {
 		return "", nil
 	}
 	return newToken, nil
+}
+
+// IsRedisBlackList
+// Author [SliverFlow]
+// @desc 判断当前 token 是否在黑名单中
+// @param token string, client *redis.Client
+// @return bool
+func (x *XJwt) IsRedisBlackList(token string, client *redis.Client) bool {
+	ctx := context.Background()
+	_, err := client.Get(ctx, x.blackListPrefix+token).Result()
+	if err != nil {
+		return false
+	}
+	return true
+}
+
+// RedisBlackList
+// Author [SliverFlow]
+// @desc 判断当前 token 是否在黑名单中
+// @param (token string, client *redis.Client)
+// @return error
+func (x *XJwt) RedisBlackList(token string, client *redis.Client) error {
+	ctx := context.Background()
+	err := client.Set(ctx, x.blackListPrefix+token, "black lsit ", time.Duration(x.buffer)*time.Second).Err()
+	if err != nil {
+		return err
+	}
+	return nil
 }

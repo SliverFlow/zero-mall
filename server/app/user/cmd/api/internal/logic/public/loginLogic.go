@@ -28,7 +28,7 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginReply, err error) {
 	conf := l.svcCtx.Config.XJwt
 	// todo: add your logic here and delete this line
-	jwt := xjwt.NewXJwt([]byte(conf.Secret), conf.Expire, conf.Buffer, conf.Isuser)
+	jwt := xjwt.NewXJwt([]byte(conf.Secret), conf.Expire, conf.Buffer, conf.Isuser, conf.BlackListPrefix)
 	token, err := jwt.SendToken("172781", "bfuewf")
 	if err != nil {
 		return nil, xerr.NewErrMsg(err.Error())
