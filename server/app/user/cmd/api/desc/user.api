@@ -9,6 +9,7 @@ info(
 )
 import "api/user.api"
 
+// user 不需要鉴权的
 @server(
 	group : public
 	prefix : user
@@ -21,6 +22,7 @@ service user {
 	post /login (LoginReq) returns (LoginReply)
 }
 
+// user 需要鉴权的
 @server(
 	group : private
 	prefix : user

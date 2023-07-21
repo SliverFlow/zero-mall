@@ -1,0 +1,34 @@
+syntax = "v1"
+
+info(
+	title: "system api file"
+	desc: "system 相关 api "
+	author: "SliverFlow"
+	email: "202606540@qq.com"
+	version: "v1.0"
+)
+import "api/system.api"
+
+// system 不需要鉴权的
+@server(
+	group : public
+	prefix : system
+)
+service system {
+	@handler login
+	post /login (LoginReq) returns (LoginReply)
+	
+	@handler upload
+	post /file/upload returns (FileUploadReply)
+}
+
+// system 需要鉴权的
+@server(
+	group : private
+	prefix : system
+	middleware : Auth
+)
+service system {
+	@handler health
+	get /health (NilReq) returns (HealthReply)
+}

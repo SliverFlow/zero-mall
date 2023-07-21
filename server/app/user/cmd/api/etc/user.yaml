@@ -20,7 +20,6 @@ XJwt:
   Expire: 300
   Buffer: 290
   BlackListPrefix: "zpshop:token_black_list:"
-
 Redis:
   Host: "120.77.237.246:6379"
   Pass: wjh20000905
