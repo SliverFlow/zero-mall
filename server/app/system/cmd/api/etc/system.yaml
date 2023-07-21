@@ -21,7 +21,7 @@ Oss:
   Local:
     Path: 'uploads'
   Alioss:
-    Endpoint: "oss-cn-beijing.aliyuncs.com"
+    Endpoint: "oss-cn-hangzhou.aliyuncs.com"
     AccessKeyId: "LTAI5t9mHsNJRH4YaHpkcVhc"
     AccessKeySecret: "0XODnz6fREBgGnOAbkTfGX0OefK85p"
     BucketName: "zpshop"

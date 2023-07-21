@@ -29,8 +29,12 @@ func NewUploadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UploadLogi
 func (l *UploadLogic) Upload() (resp *types.FileUploadReply, err error) {
 	// todo: add your logic here and delete this line
 	conf := l.getOssConf(l.svcCtx.Config)
+	fmt.Println(conf.Alioss.BucketName)
 	oss := xupload.NewOss(conf)
-	oss.UploadFile(nil)
+	_, _, err = oss.UploadFile(nil)
+	if err != nil {
+		fmt.Println("gn9ueqrhgburegv", err)
+	}
 	fmt.Println(oss)
 	return
 }
@@ -49,7 +53,7 @@ func (l *UploadLogic) getOssConf(conf config.Config) *xupload.Config {
 			Endpoint:        c.Alioss.Endpoint,
 			AccessKeyId:     c.Alioss.AccessKeyId,
 			AccessKeySecret: c.Alioss.AccessKeySecret,
-			BucketName:      c.Alioss.AccessKeySecret,
+			BucketName:      c.Alioss.BucketName,
 		},
 	}
 }
