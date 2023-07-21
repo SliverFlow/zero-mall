@@ -18,7 +18,9 @@ type AliossConfig struct {
 }
 
 type XUpload interface {
-	UploadFile(file *multipart.FileHeader) (string, string, error)
+	// UploadFile 文件 保存的位置 返回 文件名 文件访问 utl
+	UploadFile(file *multipart.FileHeader) (name string, url string, err error)
+	// UploadFileByStorePath(file *multipart.FileHeader, store string) (name string, url string, err error)
 	//DeleteFile(key string) error
 }
 
@@ -29,5 +31,4 @@ func NewOss(c *Config) XUpload {
 	default:
 		return newAlioss(c.Alioss)
 	}
-
 }

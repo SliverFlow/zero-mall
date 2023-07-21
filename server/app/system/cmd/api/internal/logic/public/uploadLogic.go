@@ -2,8 +2,9 @@ package public
 
 import (
 	"context"
-	"fmt"
+	"net/http"
 	"server/app/system/cmd/api/internal/config"
+	"server/common/xerr"
 	"server/common/xupload"
 
 	"server/app/system/cmd/api/internal/svc"
@@ -26,17 +27,26 @@ func NewUploadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UploadLogi
 	}
 }
 
-func (l *UploadLogic) Upload() (resp *types.FileUploadReply, err error) {
-	// todo: add your logic here and delete this line
-	conf := l.getOssConf(l.svcCtx.Config)
-	fmt.Println(conf.Alioss.BucketName)
-	oss := xupload.NewOss(conf)
-	_, _, err = oss.UploadFile(nil)
+const maxFileSize = 10 << 20 // 10 MB
+func (l *UploadLogic) Upload(r *http.Request) (resp *types.FileUploadReply, err error) {
+	_ = r.ParseMultipartForm(maxFileSize)
+	_, file, err := r.FormFile("file")
 	if err != nil {
-		fmt.Println("gn9ueqrhgburegv", err)
+		logx.Error("file get err", err)
+		return nil, err
 	}
-	fmt.Println(oss)
-	return
+	conf := l.getOssConf(l.svcCtx.Config)
+	oss := xupload.NewOss(conf)
+	name, url, err := oss.UploadFile(file)
+	if err != nil {
+		return nil, xerr.NewErrMsg(err.Error())
+	}
+	return &types.FileUploadReply{
+		FileStoreName: name,
+		Name:          file.Filename,
+		Url:           url,
+		FileSize:      file.Size,
+	}, nil
 }
 
 // 获取 oss 配置

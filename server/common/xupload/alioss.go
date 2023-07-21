@@ -4,8 +4,10 @@ import (
 	"errors"
 	"fmt"
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
+	uuid "github.com/satori/go.uuid"
 	"github.com/zeromicro/go-zero/core/logx"
 	"mime/multipart"
+	"path"
 )
 
 type Alioss struct {
@@ -58,8 +60,27 @@ func (a *Alioss) getBucket() (*oss.Bucket, error) {
 func (a *Alioss) UploadFile(file *multipart.FileHeader) (string, string, error) {
 	bucket, err := a.getBucket()
 	if err != nil {
-		logx.Error(err)
+		logx.Error("获取桶对象失败", err)
+		return "", "", err
 	}
-	fmt.Println(bucket)
-	return "", "", nil
+	// 获取文件后缀
+	fileSuffix := path.Ext(file.Filename)
+	// 获取新文件名
+	fileNewName := uuid.NewV4().String() + fileSuffix
+	// 将文件上传
+	open, err := file.Open()
+	if err != nil {
+		logx.Error("文件打开失败", err)
+		return "", "", err
+	}
+	defer open.Close()
+	// 上传
+	err = bucket.PutObject(fileNewName, open)
+	if err != nil {
+		logx.Error("文件上传至 aliyunoss 失败", err)
+		return "", "", err
+	}
+	// 获取访问路径
+	url := fmt.Sprintf("https://%s.%s/%s", a.bucketName, a.endpoint, fileNewName)
+	return fileNewName, url, nil
 }
