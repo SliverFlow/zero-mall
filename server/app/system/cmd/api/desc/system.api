@@ -16,7 +16,7 @@ import "api/system.api"
 )
 service system {
 	@handler captcha
-	get /captcha (NilReq) returns (HealthReply)
+	post /captcha (NilReq) returns (CaptchaReply)
 	
 	@handler upload
 	post /file/upload returns (FileUploadReply)

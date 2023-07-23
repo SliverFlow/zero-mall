@@ -17,7 +17,6 @@ Redis:
 
 Oss:
   Type: local
-
   Local:
     Path: 'uploads'
   Alioss:
@@ -25,3 +24,7 @@ Oss:
     AccessKeyId: "LTAI5t9mHsNJRH4YaHpkcVhc"
     AccessKeySecret: "0XODnz6fREBgGnOAbkTfGX0OefK85p"
     BucketName: "zpshop"
+Captcha:
+  KeyLong: 6
+  ImgHeight: 80
+  ImgWidth: 240

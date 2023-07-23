@@ -30,4 +30,10 @@ type Config struct {
 			BucketName      string
 		}
 	}
+
+	Captcha struct {
+		KeyLong   int
+		ImgHeight int
+		ImgWidth  int
+	}
 }

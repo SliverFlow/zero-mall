@@ -35,3 +35,9 @@ type FileUploadReply struct {
 	Url           string `json:"url"`
 	FileSize      int64  `json:"fileSize"`
 }
+
+type CaptchaReply struct {
+	CaptchaId     string `json:"captchaId"`
+	PicPath       string `json:"picPath"`
+	CaptchaLength int    `json:"captchaLength"`
+}
