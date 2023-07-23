@@ -9,23 +9,26 @@ info(
 )
 import "api/system.api"
 
-// system 不需要鉴权的
+// 公共部分 login captcha file
 @server(
-	group : public
-	prefix : system
+	group : base
+	prefix : system/base
 )
 service system {
-	@handler login
-	post /login (LoginReq) returns (LoginReply)
+	@handler captcha
+	get /captcha (NilReq) returns (HealthReply)
 	
 	@handler upload
 	post /file/upload returns (FileUploadReply)
+	
+	@handler login
+	post /login (LoginReq) returns (LoginReply)
 }
 
-// system 需要鉴权的
+// user 部分
 @server(
-	group : private
-	prefix : system
+	group : user
+	prefix : system/user
 	middleware : Auth
 )
 service system {

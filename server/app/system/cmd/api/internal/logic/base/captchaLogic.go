@@ -1,4 +1,4 @@
-package private
+package base
 
 import (
 	"context"
@@ -9,21 +9,21 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type HealthLogic struct {
+type CaptchaLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewHealthLogic(ctx context.Context, svcCtx *svc.ServiceContext) *HealthLogic {
-	return &HealthLogic{
+func NewCaptchaLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CaptchaLogic {
+	return &CaptchaLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *HealthLogic) Health(req *types.NilReq) (resp *types.HealthReply, err error) {
+func (l *CaptchaLogic) Captcha(req *types.NilReq) (resp *types.HealthReply, err error) {
 	// todo: add your logic here and delete this line
 
 	return

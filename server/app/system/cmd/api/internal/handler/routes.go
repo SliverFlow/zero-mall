@@ -4,8 +4,8 @@ package handler
 import (
 	"net/http"
 
-	private "server/app/system/cmd/api/internal/handler/private"
-	public "server/app/system/cmd/api/internal/handler/public"
+	base "server/app/system/cmd/api/internal/handler/base"
+	user "server/app/system/cmd/api/internal/handler/user"
 	"server/app/system/cmd/api/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
@@ -15,17 +15,22 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
 		[]rest.Route{
 			{
-				Method:  http.MethodPost,
-				Path:    "/login",
-				Handler: public.LoginHandler(serverCtx),
+				Method:  http.MethodGet,
+				Path:    "/captcha",
+				Handler: base.CaptchaHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
 				Path:    "/file/upload",
-				Handler: public.UploadHandler(serverCtx),
+				Handler: base.UploadHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/login",
+				Handler: base.LoginHandler(serverCtx),
 			},
 		},
-		rest.WithPrefix("/system"),
+		rest.WithPrefix("/system/base"),
 	)
 
 	server.AddRoutes(
@@ -35,10 +40,10 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				{
 					Method:  http.MethodGet,
 					Path:    "/health",
-					Handler: private.HealthHandler(serverCtx),
+					Handler: user.HealthHandler(serverCtx),
 				},
 			}...,
 		),
-		rest.WithPrefix("/system"),
+		rest.WithPrefix("/system/user"),
 	)
 }
