@@ -28,6 +28,12 @@ func NewUploadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UploadLogi
 }
 
 const maxFileSize = 10 << 20 // 10 MB
+
+// Upload
+// Author [SliverFlow]
+// @desc 文件上传
+// @param req r *http.Request
+// @return resp *types.FileUploadReply, err error
 func (l *UploadLogic) Upload(r *http.Request) (resp *types.FileUploadReply, err error) {
 	_ = r.ParseMultipartForm(maxFileSize)
 	_, file, err := r.FormFile("file")

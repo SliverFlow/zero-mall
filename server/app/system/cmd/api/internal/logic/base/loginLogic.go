@@ -23,6 +23,11 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 	}
 }
 
+// Login
+// Author [SliverFlow]
+// @desc 系统登录
+// @param req *types.LoginReq
+// @return resp *types.LoginReply, err error
 func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginReply, err error) {
 	// todo: add your logic here and delete this line
 

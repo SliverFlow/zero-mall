@@ -26,6 +26,11 @@ func NewCaptchaLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CaptchaLo
 
 var store = base64Captcha.DefaultMemStore
 
+// Captcha
+// Author [SliverFlow]
+// @desc 派发验证码
+// @param *shop.Category
+// @return error
 func (l *CaptchaLogic) Captcha(req *types.NilReq) (resp *types.CaptchaReply, err error) {
 	c := l.svcCtx.Config.Captcha
 	driver := base64Captcha.NewDriverDigit(c.ImgHeight, c.ImgWidth, c.KeyLong, 0.7, 80)
