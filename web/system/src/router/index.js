@@ -10,15 +10,15 @@ const routes = [
     path: '/login',
     component: () => import('@/view/login/index.vue')
   },
-  {
-    path: '/404',
-    name: '404',
-    component: () => import('@/view/error/404.vue')
-  },
-  {
-    path: '/:pathMatch(.*)',
-    redirect: '/404'
-  }
+  // {
+  //   path: '/404',
+  //   name: '404',
+  //   component: () => import('@/view/error/404.vue')
+  // },
+  // {
+  //   path: '/:pathMatch(.*)',
+  //   redirect: '/404'
+  // }
 ]
 const router = createRouter({
   history: createWebHashHistory(),

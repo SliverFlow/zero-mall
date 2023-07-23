@@ -10,6 +10,7 @@ specifiers:
   eslint: ^6.7.2
   eslint-plugin-vue: ^7.0.0
   nprogress: ^0.2.0
+  path: ^0.12.7
   pinia: ^2.0.9
   pinia-plugin-persistedstate: ^3.1.0
   sass: ^1.54.0
@@ -23,6 +24,7 @@ dependencies:
   echarts: registry.npmmirror.com/echarts/5.3.2
   element-plus: registry.npmmirror.com/element-plus/2.3.8_vue@3.3.4
   nprogress: registry.npmmirror.com/nprogress/0.2.0
+  path: registry.npmmirror.com/path/0.12.7
   pinia: registry.npmmirror.com/pinia/2.1.4_vue@3.3.4
   pinia-plugin-persistedstate: registry.npmmirror.com/pinia-plugin-persistedstate/3.1.0_pinia@2.1.4
   vue: registry.npmmirror.com/vue/3.3.4
@@ -1458,6 +1460,12 @@ packages:
       wrappy: registry.npmmirror.com/wrappy/1.0.2
     dev: true
 
+  registry.npmmirror.com/inherits/2.0.3:
+    resolution: {integrity: sha512-x00IRNXNy63jwGkJmzPigoySHbaqpNuzKbBOmzK+g2OdZpQ9w+sxCN+VSB3ja7IAge2OP2qpfxTjeNcyjmW1uw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/inherits/-/inherits-2.0.3.tgz}
+    name: inherits
+    version: 2.0.3
+    dev: false
+
   registry.npmmirror.com/inherits/2.0.4:
     resolution: {integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/inherits/-/inherits-2.0.4.tgz}
     name: inherits
@@ -1778,6 +1786,15 @@ packages:
     version: 1.0.7
     dev: true
 
+  registry.npmmirror.com/path/0.12.7:
+    resolution: {integrity: sha512-aXXC6s+1w7otVF9UletFkFcDsJeO7lSZBPUQhtb5O0xJe8LtYhj/GxldoL09bBj9+ZmE2hNoHqQSFMN5fikh4Q==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/path/-/path-0.12.7.tgz}
+    name: path
+    version: 0.12.7
+    dependencies:
+      process: registry.npmmirror.com/process/0.11.10
+      util: registry.npmmirror.com/util/0.10.4
+    dev: false
+
   registry.npmmirror.com/picocolors/1.0.0:
     resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/picocolors/-/picocolors-1.0.0.tgz}
     name: picocolors
@@ -1837,6 +1854,13 @@ packages:
     version: 1.1.2
     engines: {node: '>= 0.8.0'}
     dev: true
+
+  registry.npmmirror.com/process/0.11.10:
+    resolution: {integrity: sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/process/-/process-0.11.10.tgz}
+    name: process
+    version: 0.11.10
+    engines: {node: '>= 0.6.0'}
+    dev: false
 
   registry.npmmirror.com/progress/2.0.3:
     resolution: {integrity: sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/progress/-/progress-2.0.3.tgz}
@@ -2170,6 +2194,14 @@ packages:
     dependencies:
       punycode: registry.npmmirror.com/punycode/2.3.0
     dev: true
+
+  registry.npmmirror.com/util/0.10.4:
+    resolution: {integrity: sha512-0Pm9hTQ3se5ll1XihRic3FDIku70C+iHUdT/W926rSgHV5QgXsYbKZN8MSC3tJtSkhuROzvsQjAaFENRXr+19A==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/util/-/util-0.10.4.tgz}
+    name: util
+    version: 0.10.4
+    dependencies:
+      inherits: registry.npmmirror.com/inherits/2.0.3
+    dev: false
 
   registry.npmmirror.com/v8-compile-cache/2.3.0:
     resolution: {integrity: sha512-l8lCEmLcLYZh4nbunNZvQCJc5pv7+RCwa8q/LdUx8u7lsWvPDKmpodJAJNwkAhJC//dFY48KuIEmjtd4RViDrA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/v8-compile-cache/-/v8-compile-cache-2.3.0.tgz}
