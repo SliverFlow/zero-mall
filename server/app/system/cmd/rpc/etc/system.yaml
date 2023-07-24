@@ -1,0 +1,6 @@
+Name: system.rpc
+ListenOn: 0.0.0.0:2221
+Etcd:
+  Hosts:
+  - 120.77.237.246:32379
+  Key: system.rpc

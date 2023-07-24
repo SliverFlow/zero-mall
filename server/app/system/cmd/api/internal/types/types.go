@@ -22,11 +22,13 @@ type LoginReply struct {
 }
 
 type User struct {
-	Username string `json:"username"`
-	UUID     string `json:"uuid"`
-	Nickname string `json:"nickname"`
-	Email    string `json:"email"`
-	Avatar   string `json:"avatar"`
+	Username  string `json:"username"`
+	UUID      string `json:"uuid"`
+	Nickname  string `json:"nickname"`
+	Email     string `json:"email"`
+	Avatar    string `json:"avatar"`
+	CreatedAt int64  `json:"createdAt"`
+	UpdetedAt int64  `json:"updetedAt"`
 }
 
 type FileUploadReply struct {

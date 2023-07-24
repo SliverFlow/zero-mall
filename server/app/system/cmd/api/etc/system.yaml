@@ -28,3 +28,9 @@ Captcha:
   KeyLong: 6
   ImgHeight: 80
   ImgWidth: 240
+
+SystemRpc:
+  Etcd:
+    Hosts:
+      - 120.77.237.246:32379
+    Key: system.rpc
