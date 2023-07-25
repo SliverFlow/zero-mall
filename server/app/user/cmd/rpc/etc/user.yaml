@@ -4,3 +4,18 @@ Etcd:
   Hosts:
   - 120.77.237.246:32379
   Key: user.rpc
+
+Mysql:
+  Path: 127.0.0.1
+  Port: 3306
+  Dbname: ap-user
+  Username: root
+  Password: ''
+  MaxIdleConns: 10
+  MaxOpenConns: 10
+  LogMode: "dev"
+  LogZap: false
+  Config: charset=utf8mb4&parseTime=True&loc=Local
+CacheRedis:
+  - Host: 120.77.237.246:6379
+    Pass: "wjh20000905"
