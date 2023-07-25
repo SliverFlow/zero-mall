@@ -2,6 +2,9 @@ package user
 
 import (
 	"context"
+	"fmt"
+	"server/common/xerr"
+	"server/common/xjwt"
 
 	"server/app/system/cmd/api/internal/svc"
 	"server/app/system/cmd/api/internal/types"
@@ -25,6 +28,10 @@ func NewHealthLogic(ctx context.Context, svcCtx *svc.ServiceContext) *HealthLogi
 
 func (l *HealthLogic) Health(req *types.NilReq) (resp *types.HealthReply, err error) {
 	// todo: add your logic here and delete this line
-
+	id, err := xjwt.GetUserID(l.ctx)
+	if err != nil {
+		return nil, xerr.NewErrMsg("获取用户 id 失败")
+	}
+	fmt.Println(id)
 	return
 }

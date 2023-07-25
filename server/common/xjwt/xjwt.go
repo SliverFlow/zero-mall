@@ -28,6 +28,19 @@ func NewXJwt(secret []byte, expire, buffer int64, isuser, blackListPrefix string
 	return &XJwt{secret: secret, expire: expire, buffer: buffer, isuser: isuser, blackListPrefix: blackListPrefix}
 }
 
+// GetUserID
+// Author [SliverFlow]
+// @desc 获取 userID
+// @param (userId, uuid string)
+// @return (token string, err error)
+func GetUserID(ctx context.Context) (string, error) {
+	claims, ok := ctx.Value("claims").(*CustomClaims)
+	if !ok {
+		return "", errors.New("userID 获取失败")
+	}
+	return claims.UserID, nil
+}
+
 // CustomClaims
 // Author [SliverFlow]
 // @desc token 存储的信息 claims

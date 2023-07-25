@@ -2,16 +2,13 @@ package base
 
 import (
 	"context"
-	"fmt"
 	"github.com/pkg/errors"
 	"server/app/system/cmd/api/internal/config"
+	"server/app/system/cmd/api/internal/svc"
+	"server/app/system/cmd/api/internal/types"
 	"server/app/system/cmd/rpc/pb"
 	"server/common/xerr"
 	"server/common/xjwt"
-	"time"
-
-	"server/app/system/cmd/api/internal/svc"
-	"server/app/system/cmd/api/internal/types"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -43,12 +40,12 @@ func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginReply, err err
 	if err != nil {
 		return nil, err
 	}
-	token, err := l.nextToken(l.svcCtx.Config)
+	u := rep.GetUser()
+	token, err := l.nextToken(l.svcCtx.Config, u.UserID, u.UUID)
 	if err != nil {
 		return nil, xerr.NewErrMsg("token 获取失败")
 	}
-	u := rep.GetUser()
-	fmt.Println("time", time.Unix(u.UpdatedAt, 0))
+
 	return &types.LoginReply{
 		Token: token,
 		User: types.User{
@@ -63,10 +60,10 @@ func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginReply, err err
 	}, nil
 }
 
-func (l *LoginLogic) nextToken(c config.Config) (string, error) {
+func (l *LoginLogic) nextToken(c config.Config, userID, uuid string) (string, error) {
 	conf := l.svcCtx.Config.XJwt
 	jwt := xjwt.NewXJwt([]byte(conf.Secret), conf.Expire, conf.Buffer, conf.Isuser, conf.BlackListPrefix)
-	token, err := jwt.SendToken("172781", "bfuewf")
+	token, err := jwt.SendToken(userID, uuid)
 	if err != nil {
 		logx.Errorf("token create err", err.Error())
 		return "", errors.New("token 创建失败")

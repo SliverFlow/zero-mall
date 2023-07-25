@@ -17,8 +17,8 @@ UserRpc:
 XJwt:
   Secret: zhengjunxing
   Isuser: zjx
-  Expire: 300
-  Buffer: 290
+  Expire: 86400
+  Buffer: 43200
   BlackListPrefix: "zpshop:token_black_list:"
 Redis:
   Host: "120.77.237.246:6379"
