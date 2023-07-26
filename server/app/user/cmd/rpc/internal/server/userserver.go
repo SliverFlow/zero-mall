@@ -22,7 +22,17 @@ func NewUserServer(svcCtx *svc.ServiceContext) *UserServer {
 	}
 }
 
-func (s *UserServer) GetUserInfoById(ctx context.Context, in *pb.UserInfoReq) (*pb.UserInfoReply, error) {
-	l := logic.NewGetUserInfoByIdLogic(ctx, s.svcCtx)
-	return l.GetUserInfoById(in)
+func (s *UserServer) Find(ctx context.Context, in *pb.UserIDReq) (*pb.UserInfoReply, error) {
+	l := logic.NewFindLogic(ctx, s.svcCtx)
+	return l.Find(in)
+}
+
+func (s *UserServer) List(ctx context.Context, in *pb.PageReq) (*pb.PageReply, error) {
+	l := logic.NewListLogic(ctx, s.svcCtx)
+	return l.List(in)
+}
+
+func (s *UserServer) Create(ctx context.Context, in *pb.CreateReq) (*pb.Nil, error) {
+	l := logic.NewCreateLogic(ctx, s.svcCtx)
+	return l.Create(in)
 }

@@ -6,11 +6,14 @@ import (
 	"gorm.io/gorm"
 	"os"
 	"server/app/user/cmd/rpc/internal/config"
+	"server/app/user/model"
 	"server/app/user/model/auto"
 )
 
 type ServiceContext struct {
 	Config config.Config
+
+	UserModel model.UserModel
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -26,7 +29,8 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	logx.Info("[USER RPC MYSQL AutoMigrate SUCCESS]")
 
 	return &ServiceContext{
-		Config: c,
+		Config:    c,
+		UserModel: model.NewUserModel(db, c.CacheRedis),
 	}
 }
 

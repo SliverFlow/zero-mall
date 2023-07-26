@@ -22,15 +22,6 @@ type (
 )
 
 type (
-    UserInfoReq {
-        UserID string `json:"userId"`
-    }
-    UserInfoReply {
-        UserID string `json:"userId"`
-    }
-)
-
-type (
     LoginReq {
         Username string `json:"username"`
         Password string `json:"password"`
@@ -43,9 +34,44 @@ type (
 )
 
 type User {
+    ID int64 `json:"id"`
+    UserID string `json:"userId"`
     Username string `json:"username"`
     UUID string `json:"uuid"`
     Nickname string `json:"nickname"`
     Email string `json:"email"`
     Avatar string `json:"avatar"`
+    Type int64 `json:"type"`
+    CreatedAt int64 `json:"createdAt"`
 }
+
+type CreateReq {
+    Username string `json:"username"`
+    Email string `json:"email"`
+    Nickname string `json:"nickname"`
+    Password string `json:"password"`
+    Avatar string `json:"avatar"`
+    Type int64 `json:"type"`
+}
+
+type IdReq {
+    Id string `json:"id"`
+}
+type UserReply {
+    User User `json:"user"`
+}
+
+type (
+    PageReq {
+        Page int64 `json:"page"`
+        PageSize int64 `json:"pageSize"`
+        KeyWord string `json:"keyWord"`
+    }
+
+    ListReply {
+        Page int64 `json:"page"`
+        PageSize int64 `json:"pageSize"`
+        Total int64 `json:"total"`
+        List []User `json:"list"`
+    }
+)

@@ -11,14 +11,6 @@ type HealthReply struct {
 	Message string `json:"message"`
 }
 
-type UserInfoReq struct {
-	UserID string `json:"userId"`
-}
-
-type UserInfoReply struct {
-	UserID string `json:"userId"`
-}
-
 type LoginReq struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
@@ -30,9 +22,43 @@ type LoginReply struct {
 }
 
 type User struct {
+	ID        int64  `json:"id"`
+	UserID    string `json:"userId"`
+	Username  string `json:"username"`
+	UUID      string `json:"uuid"`
+	Nickname  string `json:"nickname"`
+	Email     string `json:"email"`
+	Avatar    string `json:"avatar"`
+	Type      int64  `json:"type"`
+	CreatedAt int64  `json:"createdAt"`
+}
+
+type CreateReq struct {
 	Username string `json:"username"`
-	UUID     string `json:"uuid"`
-	Nickname string `json:"nickname"`
 	Email    string `json:"email"`
+	Nickname string `json:"nickname"`
+	Password string `json:"password"`
 	Avatar   string `json:"avatar"`
+	Type     int64  `json:"type"`
+}
+
+type IdReq struct {
+	Id string `json:"id"`
+}
+
+type UserReply struct {
+	User User `json:"user"`
+}
+
+type PageReq struct {
+	Page     int64  `json:"page"`
+	PageSize int64  `json:"pageSize"`
+	KeyWord  string `json:"keyWord"`
+}
+
+type ListReply struct {
+	Page     int64  `json:"page"`
+	PageSize int64  `json:"pageSize"`
+	Total    int64  `json:"total"`
+	List     []User `json:"list"`
 }

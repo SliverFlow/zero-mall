@@ -13,11 +13,18 @@ import (
 )
 
 type (
+	CreateReq     = pb.CreateReq
+	Nil           = pb.Nil
+	PageReply     = pb.PageReply
+	PageReq       = pb.PageReq
+	UserIDReq     = pb.UserIDReq
 	UserInfoReply = pb.UserInfoReply
-	UserInfoReq   = pb.UserInfoReq
+	UserReply     = pb.UserReply
 
 	User interface {
-		GetUserInfoById(ctx context.Context, in *UserInfoReq, opts ...grpc.CallOption) (*UserInfoReply, error)
+		Find(ctx context.Context, in *UserIDReq, opts ...grpc.CallOption) (*UserInfoReply, error)
+		List(ctx context.Context, in *PageReq, opts ...grpc.CallOption) (*PageReply, error)
+		Create(ctx context.Context, in *CreateReq, opts ...grpc.CallOption) (*Nil, error)
 	}
 
 	defaultUser struct {
@@ -31,7 +38,17 @@ func NewUser(cli zrpc.Client) User {
 	}
 }
 
-func (m *defaultUser) GetUserInfoById(ctx context.Context, in *UserInfoReq, opts ...grpc.CallOption) (*UserInfoReply, error) {
+func (m *defaultUser) Find(ctx context.Context, in *UserIDReq, opts ...grpc.CallOption) (*UserInfoReply, error) {
 	client := pb.NewUserClient(m.cli.Conn())
-	return client.GetUserInfoById(ctx, in, opts...)
+	return client.Find(ctx, in, opts...)
+}
+
+func (m *defaultUser) List(ctx context.Context, in *PageReq, opts ...grpc.CallOption) (*PageReply, error) {
+	client := pb.NewUserClient(m.cli.Conn())
+	return client.List(ctx, in, opts...)
+}
+
+func (m *defaultUser) Create(ctx context.Context, in *CreateReq, opts ...grpc.CallOption) (*Nil, error) {
+	client := pb.NewUserClient(m.cli.Conn())
+	return client.Create(ctx, in, opts...)
 }

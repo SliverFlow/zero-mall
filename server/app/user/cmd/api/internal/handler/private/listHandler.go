@@ -10,16 +10,16 @@ import (
 	"server/app/user/cmd/api/internal/types"
 )
 
-func GetUserInfoHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func ListHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.UserInfoReq
+		var req types.PageReq
 		if err := httpx.Parse(r, &req); err != nil {
 			result.ParamErrorResult(r, w, err)
 			return
 		}
 
-		l := private.NewGetUserInfoLogic(r.Context(), svcCtx)
-		resp, err := l.GetUserInfo(&req)
+		l := private.NewListLogic(r.Context(), svcCtx)
+		resp, err := l.List(&req)
 		result.HttpResult(r, w, resp, err)
 	}
 }

@@ -20,6 +20,9 @@ service user {
 	
 	@handler login
 	post /login (LoginReq) returns (LoginReply)
+	
+	@handler create
+	post /create (CreateReq) returns (NilReply)
 }
 
 // user 需要鉴权的
@@ -29,6 +32,10 @@ service user {
 	middleware : Auth
 )
 service user {
-	@handler getUserInfo
-	post /info (UserInfoReq) returns (UserInfoReply)
+	
+	@handler find
+	post /find (IdReq) returns (UserReply)
+	
+	@handler list
+	post /list (PageReq) returns (ListReply)
 }

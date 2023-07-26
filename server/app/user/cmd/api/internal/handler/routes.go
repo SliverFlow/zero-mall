@@ -24,6 +24,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/login",
 				Handler: public.LoginHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/create",
+				Handler: public.CreateHandler(serverCtx),
+			},
 		},
 		rest.WithPrefix("/user"),
 	)
@@ -34,8 +39,13 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
-					Path:    "/info",
-					Handler: private.GetUserInfoHandler(serverCtx),
+					Path:    "/find",
+					Handler: private.FindHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/list",
+					Handler: private.ListHandler(serverCtx),
 				},
 			}...,
 		),
