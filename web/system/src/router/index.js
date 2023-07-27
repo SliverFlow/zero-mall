@@ -10,6 +10,16 @@ const routes = [
     path: '/login',
     component: () => import('@/view/login/index.vue')
   },
+  {
+    name: 'Layout',
+    path: '/layout',
+    component: () => import('@/view/layout/index.vue')
+  },
+  {
+    name: 'Dashboard',
+    path: '/dashboard',
+    component: () => import('@/view/dashboard/index.vue')
+  },
   // {
   //   path: '/404',
   //   name: '404',

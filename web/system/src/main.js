@@ -12,6 +12,7 @@ import router from '@/router/index.js'
 
 import './core/gin-vue-admin'
 import run from '@/core/gin-vue-admin.js'
+import 'virtual:windi.css'
 
 const app = createApp(App)
 app.use(store)

@@ -3,13 +3,15 @@ import vue from '@vitejs/plugin-vue'
 import { fileURLToPath, URL } from 'node:url'
 import fullImportPlugin from './vitePlugin/fullImport/fullImport.js'
 import GvaPosition from './vitePlugin/gvaPosition/index.js'
+import WindiCSS from 'vite-plugin-windicss'
 
 // https://vitejs.dev/config/
 export default defineConfig(() => {
   const config = {
     plugins: [
       vue(),
-      GvaPosition()
+      GvaPosition(),
+      WindiCSS()
     ],
     css: {
       preprocessorOptions: {

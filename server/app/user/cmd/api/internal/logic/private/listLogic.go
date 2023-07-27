@@ -2,13 +2,12 @@ package private
 
 import (
 	"context"
+	"github.com/zeromicro/go-zero/core/logx"
 	"server/app/user/cmd/rpc/pb"
 	"server/common/xerr"
 
 	"server/app/user/cmd/api/internal/svc"
 	"server/app/user/cmd/api/internal/types"
-
-	"github.com/zeromicro/go-zero/core/logx"
 )
 
 type ListLogic struct {

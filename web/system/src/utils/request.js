@@ -39,7 +39,6 @@ service.interceptors.response.use(
     return response.data
   },
   error => {
-    console.log('err', error)
     // 请求出错
     if (!error.response) {
       ElMessageBox.confirm(`
