@@ -5,8 +5,10 @@ import router from '@/router/index.js'
 
 const service = axios.create({
   timeout: 10000,
-  baseURL: 'http://localhost:2220/'
+  baseURL: import.meta.env.VITE_BASE_API
 })
+
+console.log(import.meta.env.VITE_BASE_API)
 
 // 请求拦截
 service.interceptors.request.use(

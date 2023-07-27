@@ -90,13 +90,14 @@ const formData = ref({
 const picPath = ref('')
 
 // 获取验证码
-const getCaptche = async() => {
+const getCaptcha = async() => {
   const res = await captchaApi()
-  console.log(res)
-  picPath.value = res.data.picPath
-  formData.value.captchaId = res.data.captchaId
+  if (res.code === 0) {
+    picPath.value = res.data.picPath
+    formData.value.captchaId = res.data.captchaId
+  }
 }
-getCaptche()
+getCaptcha()
 </script>
 
 <style lang="scss" scoped>
