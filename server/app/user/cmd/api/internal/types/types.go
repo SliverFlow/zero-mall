@@ -62,3 +62,14 @@ type ListReply struct {
 	Total    int64  `json:"total"`
 	List     []User `json:"list"`
 }
+
+type UpdateReq struct {
+	UserID   string `json:"userId"`
+	Username string `json:"username"`
+	Email    string `json:"email"`
+	Nickname string `json:"nickname"`
+	Password string `json:"password"`
+	Avatar   string `json:"avatar"`
+	Type     int64  `json:"type"`
+	Status   int64  `json:"status"`
+}

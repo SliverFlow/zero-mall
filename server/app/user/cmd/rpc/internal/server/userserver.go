@@ -22,7 +22,7 @@ func NewUserServer(svcCtx *svc.ServiceContext) *UserServer {
 	}
 }
 
-func (s *UserServer) Find(ctx context.Context, in *pb.UserIDReq) (*pb.UserInfoReply, error) {
+func (s *UserServer) Find(ctx context.Context, in *pb.IDReq) (*pb.UserInfoReply, error) {
 	l := logic.NewFindLogic(ctx, s.svcCtx)
 	return l.Find(in)
 }
@@ -35,4 +35,19 @@ func (s *UserServer) List(ctx context.Context, in *pb.PageReq) (*pb.PageReply, e
 func (s *UserServer) Create(ctx context.Context, in *pb.CreateReq) (*pb.Nil, error) {
 	l := logic.NewCreateLogic(ctx, s.svcCtx)
 	return l.Create(in)
+}
+
+func (s *UserServer) Update(ctx context.Context, in *pb.UpdateReq) (*pb.Nil, error) {
+	l := logic.NewUpdateLogic(ctx, s.svcCtx)
+	return l.Update(in)
+}
+
+func (s *UserServer) Delete(ctx context.Context, in *pb.IDReq) (*pb.Nil, error) {
+	l := logic.NewDeleteLogic(ctx, s.svcCtx)
+	return l.Delete(in)
+}
+
+func (s *UserServer) BatchDelete(ctx context.Context, in *pb.IDsReq) (*pb.Nil, error) {
+	l := logic.NewBatchDeleteLogic(ctx, s.svcCtx)
+	return l.BatchDelete(in)
 }

@@ -14,17 +14,22 @@ import (
 
 type (
 	CreateReq     = pb.CreateReq
+	IDReq         = pb.IDReq
+	IDsReq        = pb.IDsReq
 	Nil           = pb.Nil
 	PageReply     = pb.PageReply
 	PageReq       = pb.PageReq
-	UserIDReq     = pb.UserIDReq
+	UpdateReq     = pb.UpdateReq
 	UserInfoReply = pb.UserInfoReply
 	UserReply     = pb.UserReply
 
 	User interface {
-		Find(ctx context.Context, in *UserIDReq, opts ...grpc.CallOption) (*UserInfoReply, error)
+		Find(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*UserInfoReply, error)
 		List(ctx context.Context, in *PageReq, opts ...grpc.CallOption) (*PageReply, error)
 		Create(ctx context.Context, in *CreateReq, opts ...grpc.CallOption) (*Nil, error)
+		Update(ctx context.Context, in *UpdateReq, opts ...grpc.CallOption) (*Nil, error)
+		Delete(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*Nil, error)
+		BatchDelete(ctx context.Context, in *IDsReq, opts ...grpc.CallOption) (*Nil, error)
 	}
 
 	defaultUser struct {
@@ -38,7 +43,7 @@ func NewUser(cli zrpc.Client) User {
 	}
 }
 
-func (m *defaultUser) Find(ctx context.Context, in *UserIDReq, opts ...grpc.CallOption) (*UserInfoReply, error) {
+func (m *defaultUser) Find(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*UserInfoReply, error) {
 	client := pb.NewUserClient(m.cli.Conn())
 	return client.Find(ctx, in, opts...)
 }
@@ -51,4 +56,19 @@ func (m *defaultUser) List(ctx context.Context, in *PageReq, opts ...grpc.CallOp
 func (m *defaultUser) Create(ctx context.Context, in *CreateReq, opts ...grpc.CallOption) (*Nil, error) {
 	client := pb.NewUserClient(m.cli.Conn())
 	return client.Create(ctx, in, opts...)
+}
+
+func (m *defaultUser) Update(ctx context.Context, in *UpdateReq, opts ...grpc.CallOption) (*Nil, error) {
+	client := pb.NewUserClient(m.cli.Conn())
+	return client.Update(ctx, in, opts...)
+}
+
+func (m *defaultUser) Delete(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*Nil, error) {
+	client := pb.NewUserClient(m.cli.Conn())
+	return client.Delete(ctx, in, opts...)
+}
+
+func (m *defaultUser) BatchDelete(ctx context.Context, in *IDsReq, opts ...grpc.CallOption) (*Nil, error) {
+	client := pb.NewUserClient(m.cli.Conn())
+	return client.BatchDelete(ctx, in, opts...)
 }

@@ -3,14 +3,17 @@ ListenOn: 0.0.0.0:5551
 Etcd:
   Hosts:
   - 120.77.237.246:32379
+#  - etcd:2379
   Key: user.rpc
 
 Mysql:
   Path: 127.0.0.1
+  Password: ''
+#  Path: 121.37.20.40
+#  Password: '123456'
   Port: 3306
   Dbname: ap-user
   Username: root
-  Password: ''
   MaxIdleConns: 10
   MaxOpenConns: 10
   LogMode: "dev"

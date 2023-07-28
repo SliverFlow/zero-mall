@@ -47,6 +47,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Path:    "/list",
 					Handler: private.ListHandler(serverCtx),
 				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/update",
+					Handler: private.UpdateHandler(serverCtx),
+				},
 			}...,
 		),
 		rest.WithPrefix("/user"),

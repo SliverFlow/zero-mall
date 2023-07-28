@@ -13,6 +13,7 @@ UserRpc:
   Etcd:
     Hosts:
       - 120.77.237.246:32379
+#      - etcd:2379
     Key: user.rpc
 XJwt:
   Secret: zhengjunxing

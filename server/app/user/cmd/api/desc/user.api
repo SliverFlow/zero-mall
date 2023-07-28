@@ -38,4 +38,8 @@ service user {
 	
 	@handler list
 	post /list (PageReq) returns (ListReply)
+	
+	@handler update
+	post /update (UpdateReq) returns (NilReply)
+	
 }

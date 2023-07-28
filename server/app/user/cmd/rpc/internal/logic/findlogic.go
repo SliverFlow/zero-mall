@@ -26,7 +26,7 @@ func NewFindLogic(ctx context.Context, svcCtx *svc.ServiceContext) *FindLogic {
 	}
 }
 
-func (l *FindLogic) Find(in *pb.UserIDReq) (*pb.UserInfoReply, error) {
+func (l *FindLogic) Find(in *pb.IDReq) (*pb.UserInfoReply, error) {
 	u, err := l.svcCtx.UserModel.FindByUserID(l.ctx, in.GetUserID())
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {

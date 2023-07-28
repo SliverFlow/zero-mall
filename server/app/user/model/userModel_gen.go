@@ -26,8 +26,10 @@ type (
 		Delete(ctx context.Context, tx *gorm.DB, id int64) error
 		Transaction(ctx context.Context, fn func(db *gorm.DB) error) error
 
+		// FindByUserID 自定义的查询方法
 		FindByUserID(ctx context.Context, userId string) (*User, error)
 		List(ctx context.Context, limit, offset int, keyWord string) (total int64, list *[]User, err error)
+		UpdateByUserID(ctx context.Context, userId string, data *User) error
 	}
 
 	defaultUserModel struct {
@@ -91,6 +93,7 @@ func (m *defaultUserModel) FindOne(ctx context.Context, id int64) (*User, error)
 	}
 }
 
+// Update 更新用户信息 （修改过）
 func (m *defaultUserModel) Update(ctx context.Context, tx *gorm.DB, data *User) error {
 	old, err := m.FindOne(ctx, data.Id)
 	if err != nil && err != ErrNotFound {
@@ -186,4 +189,15 @@ func (m *defaultUserModel) List(ctx context.Context, limit, offset int, keyWord 
 	default:
 		return 0, nil, err
 	}
+}
+
+// UpdateByUserID 通过 userId  更新用户信息
+func (m *defaultUserModel) UpdateByUserID(ctx context.Context, userId string, data *User) error {
+	_, err := m.FindByUserID(ctx, userId)
+	if err != nil {
+		return err
+	}
+	return m.ExecCtx(ctx, func(conn *gorm.DB) error {
+		return conn.Model(&User{}).Where("user_id = ?", userId).Updates(data).Error
+	}, fmt.Sprintf("%s%v", cacheApUserUserIdPrefix, userId))
 }
