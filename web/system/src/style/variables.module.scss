@@ -1,0 +1,12 @@
+$AsideWidth: 240px;
+$TitleHeight: 60px;
+$HeaderHeight: 60px;
+$AsideHiddenWidth: 64px;
+
+
+:export {
+  aside-width: $AsideWidth;
+  titleHeight: $TitleHeight;
+  header-heigth: $HeaderHeight;
+  aside-hidden-width: $AsideHiddenWidth;
+}
