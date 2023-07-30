@@ -12,8 +12,15 @@ const routes = [
     component: () => import('@/view/login/index.vue')
   },
   {
+    name: 'Index',
+    path: '/',
+    redirect: '/layout/dashboard',
+    component: () => import('@/view/login/index.vue')
+  },
+  {
     name: 'Layout',
     path: '/layout',
+    redirect: '/layout/dashboard',
     component: () => import('@/view/layout/index.vue'),
     children: [
       {

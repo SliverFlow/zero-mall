@@ -109,7 +109,7 @@
             <div class="el-dropdown-link dropdown-con">
               <div>
                 <el-avatar
-                  :size="35"
+                  :size="30"
                   style="margin-right: 10px"
                   src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
                 />
@@ -228,9 +228,9 @@ const toGithub = () => {
 
     .icon {
       cursor: pointer;
-      margin-right: 12px;
-      width: 22px;
-      height: 22px;
+      margin-right: 22px;
+      width: 20px;
+      height: 20px;
     }
   }
 }

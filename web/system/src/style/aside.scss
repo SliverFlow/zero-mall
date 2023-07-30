@@ -1,0 +1,55 @@
+
+.el-menu {
+  li {
+    margin-bottom: 15px;
+  }
+}
+
+.el-sub-menu {
+  padding: 0;
+  margin: 0 15px;
+}
+
+.el-menu-item {
+  height: 50px;
+  padding: 0;
+  margin: 0 15px;
+
+  span {
+    height: 50px;
+  }
+}
+
+.el-menu--inline {
+  .el-menu-item {
+    height: 50px;
+    padding: 0;
+    margin: 4px 15px;
+  }
+}
+
+.el-menu-item.is-active {
+  background-color: #4d70ff;
+  border-radius: 4px;
+  box-shadow: 0 0 2px 1px #4d70ff;
+  color: white;
+}
+
+.el-menu--collapse {
+  li {
+    background-color: white !important;
+    color: #4d70ff !important;
+    box-shadow: none !important;
+    position: relative;
+    left: 2px;
+  }
+}
+
+
+:deep(.el-sub-menu__title) {
+  padding-left: 0;
+}
+
+:deep(.el-sub-menu__title):hover {
+  background-color: white;
+}

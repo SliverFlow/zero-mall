@@ -14,7 +14,8 @@ export const useUserStore = defineStore('user', () => {
   }
 
   // 登录
-  const login = () => {
+  const login = (data) => {
+    return true
   }
 
   // 退出方法

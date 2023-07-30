@@ -76,10 +76,13 @@
 <script setup>
 import { ref } from 'vue'
 import { captchaApi } from '@/api/base.js'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { useUserStore } from '@/store/model/user.js'
 
 // 获取路由信息
 const route = useRoute()
+const router = useRouter()
+const userStore = useUserStore()
 // 获取路径参数
 const path = route.query.path || '/'
 // form ref
@@ -103,6 +106,16 @@ const getCaptcha = async() => {
   }
 }
 getCaptcha()
+
+const submitForm = () => {
+  const flag = userStore.login(formData.value)
+  if (flag) {
+    router.push(path)
+  } else {
+    // 重新获取验证码
+    getCaptcha()
+  }
+}
 </script>
 
 <style lang="scss" scoped>
