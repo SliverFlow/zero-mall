@@ -76,7 +76,12 @@
 <script setup>
 import { ref } from 'vue'
 import { captchaApi } from '@/api/base.js'
+import { useRoute } from 'vue-router'
 
+// 获取路由信息
+const route = useRoute()
+// 获取路径参数
+const path = route.query.path || '/'
 // form ref
 const form = ref(null)
 // form 表单数据

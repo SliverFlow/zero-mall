@@ -3,7 +3,7 @@ import { ref } from 'vue'
 
 export const useUserStore = defineStore('user', () => {
   const token = ref(window.localStorage.getItem('token') || '')
-
+  const isLogin = ref(true)
   // 用户信息
   const userInfo = ref({})
 
@@ -28,7 +28,8 @@ export const useUserStore = defineStore('user', () => {
     logout,
     token,
     userInfo,
-    setToken
+    setToken,
+    isLogin
   }
 })
 

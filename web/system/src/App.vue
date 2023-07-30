@@ -15,7 +15,7 @@
 @import '@/style/mobile.scss';
 
 #app {
-  background: #eee;
+  background: #f0f2f5;
   height: 100vh;
   overflow: hidden;
   font-weight: 400 !important;
