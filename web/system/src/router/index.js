@@ -22,13 +22,6 @@ const routes = [
     path: '/layout',
     redirect: '/layout/dashboard',
     component: () => import('@/view/layout/index.vue'),
-    children: [
-      {
-        name: 'Dashboard',
-        path: 'dashboard',
-        component: () => import('@/view/dashboard/index.vue')
-      }
-    ]
   },
   // {
   //   path: '/404',

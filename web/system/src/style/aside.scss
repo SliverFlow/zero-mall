@@ -1,7 +1,7 @@
 
 .el-menu {
   li {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
   }
 }
 
@@ -16,7 +16,7 @@
   margin: 0 15px;
 
   span {
-    height: 50px;
+    height: 56px;
   }
 }
 
@@ -38,10 +38,14 @@
 .el-menu--collapse {
   li {
     background-color: white !important;
-    color: #4d70ff !important;
     box-shadow: none !important;
     position: relative;
     left: 2px;
+  }
+}
+.el-menu--collapse{
+  li.is-active {
+    color: #4d70ff !important;
   }
 }
 

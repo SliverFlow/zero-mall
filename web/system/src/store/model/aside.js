@@ -11,4 +11,9 @@ export const useASideStore = defineStore('aside', () => {
   return {
     collapseType, changeCollapse
   }
+}, {
+  persist: {
+    key: 'zp-aside-store',
+    storage: window.localStorage
+  }
 })

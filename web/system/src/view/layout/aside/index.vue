@@ -1,81 +1,73 @@
 <template>
   <el-menu
-    default-active="/layout/dashboard"
+    :default-active="defaultActive"
     :unique-opened="true"
     :collapse-transition="false"
     :collapse="asideStore.collapseType"
     router
     class="aside-con"
   >
-    <el-sub-menu index="1">
-      <template #title>
-        <el-icon>
-          <location />
-        </el-icon>
-        <span>Navigator One</span>
+
+    <template v-for="(v) in routerStore.menuList">
+      <!--      拥有子菜单的-->
+      <template v-if="v.children && v.children.length > 0">
+        <el-sub-menu :index="v.path">
+          <template #title>
+            <el-icon>
+              <component :is="v.icon" />
+            </el-icon>
+            <span>{{ v.title }}</span>
+          </template>
+          <template v-for="(iv) in v.children">
+            <el-menu-item :index="iv.path">
+              <el-icon>
+                <component :is="iv.icon" />
+              </el-icon>
+              <span>{{ iv.title }}</span>
+            </el-menu-item>
+          </template>
+        </el-sub-menu>
       </template>
-      <el-menu-item index="/layout/dash11board">
-        <el-icon>
-          <setting />
-        </el-icon>
-        <span>仪表盘</span>
-      </el-menu-item>
-      <el-menu-item index="/layout/dashboard">
-        <el-icon>
-          <setting />
-        </el-icon>
-        <span>仪表盘</span>
-      </el-menu-item>
-    </el-sub-menu>
-
-    <el-menu-item index="/layout/1">
-      <el-icon>
-        <setting />
-      </el-icon>
-      <span>仪表盘</span>
-    </el-menu-item>
-
-    <el-tooltip
-      effect="light "
-      content="仪表盘"
-      placement="right"
-    >
-      <el-menu-item index="/layout/1">
-        <el-icon>
-          <setting />
-        </el-icon>
-        <span>仪表盘</span>
-      </el-menu-item>
-    </el-tooltip>
-
-    <el-sub-menu index="1">
-      <template #title>
-        <el-icon>
-          <location />
-        </el-icon>
-        <span>Navigator One</span>
+      <!--无子菜单的-->
+      <template v-if="v.children && v.children.length === 0">
+        <el-tooltip
+          :key="v.id"
+          effect="dark"
+          :content="v.title"
+          placement="right"
+          :disabled="!asideStore.collapseType"
+        >
+          <el-menu-item :key="v.id" :index="v.path">
+            <el-icon>
+              <component :is="v.icon" />
+            </el-icon>
+            <span>{{ v.title }}</span>
+          </el-menu-item>
+        </el-tooltip>
       </template>
+    </template>
 
-      <el-menu-item index="/layout/dashboard">
-        <el-icon>
-          <setting />
-        </el-icon>
-        <span>仪表盘</span>
-      </el-menu-item>
-    </el-sub-menu>
   </el-menu>
 </template>
 
 <script setup>
 import { useASideStore } from '@/store/model/aside.js'
+import { useRoute } from 'vue-router'
+import router from '@/router/index.js'
+import { useRouterStore } from '@/store/model/router.js'
 
+const routerStore = useRouterStore()
+const route = useRoute()
 const asideStore = useASideStore()
+const defaultActive = route.path || '/layout/dashboard'
+console.log(router)
 
 </script>
 
 <style scoped lang="scss">
 @import "@/style/variables.module";
 @import "@/style/aside";
+
 .aside-con {
   height: calc(100% - $TitleHeight);
 }

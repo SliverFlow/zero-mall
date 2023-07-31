@@ -49,6 +49,7 @@
               />
             </svg>
           </div>
+          <div class="title"><span>{{ route.meta.title }}</span></div>
         </div>
         <div class="head-right">
           <div @click="toGithub">
@@ -154,7 +155,9 @@ import variables from '@/style/variables.module.scss'
 import screenfull from 'screenfull'
 import { computed, ref } from 'vue'
 import { useASideStore } from '@/store/model/aside.js'
+import { useRoute } from 'vue-router'
 
+const route = useRoute()
 const asideStore = useASideStore()
 const asideWidth = computed(() => {
   return asideStore.collapseType ? variables['aside-hidden-width'] : variables['aside-width']
@@ -170,6 +173,7 @@ const changeFull = () => {
 const toGithub = () => {
   window.open('https://github.com')
 }
+console.log(route)
 </script>
 
 <style scoped lang="scss">
@@ -210,13 +214,25 @@ const toGithub = () => {
   align-items: center;
 
   .head-left {
-    margin-left: 14px;
-
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin-left: 4px;
     div {
       .icon {
-        width: 30px;
-        height: 30px;
+        width: 26px;
+        height: 26px;
         cursor: pointer;
+        position: relative;
+        top: 2px;
+      }
+    }
+    .title {
+      span {
+        margin-left: 12px;
+        color: #595959;
+        font-size: 15px;
+        letter-spacing:1px;
       }
     }
   }
