@@ -32,7 +32,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-
+  height: $HeaderHeight;
   .head-left {
     display: flex;
     align-items: center;
@@ -92,9 +92,8 @@
 
   &.hidden {
     justify-content: center;
-
     img {
-      margin-left: 0;
+      margin-left: -2px;
     }
   }
 }
