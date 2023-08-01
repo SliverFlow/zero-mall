@@ -1,0 +1,118 @@
+
+.layout-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.aside-container {
+  height: 100%;
+}
+
+.container {
+  width: calc(100% - $AsideWidth);
+  height: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 9;
+  transition: all 0.3s;
+
+  &.hiddenContainer {
+    transition: all 0.3s;
+    width: calc(100% - $AsideHiddenWidth);
+  }
+}
+
+.header-con {
+  box-sizing: border-box;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.11);
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  .head-left {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin-left: 4px;
+    div {
+      .icon {
+        width: 26px;
+        height: 26px;
+        cursor: pointer;
+        position: relative;
+        top: 2px;
+      }
+    }
+    .title {
+      span {
+        margin-left: 12px;
+        color: #595959;
+        font-size: 15px;
+        letter-spacing:1px;
+      }
+    }
+  }
+
+  .head-right {
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+
+    .icon {
+      cursor: pointer;
+      margin-right: 22px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
+.zp-title {
+  height: $TitleHeight;
+  display: flex;
+  align-items: center;
+  background-color: white;
+
+  img {
+    margin-left: 14px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+  }
+
+  p {
+    margin: 0 10px 0 10px;
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  &.hidden {
+    justify-content: center;
+
+    img {
+      margin-left: 0;
+    }
+  }
+}
+
+.dropdown-con {
+  display: flex;
+  align-items: center;
+}
+
+:deep(.el-header) {
+  padding: 0;
+}
+
+// 下拉框黑边问题
+:deep(:focus-visible) {
+  outline: none;
+}
+
+.router-con {
+  margin: 10px 16px;
+}

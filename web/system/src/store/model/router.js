@@ -13,7 +13,6 @@ export const useRouterStore = defineStore('router', () => {
   }
 
   const modules = import.meta.glob('../../view/**/*.vue')
-
   // 获取路由数组
   const mapRouter = (val) => {
     return val.map(i => {

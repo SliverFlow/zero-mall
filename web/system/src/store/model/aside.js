@@ -14,6 +14,6 @@ export const useASideStore = defineStore('aside', () => {
 }, {
   persist: {
     key: 'zp-aside-store',
-    storage: window.localStorage
+    storage: window.sessionStorage
   }
 })

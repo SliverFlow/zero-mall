@@ -138,26 +138,31 @@
                   </span>
                 </el-dropdown-item>
                 <el-dropdown-item icon="avatar" divided>个人信息</el-dropdown-item>
-                <el-dropdown-item icon="reading-lamp" divided>登 出</el-dropdown-item>
+                <el-dropdown-item icon="reading-lamp" divided @click="toLogout">登 出</el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>
         </div>
       </el-header>
-      <router-view />
+      <tab />
+      <router-view class="router-con" />
     </el-container>
   </el-container>
 </template>
 
 <script setup>
 import Aside from './aside/index.vue'
+import Tab from './tab/index.vue'
 import variables from '@/style/variables.module.scss'
 import screenfull from 'screenfull'
 import { computed, ref } from 'vue'
 import { useASideStore } from '@/store/model/aside.js'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { useUserStore } from '@/store/model/user.js'
 
 const route = useRoute()
+const router = useRouter()
+const userStore = useUserStore()
 const asideStore = useASideStore()
 const asideWidth = computed(() => {
   return asideStore.collapseType ? variables['aside-hidden-width'] : variables['aside-width']
@@ -173,124 +178,14 @@ const changeFull = () => {
 const toGithub = () => {
   window.open('https://github.com')
 }
-console.log(route)
+const toLogout = () => {
+  if (userStore.logout()) {
+    router.push({ name: 'Login' })
+  }
+}
 </script>
 
 <style scoped lang="scss">
 @import "@/style/variables.module";
-
-.layout-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-.aside-container {
-  height: 100%;
-}
-
-.container {
-  width: calc(100% - $AsideWidth);
-  height: 100%;
-  position: fixed;
-  top: 0;
-  right: 0;
-  z-index: 9;
-  transition: all 0.3s;
-
-  &.hiddenContainer {
-    transition: all 0.3s;
-    width: calc(100% - $AsideHiddenWidth);
-  }
-}
-
-.header-con {
-  box-sizing: border-box;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.11);
-  background-color: white;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-
-  .head-left {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    margin-left: 4px;
-    div {
-      .icon {
-        width: 26px;
-        height: 26px;
-        cursor: pointer;
-        position: relative;
-        top: 2px;
-      }
-    }
-    .title {
-      span {
-        margin-left: 12px;
-        color: #595959;
-        font-size: 15px;
-        letter-spacing:1px;
-      }
-    }
-  }
-
-  .head-right {
-    margin-right: 20px;
-    display: flex;
-    align-items: center;
-
-    .icon {
-      cursor: pointer;
-      margin-right: 22px;
-      width: 20px;
-      height: 20px;
-    }
-  }
-}
-
-.zp-title {
-  height: $TitleHeight;
-  display: flex;
-  align-items: center;
-  background-color: white;
-
-  img {
-    margin-left: 14px;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-  }
-
-  p {
-    margin: 0 10px 0 10px;
-    font-size: 20px;
-    font-weight: 700;
-  }
-
-  &.hidden {
-    justify-content: center;
-
-    img {
-      margin-left: 0;
-    }
-  }
-}
-
-.dropdown-con {
-  display: flex;
-  align-items: center;
-}
-
-:deep(.el-header) {
-  padding: 0;
-}
-
-// 下拉框黑边问题
-:deep(:focus-visible) {
-  outline: none;
-}
-
+@import "@/style/layout";
 </style>

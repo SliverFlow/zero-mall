@@ -26,6 +26,9 @@ export const useUserStore = defineStore('user', () => {
   const logout = () => {
     // 将 token 置空
     setToken('')
+    window.sessionStorage.clear()
+    isLogin.value = false
+    return true
   }
 
   return {
@@ -39,7 +42,7 @@ export const useUserStore = defineStore('user', () => {
 }, {
   persist: {
     key: 'zp-user-store',
-    storage: window.localStorage
+    storage: window.sessionStorage
   }
 })
 

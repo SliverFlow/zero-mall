@@ -8,8 +8,6 @@ const service = axios.create({
   baseURL: import.meta.env.VITE_BASE_API
 })
 
-console.log(import.meta.env.VITE_BASE_API)
-
 // 请求拦截
 service.interceptors.request.use(
   config => {

@@ -53,15 +53,17 @@
 <script setup>
 import { useASideStore } from '@/store/model/aside.js'
 import { useRoute } from 'vue-router'
-import router from '@/router/index.js'
 import { useRouterStore } from '@/store/model/router.js'
+import { ref, watch } from 'vue'
 
 const routerStore = useRouterStore()
 const route = useRoute()
 const asideStore = useASideStore()
-const defaultActive = route.path || '/layout/dashboard'
-console.log(router)
+const defaultActive = ref(route.path || '/layout/dashboard')
 
+watch(route, () => {
+  defaultActive.value = route.path
+}, { immediate: true })
 </script>
 
 <style scoped lang="scss">
