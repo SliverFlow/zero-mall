@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { useUserStore } from '@/store/model/user.js'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import router from '@/router/index.js'
+import router, { ng } from '@/router/index.js'
 
 const service = axios.create({
   timeout: 10000,
@@ -35,6 +35,15 @@ service.interceptors.response.use(
     // 头信息里面有 token 就替换原来的 token
     if (response.headers['new-token']) {
       userStore.setToken(response.headers['new-token'])
+    }
+    // 判断请求是否成功
+    if (response.data.code !== 0) {
+      ElMessage({
+        message: response.data.msg,
+        type: 'error',
+        showClose: true,
+      })
+      ng.done()
     }
     return response.data
   },

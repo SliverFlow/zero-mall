@@ -156,14 +156,14 @@ import Tab from './tab/index.vue'
 import variables from '@/style/variables.module.scss'
 import screenfull from 'screenfull'
 import { computed, ref } from 'vue'
-import { useASideStore } from '@/store/model/aside.js'
+import { useMenuStore } from '@/store/model/menu.js'
 import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/store/model/user.js'
 
 const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
-const asideStore = useASideStore()
+const asideStore = useMenuStore()
 const asideWidth = computed(() => {
   return asideStore.collapseType ? variables['aside-hidden-width'] : variables['aside-width']
 })

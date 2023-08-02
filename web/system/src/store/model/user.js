@@ -1,13 +1,12 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { useRouterStore } from '@/store/model/router.js'
+import { loginApi } from '@/api/base.js'
 
 export const useUserStore = defineStore('user', () => {
   const token = ref(window.localStorage.getItem('token') || '')
   const isLogin = ref(false)
   // 用户信息
   const userInfo = ref({})
-  // 用户菜单 列表
   // 存放 token
   const setToken = (val) => {
     token.value = val
@@ -15,19 +14,27 @@ export const useUserStore = defineStore('user', () => {
   }
 
   // 登录
-  const login = (data) => {
-    const routerStore = useRouterStore()
-    routerStore.asyncRouter()
-    isLogin.value = true
-    return true
+  const login = async(data) => {
+    // 开始登录
+    const res = await loginApi(data)
+    if (res.code === 0) {
+      // 登录成功
+      setToken(res.data.token)
+      // 设置用户信息
+      userInfo.value = res.data.user
+      isLogin.value = true
+      return true
+    } else {
+      return false
+    }
   }
 
   // 退出方法
   const logout = () => {
     // 将 token 置空
     setToken('')
-    window.sessionStorage.clear()
     isLogin.value = false
+    window.sessionStorage.clear()
     return true
   }
 

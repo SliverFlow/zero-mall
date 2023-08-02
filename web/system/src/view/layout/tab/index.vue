@@ -21,13 +21,15 @@
 <script setup>
 import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useMenuStore } from '@/store/model/menu.js'
 
+const menuStore = useMenuStore()
 const route = useRoute()
 const router = useRouter()
 // 标签页列表
-const tabList = ref([{ title: '仪表盘', path: '/layout/dashboard' }])
+const tabList = ref(menuStore.tabList)
 // 当前激活的标签页
-const activeTabPath = ref('')
+const activeTabPath = ref(menuStore.activeTabPath)
 
 // 添加新标签
 const addTab = () => {

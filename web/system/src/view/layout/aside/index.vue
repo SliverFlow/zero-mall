@@ -51,14 +51,14 @@
 </template>
 
 <script setup>
-import { useASideStore } from '@/store/model/aside.js'
+import { useMenuStore } from '@/store/model/menu.js'
 import { useRoute } from 'vue-router'
 import { useRouterStore } from '@/store/model/router.js'
 import { ref, watch } from 'vue'
 
 const routerStore = useRouterStore()
 const route = useRoute()
-const asideStore = useASideStore()
+const asideStore = useMenuStore()
 const defaultActive = ref(route.path || '/layout/dashboard')
 
 watch(route, () => {

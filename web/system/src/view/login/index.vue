@@ -90,7 +90,7 @@ const form = ref(null)
 // form 表单数据
 const formData = ref({
   captchaId: '',
-  username: '',
+  username: '202606540@qq.com',
   password: '',
   captcha: ''
 })
@@ -107,10 +107,11 @@ const getCaptcha = async() => {
 }
 getCaptcha()
 
-const submitForm = () => {
-  const flag = userStore.login(formData.value)
+// 提交表单
+const submitForm = async() => {
+  const flag = await userStore.login(formData.value)
   if (flag) {
-    router.push(path)
+    await router.push({ path: path })
   } else {
     // 重新获取验证码
     getCaptcha()

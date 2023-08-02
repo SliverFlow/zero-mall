@@ -1,25 +1,33 @@
 import { defineStore } from 'pinia'
-import router from '@/router/index.js'
 import { menuListA } from '@/view/menu.js'
 import { ref } from 'vue'
+import { menuTreeListApi } from '@/api/menu.js'
 
 export const useRouterStore = defineStore('router', () => {
   const menuList = ref(menuListA)
   const asyncRouterList = ref([])
   // 设置用户的路由
-  const asyncRouter = () => {
+  const setAsyncRouter = async() => {
+    const res = await menuTreeListApi()
+    if (res.code !== 0) {
+      return false
+    }
+    menuList.value = res.data.list
     asyncRouterList.value = mapRouter(menuList.value)
-    asyncRouterList.value.forEach(i => router.addRoute('Layout', i))
+    return true
   }
 
   const modules = import.meta.glob('../../view/**/*.vue')
   // 获取路由数组
   const mapRouter = (val) => {
+    if (val.length === 0) {
+      return []
+    }
     return val.map(i => {
       const r = {
         name: i.name,
         path: i.path,
-        meta: i.meta,
+        meta: { title: i.title },
         component: modules['../../view/' + i.component]
       }
       if (i.children) {
@@ -29,7 +37,7 @@ export const useRouterStore = defineStore('router', () => {
     })
   }
   return {
-    asyncRouter,
+    setAsyncRouter,
     menuList,
     asyncRouterList
   }
