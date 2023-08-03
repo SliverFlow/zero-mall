@@ -75,7 +75,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { captchaApi } from '@/api/base.js'
+import { captchaApi } from '@/api/system/base.js'
 import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/store/model/user.js'
 

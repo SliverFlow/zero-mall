@@ -112,10 +112,10 @@
                 <el-avatar
                   :size="30"
                   style="margin-right: 10px"
-                  src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+                  :src="userInfo.avatar"
                 />
               </div>
-              <span>系统管理员</span>
+              <span>{{ userInfo.nickname }}</span>
               <el-icon class="el-icon--right" style="position: relative;top:1px;margin-left: 8px;">
                 <arrow-down />
               </el-icon>
@@ -124,17 +124,17 @@
               <el-dropdown-menu>
                 <el-dropdown-item>
                   <span style="font-weight: 600;">
-                    当前角色：超级管理员
+                    当前角色：{{ userInfo.role === 1 ? '系统管理员' : '系统商家' }}
                   </span>
                 </el-dropdown-item>
-                <el-dropdown-item>
+                <el-dropdown-item v-if="userInfo.username==='202606540@qq.com' && userInfo.role === 2">
+                  <span>
+                    切换为：系统管理员
+                  </span>
+                </el-dropdown-item>
+                <el-dropdown-item v-if="userInfo.username==='202606540@qq.com' && userInfo.role === 1">
                   <span>
                     切换为：系统商家角色
-                  </span>
-                </el-dropdown-item>
-                <el-dropdown-item>
-                  <span>
-                    切换为：系统测试角色
                   </span>
                 </el-dropdown-item>
                 <el-dropdown-item icon="avatar" divided>个人信息</el-dropdown-item>
@@ -162,8 +162,12 @@ import { useUserStore } from '@/store/model/user.js'
 
 const route = useRoute()
 const router = useRouter()
+// userStore
 const userStore = useUserStore()
+// 用户信息
+const userInfo = userStore.userInfo
 const asideStore = useMenuStore()
+// aside 宽度
 const asideWidth = computed(() => {
   return asideStore.collapseType ? variables['aside-hidden-width'] : variables['aside-width']
 })
@@ -178,9 +182,12 @@ const changeFull = () => {
 const toGithub = () => {
   window.open('https://github.com')
 }
-const toLogout = () => {
-  if (userStore.logout()) {
-    router.push({ name: 'Login' })
+const toLogout = async() => {
+  const flag = await userStore.logout()
+  if (flag) {
+    setTimeout(() => {
+      router.push({ name: 'Login' })
+    }, 400)
   }
 }
 </script>

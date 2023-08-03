@@ -31,6 +31,7 @@ service.interceptors.request.use(
 // 响应拦截
 service.interceptors.response.use(
   response => {
+    ng.done()
     const userStore = useUserStore()
     // 头信息里面有 token 就替换原来的 token
     if (response.headers['new-token']) {
@@ -43,7 +44,12 @@ service.interceptors.response.use(
         type: 'error',
         showClose: true,
       })
-      ng.done()
+    }
+    // 业务错误类型
+    switch (response.data.code) {
+      case 100001:
+        userStore.isLogin = false
+        router.push({ name: 'Login' })
     }
     return response.data
   },

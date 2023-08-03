@@ -1,6 +1,10 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { loginApi } from '@/api/base.js'
+import { loginApi } from '@/api/system/base.js'
+import { logoutApi } from '@/api/system/user.js'
+import { ElMessage } from 'element-plus'
+import { useRouterStore } from '@/store/model/router.js'
+import router from '@/router/index.js'
 
 export const useUserStore = defineStore('user', () => {
   const token = ref(window.localStorage.getItem('token') || '')
@@ -22,6 +26,11 @@ export const useUserStore = defineStore('user', () => {
       setToken(res.data.token)
       // 设置用户信息
       userInfo.value = res.data.user
+
+      const routerStore = useRouterStore()
+      await routerStore.setAsyncRouter()
+      routerStore.asyncRouterList.forEach(i => router.addRoute('Layout', i))
+
       isLogin.value = true
       return true
     } else {
@@ -30,12 +39,23 @@ export const useUserStore = defineStore('user', () => {
   }
 
   // 退出方法
-  const logout = () => {
-    // 将 token 置空
-    setToken('')
-    isLogin.value = false
-    window.sessionStorage.clear()
-    return true
+  const logout = async() => {
+    const res = await logoutApi()
+    if (res['code'] === 0) {
+      ElMessage({
+        message: res['msg'],
+        type: 'success',
+        showClose: true,
+      })
+      // 将 token 置空
+      setToken('')
+      isLogin.value = false
+      localStorage.removeItem('zp-aside-store')
+      localStorage.removeItem('zp-router-store')
+      localStorage.removeItem('token')
+      return true
+    }
+    return false
   }
 
   return {
@@ -49,7 +69,7 @@ export const useUserStore = defineStore('user', () => {
 }, {
   persist: {
     key: 'zp-user-store',
-    storage: window.sessionStorage
+    storage: window.localStorage
   }
 })
 

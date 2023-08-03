@@ -46,21 +46,22 @@ router.beforeEach(async(to) => {
   if (!useStore.isLogin && to.name === 'Login') {
     return true
   }
+  if (useStore.isLogin && to.name === 'Login') {
+    return { name: 'Dashboard' }
+  }
   // 判断是否登录
   if (!useStore.isLogin && to.name !== 'Login') {
     // 这里的query就是为了记录用户最后一次访问的路径，这个路径是通过to的参数获取
     // 后续在登录成功以后，就可以根据这个path的参数，然后调整到你最后一次访问的路径
     return { name: 'Login', query: { 'path': to.path }}
   }
-
   const routerStore = useRouterStore()
-  await routerStore.setAsyncRouter()
-  routerStore.asyncRouterList.forEach(i => router.addRoute('Layout', i))
+  // await routerStore.setAsyncRouter()
+  await routerStore.setLocalAsyncRouter()
   // 如果刷新出现空白的问题，那么就使用下面这行代码
   if (!to.name && hasRoute(to)) {
     return { ...to }
   }
-
   // 继续进行
   return true
 })

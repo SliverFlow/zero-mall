@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia'
-import { menuListA } from '@/view/menu.js'
 import { ref } from 'vue'
-import { menuTreeListApi } from '@/api/menu.js'
+import { menuTreeListApi } from '@/api/system/menu.js'
+import router from '@/router/index.js'
 
 export const useRouterStore = defineStore('router', () => {
-  const menuList = ref(menuListA)
+  const menuList = ref([])
   const asyncRouterList = ref([])
   // 设置用户的路由
   const setAsyncRouter = async() => {
@@ -15,6 +15,10 @@ export const useRouterStore = defineStore('router', () => {
     menuList.value = res.data.list
     asyncRouterList.value = mapRouter(menuList.value)
     return true
+  }
+
+  const setLocalAsyncRouter = async() => {
+    mapRouter(menuList.value).forEach(i => router.addRoute('Layout', i))
   }
 
   const modules = import.meta.glob('../../view/**/*.vue')
@@ -39,11 +43,12 @@ export const useRouterStore = defineStore('router', () => {
   return {
     setAsyncRouter,
     menuList,
-    asyncRouterList
+    asyncRouterList,
+    setLocalAsyncRouter
   }
 }, {
   persist: {
     key: 'zp-router-store',
-    storage: window.sessionStorage
+    storage: window.localStorage
   }
 })

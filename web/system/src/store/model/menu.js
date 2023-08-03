@@ -16,6 +16,6 @@ export const useMenuStore = defineStore('aside', () => {
 }, {
   persist: {
     key: 'zp-aside-store',
-    storage: window.sessionStorage
+    storage: window.localStorage
   }
 })
