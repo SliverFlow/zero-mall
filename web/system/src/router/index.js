@@ -46,9 +46,7 @@ router.beforeEach(async(to) => {
   if (!useStore.isLogin && to.name === 'Login') {
     return true
   }
-  if (useStore.isLogin && to.name === 'Login') {
-    return { name: 'Dashboard' }
-  }
+
   // 判断是否登录
   if (!useStore.isLogin && to.name !== 'Login') {
     // 这里的query就是为了记录用户最后一次访问的路径，这个路径是通过to的参数获取
@@ -62,6 +60,11 @@ router.beforeEach(async(to) => {
   if (!to.name && hasRoute(to)) {
     return { ...to }
   }
+
+  if (useStore.isLogin && to.name === 'Login') {
+    return { name: 'Dashboard' }
+  }
+
   // 继续进行
   return true
 })

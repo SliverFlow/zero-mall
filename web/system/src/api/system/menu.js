@@ -7,10 +7,11 @@ export const menuTreeListApi = () => {
   })
 }
 
-export const menuTreeListAllApi = () => {
+export const menuTreeListAllApi = (data) => {
   return service({
     url: '/system/menu/treeListAll',
-    method: 'post'
+    method: 'post',
+    data: data
   })
 }
 
@@ -25,6 +26,22 @@ export const menuChangeStatusApi = (data) => {
 export const menuUpdateApi = (data) => {
   return service({
     url: '/system/menu/update',
+    method: 'post',
+    data: data
+  })
+}
+
+export const menuCreateApi = (data) => {
+  return service({
+    url: '/system/menu/create',
+    method: 'post',
+    data: data
+  })
+}
+
+export const menuFindApi = (data) => {
+  return service({
+    url: '/system/menu/find',
     method: 'post',
     data: data
   })

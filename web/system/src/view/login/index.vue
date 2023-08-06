@@ -51,7 +51,7 @@
                 <img
                   v-if="picPath"
                   :src="picPath"
-                  alt="请输入验证码"
+                  alt="验证码"
                   @click="loginVerify()"
                 >
               </div>
@@ -114,7 +114,7 @@ const submitForm = async() => {
     await router.push({ path: path })
   } else {
     // 重新获取验证码
-    getCaptcha()
+    await getCaptcha()
   }
 }
 </script>
