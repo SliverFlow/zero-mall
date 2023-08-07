@@ -6,3 +6,11 @@ export const logoutApi = () => {
     method: 'post',
   })
 }
+
+export const userChangeRoleApi = (data) => {
+  return service({
+    url: '/system/user/changeRole',
+    method: 'post',
+    data: data
+  })
+}

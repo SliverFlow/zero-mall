@@ -70,6 +70,14 @@ watch(route, () => {
   addTab()
   activeTabPath.value = route.path
 }, { immediate: true })
+// 监听标签页变化
+watch(tabList.value, () => {
+  if (tabList.value.length === 0) {
+    tabList.value.push({ title: '仪表盘', path: '/layout/dashboard' })
+    activeTabPath.value = '/layout/dashboard'
+    router.push({ path: '/layout/dashboard' })
+  }
+}, { immediate: true })
 </script>
 <style lang="scss" scoped>
 .tab-con {

@@ -127,12 +127,18 @@
                     当前角色：{{ userInfo.role === 1 ? '系统管理员' : '系统商家' }}
                   </span>
                 </el-dropdown-item>
-                <el-dropdown-item v-if="userInfo.username==='202606540@qq.com' && userInfo.role === 2">
+                <el-dropdown-item
+                  v-if="userInfo.username==='202606540@qq.com'"
+                  @click="changeRole(1)"
+                >
                   <span>
                     切换为：系统管理员
                   </span>
                 </el-dropdown-item>
-                <el-dropdown-item v-if="userInfo.username==='202606540@qq.com' && userInfo.role === 1">
+                <el-dropdown-item
+                  v-if="userInfo.username==='202606540@qq.com'"
+                  @click="changeRole(2)"
+                >
                   <span>
                     切换为：系统商家角色
                   </span>
@@ -159,9 +165,13 @@ import { computed, ref } from 'vue'
 import { useMenuStore } from '@/store/model/menu.js'
 import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/store/model/user.js'
+import { userChangeRoleApi } from '@/api/system/user.js'
+import { ElMessage } from 'element-plus'
+import { useRouterStore } from '@/store/model/router.js'
 
 const route = useRoute()
 const router = useRouter()
+const routerStore = useRouterStore()
 // userStore
 const userStore = useUserStore()
 // 用户信息
@@ -188,6 +198,25 @@ const toLogout = async() => {
     setTimeout(() => {
       router.push({ name: 'Login' })
     }, 400)
+  }
+}
+
+// 修改系统用户角色
+const changeRole = async(val) => {
+  const res = await userChangeRoleApi({ username: userInfo.username, role: val })
+  if (res.code === 0) {
+    ElMessage({
+      message: res.msg,
+      type: 'success',
+      showClose: true,
+    })
+    // 重新加载路由标签
+    asideStore.tabList.splice(0, asideStore.tabList.length)
+    // 重新设置 router
+    setTimeout(async() => {
+      await routerStore.setAsyncRouter()
+      routerStore.asyncRouterList.forEach(i => router.addRoute('Layout', i))
+    }, 500)
   }
 }
 </script>

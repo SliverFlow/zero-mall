@@ -82,6 +82,7 @@
     <el-dialog
       v-model="dialogVisible"
       :title="dialogTitle"
+      @close="closeDialog"
     >
       <el-form
         ref="formRef"
@@ -98,7 +99,7 @@
             v-model="formData.parentId"
             style="width:100%"
             :options="menuOption"
-            :disabled="!isEdit"
+            :disabled="!isEdit || (formData.ID === 2 || formData.ID=== 3 || formData.ID === 1 || formData.ID === 4)"
             :props="{ checkStrictly: true,label:'title',value:'ID',disabled:'disabled',emitPath:false}"
             :show-all-levels="false"
             filterable
@@ -108,7 +109,7 @@
           <el-input v-model="formData.path" placeholder="请输入路由 path" autocomplete="off" />
         </el-form-item>
         <el-form-item prop="status" label="是否隐藏">
-          <el-select v-model="formData.status" placeholder="选择菜单状态">
+          <el-select v-model="formData.status" placeholder="选择菜单状态" :disabled="formData.ID === 2 || formData.ID=== 3 || formData.ID === 1 || formData.ID === 4">
             <el-option
               v-for="item in statusOptions"
               :key="item.value"
@@ -194,6 +195,7 @@ const menuOption = ref([
     title: '根菜单'
   }
 ])
+
 // 路由状态选择器
 const statusOptions = ref([
   {
@@ -225,6 +227,7 @@ const switchEnable = async(val) => {
     })
   }
   await loadData()
+  // 当将菜单修改为未激活时，删除 tab 栏打开的当前标签页
   if (val.status === 0) {
     const index = menuStore.tabList.findIndex(i => i.path === val.path)
     menuStore.tabList.splice(index, 1)
@@ -245,6 +248,7 @@ const openDialog = (val) => {
 
 // 关闭弹出层
 const closeDialog = () => {
+  isEdit.value = false
   dialogVisible.value = false
   // 清空表单
   formRef.value.resetFields()
@@ -264,6 +268,7 @@ const submitForm = async() => {
   let res
   if (isEdit.value) { // 编辑状态
     console.log('编辑')
+    console.log(formData)
   } else { // 创建状态
     res = await menuCreateApi(formData.value)
   }
@@ -287,9 +292,42 @@ const submitForm = async() => {
 // 编辑菜单
 const editMenu = async(val) => {
   const res = await menuFindApi({ id: val })
+  isEdit.value = true
   formData.value = res.data.menu
+  formData.value.meta = { icon: res.data.menu.icon }
+  setMenuOption()
   openDialog('编辑菜单')
 }
+
+// 设置编辑菜单时的级联选择框数据
+const setMenuOption = () => {
+  menuOption.value = [{ ID: 0, title: '根菜单' }]
+  asyncMenuOptions(tableData.value, menuOption.value, false)
+}
+
+// 通过数据列表获取级联选择器的数据
+const asyncMenuOptions = (tableData, optionData, disabled) => {
+  tableData && tableData.forEach(i => {
+    if (i.children && i.children.length) {
+      const option = {
+        title: i.title,
+        ID: i.ID,
+        disabled: disabled || i.ID === formData.value.ID,
+        children: []
+      }
+      asyncMenuOptions(i.children, option.children, disabled || i.ID === formData.value.ID)
+      optionData.push(option)
+    } else {
+      const option = {
+        title: i.title,
+        ID: i.ID,
+        disabled: disabled || i.ID === formData.value.ID,
+      }
+      optionData.push(option)
+    }
+  })
+}
+
 </script>
 <style lang="scss" scoped>
 :deep(.el-input-number__increase), :deep(.el-input-number__decrease) {
