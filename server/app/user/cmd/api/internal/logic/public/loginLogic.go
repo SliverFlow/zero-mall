@@ -29,6 +29,8 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 
 func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginReply, err error) {
 
+	logx.Info("Login with user ", req.Username)
+	logx.Error("Login with user ", req.Password)
 	token, err := l.nextToken(l.svcCtx.Config)
 	if err != nil {
 		return nil, xerr.NewErrMsg(err.Error())

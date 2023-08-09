@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"errors"
 	"google.golang.org/grpc/status"
 	"gorm.io/gorm"
 	"server/app/user/model"
@@ -40,7 +41,7 @@ func (l *UpdateLogic) Update(in *pb.UpdateReq) (*pb.Nil, error) {
 	})
 	// 返回nil表示成功
 	if err != nil {
-		if err == gorm.ErrRecordNotFound {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, status.Errorf(100001, "user not exist in userId = %s", in.UserID)
 		}
 		return nil, err

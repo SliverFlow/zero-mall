@@ -3,10 +3,8 @@ Host: 0.0.0.0
 Port: 9990
 
 Log:
-  Level: info
   ServiceName: user-api
-#  Mode: file
-#  Level: error
+  Level: info
 
 # user rpc 配置
 UserRpc:

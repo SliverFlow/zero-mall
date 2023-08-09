@@ -6,6 +6,11 @@ Etcd:
 #  - etcd:2379
   Key: user.rpc
 
+
+Log:
+  ServiceName: user-rpc
+  Level: info
+
 Mysql:
 #  Path: 127.0.0.1
 #  Password: ''
