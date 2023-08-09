@@ -17,7 +17,74 @@ services:
       - "2379:2379"
     networks:
       - shop_server
-    restart: always
+  #    restart: always
+
+  prometheus:
+    build:
+      context: ./docker-file/prometheus
+    environment:
+      - TZ=Asia/Shanghai
+    privileged: true
+    volumes:
+      - ./docker-file/prometheus/prometheus.yml:/opt/bitnami/prometheus/conf/prometheus.yml  # 将 prometheus 配置文件挂载到容器里
+      - ./docker-file/prometheus/target.json:/opt/bitnami/prometheus/conf/targets.json  # 将 prometheus 配置文件挂载到容器里
+    ports:
+      - "9090:9090"                     # 设置容器9090端口映射指定宿主机端口，用于宿主机访问可视化web
+    networks:
+      - shop_server
+  #    restart: always
+
+  grafana:
+    build:
+      context: ./docker-file/grafana
+    environment:
+      - TZ=Asia/Shanghai
+    privileged: true
+    ports:
+      - "3000:3000"
+    networks:
+      - shop_server
+  #    restart: always
+
+  jaeger:
+    build:
+      context: ./docker-file/jaeger
+    environment:
+      - TZ=Asia/Shanghai
+      - SPAN_STORAGE_TYPE=elasticsearch
+      - ES_SERVER_URLS=http://elasticsearch:9200
+      - LOG_LEVEL=debug
+    privileged: true
+    ports:
+      - "6831:6831/udp"
+      - "6832:6832/udp"
+      - "5778:5778"
+      - "16686:16686"
+      - "4317:4317"
+      - "4318:4318"
+      - "14250:14250"
+      - "14268:14268"
+      - "14269:14269"
+      - "9411:9411"
+    networks:
+      - shop_server
+#    restart: always
+
+  elasticsearch:
+    build:
+      context: ./docker-file/elasticsearch
+    environment:
+      - TZ=Asia/Shanghai
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    privileged: true
+    ports:
+      - "9200:9200"
+    networks:
+      - shop_server
+#    restart: always
+
+
 
   etcd-manage:
     build:
@@ -30,7 +97,7 @@ services:
       - etcd                                          # 在 etcd 服务容器启动后启动
     networks:
       - shop_server
-    restart: always
+  #    restart: always
 
   user-rpc: # 自定义容器名称
     build:
@@ -40,12 +107,12 @@ services:
       - TZ=Asia/Shanghai
     privileged: true
     ports: # 设置端口映射
-      - "5551:5551"  # 课件服务rpc端口
+      - "9991:9991"  # 课件服务rpc端口
     stdin_open: true                     # 打开标准输入，可以接受外部输入
     tty: true
     networks:
       - shop_server
-    restart: always                      # 指定容器退出后的重启策略为始终重启
+  #    restart: always                      # 指定容器退出后的重启策略为始终重启
 
   user-api: # 自定义容器名称
     build:
@@ -55,9 +122,9 @@ services:
       - TZ=Asia/Shanghai
     privileged: true
     ports: # 设置端口映射
-      - "5550:5550"  # 课件服务rpc端口
+      - "9990:9990"  # 课件服务rpc端口
     stdin_open: true                     # 打开标准输入，可以接受外部输入
     tty: true
     networks:
       - shop_server
-    restart: always                      # 指定容器退出后的重启策略为始终重启
+#    restart: always                      # 指定容器退出后的重启策略为始终重启
