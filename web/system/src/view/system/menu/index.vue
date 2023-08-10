@@ -1,165 +1,196 @@
 <template>
-  <div class="gva-table-box">
-    <div class="gva-btn-list">
-      <el-button type="primary" icon="Plus" @click="addMenu('添加根菜单')">添加根菜单</el-button>
-      <el-select v-model="roleData" placeholder="请选择角色" style="width: 130px;margin-left: 20px" @change="loadData">
-        <el-option
-          v-for="item in roleList"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        />
-      </el-select>
-    </div>
-    <el-table
-      :data="tableData"
-      row-key="ID"
-      :tree-props="{'children': 'children'}"
-    >
-      <el-table-column align="left" label="ID" min-width="100" prop="ID" fixed="left" />
-      <el-table-column align="left" label="菜单名称" min-width="150" prop="title" />
-      <el-table-column align="left" label="归属" min-width="100" prop="role">
-        <template #default="scope">
-          <el-text v-if="scope.row.role === 1" type="primary">管理员</el-text>
-          <el-text v-if="scope.row.role === 2" type="warning">商家</el-text>
-        </template>
-      </el-table-column>
-      <el-table-column align="left" label="组件位置" min-width="200" prop="component" />
-      <el-table-column align="left" label="排序" min-width="100" prop="sorted" />
-      <el-table-column align="left" label="状态" min-width="150">
-        <template #default="scope">
-          <el-switch
-            v-model="scope.row.status"
-            :disabled="scope.row.ID === 2 || scope.row.ID === 3 || scope.row.ID === 1 || scope.row.ID === 4"
-            inline-prompt
-            :active-value="1"
-            :inactive-value="0"
-            active-text="已激活"
-            inactive-text="未激活"
-            @change="()=>{switchEnable(scope.row)}"
-          />
-        </template>
-      </el-table-column>
-      <el-table-column align="left" label="创建时间" min-width="170">
-        <template #default="scope">
-          {{ formatDate(scope.row.createdAt) }}
-        </template>
-      </el-table-column>
-      <el-table-column align="left" label="更新时间" min-width="170">
-        <template #default="scope">
-          {{ formatDate(scope.row.updatedAt) }}
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" min-width="250" fixed="right">
-        <template #default="scope">
-          <el-button
-            type="primary"
-            link
-            icon="plus"
-            :disabled="scope.row.parentId !== 0"
-            @click="addVideoCategory(scope.row.ID)"
-          >添加子分类
-          </el-button>
-          <el-button
-            type="primary"
-            link
-            icon="edit"
-            @click="editMenu(scope.row.ID)"
-          >编辑
-          </el-button>
-          <el-button
-            :disabled="scope.row.ID === 2 || scope.row.ID === 3"
-            type="primary"
-            link
-            icon="delete"
-            @click="deleteVideoCategory(scope.row.ID)"
-          >删除
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+  <div>
+    <warning-bar title="子菜单会跟随父菜单的修改而修改，例如：父菜单的删除会造成父菜单下的所有菜单删除，修改角色同理。" />
 
-    <el-dialog
-      v-model="dialogVisible"
-      :title="dialogTitle"
-      @close="closeDialog"
-    >
-      <el-form
-        ref="formRef"
-        :model="formData"
-        :inline="true"
-        label-position="top"
-        label-width="85px"
-      >
-        <el-form-item prop="title" label="路由展示名称">
-          <el-input v-model="formData.title" placeholder="请输入展示名称" autocomplete="off" />
-        </el-form-item>
-        <el-form-item prop="title" label="父节点 ID">
-          <el-cascader
-            v-model="formData.parentId"
-            style="width:100%"
-            :options="menuOption"
-            :disabled="!isEdit || (formData.ID === 2 || formData.ID=== 3 || formData.ID === 1 || formData.ID === 4)"
-            :props="{ checkStrictly: true,label:'title',value:'ID',disabled:'disabled',emitPath:false}"
-            :show-all-levels="false"
-            filterable
+    <div class="gva-table-box">
+      <div class="gva-btn-list">
+        <el-button type="primary" icon="Plus" @click="addMenu(0)">添加根菜单</el-button>
+        <el-select
+          v-model="roleData"
+          placeholder="请选择角色"
+          style="width: 130px;margin-left: 20px"
+          @change="loadData"
+        >
+          <el-option
+            v-for="item in roleList"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
           />
-        </el-form-item>
-        <el-form-item prop="path" label="唯一路由名称">
-          <el-input v-model="formData.path" placeholder="请输入路由 path" autocomplete="off" />
-        </el-form-item>
-        <el-form-item prop="status" label="是否隐藏">
-          <el-select v-model="formData.status" placeholder="选择菜单状态" :disabled="formData.ID === 2 || formData.ID=== 3 || formData.ID === 1 || formData.ID === 4">
-            <el-option
-              v-for="item in statusOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+        </el-select>
+      </div>
+      <el-table
+        :data="tableData"
+        row-key="ID"
+        :tree-props="{'children': 'children'}"
+      >
+        <el-table-column align="left" label="ID" min-width="100" prop="ID" fixed="left" />
+        <el-table-column align="left" label="菜单名称" min-width="150" prop="title" />
+        <el-table-column align="left" label="归属" min-width="100" prop="role">
+          <template #default="scope">
+            <el-text v-if="scope.row.role === 1" type="primary">管理员</el-text>
+            <el-text v-if="scope.row.role === 2" type="warning">商家</el-text>
+          </template>
+        </el-table-column>
+        <el-table-column align="left" label="组件位置" min-width="220" prop="component" />
+        <el-table-column align="left" label="归属" min-width="100" prop="role">
+          <template #default="scope">
+            <component :is="scope.row.icon" style="width: 18px;height: 18px;display: flex;align-items: center" />
+          </template>
+        </el-table-column>
+        <el-table-column align="left" label="排序" min-width="100" prop="sorted" />
+        <el-table-column align="left" label="状态" min-width="150">
+          <template #default="scope">
+            <el-switch
+              v-model="scope.row.status"
+              :disabled="scope.row.ID === 2 || scope.row.ID === 3 || scope.row.ID === 1 || scope.row.ID === 4"
+              inline-prompt
+              :active-value="1"
+              :inactive-value="0"
+              active-text="已激活"
+              inactive-text="未激活"
+              @change="()=>{switchEnable(scope.row)}"
             />
-          </el-select>
-        </el-form-item>
-        <el-form-item prop="role" label="菜单角色" style="width: 140px;">
-          <el-select v-model="formData.role" placeholder="选择菜单角色">
-            <el-option
-              v-for="item in roleList"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-              :disabled="item.value === 0"
+          </template>
+        </el-table-column>
+        <el-table-column align="left" label="创建时间" min-width="170">
+          <template #default="scope">
+            {{ formatDate(scope.row.createdAt) }}
+          </template>
+        </el-table-column>
+        <el-table-column align="left" label="更新时间" min-width="170">
+          <template #default="scope">
+            {{ formatDate(scope.row.updatedAt) }}
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" min-width="250" fixed="right">
+          <template #default="scope">
+            <el-button
+              type="primary"
+              link
+              icon="plus"
+              :disabled="scope.row.parentId !== 0"
+              @click="addMenu(scope.row.ID, scope.row.role)"
+            >添加子菜单
+            </el-button>
+            <el-button
+              type="primary"
+              link
+              icon="edit"
+              @click="editMenu(scope.row.ID)"
+            >编辑
+            </el-button>
+            <el-button
+              :disabled="scope.row.ID === 2 || scope.row.ID === 3"
+              type="primary"
+              link
+              icon="delete"
+              @click="deleteVideoCategory(scope.row.ID)"
+            >删除
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <el-dialog
+        v-model="dialogVisible"
+        :title="dialogTitle"
+        @close="closeDialog"
+      >
+        <el-form
+          ref="formRef"
+          :model="formData"
+          :inline="true"
+          label-position="top"
+          label-width="85px"
+        >
+          <el-form-item prop="title" label="路由展示名称">
+            <el-input v-model="formData.title" placeholder="请输入展示名称" autocomplete="off" />
+          </el-form-item>
+          <el-form-item prop="title" label="父节点 ID">
+            <el-cascader
+              v-model="formData.parentId"
+              style="width:100%"
+              :options="menuOption"
+              :disabled="!isEdit || (formData.ID === 2 || formData.ID=== 3 || formData.ID === 1 || formData.ID === 4)"
+              :props="{ checkStrictly: true,label:'title',value:'ID',disabled:'disabled',emitPath:false}"
+              :show-all-levels="false"
+              filterable
             />
-          </el-select>
-        </el-form-item>
-        <el-form-item prop="sorted" label="排序标记">
-          <el-input-number v-model="formData.sorted" :min="0" />
-        </el-form-item>
-        <el-form-item prop="icon" label="图标">
-          <icon :meta="formData.meta" style="width:100%" />
-        </el-form-item>
-        <el-form-item prop="component" label="文件路径">
-          <el-input v-model="formData.component" placeholder="请输入文件路径 :xxx/xxx.vue" autocomplete="off" />
-          <span style="font-size:12px;margin-right:12px;">如果菜单包含子菜单，请创建router-view二级路由页面或者</span>
-          <el-button style="margin-top:4px" @click="formData.component = 'routerHolder.vue'">点我设置</el-button>
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="closeDialog">取消</el-button>
-          <el-button type="primary" @click="submitForm">确认</el-button>
-        </span>
-      </template>
-    </el-dialog>
+          </el-form-item>
+          <el-form-item prop="path" label="唯一路由路径" style="width: 40%">
+            <el-input v-model="formData.path" placeholder="请输入路由 path :/layout/xxx/xxx" autocomplete="off" />
+          </el-form-item>
+          <el-form-item prop="path" label="唯一 name">
+            <el-input v-model="formData.name" placeholder="请输入唯一name" autocomplete="off" />
+          </el-form-item>
+          <el-form-item prop="status" label="是否隐藏">
+            <el-select
+              v-model="formData.status"
+              placeholder="选择菜单状态"
+              :disabled="formData.ID === 2 || formData.ID=== 3 || formData.ID === 1 || formData.ID === 4"
+            >
+              <el-option
+                v-for="item in statusOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item prop="role" label="菜单角色" style="width: 140px;">
+            <el-select v-model="formData.role" placeholder="选择菜单角色" :disabled="idAddChildrenMenu">
+              <el-option
+                v-for="item in roleList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+                :disabled="item.value === 0"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item prop="sorted" label="排序标记">
+            <el-input-number v-model="formData.sorted" :min="0" />
+          </el-form-item>
+          <el-form-item prop="icon" label="图标">
+            <icon :meta="formData.meta" style="width:100%" />
+          </el-form-item>
+          <el-form-item prop="component" label="文件路径">
+            <el-input v-model="formData.component" placeholder="请输入文件路径 :xxx/xxx.vue" autocomplete="off" />
+            <span style="font-size:12px;margin-right:12px;">如果菜单包含子菜单，请创建router-view二级路由页面或者</span>
+            <el-button style="margin-top:4px" @click="formData.component = 'routerHolder.vue'">点我设置</el-button>
+          </el-form-item>
+        </el-form>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="closeDialog">取消</el-button>
+            <el-button type="primary" @click="submitForm">确认</el-button>
+          </span>
+        </template>
+      </el-dialog>
+    </div>
+
   </div>
+
 </template>
 <script setup>
 import { ref } from 'vue'
 import { formatDate } from '@/utils/format.js'
-import { menuChangeStatusApi, menuCreateApi, menuFindApi, menuTreeListAllApi } from '@/api/system/menu.js'
+import {
+  menuChangeStatusApi,
+  menuCreateApi,
+  menuFindApi,
+  menuTreeListAllApi,
+  menuUpdateApi
+} from '@/api/system/menu.js'
 import { ElMessage } from 'element-plus'
 import { useRouterStore } from '@/store/model/router.js'
 import router from '@/router/index.js'
 import { useMenuStore } from '@/store/model/menu.js'
 import Icon from '@/view/system/menu/component/icon.vue'
 import { firstToUpper } from '@/utils/string.js'
+import WarningBar from '@/components/warningBar/warningBar.vue'
+import { useRoute, useRouter } from 'vue-router'
 
 const routerStore = useRouterStore()
 const menuStore = useMenuStore()
@@ -171,11 +202,14 @@ const roleList = ref([
   { label: '系统商家', value: 2 },
   { label: '全部菜单', value: 0 },
 ])
+// 是否添加子菜单窗台
+const idAddChildrenMenu = ref(false)
 // dialog
 const dialogVisible = ref(false)
 const dialogTitle = ref('')
 const formRef = ref(null)
 const formData = ref({
+  name: '',
   title: '',
   path: '',
   icon: '',
@@ -186,7 +220,6 @@ const formData = ref({
   meta: {
     icon: ''
   },
-  name: ''
 })
 // 级联选择器
 const menuOption = ref([
@@ -208,6 +241,7 @@ const statusOptions = ref([
 ])
 // 是否为编辑状态
 const isEdit = ref(false)
+// 按角色搜索
 const roleData = ref(0)
 
 // 加载表格数据
@@ -230,7 +264,9 @@ const switchEnable = async(val) => {
   // 当将菜单修改为未激活时，删除 tab 栏打开的当前标签页
   if (val.status === 0) {
     const index = menuStore.tabList.findIndex(i => i.path === val.path)
-    menuStore.tabList.splice(index, 1)
+    if (index >= 0) {
+      menuStore.tabList.splice(index, 1)
+    }
   }
 
   // 重新设置 router
@@ -238,6 +274,7 @@ const switchEnable = async(val) => {
     await routerStore.setAsyncRouter()
     routerStore.asyncRouterList.forEach(i => router.addRoute('Layout', i))
   }, 500)
+  console.log(router)
 }
 
 // 打开弹出层
@@ -250,25 +287,29 @@ const openDialog = (val) => {
 const closeDialog = () => {
   isEdit.value = false
   dialogVisible.value = false
+  idAddChildrenMenu.value = false
   // 清空表单
   formRef.value.resetFields()
 }
 
 // 添加菜单
-const addMenu = (val) => {
-  formData.value.parentId = 0
-  openDialog(val)
+const addMenu = (val, role) => {
+  setMenuOption()
+  formData.value.parentId = val
+  if (val > 0) { // 添加子菜单的情况
+    formData.value.role = role
+    idAddChildrenMenu.value = true
+  }
+  openDialog('添加菜单')
 }
 
 // 提交表单
 const submitForm = async() => {
   // TODO 表单验证
   formData.value.icon = formData.value.meta.icon
-  formData.value.name = firstToUpper(formData.value.path)
   let res
   if (isEdit.value) { // 编辑状态
-    console.log('编辑')
-    console.log(formData)
+    res = await menuUpdateApi(formData.value)
   } else { // 创建状态
     res = await menuCreateApi(formData.value)
   }
@@ -327,7 +368,6 @@ const asyncMenuOptions = (tableData, optionData, disabled) => {
     }
   })
 }
-
 </script>
 <style lang="scss" scoped>
 :deep(.el-input-number__increase), :deep(.el-input-number__decrease) {

@@ -13,6 +13,7 @@ export const useRouterStore = defineStore('router', () => {
       return false
     }
     menuList.value = res.data.list
+    console.log(modules)
     asyncRouterList.value = mapRouter(menuList.value)
     return true
   }
