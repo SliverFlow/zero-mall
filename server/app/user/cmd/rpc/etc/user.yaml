@@ -6,16 +6,15 @@ Etcd:
 #  - etcd:2379
   Key: user.rpc
 
-
 Log:
   ServiceName: user-rpc
   Level: info
 
 Mysql:
-#  Path: 127.0.0.1
-#  Password: ''
-  Path: 121.37.20.40
-  Password: '123456'
+  Path: 127.0.0.1
+  Password: ''
+#  Path: 121.37.20.40
+#  Password: '123456'
   Port: 3306
   Dbname: ap-user
   Username: root
@@ -24,16 +23,18 @@ Mysql:
   LogMode: "dev"
   LogZap: false
   Config: charset=utf8mb4&parseTime=True&loc=Local
+
 CacheRedis:
   - Host: 120.77.237.246:6379
     Pass: "wjh20000905"
-Prometheus:
-  Host: 0.0.0.0
-  Port: 9901
-  Path: /metrics
 
-Telemetry:
-  Name: user-rpc
-  Endpoint: http://jaeger:14268/api/traces
-  Sampler: 1.0
-  Batcher: jaeger
+#Prometheus:
+#  Host: 0.0.0.0
+#  Port: 9901
+#  Path: /metrics
+#
+#Telemetry:
+#  Name: user-rpc
+#  Endpoint: http://jaeger:14268/api/traces
+#  Sampler: 1.0
+#  Batcher: jaeger

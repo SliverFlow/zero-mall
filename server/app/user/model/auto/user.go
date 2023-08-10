@@ -14,7 +14,7 @@ type User struct {
 	Nickname string `json:"nickname" gorm:"not null;default:'';comment:用户显示昵称"`
 	Password string `json:"password" gorm:"not null;default:'';comment:用户登录密码"`
 	Avatar   string `json:"avatar" gorm:"not null;default:'';comment:用户头像"`
-	Type     int64  `json:"type" gorm:"not null;default:0;comment:用户类型 0 普通用户 1 商家 2 系统管理员"`
+	Role     int64  `json:"role" gorm:"not null;default:0;comment:用户类型 0 普通用户 2 商家 1 系统管理员"`
 	Status   int64  `json:"status" gorm:"not null;default:0;comment:用户状态 0 开启 1 禁用 "`
 }
 

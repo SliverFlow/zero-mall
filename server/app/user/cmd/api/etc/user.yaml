@@ -13,22 +13,25 @@ UserRpc:
       - 120.77.237.246:32379
 #      - etcd:2379
     Key: user.rpc
+
 XJwt:
   Secret: zhengjunxing
   Isuser: zjx
   Expire: 86400
   Buffer: 43200
   BlackListPrefix: "zpshop:token_black_list:"
+
 Redis:
   Host: "120.77.237.246:6379"
   Pass: wjh20000905
-Prometheus:
-  Host: 0.0.0.0
-  Port: 9900
-  Path: /metrics
 
-Telemetry:
-  Name: user-api
-  Endpoint: http://jaeger:14268/api/traces
-  Sampler: 1.0
-  Batcher: jaeger
+#Prometheus:
+#  Host: 0.0.0.0
+#  Port: 9900
+#  Path: /metrics
+#
+#Telemetry:
+#  Name: user-api
+#  Endpoint: http://jaeger:14268/api/traces
+#  Sampler: 1.0
+#  Batcher: jaeger

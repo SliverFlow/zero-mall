@@ -49,7 +49,7 @@ type (
 		Nickname  string         `gorm:"column:nickname"` // 用户显示昵称
 		Password  string         `gorm:"column:password"` // 用户登录密码
 		Avatar    string         `gorm:"column:avatar"`   // 用户头像
-		Type      int64          `gorm:"column:type"`     // 用户类型 0 普通用户 1 商家 2 系统管理员
+		Role      int64          `gorm:"column:role"`     // 用户类型 0 普通用户 2 商家 1 系统管理员
 		Status    int64          `gorm:"column:status"`   // 用户状态 0 开启 1 禁用
 	}
 )
