@@ -36,7 +36,6 @@ func (l *UpdateLogic) Update(in *pb.UpdateReq) (*pb.Nil, error) {
 		Nickname: in.Nickname,
 		Password: in.Password,
 		Avatar:   in.Avatar,
-		Type:     in.Type,
 		Status:   in.Status,
 	})
 	// 返回nil表示成功

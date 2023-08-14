@@ -33,7 +33,6 @@ var worker = common.NewWorker(1)
 func (l *CreateLogic) Create(in *pb.CreateReq) (*pb.Nil, error) {
 	var u model.User
 	u.Password = common.BcryptHash(in.Password)
-	u.Type = in.Type
 	u.Avatar = in.Avatar
 	u.Email = in.Email
 	u.Uuid = uuid.NewV4().String()

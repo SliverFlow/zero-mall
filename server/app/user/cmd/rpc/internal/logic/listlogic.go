@@ -50,7 +50,6 @@ func (l *ListLogic) List(in *pb.PageReq) (*pb.PageReply, error) {
 			Nickname:  user.Nickname,
 			Password:  user.Password,
 			Avatar:    user.Avatar,
-			Type:      user.Type,
 			Status:    user.Status,
 			CreatedAt: user.CreatedAt.Time.Unix(),
 			UpdatedAt: user.CreatedAt.Time.Unix(),

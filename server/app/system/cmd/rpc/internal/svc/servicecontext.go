@@ -7,11 +7,14 @@ import (
 	"os"
 	"server/app/system/cmd/rpc/internal/config"
 	"server/app/system/model/auto"
+	"server/app/system/model/service"
 	"server/common"
 )
 
 type ServiceContext struct {
 	Config config.Config
+
+	MenuService *service.MenuService
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -28,7 +31,8 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		os.Exit(0)
 	}
 	return &ServiceContext{
-		Config: c,
+		Config:      c,
+		MenuService: service.NewMenuService(db),
 	}
 }
 

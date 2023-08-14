@@ -43,7 +43,6 @@ func (l *FindLogic) Find(in *pb.IDReq) (*pb.UserInfoReply, error) {
 		Nickname:  u.Nickname,
 		Password:  u.Password,
 		Avatar:    u.Avatar,
-		Type:      u.Type,
 		Status:    u.Status,
 		CreatedAt: u.CreatedAt.Time.Unix(),
 		UpdatedAt: u.UpdatedAt.Time.Unix(),
