@@ -2,6 +2,7 @@ package public
 
 import (
 	"context"
+	"github.com/jinzhu/copier"
 	"server/app/user/cmd/rpc/pb"
 	"server/common/xerr"
 
@@ -26,14 +27,10 @@ func NewCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CreateLogi
 }
 
 func (l *CreateLogic) Create(req *types.CreateReq) (resp *types.NilReply, err error) {
-	_, err = l.svcCtx.UserRpc.Create(l.ctx, &pb.CreateReq{
-		Username: req.Username,
-		Email:    req.Email,
-		Nickname: req.Nickname,
-		Password: req.Password,
-		Avatar:   req.Avatar,
-		Type:     req.Type,
-	})
+
+	var createIn pb.CreateReq
+	_ = copier.Copy(&createIn, req)
+	_, err = l.svcCtx.UserRpc.Create(l.ctx, &createIn)
 	if err != nil {
 		return nil, xerr.NewErrMsg(err.Error())
 	}

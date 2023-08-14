@@ -1,6 +1,6 @@
 Name: user
 Host: 0.0.0.0
-Port: 9990
+Port: 5550
 
 Log:
   ServiceName: user-api
