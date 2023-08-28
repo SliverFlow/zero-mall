@@ -153,7 +153,7 @@
             <el-input-number v-model="formData.sorted" :min="0" />
           </el-form-item>
           <el-form-item prop="icon" label="图标">
-            <icon :meta="formData.meta" style="width:100%" />
+            <icon :key="formData.id" :meta="formData.meta" style="width:100%" />
           </el-form-item>
           <el-form-item prop="component" label="文件路径">
             <el-input v-model="formData.component" placeholder="请输入文件路径 :xxx/xxx.vue" autocomplete="off" />
@@ -188,9 +188,7 @@ import { useRouterStore } from '@/store/model/router.js'
 import router from '@/router/index.js'
 import { useMenuStore } from '@/store/model/menu.js'
 import Icon from '@/view/system/menu/component/icon.vue'
-import { firstToUpper } from '@/utils/string.js'
 import WarningBar from '@/components/warningBar/warningBar.vue'
-import { useRoute, useRouter } from 'vue-router'
 
 const routerStore = useRouterStore()
 const menuStore = useMenuStore()
