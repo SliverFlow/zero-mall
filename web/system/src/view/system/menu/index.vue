@@ -33,7 +33,7 @@
           </template>
         </el-table-column>
         <el-table-column align="left" label="组件位置" min-width="220" prop="component" />
-        <el-table-column align="left" label="归属" min-width="100" prop="role">
+        <el-table-column align="left" label="图标" min-width="100" prop="role">
           <template #default="scope">
             <component :is="scope.row.icon" style="width: 18px;height: 18px;display: flex;align-items: center" />
           </template>

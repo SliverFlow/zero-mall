@@ -3,6 +3,7 @@ import Npregress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { useUserStore } from '@/store/model/user.js'
 import { useRouterStore } from '@/store/model/router.js'
+import { userFindByUserId } from '@/api/system/user.js'
 
 export const ng = Npregress.configure({ showSpinner: false })
 
@@ -42,13 +43,13 @@ const router = createRouter({
 router.beforeEach(async(to) => {
   // 开启进度条
   ng.start()
-  const useStore = useUserStore()
-  if (!useStore.isLogin && to.name === 'Login') {
+  const userStore = useUserStore()
+  if (!userStore.isLogin && to.name === 'Login') {
     return true
   }
 
   // 判断是否登录
-  if (!useStore.isLogin && to.name !== 'Login') {
+  if (!userStore.isLogin && to.name !== 'Login') {
     // 这里的query就是为了记录用户最后一次访问的路径，这个路径是通过to的参数获取
     // 后续在登录成功以后，就可以根据这个path的参数，然后调整到你最后一次访问的路径
     return { name: 'Login', query: { 'path': to.path }}
@@ -61,7 +62,10 @@ router.beforeEach(async(to) => {
     return { ...to }
   }
 
-  if (useStore.isLogin && to.name === 'Login') {
+  if (userStore.isLogin && to.name === 'Login') {
+    // 更新 userinfo 会强制触发 token 过期的情况
+    const res = await userFindByUserId()
+    userStore.userInfo = res.data.user
     return { name: 'Dashboard' }
   }
 

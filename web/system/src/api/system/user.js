@@ -14,3 +14,10 @@ export const userChangeRoleApi = (data) => {
     data: data
   })
 }
+
+export const userFindByUserId = () => {
+  return service({
+    url: '/system/user/findByUserId',
+    method: 'post',
+  })
+}
