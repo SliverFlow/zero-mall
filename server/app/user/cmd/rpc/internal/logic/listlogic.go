@@ -43,7 +43,6 @@ func (l *ListLogic) List(in *pb.PageReq) (*pb.PageReply, error) {
 	for _, user := range *list {
 		enter = append(enter, &pb.UserReply{
 			ID:        user.Id,
-			UserID:    user.UserId,
 			UUID:      user.Uuid,
 			Username:  user.Username,
 			Email:     user.Email,

@@ -29,8 +29,7 @@ func NewUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UpdateLogi
 
 // Update 更新用户信息
 func (l *UpdateLogic) Update(in *pb.UpdateReq) (*pb.Nil, error) {
-	err := l.svcCtx.UserModel.UpdateByUserID(l.ctx, in.GetUserID(), &model.User{
-		UserId:   in.UserID,
+	err := l.svcCtx.UserModel.Update(l.ctx, nil, &model.User{
 		Username: in.Username,
 		Email:    in.Email,
 		Nickname: in.Nickname,
@@ -41,7 +40,7 @@ func (l *UpdateLogic) Update(in *pb.UpdateReq) (*pb.Nil, error) {
 	// 返回nil表示成功
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, status.Errorf(100001, "user not exist in userId = %s", in.UserID)
+			return nil, status.Errorf(100001, "user not exist in userId = %s", in.GetID())
 		}
 		return nil, err
 	}

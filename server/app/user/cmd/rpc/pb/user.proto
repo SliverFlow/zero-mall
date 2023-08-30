@@ -4,17 +4,16 @@ option go_package = "./pb";
 
 package pb;
 
-// 用户回复 主结构
+// 用户返回 主结构
 message UserReply {
   int64 ID = 1;
-  string UserID = 2;
   string UUID = 3;
   string Username = 4;
   string Email = 5;
   string Nickname = 6;
   string Password = 7;
   string Avatar = 8;
-  int64 Type = 9;
+  int64 Role = 9;
   int64 Status = 10;
   int64 CreatedAt = 11;
   int64 UpdatedAt = 12;
@@ -22,7 +21,7 @@ message UserReply {
 
 // 用户id 入参
 message IDReq {
-  string UserID = 1;
+  int64 ID = 1;
 }
 
 // 用户信息 出参
@@ -51,24 +50,24 @@ message CreateReq {
   string Nickname = 6;
   string Password = 7;
   string Avatar = 8;
-  int64 Type = 9;
+  int64 Role = 9;
 }
 
 // 更新用户信息
 message UpdateReq {
-  string UserID = 1;
+  int64 ID = 1;
   string Username = 4;
   string Email = 5;
   string Nickname = 6;
   string Password = 7;
   string Avatar = 8;
-  int64 Type = 9;
+  int64 Role = 9;
   int64 Status = 10;
 }
 
 //  批量删除用户
 message IDsReq {
-  repeated string Ids = 1;
+  repeated int64 IDs = 1;
 }
 
 service user {

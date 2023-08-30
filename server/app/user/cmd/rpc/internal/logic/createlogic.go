@@ -4,12 +4,10 @@ import (
 	"context"
 	uuid "github.com/satori/go.uuid"
 	"google.golang.org/grpc/status"
-	"server/app/user/model"
-	"server/common"
-	"strconv"
-
 	"server/app/user/cmd/rpc/internal/svc"
 	"server/app/user/cmd/rpc/pb"
+	"server/app/user/model"
+	"server/common"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -28,19 +26,17 @@ func NewCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CreateLogi
 	}
 }
 
-var worker = common.NewWorker(1)
-
 func (l *CreateLogic) Create(in *pb.CreateReq) (*pb.Nil, error) {
-	var u model.User
+	var u model.UserGorm
 	u.Password = common.BcryptHash(in.Password)
 	u.Avatar = in.Avatar
 	u.Email = in.Email
-	u.Uuid = uuid.NewV4().String()
-	u.UserId = strconv.FormatInt(worker.NextId(), 10)
+	u.UUID = uuid.NewV4().String()
 	u.Username = in.Username
 	u.Nickname = in.Nickname
+	u.Role = in.Role
 
-	err := l.svcCtx.UserModel.Insert(l.ctx, nil, &u)
+	err := l.svcCtx.UserModelGorm.Create(&u)
 	if err != nil {
 		return nil, status.Errorf(100001, "创建用户失败")
 	}

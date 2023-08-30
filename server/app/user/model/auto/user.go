@@ -7,7 +7,6 @@ import "server/common"
 // @desc 业务用户表
 type User struct {
 	common.GloModel
-	UserID   string `json:"userId" gorm:"not null;default:'';comment:用户业务id"`
 	UUID     string `json:"uuid" gorm:"not null;default:'';comment:用户uuid"`
 	Username string `json:"username" gorm:"not null;default:'';comment:用户登录名"`
 	Email    string `json:"email" gorm:"not null;default:'';comment:用户邮箱"`

@@ -45,14 +45,14 @@ func newGormDB(c xconfig.Mysql) *gorm.DB {
 
 	db, err := gorm.Open(mysql.New(mc))
 	if err != nil {
-		logx.Error("[USER RPC MYSQL CONNECTION ERROR] : ", err)
+		logx.Error("[SYSTEM RPC MYSQL CONNECTION ERROR] : ", err)
 		os.Exit(0)
 		return nil
 	}
 	sqlDB, _ := db.DB()
 	sqlDB.SetMaxIdleConns(c.MaxIdleConns)
 	sqlDB.SetMaxOpenConns(c.MaxOpenConns)
-	logx.Info("[USER RPC MYSQL CONNECTION SUCCESS]")
+	logx.Info("[SYSTEM RPC MYSQL CONNECTION SUCCESS]")
 	// 同步数据库表
 	autoMigrate(db)
 	return db

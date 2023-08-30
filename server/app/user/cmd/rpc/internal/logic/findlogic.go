@@ -27,16 +27,15 @@ func NewFindLogic(ctx context.Context, svcCtx *svc.ServiceContext) *FindLogic {
 }
 
 func (l *FindLogic) Find(in *pb.IDReq) (*pb.UserInfoReply, error) {
-	u, err := l.svcCtx.UserModel.FindByUserID(l.ctx, in.GetUserID())
+	u, err := l.svcCtx.UserModel.FindOne(l.ctx, in.ID)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, status.Errorf(100101, "user not exist in id = %d", in.GetUserID())
+			return nil, status.Errorf(100101, "user not exist in id = %d", in.GetID())
 		}
 		return nil, err
 	}
 	return &pb.UserInfoReply{User: &pb.UserReply{
 		ID:        u.Id,
-		UserID:    u.UserId,
 		UUID:      u.Uuid,
 		Username:  u.Username,
 		Email:     u.Email,

@@ -42,13 +42,12 @@ func (l *ListLogic) List(req *types.PageReq) (resp *types.ListReply, err error) 
 	for _, u := range reply.List {
 		list = append(list, types.User{
 			ID:        u.ID,
-			UserID:    u.UserID,
 			Username:  u.Username,
 			UUID:      u.UUID,
 			Nickname:  u.Nickname,
 			Email:     u.Email,
 			Avatar:    u.Avatar,
-			Type:      u.Type,
+			Type:      u.Role,
 			CreatedAt: u.CreatedAt,
 		})
 	}

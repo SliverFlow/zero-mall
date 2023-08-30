@@ -39,7 +39,7 @@ type CreateReq struct {
 	Nickname string `json:"nickname"`
 	Password string `json:"password"`
 	Avatar   string `json:"avatar"`
-	Type     int64  `json:"type"`
+	Role     int64  `json:"role"`
 }
 
 type IdReq struct {
