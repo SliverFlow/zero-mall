@@ -36,7 +36,7 @@ func (l *CreateLogic) Create(in *pb.CreateReq) (*pb.Nil, error) {
 	u.Nickname = in.Nickname
 	u.Role = in.Role
 
-	err := l.svcCtx.UserModelGorm.Create(&u)
+	err := l.svcCtx.UserModelGorm.Create(l.ctx, &u)
 	if err != nil {
 		return nil, status.Errorf(100001, "创建用户失败")
 	}
