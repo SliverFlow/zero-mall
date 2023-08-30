@@ -25,7 +25,7 @@
         :tree-props="{'children': 'children'}"
       >
         <el-table-column align="left" label="ID" min-width="100" prop="ID" fixed="left" />
-        <el-table-column align="left" label="菜单名称" min-width="150" prop="title" />
+        <el-table-column align="left" label="菜单名称" min-width="150" prop="meta.title" />
         <el-table-column align="left" label="归属" min-width="100" prop="role">
           <template #default="scope">
             <el-text v-if="scope.row.role === 1" type="primary">管理员</el-text>
@@ -35,7 +35,7 @@
         <el-table-column align="left" label="组件位置" min-width="220" prop="component" />
         <el-table-column align="left" label="图标" min-width="100" prop="role">
           <template #default="scope">
-            <component :is="scope.row.icon" style="width: 18px;height: 18px;display: flex;align-items: center" />
+            <component :is="scope.row.meta.icon" style="width: 18px;height: 18px;display: flex;align-items: center" />
           </template>
         </el-table-column>
         <el-table-column align="left" label="排序" min-width="100" prop="sorted" />
@@ -105,9 +105,10 @@
           label-width="85px"
         >
           <el-form-item prop="title" label="路由展示名称">
-            <el-input v-model="formData.title" placeholder="请输入展示名称" autocomplete="off" />
+            <el-input v-model="formData.meta.title" placeholder="请输入展示名称" autocomplete="off" />
           </el-form-item>
           <el-form-item prop="title" label="父节点 ID">
+            {{ formData.parentId }}
             <el-cascader
               v-model="formData.parentId"
               style="width:100%"
@@ -153,7 +154,7 @@
             <el-input-number v-model="formData.sorted" :min="0" />
           </el-form-item>
           <el-form-item prop="icon" label="图标">
-            <icon :key="formData.id" :meta="formData.meta" style="width:100%" />
+            <icon :key="formData.ID" :meta="formData.meta" style="width:100%" />
           </el-form-item>
           <el-form-item prop="component" label="文件路径">
             <el-input v-model="formData.component" placeholder="请输入文件路径 :xxx/xxx.vue" autocomplete="off" />
@@ -208,15 +209,14 @@ const dialogTitle = ref('')
 const formRef = ref(null)
 const formData = ref({
   name: '',
-  title: '',
   path: '',
-  icon: '',
   status: 0,
   parentId: 0,
   component: '',
   sorted: 0,
   meta: {
-    icon: ''
+    icon: '',
+    title: '',
   },
 })
 // 级联选择器
@@ -304,7 +304,6 @@ const addMenu = (val, role) => {
 // 提交表单
 const submitForm = async() => {
   // TODO 表单验证
-  formData.value.icon = formData.value.meta.icon
   let res
   if (isEdit.value) { // 编辑状态
     res = await menuUpdateApi(formData.value)
@@ -313,7 +312,7 @@ const submitForm = async() => {
   }
   if (res['code'] === 0) {
     ElMessage({
-      message: '添加根菜单成功',
+      message: res.msg,
       type: 'success',
       showClose: true,
     })
@@ -333,7 +332,6 @@ const editMenu = async(val) => {
   const res = await menuFindApi({ id: val })
   isEdit.value = true
   formData.value = res.data.menu
-  formData.value.meta = { icon: res.data.menu.icon }
   setMenuOption()
   openDialog('编辑菜单')
 }
@@ -349,7 +347,7 @@ const asyncMenuOptions = (tableData, optionData, disabled) => {
   tableData && tableData.forEach(i => {
     if (i.children && i.children.length) {
       const option = {
-        title: i.title,
+        title: i.meta.title,
         ID: i.ID,
         disabled: disabled || i.ID === formData.value.ID,
         children: []
@@ -358,7 +356,7 @@ const asyncMenuOptions = (tableData, optionData, disabled) => {
       optionData.push(option)
     } else {
       const option = {
-        title: i.title,
+        title: i.meta.title,
         ID: i.ID,
         disabled: disabled || i.ID === formData.value.ID,
       }

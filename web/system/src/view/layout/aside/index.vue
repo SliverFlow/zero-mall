@@ -14,16 +14,16 @@
         <el-sub-menu :index="v.path">
           <template #title>
             <el-icon>
-              <component :is="v.icon" />
+              <component :is="v.meta.icon" />
             </el-icon>
-            <span>{{ v.title }}</span>
+            <span>{{ v.meta.title }}</span>
           </template>
           <template v-for="(iv) in v.children">
             <el-menu-item :index="iv.path">
               <el-icon>
-                <component :is="iv.icon" />
+                <component :is="iv.meta.icon" />
               </el-icon>
-              <span>{{ iv.title }}</span>
+              <span>{{ iv.meta.title }}</span>
             </el-menu-item>
           </template>
         </el-sub-menu>
@@ -39,9 +39,9 @@
         >
           <el-menu-item :key="v.id" :index="v.path">
             <el-icon>
-              <component :is="v.icon" />
+              <component :is="v.meta.icon" />
             </el-icon>
-            <span>{{ v.title }}</span>
+            <span>{{ v.meta.title }}</span>
           </el-menu-item>
         </el-tooltip>
       </template>

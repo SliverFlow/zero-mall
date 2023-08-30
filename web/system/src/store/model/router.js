@@ -13,7 +13,6 @@ export const useRouterStore = defineStore('router', () => {
       return false
     }
     menuList.value = res.data.list
-    console.log(modules)
     asyncRouterList.value = mapRouter(menuList.value)
     return true
   }
@@ -32,7 +31,7 @@ export const useRouterStore = defineStore('router', () => {
       const r = {
         name: i.name,
         path: i.path,
-        meta: { title: i.title },
+        meta: { title: i.meta.title },
         component: modules['../../view/' + i.component]
       }
       if (i.children) {
