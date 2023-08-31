@@ -24,8 +24,8 @@ func NewFindLogic(ctx context.Context, svcCtx *svc.ServiceContext) *FindLogic {
 }
 
 func (l *FindLogic) Find(req *types.IdReq) (resp *types.UserReply, err error) {
-	// todo: add your logic here and delete this line
-	reply, err := l.svcCtx.UserRpc.Find(l.ctx, &pb.IDReq{ID: 0})
+
+	reply, err := l.svcCtx.UserRpc.Find(l.ctx, &pb.IDReq{ID: req.Id})
 	if err != nil {
 		return nil, err
 	}
@@ -37,7 +37,7 @@ func (l *FindLogic) Find(req *types.IdReq) (resp *types.UserReply, err error) {
 		Nickname:  u.Nickname,
 		Email:     u.Email,
 		Avatar:    u.Avatar,
-		Type:      u.Role,
+		Role:      u.Role,
 		CreatedAt: u.CreatedAt,
 	}}, nil
 }

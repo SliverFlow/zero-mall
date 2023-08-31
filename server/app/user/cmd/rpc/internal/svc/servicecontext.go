@@ -7,33 +7,22 @@ import (
 	"os"
 	"server/app/user/cmd/rpc/internal/config"
 	"server/app/user/model"
-	"server/app/user/model/auto"
 	"server/common/xconfig"
 )
 
 type ServiceContext struct {
 	Config config.Config
 
-	UserModel     model.UserModel
-	UserModelGorm model.UserModelGorm
+	UserModel model.UserModel
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
 
 	db := newGormDB(c.Mysql)
-	// 同步数据库
-	err := db.AutoMigrate(&auto.User{})
-	if err != nil {
-		logx.Error("[USER RPC MYSQL AutoMigrate ERROR] : ", err)
-		os.Exit(0)
-		return nil
-	}
-	logx.Info("[USER RPC MYSQL AutoMigrate SUCCESS]")
 
 	return &ServiceContext{
-		Config:        c,
-		UserModel:     model.NewUserModel(db, c.CacheRedis),
-		UserModelGorm: model.NewUserModelGorm(db),
+		Config:    c,
+		UserModel: model.NewUserModel(db),
 	}
 }
 
@@ -60,7 +49,7 @@ func newGormDB(c xconfig.Mysql) *gorm.DB {
 }
 func autoMigrate(db *gorm.DB) {
 	err := db.AutoMigrate(
-		&model.UserGorm{}, // 系统菜单表
+		&model.User{}, // 系统菜单表
 	)
 	if err != nil {
 		logx.Error("[DATABASE AutoMigrate ERROR] : ", err)

@@ -3,17 +3,17 @@ package model
 import "gorm.io/gorm"
 
 type (
-	UserModelGorm interface {
-		userModelGorm
+	UserModel interface {
+		userModel
 	}
 
-	customUserModelGorm struct {
-		*defaultUserModelGorm
+	customUserModel struct {
+		*defaultUserModel
 	}
 )
 
-func NewUserModelGorm(db *gorm.DB) UserModelGorm {
-	return &customUserModelGorm{
-		newUserModelGorm(db),
+func NewUserModel(db *gorm.DB) UserModel {
+	return &customUserModel{
+		newUserModel(db),
 	}
 }

@@ -27,7 +27,7 @@ func NewCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CreateLogi
 }
 
 func (l *CreateLogic) Create(in *pb.CreateReq) (*pb.Nil, error) {
-	var u model.UserGorm
+	var u model.User
 	u.Password = common.BcryptHash(in.Password)
 	u.Avatar = in.Avatar
 	u.Email = in.Email
@@ -36,7 +36,7 @@ func (l *CreateLogic) Create(in *pb.CreateReq) (*pb.Nil, error) {
 	u.Nickname = in.Nickname
 	u.Role = in.Role
 
-	err := l.svcCtx.UserModelGorm.Create(l.ctx, &u)
+	err := l.svcCtx.UserModel.Create(l.ctx, &u)
 	if err != nil {
 		return nil, status.Errorf(100001, "创建用户失败")
 	}

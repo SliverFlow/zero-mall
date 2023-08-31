@@ -1,6 +1,7 @@
 package common
 
 import (
+	"fmt"
 	"gorm.io/gorm"
 	"time"
 )
@@ -22,7 +23,7 @@ type (
 	}
 )
 
-// LimitAndOffset 获取分页以及偏移量
-func (pi *PageInfo) LimitAndOffset() (limit, offset int) {
-	return pi.Page, (pi.Page - 1) * pi.PageSize
+// LimitAndOffsetAndKeyWord 获取分页以及偏移量
+func (pi *PageInfo) LimitAndOffsetAndKeyWord() (limit, offset int, keyWord string) {
+	return pi.PageSize, (pi.Page - 1) * pi.PageSize, fmt.Sprintf("%%%s%%", pi.KeyWord)
 }

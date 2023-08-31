@@ -23,13 +23,12 @@ type LoginReply struct {
 
 type User struct {
 	ID        int64  `json:"id"`
-	UserID    string `json:"userId"`
 	Username  string `json:"username"`
 	UUID      string `json:"uuid"`
 	Nickname  string `json:"nickname"`
 	Email     string `json:"email"`
 	Avatar    string `json:"avatar"`
-	Type      int64  `json:"type"`
+	Role      int64  `json:"role"`
 	CreatedAt int64  `json:"createdAt"`
 }
 
@@ -43,7 +42,7 @@ type CreateReq struct {
 }
 
 type IdReq struct {
-	Id string `json:"id"`
+	Id int64 `json:"id"`
 }
 
 type UserReply struct {
@@ -64,12 +63,12 @@ type ListReply struct {
 }
 
 type UpdateReq struct {
-	UserID   string `json:"userId"`
+	ID       int64  `json:"ID"`
 	Username string `json:"username"`
 	Email    string `json:"email"`
 	Nickname string `json:"nickname"`
 	Password string `json:"password"`
 	Avatar   string `json:"avatar"`
-	Type     int64  `json:"type"`
+	Role     int64  `json:"role"`
 	Status   int64  `json:"status"`
 }

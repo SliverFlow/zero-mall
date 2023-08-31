@@ -7,19 +7,19 @@ import (
 )
 
 type (
-	userModelGorm interface { // 数据库操作接口
-		Create(ctx context.Context, u *UserGorm) error
+	userModel interface { // 数据库操作接口
+		Create(ctx context.Context, u *User) error
 		Delete(ctx context.Context, id int64) (err error)
-		Update(ctx context.Context, u *UserGorm) (err error)
-		Find(ctx context.Context, id int64) (enter *UserGorm, err error)
-		List(ctx context.Context, page common.PageInfo) (enter *[]UserGorm, total int64, err error)
+		Update(ctx context.Context, u *User) (err error)
+		Find(ctx context.Context, id int64) (enter *User, err error)
+		List(ctx context.Context, page *common.PageInfo) (enter *[]User, total int64, err error)
 	}
 
-	defaultUserModelGorm struct {
+	defaultUserModel struct {
 		db *gorm.DB
 	}
 
-	UserGorm struct {
+	User struct {
 		common.GloModel
 		UUID     string `json:"uuid" gorm:"not null;default:'';comment:用户uuid"`
 		Username string `json:"username" gorm:"not null;default:'';comment:用户登录名"`
@@ -32,37 +32,37 @@ type (
 	}
 )
 
-func (u *UserGorm) TableName() string {
+func (u *User) TableName() string {
 	return "user"
 }
 
-func newUserModelGorm(db *gorm.DB) *defaultUserModelGorm {
-	return &defaultUserModelGorm{db}
+func newUserModel(db *gorm.DB) *defaultUserModel {
+	return &defaultUserModel{db}
 }
 
-func (d *defaultUserModelGorm) Create(ctx context.Context, u *UserGorm) (err error) {
+func (d *defaultUserModel) Create(ctx context.Context, u *User) (err error) {
 	tx := d.db.WithContext(ctx)
 
-	if err = tx.Model(&UserGorm{}).Create(u).Error; err != nil {
+	if err = tx.Model(&User{}).Create(u).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
-func (d *defaultUserModelGorm) Delete(ctx context.Context, id int64) (err error) {
+func (d *defaultUserModel) Delete(ctx context.Context, id int64) (err error) {
 	tx := d.db.WithContext(ctx)
 
-	if err = tx.Where("id = ?", id).Delete(&UserGorm{}).Error; err != nil {
+	if err = tx.Where("id = ?", id).Delete(&User{}).Error; err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (d *defaultUserModelGorm) Update(ctx context.Context, u *UserGorm) (err error) {
+func (d *defaultUserModel) Update(ctx context.Context, u *User) (err error) {
 	tx := d.db.WithContext(ctx)
 
-	var um map[string]any
+	um := make(map[string]any)
 	um["username"] = u.Username
 	um["email"] = u.Email
 	um["role"] = u.Role
@@ -71,30 +71,31 @@ func (d *defaultUserModelGorm) Update(ctx context.Context, u *UserGorm) (err err
 	um["nickname"] = u.Nickname
 	um["password"] = common.BcryptHash(u.Password)
 
-	return tx.Model(&UserGorm{}).Where("id = ?", u.ID).Updates(&um).Error
+	return tx.Model(&User{}).Where("id = ?", u.ID).Updates(&um).Error
 }
 
-func (d *defaultUserModelGorm) Find(ctx context.Context, id int64) (enter *UserGorm, err error) {
+func (d *defaultUserModel) Find(ctx context.Context, id int64) (enter *User, err error) {
 	tx := d.db.WithContext(ctx)
 
-	var u UserGorm
-	if err = tx.Model(&UserGorm{}).Where("id = ?", id).First(&u).Error; err != nil {
+	var u User
+	if err = tx.Model(&User{}).Where("id = ?", id).First(&u).Error; err != nil {
 		return nil, err
 	}
 
 	return &u, nil
 }
 
-func (d *defaultUserModelGorm) List(ctx context.Context, page common.PageInfo) (enter *[]UserGorm, total int64, err error) {
+func (d *defaultUserModel) List(ctx context.Context, page *common.PageInfo) (enter *[]User, total int64, err error) {
 	tx := d.db.WithContext(ctx)
 
-	tx = tx.Model(&UserGorm{}).Where("username = ?", page.KeyWord)
+	limit, offset, keyWord := page.LimitAndOffsetAndKeyWord()
+
+	tx = tx.Model(&User{}).Where("username like ?", keyWord)
 	if err = tx.Count(&total).Error; err != nil {
 		return nil, 0, err
 	}
 
-	var list []UserGorm
-	limit, offset := page.LimitAndOffset()
+	var list []User
 	if err = tx.Limit(limit).Offset(offset).Find(&list).Error; err != nil {
 		return nil, 0, err
 	}

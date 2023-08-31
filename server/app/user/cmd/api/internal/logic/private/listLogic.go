@@ -47,7 +47,7 @@ func (l *ListLogic) List(req *types.PageReq) (resp *types.ListReply, err error) 
 			Nickname:  u.Nickname,
 			Email:     u.Email,
 			Avatar:    u.Avatar,
-			Type:      u.Role,
+			Role:      u.Role,
 			CreatedAt: u.CreatedAt,
 		})
 	}

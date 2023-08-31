@@ -3,6 +3,8 @@ package logic
 import (
 	"context"
 	"errors"
+	"fmt"
+	"github.com/jinzhu/copier"
 	"google.golang.org/grpc/status"
 	"gorm.io/gorm"
 	"server/app/user/model"
@@ -29,14 +31,14 @@ func NewUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UpdateLogi
 
 // Update 更新用户信息
 func (l *UpdateLogic) Update(in *pb.UpdateReq) (*pb.Nil, error) {
-	err := l.svcCtx.UserModel.Update(l.ctx, nil, &model.User{
-		Username: in.Username,
-		Email:    in.Email,
-		Nickname: in.Nickname,
-		Password: in.Password,
-		Avatar:   in.Avatar,
-		Status:   in.Status,
-	})
+
+	var u model.User
+	_ = copier.Copy(&u, in)
+
+	u.ID = uint(int(in.ID))
+	fmt.Println("user", u.ID)
+
+	err := l.svcCtx.UserModel.Update(l.ctx, &u)
 	// 返回nil表示成功
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {

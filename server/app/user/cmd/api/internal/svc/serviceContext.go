@@ -41,6 +41,7 @@ func NewUserRpc(c zrpc.RpcClientConf) pb.UserClient {
 	client, err := zrpc.NewClient(c)
 	if err != nil {
 		logx.Errorf("[RPC CONNECTION ERROR] user rpc client conn err: %v\n ", err)
+		os.Exit(0)
 		return nil
 	}
 	logx.Info("[RPC CONNECTION SUCCESS	] user rpc client conn success \n")
