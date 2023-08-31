@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"github.com/jinzhu/copier"
 	uuid "github.com/satori/go.uuid"
 	"google.golang.org/grpc/status"
 	"server/app/user/cmd/rpc/internal/svc"
@@ -28,13 +29,9 @@ func NewCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CreateLogi
 
 func (l *CreateLogic) Create(in *pb.CreateReq) (*pb.Nil, error) {
 	var u model.User
+	_ = copier.Copy(&u, in)
 	u.Password = common.BcryptHash(in.Password)
-	u.Avatar = in.Avatar
-	u.Email = in.Email
 	u.UUID = uuid.NewV4().String()
-	u.Username = in.Username
-	u.Nickname = in.Nickname
-	u.Role = in.Role
 
 	err := l.svcCtx.UserModel.Create(l.ctx, &u)
 	if err != nil {

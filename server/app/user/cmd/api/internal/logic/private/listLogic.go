@@ -2,6 +2,7 @@ package private
 
 import (
 	"context"
+	"github.com/jinzhu/copier"
 	"github.com/zeromicro/go-zero/core/logx"
 	"server/app/user/cmd/rpc/pb"
 	"server/common/xerr"
@@ -40,16 +41,9 @@ func (l *ListLogic) List(req *types.PageReq) (resp *types.ListReply, err error) 
 		list = make([]types.User, 0)
 	}
 	for _, u := range reply.List {
-		list = append(list, types.User{
-			ID:        u.ID,
-			Username:  u.Username,
-			UUID:      u.UUID,
-			Nickname:  u.Nickname,
-			Email:     u.Email,
-			Avatar:    u.Avatar,
-			Role:      u.Role,
-			CreatedAt: u.CreatedAt,
-		})
+		var user types.User
+		_ = copier.Copy(&user, &u)
+		list = append(list, user)
 	}
 
 	return &types.ListReply{

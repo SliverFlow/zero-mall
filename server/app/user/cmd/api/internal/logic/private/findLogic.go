@@ -2,6 +2,7 @@ package private
 
 import (
 	"context"
+	"github.com/jinzhu/copier"
 	"server/app/user/cmd/api/internal/svc"
 	"server/app/user/cmd/api/internal/types"
 	"server/app/user/cmd/rpc/pb"
@@ -24,20 +25,12 @@ func NewFindLogic(ctx context.Context, svcCtx *svc.ServiceContext) *FindLogic {
 }
 
 func (l *FindLogic) Find(req *types.IdReq) (resp *types.UserReply, err error) {
-
 	reply, err := l.svcCtx.UserRpc.Find(l.ctx, &pb.IDReq{ID: req.Id})
 	if err != nil {
 		return nil, err
 	}
-	u := reply.GetUser()
-	return &types.UserReply{User: types.User{
-		ID:        u.ID,
-		Username:  u.Username,
-		UUID:      u.UUID,
-		Nickname:  u.Nickname,
-		Email:     u.Email,
-		Avatar:    u.Avatar,
-		Role:      u.Role,
-		CreatedAt: u.CreatedAt,
-	}}, nil
+	user := reply.GetUser()
+	var u types.User
+	_ = copier.Copy(&u, user)
+	return &types.UserReply{User: u}, nil
 }

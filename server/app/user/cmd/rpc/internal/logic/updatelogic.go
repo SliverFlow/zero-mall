@@ -3,7 +3,6 @@ package logic
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/jinzhu/copier"
 	"google.golang.org/grpc/status"
 	"gorm.io/gorm"
@@ -31,12 +30,9 @@ func NewUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UpdateLogi
 
 // Update 更新用户信息
 func (l *UpdateLogic) Update(in *pb.UpdateReq) (*pb.Nil, error) {
-
 	var u model.User
 	_ = copier.Copy(&u, in)
-
 	u.ID = uint(int(in.ID))
-	fmt.Println("user", u.ID)
 
 	err := l.svcCtx.UserModel.Update(l.ctx, &u)
 	// 返回nil表示成功

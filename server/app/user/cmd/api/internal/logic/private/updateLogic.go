@@ -2,6 +2,7 @@ package private
 
 import (
 	"context"
+	"github.com/jinzhu/copier"
 	"server/app/user/cmd/api/internal/svc"
 	"server/app/user/cmd/api/internal/types"
 	"server/app/user/cmd/rpc/pb"
@@ -25,15 +26,9 @@ func NewUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UpdateLogi
 
 // Update 更新用户信息
 func (l *UpdateLogic) Update(req *types.UpdateReq) (resp *types.NilReply, err error) {
-	_, err = l.svcCtx.UserRpc.Update(l.ctx, &pb.UpdateReq{
-		ID:       req.ID,
-		Username: req.Username,
-		Email:    req.Email,
-		Nickname: req.Nickname,
-		Password: req.Password,
-		Avatar:   req.Avatar,
-		Status:   req.Status,
-	})
+	var u pb.UpdateReq
+	_ = copier.Copy(&u, req)
+	_, err = l.svcCtx.UserRpc.Update(l.ctx, &u)
 	if err != nil {
 		return nil, err
 	}

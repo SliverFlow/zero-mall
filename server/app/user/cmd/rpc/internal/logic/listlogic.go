@@ -36,18 +36,8 @@ func (l *ListLogic) List(in *pb.PageReq) (*pb.PageReply, error) {
 
 	var enter []*pb.UserReply
 	for _, user := range *list {
-		enter = append(enter, &pb.UserReply{
-			ID:        int64(user.ID),
-			UUID:      user.UUID,
-			Username:  user.Username,
-			Email:     user.Email,
-			Nickname:  user.Nickname,
-			Password:  user.Password,
-			Avatar:    user.Avatar,
-			Status:    user.Status,
-			CreatedAt: user.CreatedAt.Unix(),
-			UpdatedAt: user.CreatedAt.Unix(),
-		})
+		u := copyUserFoReply(&user)
+		enter = append(enter, u)
 	}
 
 	return &pb.PageReply{
