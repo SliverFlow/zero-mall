@@ -9,8 +9,10 @@ import (
 	"github.com/zeromicro/go-zero/zrpc"
 	"os"
 	"server/app/system/cmd/api/internal/config"
-	"server/app/system/cmd/rpc/pb"
+	systempb "server/app/system/cmd/rpc/pb"
 	"server/app/system/cmd/rpc/system"
+	userpb "server/app/user/cmd/rpc/pb"
+	"server/app/user/cmd/rpc/user"
 	"server/common/middleware"
 	"time"
 )
@@ -20,6 +22,7 @@ type ServiceContext struct {
 	Auth   rest.Middleware
 
 	SystemRpc system.System
+	UserRpc   user.User
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -29,7 +32,8 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	return &ServiceContext{
 		Config:    c,
 		Auth:      middleware.NewAuthMiddleware(jwtConf.Secret, jwtConf.Expire, jwtConf.Buffer, jwtConf.Isuser, jwtConf.BlackListPrefix, client).Handle, // 认证中间件
-		SystemRpc: NewSystemRpc(c.SystemRpc),
+		SystemRpc: newSystemRpc(c.SystemRpc),
+		UserRpc:   newUserRpc(c.UserRpc),
 	}
 }
 
@@ -49,7 +53,8 @@ func NewRedisClient(c redis2.RedisConf) *redis.Client {
 	return cli
 }
 
-func NewSystemRpc(c zrpc.RpcClientConf) pb.SystemClient {
+// 强依赖 system rpc
+func newSystemRpc(c zrpc.RpcClientConf) systempb.SystemClient {
 	client, err := zrpc.NewClient(c)
 	if err != nil {
 		logx.Errorf("[RPC CONNECTION ERROR] system rpc client conn err: %v\n ", err)
@@ -58,4 +63,16 @@ func NewSystemRpc(c zrpc.RpcClientConf) pb.SystemClient {
 	}
 	logx.Info("[RPC CONNECTION SUCCESS ] system rpc connection success : %v\n")
 	return system.NewSystem(client)
+}
+
+// 强依赖 user pb
+func newUserRpc(c zrpc.RpcClientConf) userpb.UserClient {
+	client, err := zrpc.NewClient(c)
+	if err != nil {
+		logx.Errorf("[RPC CONNECTION ERROR] user rpc client conn err: %v\n ", err)
+		os.Exit(0)
+		return nil
+	}
+	logx.Info("[RPC CONNECTION SUCCESS ] user rpc connection success : %v\n")
+	return user.NewUser(client)
 }

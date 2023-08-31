@@ -6,7 +6,7 @@ import (
 	"server/app/system/cmd/api/internal/config"
 	"server/app/system/cmd/api/internal/svc"
 	"server/app/system/cmd/api/internal/types"
-	"server/app/system/cmd/rpc/pb"
+	userpb "server/app/user/cmd/rpc/pb"
 	"server/common/xerr"
 	"server/common/xjwt"
 
@@ -33,7 +33,7 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 // @param req *types.LoginReq
 // @return resp *types.LoginReply, err error
 func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginReply, err error) {
-	rep, err := l.svcCtx.SystemRpc.Login(l.ctx, &pb.LoginReq{
+	rep, err := l.svcCtx.UserRpc.Login(l.ctx, &userpb.LoginReq{
 		Username: req.Username,
 		Password: req.Password,
 	})
@@ -41,7 +41,7 @@ func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginReply, err err
 		return nil, err
 	}
 	u := rep.GetUser()
-	token, err := l.nextToken(l.svcCtx.Config, u.UserID, u.UUID)
+	token, err := l.nextToken(l.svcCtx.Config, u.UUID)
 	if err != nil {
 		return nil, xerr.NewErrMsg("token 获取失败")
 	}
@@ -60,10 +60,10 @@ func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginReply, err err
 	}, nil
 }
 
-func (l *LoginLogic) nextToken(c config.Config, userID, uuid string) (string, error) {
+func (l *LoginLogic) nextToken(c config.Config, uuid string) (string, error) {
 	conf := l.svcCtx.Config.XJwt
 	jwt := xjwt.NewXJwt([]byte(conf.Secret), conf.Expire, conf.Buffer, conf.Isuser, conf.BlackListPrefix)
-	token, err := jwt.SendToken(userID, uuid)
+	token, err := jwt.SendToken(uuid)
 	if err != nil {
 		logx.Errorf("token create err", err.Error())
 		return "", errors.New("token 创建失败")

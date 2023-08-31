@@ -34,3 +34,9 @@ SystemRpc:
     Hosts:
       - 120.77.237.246:32379
     Key: system.rpc
+
+UserRpc:
+  Etcd:
+    Hosts:
+      - 120.77.237.246:32379
+    Key: user.rpc

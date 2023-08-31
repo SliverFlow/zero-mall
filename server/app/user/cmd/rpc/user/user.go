@@ -16,6 +16,8 @@ type (
 	CreateReq     = pb.CreateReq
 	IDReq         = pb.IDReq
 	IDsReq        = pb.IDsReq
+	LoginReply    = pb.LoginReply
+	LoginReq      = pb.LoginReq
 	Nil           = pb.Nil
 	PageReply     = pb.PageReply
 	PageReq       = pb.PageReq
@@ -30,6 +32,7 @@ type (
 		Update(ctx context.Context, in *UpdateReq, opts ...grpc.CallOption) (*Nil, error)
 		Delete(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*Nil, error)
 		BatchDelete(ctx context.Context, in *IDsReq, opts ...grpc.CallOption) (*Nil, error)
+		Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginReply, error)
 	}
 
 	defaultUser struct {
@@ -71,4 +74,9 @@ func (m *defaultUser) Delete(ctx context.Context, in *IDReq, opts ...grpc.CallOp
 func (m *defaultUser) BatchDelete(ctx context.Context, in *IDsReq, opts ...grpc.CallOption) (*Nil, error) {
 	client := pb.NewUserClient(m.cli.Conn())
 	return client.BatchDelete(ctx, in, opts...)
+}
+
+func (m *defaultUser) Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginReply, error) {
+	client := pb.NewUserClient(m.cli.Conn())
+	return client.Login(ctx, in, opts...)
 }

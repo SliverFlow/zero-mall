@@ -28,6 +28,7 @@ type UserClient interface {
 	Update(ctx context.Context, in *UpdateReq, opts ...grpc.CallOption) (*Nil, error)
 	Delete(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*Nil, error)
 	BatchDelete(ctx context.Context, in *IDsReq, opts ...grpc.CallOption) (*Nil, error)
+	Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginReply, error)
 }
 
 type userClient struct {
@@ -92,6 +93,15 @@ func (c *userClient) BatchDelete(ctx context.Context, in *IDsReq, opts ...grpc.C
 	return out, nil
 }
 
+func (c *userClient) Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginReply, error) {
+	out := new(LoginReply)
+	err := c.cc.Invoke(ctx, "/pb.user/login", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -102,6 +112,7 @@ type UserServer interface {
 	Update(context.Context, *UpdateReq) (*Nil, error)
 	Delete(context.Context, *IDReq) (*Nil, error)
 	BatchDelete(context.Context, *IDsReq) (*Nil, error)
+	Login(context.Context, *LoginReq) (*LoginReply, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -126,6 +137,9 @@ func (UnimplementedUserServer) Delete(context.Context, *IDReq) (*Nil, error) {
 }
 func (UnimplementedUserServer) BatchDelete(context.Context, *IDsReq) (*Nil, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BatchDelete not implemented")
+}
+func (UnimplementedUserServer) Login(context.Context, *LoginReq) (*LoginReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -248,6 +262,24 @@ func _User_BatchDelete_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LoginReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).Login(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.user/login",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).Login(ctx, req.(*LoginReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -278,6 +310,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "batchDelete",
 			Handler:    _User_BatchDelete_Handler,
+		},
+		{
+			MethodName: "login",
+			Handler:    _User_Login_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

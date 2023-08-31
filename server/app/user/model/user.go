@@ -13,6 +13,8 @@ type (
 		Update(ctx context.Context, u *User) (err error)
 		Find(ctx context.Context, id int64) (enter *User, err error)
 		List(ctx context.Context, page *common.PageInfo) (enter *[]User, total int64, err error)
+
+		FindByUsername(ctx context.Context, username string) (enter *User, err error)
 	}
 
 	defaultUserModel struct {
@@ -101,4 +103,13 @@ func (d *defaultUserModel) List(ctx context.Context, page *common.PageInfo) (ent
 	}
 
 	return &list, total, nil
+}
+
+func (d *defaultUserModel) FindByUsername(ctx context.Context, username string) (enter *User, err error) {
+	tx := d.db.WithContext(ctx)
+	var u User
+	if err = tx.Model(&User{}).Where("username = ?", username).First(&u).Error; err != nil {
+		return nil, err
+	}
+	return &u, nil
 }

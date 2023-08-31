@@ -38,4 +38,5 @@ type Config struct {
 		ImgWidth  int
 	}
 	SystemRpc zrpc.RpcClientConf
+	UserRpc   zrpc.RpcClientConf
 }

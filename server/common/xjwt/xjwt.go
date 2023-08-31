@@ -33,13 +33,13 @@ func NewXJwt(secret []byte, expire, buffer int64, isuser, blackListPrefix string
 // @desc 获取 userID
 // @param (userId, uuid string)
 // @return (token string, err error)
-func GetUserID(ctx context.Context) (string, error) {
-	claims, ok := ctx.Value("claims").(*CustomClaims)
-	if !ok {
-		return "", errors.New("userID 获取失败")
-	}
-	return claims.UserID, nil
-}
+//func GetUserID(ctx context.Context) (string, error) {
+//	claims, ok := ctx.Value("claims").(*CustomClaims)
+//	if !ok {
+//		return "", errors.New("userID 获取失败")
+//	}
+//	return claims.UserID, nil
+//}
 
 // CustomClaims
 // Author [SliverFlow]
@@ -47,7 +47,6 @@ func GetUserID(ctx context.Context) (string, error) {
 type CustomClaims struct {
 	jwt.StandardClaims
 	UUID       string
-	UserID     string
 	BufferTime int64
 }
 
@@ -56,7 +55,7 @@ type CustomClaims struct {
 // @desc 创建 token
 // @param (userId, uuid string)
 // @return (token string, err error)
-func (x *XJwt) SendToken(userId, uuid string) (token string, err error) {
+func (x *XJwt) SendToken(uuid string) (token string, err error) {
 	claims := &CustomClaims{
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Unix() + x.expire,
@@ -64,7 +63,6 @@ func (x *XJwt) SendToken(userId, uuid string) (token string, err error) {
 			NotBefore: time.Now().Unix(),
 		},
 		UUID:       uuid,
-		UserID:     userId,
 		BufferTime: x.buffer,
 	}
 	t := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
