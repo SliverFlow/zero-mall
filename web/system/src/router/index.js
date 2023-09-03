@@ -63,10 +63,18 @@ router.beforeEach(async(to) => {
   }
 
   if (userStore.isLogin && to.name === 'Login') {
+    return { name: 'Dashboard' }
+  }
+
+  if (to.name === 'Dashboard') {
     // 更新 userinfo 会强制触发 token 过期的情况
     const res = await userFindByUserId()
-    userStore.userInfo = res.data.user
-    return { name: 'Dashboard' }
+    if (res.code === 0) {
+      userStore.userInfo = res.data.user
+      return { name: 'Dashboard' }
+    } else {
+      return { name: 'Login' }
+    }
   }
 
   // 继续进行
