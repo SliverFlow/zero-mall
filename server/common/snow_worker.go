@@ -15,8 +15,9 @@ const (
 	epoch       int64 = 1656856144640           //起始常量时间戳（毫秒）,此处选取的时间是2022-07-03 21:49:04
 )
 
-// 业务 id 生成器
+var SnowWorker = NewWorker(100) // 全局使用这个生成 id
 
+// Worker 业务 id 生成器
 type Worker struct {
 	mu        sync.Mutex
 	timeStamp int64
