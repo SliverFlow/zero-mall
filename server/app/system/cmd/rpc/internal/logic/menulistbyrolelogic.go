@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"fmt"
 	"github.com/jinzhu/copier"
 	"google.golang.org/grpc/status"
 
@@ -38,5 +39,6 @@ func (l *MenuListByRoleLogic) MenuListByRole(in *pb.RoleIDReq) (*pb.MenuListRepl
 		_ = copier.Copy(&m, &menu)
 		enter = append(enter, &m)
 	}
+	fmt.Println("enter", enter)
 	return &pb.MenuListReply{List: enter}, nil
 }

@@ -79,6 +79,7 @@ type Menu struct {
 	Sorted    int64  `json:"sorted"`
 	Role      int64  `json:"role"`
 	Meta      Meta   `json:"meta"`
+	Status    int64  `json:"status"`
 	Children  []Menu `json:"children"`
 }
 

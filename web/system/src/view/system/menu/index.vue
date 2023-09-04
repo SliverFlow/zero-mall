@@ -28,7 +28,7 @@
         <el-table-column align="left" label="菜单名称" min-width="150" prop="meta.title" />
         <el-table-column align="left" label="归属" min-width="100" prop="role">
           <template #default="scope">
-            <el-text v-if="scope.row.role === 1" type="primary">管理员</el-text>
+            <el-text v-if="scope.row.role === 3" type="primary">管理员</el-text>
             <el-text v-if="scope.row.role === 2" type="warning">商家</el-text>
           </template>
         </el-table-column>
@@ -180,8 +180,7 @@ import { formatDate } from '@/utils/format.js'
 import {
   menuChangeStatusApi,
   menuCreateApi,
-  menuFindApi,
-  menuTreeListAllApi,
+  menuFindApi, menuTreeListApi,
   menuUpdateApi
 } from '@/api/system/menu.js'
 import { ElMessage } from 'element-plus'
@@ -197,9 +196,9 @@ const menuStore = useMenuStore()
 const tableData = ref([])
 // 角色列表
 const roleList = ref([
-  { label: '系统管理员', value: 1 },
+  { label: '系统管理员', value: 3 },
   { label: '系统商家', value: 2 },
-  { label: '全部菜单', value: 0 },
+  { label: '全部菜单', value: 10 },
 ])
 // 是否添加子菜单窗台
 const idAddChildrenMenu = ref(false)
@@ -240,11 +239,11 @@ const statusOptions = ref([
 // 是否为编辑状态
 const isEdit = ref(false)
 // 按角色搜索
-const roleData = ref(0)
+const roleData = ref(10)
 
 // 加载表格数据
 const loadData = async() => {
-  const res = await menuTreeListAllApi({ role: roleData.value })
+  const res = await menuTreeListApi({ ID: roleData.value })
   tableData.value = res.data.list
 }
 loadData()

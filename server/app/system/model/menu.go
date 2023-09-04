@@ -27,6 +27,7 @@ type (
 		Sorted    int64                                      `json:"sorted" gorm:"not null;default:0;comment:排序标记"`
 		Role      int64                                      `json:"role" gorm:"not null;default:0;comment:角色 1 普通用户 2 系统商家 3 系统管理员"`
 		Meta      `json:"meta" gorm:"embedded;comment:附加属性"` // embedded gorm tag 嵌套字段
+		Status    int64                                      `json:"status" gorm:"not null;default:0;comment:菜单状态"`
 	}
 	Meta struct {
 		Title string `json:"title" gorm:"not null;default:'';comment:菜单名"` // 菜单名
@@ -55,7 +56,12 @@ func (d *defaultMenuModel) MenuListByRole(ctx context.Context, role int64) (list
 	tx := d.db.WithContext(ctx)
 
 	var enter []Menu
-	err = tx.Model(&Menu{}).Where("role = ?", role).Find(&enter).Error
+	if role == 10 {
+		err = tx.Model(&Menu{}).Order("sorted asc").Find(&enter).Error
+	} else {
+		err = tx.Model(&Menu{}).Where("role = ?", role).Order("sorted asc").Find(&enter).Error
+	}
+
 	if err != nil {
 		return nil, err
 	}

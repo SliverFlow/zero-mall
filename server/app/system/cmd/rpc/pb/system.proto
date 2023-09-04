@@ -44,6 +44,8 @@ message Menu {
   int64 Sorted = 6;
   string Title = 7;
   string Icon = 8;
+  int64 Status = 9;
+  int64 Role = 10;
 }
 
 message RoleIDReq {
