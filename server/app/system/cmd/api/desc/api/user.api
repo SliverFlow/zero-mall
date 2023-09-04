@@ -1,0 +1,26 @@
+syntax = "v1"
+
+info(
+    title: "user api"
+    desc: "user 相关 api model"
+    author: "SliverFlow"
+    email: "202606540@qq.com"
+    version: "v1.0"
+)
+
+type User {
+    ID int64 `json:"ID"`
+    UUID string `json:"uuid"`
+    Username string `json:"username"`
+    Email string `json:"email"`
+    Nickname string `json:"nickname"`
+    Avatar string `json:"avatar"`
+    Role int64 `json:"role"`
+    Status int64 `json:"status"`
+    CreatedAt int64 `json:"createdAt"`
+    UpdatedAt int64 `json:"updatedAt"`
+}
+
+type UserInfoReply {
+    User User `json:"user"`
+}

@@ -56,3 +56,8 @@ func (s *UserServer) Login(ctx context.Context, in *pb.UserLoginReq) (*pb.UserLo
 	l := logic.NewLoginLogic(ctx, s.svcCtx)
 	return l.Login(in)
 }
+
+func (s *UserServer) FindByUUID(ctx context.Context, in *pb.UUIDReq) (*pb.UserInfoReply, error) {
+	l := logic.NewFindByUUIDLogic(ctx, s.svcCtx)
+	return l.FindByUUID(in)
+}

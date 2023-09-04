@@ -2,22 +2,22 @@ import service from '@/utils/request.js'
 
 export const logoutApi = () => {
   return service({
-    url: '/system/user/logout',
+    url: '/system/v1/user/logout',
     method: 'post',
   })
 }
 
 export const userChangeRoleApi = (data) => {
   return service({
-    url: '/system/user/changeRole',
+    url: '/system/v1/user/changeRole',
     method: 'post',
     data: data
   })
 }
 
-export const userFindByUserId = () => {
+export const userFindByUUID = () => {
   return service({
-    url: '/system/user/findByUserID',
+    url: '/system/v1/user/findByUUID',
     method: 'post',
   })
 }

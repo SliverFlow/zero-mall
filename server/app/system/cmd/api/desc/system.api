@@ -10,6 +10,7 @@ info(
 import "api/system.api"
 import "api/role.api"
 import "api/menu.api"
+import "api/user.api"
 
 // 公共部分 login captcha file
 @server(
@@ -40,6 +41,8 @@ service system {
 	post /user/create (NilReq) returns (NilReply)
 	@handler userUpdate
 	post /user/update (NilReq) returns (NilReply)
+	@handler userFindByUUID
+	post /user/findByUUID (NilReq) returns (UserInfoReply)
 }
 
 // role 部分

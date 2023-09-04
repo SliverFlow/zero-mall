@@ -21,16 +21,6 @@ type LoginReply struct {
 	User  User   `json:"user"`
 }
 
-type User struct {
-	Username  string `json:"username"`
-	UUID      string `json:"uuid"`
-	Nickname  string `json:"nickname"`
-	Email     string `json:"email"`
-	Avatar    string `json:"avatar"`
-	CreatedAt int64  `json:"createdAt"`
-	UpdatedAt int64  `json:"updetedAt"`
-}
-
 type FileUploadReply struct {
 	FileStoreName string `json:"fileStoreName"`
 	Name          string `json:"name"`
@@ -42,6 +32,23 @@ type CaptchaReply struct {
 	CaptchaId     string `json:"captchaId"`
 	PicPath       string `json:"picPath"`
 	CaptchaLength int    `json:"captchaLength"`
+}
+
+type User struct {
+	ID        int64  `json:"ID"`
+	UUID      string `json:"uuid"`
+	Username  string `json:"username"`
+	Email     string `json:"email"`
+	Nickname  string `json:"nickname"`
+	Avatar    string `json:"avatar"`
+	Role      int64  `json:"role"`
+	Status    int64  `json:"status"`
+	CreatedAt int64  `json:"createdAt"`
+	UpdatedAt int64  `json:"updatedAt"`
+}
+
+type UserInfoReply struct {
+	User User `json:"user"`
 }
 
 type Role struct {

@@ -29,6 +29,7 @@ type UserClient interface {
 	Delete(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*Nil, error)
 	BatchDelete(ctx context.Context, in *IDsReq, opts ...grpc.CallOption) (*Nil, error)
 	Login(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*UserLoginReply, error)
+	FindByUUID(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*UserInfoReply, error)
 }
 
 type userClient struct {
@@ -102,6 +103,15 @@ func (c *userClient) Login(ctx context.Context, in *UserLoginReq, opts ...grpc.C
 	return out, nil
 }
 
+func (c *userClient) FindByUUID(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*UserInfoReply, error) {
+	out := new(UserInfoReply)
+	err := c.cc.Invoke(ctx, "/pb.user/findByUUID", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -113,6 +123,7 @@ type UserServer interface {
 	Delete(context.Context, *IDReq) (*Nil, error)
 	BatchDelete(context.Context, *IDsReq) (*Nil, error)
 	Login(context.Context, *UserLoginReq) (*UserLoginReply, error)
+	FindByUUID(context.Context, *UUIDReq) (*UserInfoReply, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -140,6 +151,9 @@ func (UnimplementedUserServer) BatchDelete(context.Context, *IDsReq) (*Nil, erro
 }
 func (UnimplementedUserServer) Login(context.Context, *UserLoginReq) (*UserLoginReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
+}
+func (UnimplementedUserServer) FindByUUID(context.Context, *UUIDReq) (*UserInfoReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FindByUUID not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -280,6 +294,24 @@ func _User_Login_Handler(srv interface{}, ctx context.Context, dec func(interfac
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_FindByUUID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UUIDReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).FindByUUID(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.user/findByUUID",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).FindByUUID(ctx, req.(*UUIDReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -314,6 +346,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "login",
 			Handler:    _User_Login_Handler,
+		},
+		{
+			MethodName: "findByUUID",
+			Handler:    _User_FindByUUID_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

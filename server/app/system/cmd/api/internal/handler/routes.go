@@ -54,6 +54,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Path:    "/user/update",
 					Handler: user.UserUpdateHandler(serverCtx),
 				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/user/findByUUID",
+					Handler: user.UserFindByUUIDHandler(serverCtx),
+				},
 			}...,
 		),
 		rest.WithPrefix("/system/v1"),

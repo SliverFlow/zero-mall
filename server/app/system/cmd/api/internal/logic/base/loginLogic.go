@@ -41,7 +41,7 @@ func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginReply, err err
 		return nil, err
 	}
 	u := rep.GetUser()
-	if u.Role == 3 {
+	if u.Role == 1 {
 		return nil, xerr.NewErrMsg("此用户不能登录")
 	}
 	token, err := l.nextToken(u.UUID)

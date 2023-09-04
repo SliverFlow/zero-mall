@@ -77,6 +77,9 @@ message UserLoginReq {
 message UserLoginReply {
   UserReply User = 1;
 }
+message UUIDReq {
+  string UUID = 1;
+}
 
 service user {
   rpc find (IDReq) returns (UserInfoReply);
@@ -86,4 +89,5 @@ service user {
   rpc delete (IDReq) returns (Nil);
   rpc batchDelete (IDsReq) returns (Nil);
   rpc login(UserLoginReq) returns (UserLoginReply);
+  rpc findByUUID (UUIDReq) returns (UserInfoReply);
 }

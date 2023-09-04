@@ -19,6 +19,7 @@ type (
 	Nil            = pb.Nil
 	PageReply      = pb.PageReply
 	PageReq        = pb.PageReq
+	UUIDReq        = pb.UUIDReq
 	UpdateReq      = pb.UpdateReq
 	UserInfoReply  = pb.UserInfoReply
 	UserLoginReply = pb.UserLoginReply
@@ -33,6 +34,7 @@ type (
 		Delete(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*Nil, error)
 		BatchDelete(ctx context.Context, in *IDsReq, opts ...grpc.CallOption) (*Nil, error)
 		Login(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*UserLoginReply, error)
+		FindByUUID(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*UserInfoReply, error)
 	}
 
 	defaultUser struct {
@@ -79,4 +81,9 @@ func (m *defaultUser) BatchDelete(ctx context.Context, in *IDsReq, opts ...grpc.
 func (m *defaultUser) Login(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*UserLoginReply, error) {
 	client := pb.NewUserClient(m.cli.Conn())
 	return client.Login(ctx, in, opts...)
+}
+
+func (m *defaultUser) FindByUUID(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*UserInfoReply, error) {
+	client := pb.NewUserClient(m.cli.Conn())
+	return client.FindByUUID(ctx, in, opts...)
 }

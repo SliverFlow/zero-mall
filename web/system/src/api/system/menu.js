@@ -17,7 +17,7 @@ export const menuTreeListAllApi = (data) => {
 
 export const menuChangeStatusApi = (data) => {
   return service({
-    url: '/system/menu/changeStatus',
+    url: '/system/v1/menu/changeStatus',
     method: 'post',
     data: data
   })
@@ -25,7 +25,7 @@ export const menuChangeStatusApi = (data) => {
 
 export const menuUpdateApi = (data) => {
   return service({
-    url: '/system/menu/update',
+    url: '/system/v1/menu/update',
     method: 'post',
     data: data
   })
@@ -33,7 +33,7 @@ export const menuUpdateApi = (data) => {
 
 export const menuCreateApi = (data) => {
   return service({
-    url: '/system/menu/create',
+    url: '/system/v1/menu/create',
     method: 'post',
     data: data
   })
@@ -41,7 +41,7 @@ export const menuCreateApi = (data) => {
 
 export const menuFindApi = (data) => {
   return service({
-    url: '/system/menu/find',
+    url: '/system/v1/menu/find',
     method: 'post',
     data: data
   })

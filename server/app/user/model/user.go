@@ -15,6 +15,7 @@ type (
 		List(ctx context.Context, page *common.PageInfo) (enter *[]User, total int64, err error)
 
 		FindByUsername(ctx context.Context, username string) (enter *User, err error)
+		FindByUUID(ctx context.Context, uuid string) (enter *User, err error)
 	}
 
 	defaultUserModel struct {
@@ -109,6 +110,15 @@ func (d *defaultUserModel) FindByUsername(ctx context.Context, username string) 
 	tx := d.db.WithContext(ctx)
 	var u User
 	if err = tx.Model(&User{}).Where("username = ?", username).First(&u).Error; err != nil {
+		return nil, err
+	}
+	return &u, nil
+}
+
+func (d *defaultUserModel) FindByUUID(ctx context.Context, uuid string) (enter *User, err error) {
+	tx := d.db.WithContext(ctx)
+	var u User
+	if err = tx.Model(&User{}).Where("uuid = ?", uuid).First(&u).Error; err != nil {
 		return nil, err
 	}
 	return &u, nil
