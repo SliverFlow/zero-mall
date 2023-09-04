@@ -2,12 +2,11 @@ package svc
 
 import (
 	"github.com/zeromicro/go-zero/core/logx"
-	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"os"
 	"server/app/user/cmd/rpc/internal/config"
 	"server/app/user/model"
-	"server/common/xconfig"
+	"server/common"
 )
 
 type ServiceContext struct {
@@ -18,7 +17,12 @@ type ServiceContext struct {
 
 func NewServiceContext(c config.Config) *ServiceContext {
 
-	db := newGormDB(c.Mysql)
+	db, err := common.InitDB(c.Mysql)
+	if err != nil {
+		logx.Error("init mysql database err", err.Error())
+		os.Exit(0)
+	}
+	autoMigrate(db)
 
 	return &ServiceContext{
 		Config:    c,
@@ -26,27 +30,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	}
 }
 
-func newGormDB(c xconfig.Mysql) *gorm.DB {
-	mc := mysql.Config{
-		DSN:                       c.Dsn(),
-		SkipInitializeWithVersion: false,
-		DefaultStringSize:         191,
-	}
-
-	db, err := gorm.Open(mysql.New(mc))
-	if err != nil {
-		logx.Error("[USER RPC MYSQL CONNECTION ERROR] : ", err)
-		os.Exit(0)
-		return nil
-	}
-	sqlDB, _ := db.DB()
-	sqlDB.SetMaxIdleConns(c.MaxIdleConns)
-	sqlDB.SetMaxOpenConns(c.MaxOpenConns)
-	logx.Info("[USER RPC MYSQL CONNECTION SUCCESS]")
-	// 同步数据库表
-	autoMigrate(db)
-	return db
-}
+// 同步表
 func autoMigrate(db *gorm.DB) {
 	err := db.AutoMigrate(
 		&model.User{}, // 系统菜单表

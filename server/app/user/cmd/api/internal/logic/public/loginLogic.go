@@ -41,7 +41,7 @@ func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginReply, err err
 func (l *LoginLogic) nextToken(c config.Config) (string, error) {
 	conf := l.svcCtx.Config.XJwt
 	jwt := xjwt.NewXJwt([]byte(conf.Secret), conf.Expire, conf.Buffer, conf.Isuser, conf.BlackListPrefix)
-	token, err := jwt.SendToken("172781", "bfuewf")
+	token, err := jwt.SendToken("172781")
 	if err != nil {
 		logx.Errorf("token create err", err.Error())
 		return "", errors.New("token 创建失败")

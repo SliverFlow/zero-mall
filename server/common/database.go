@@ -4,6 +4,9 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/zeromicro/go-zero/core/logx"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+	"server/common/xconfig"
 )
 
 type InitMysqlDB struct {
@@ -16,7 +19,7 @@ type InitMysqlDB struct {
 // NewInitMysqlDB
 // Author [SliverFlow]
 // @desc 实例化
-func NewInitMysqlDB(username, password, ip string, port int) *InitMysqlDB {
+func newInitMysqlDB(username, password, ip string, port int) *InitMysqlDB {
 	return &InitMysqlDB{
 		username: username,
 		password: password,
@@ -35,7 +38,7 @@ func (im *InitMysqlDB) dsn() string {
 // CreateDatabase
 // Author [SliverFlow]
 // @desc 创建数据库
-func (im *InitMysqlDB) CreateDatabase(dbName string) error {
+func (im *InitMysqlDB) createDatabase(dbName string) error {
 	db, err := sql.Open("mysql", im.dsn())
 	if err != nil {
 		logx.Error(err.Error())
@@ -49,4 +52,28 @@ func (im *InitMysqlDB) CreateDatabase(dbName string) error {
 	}(db)
 	_, err = db.Exec(fmt.Sprintf("CREATE DATABASE IF NOT EXISTS `%s` DEFAULT CHARACTER SET utf8mb4 DEFAULT COLLATE utf8mb4_general_ci;", dbName))
 	return err
+}
+
+func InitDB(c xconfig.Mysql) (db *gorm.DB, err error) {
+	mysqlDB := newInitMysqlDB(c.Username, c.Password, c.Path, c.Port)
+	err = mysqlDB.createDatabase(c.Dbname)
+	if err != nil {
+		logx.Error("init mysql database err", err.Error())
+		return nil, err
+	}
+	mc := mysql.Config{
+		DSN:                       c.Dsn(),
+		SkipInitializeWithVersion: false,
+		DefaultStringSize:         191,
+	}
+	db, err = gorm.Open(mysql.New(mc))
+	if err != nil {
+		logx.Error("[MYSQL CONNECTION ERROR] : ", err)
+		return nil, err
+	}
+	sqlDB, _ := db.DB()
+	sqlDB.SetMaxIdleConns(c.MaxIdleConns)
+	sqlDB.SetMaxOpenConns(c.MaxOpenConns)
+	logx.Info("[ MYSQL CONNECTION SUCCESS]")
+	return db, nil
 }

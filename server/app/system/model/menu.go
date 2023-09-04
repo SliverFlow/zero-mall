@@ -30,7 +30,7 @@ type (
 )
 
 func (m *Menu) TableName() string {
-	return "menu"
+	return "sys_menu"
 }
 
 func newMenuModel(db *gorm.DB) *defaultMenuModel {
