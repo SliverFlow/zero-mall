@@ -28,7 +28,7 @@ export const useUserStore = defineStore('user', () => {
       userInfo.value = res.data.user
 
       const routerStore = useRouterStore()
-      await routerStore.setAsyncRouter()
+      await routerStore.setAsyncRouter(userInfo.value.role)
       routerStore.asyncRouterList.forEach(i => router.addRoute('Layout', i))
 
       isLogin.value = true
@@ -40,13 +40,14 @@ export const useUserStore = defineStore('user', () => {
 
   // 退出方法
   const logout = async() => {
-    const res = await logoutApi()
+    // const res = await logoutApi()
+    const res = { code: 0 }
     if (res['code'] === 0) {
-      ElMessage({
-        message: res['msg'],
-        type: 'success',
-        showClose: true,
-      })
+      // ElMessage({
+      //   message: res['message'],
+      //   type: 'success',
+      //   showClose: true,
+      // })
       // 将 token 置空
       setToken('')
       isLogin.value = false

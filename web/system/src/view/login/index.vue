@@ -90,8 +90,8 @@ const form = ref(null)
 // form 表单数据
 const formData = ref({
   captchaId: '',
-  username: '202606540@qq.com',
-  password: '',
+  username: 'admin',
+  password: '123456',
   captcha: ''
 })
 // 验证码图片地址

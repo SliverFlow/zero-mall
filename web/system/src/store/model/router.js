@@ -7,8 +7,8 @@ export const useRouterStore = defineStore('router', () => {
   const menuList = ref([])
   const asyncRouterList = ref([])
   // 设置用户的路由
-  const setAsyncRouter = async() => {
-    const res = await menuTreeListApi()
+  const setAsyncRouter = async(role) => {
+    const res = await menuTreeListApi({ ID: role })
     if (res.code !== 0) {
       return false
     }

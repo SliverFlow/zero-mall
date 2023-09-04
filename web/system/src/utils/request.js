@@ -40,7 +40,7 @@ service.interceptors.response.use(
     // 判断请求是否成功
     if (response.data.code !== 0) {
       ElMessage({
-        message: response.data.msg,
+        message: response.data.message,
         type: 'error',
         showClose: true,
       })

@@ -3,7 +3,7 @@ package result
 // ResponseSuccessBean 成功统一返回
 type ResponseSuccessBean struct {
 	Code    uint32      `json:"code"`
-	Message string      `json:"msg"`
+	Message string      `json:"message"`
 	Data    interface{} `json:"data"`
 }
 
