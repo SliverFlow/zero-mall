@@ -52,7 +52,7 @@ func (s *UserServer) BatchDelete(ctx context.Context, in *pb.IDsReq) (*pb.Nil, e
 	return l.BatchDelete(in)
 }
 
-func (s *UserServer) Login(ctx context.Context, in *pb.LoginReq) (*pb.LoginReply, error) {
+func (s *UserServer) Login(ctx context.Context, in *pb.UserLoginReq) (*pb.UserLoginReply, error) {
 	l := logic.NewLoginLogic(ctx, s.svcCtx)
 	return l.Login(in)
 }

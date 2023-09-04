@@ -32,6 +32,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 func autoMigrate(db *gorm.DB) {
 	err := db.AutoMigrate(
 		&model.Menu{}, // 系统菜单表
+		&model.Role{}, // 系统角色表
 	)
 	if err != nil {
 		logx.Error("[DATABASE AutoMigrate ERROR] : ", err)

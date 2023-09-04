@@ -27,7 +27,7 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 	}
 }
 
-func (l *LoginLogic) Login(in *pb.LoginReq) (*pb.LoginReply, error) {
+func (l *LoginLogic) Login(in *pb.UserLoginReq) (*pb.UserLoginReply, error) {
 	// todo: add your logic here and delete this line
 	user, err := l.svcCtx.UserModel.FindByUsername(l.ctx, in.Username)
 	if err != nil {
@@ -40,7 +40,7 @@ func (l *LoginLogic) Login(in *pb.LoginReq) (*pb.LoginReply, error) {
 		return nil, status.Errorf(100001, "password check not success")
 	}
 	u := copyUserFoReply(user) // 生成返回结构
-	return &pb.LoginReply{
+	return &pb.UserLoginReply{
 		User: u,
 	}, nil
 }

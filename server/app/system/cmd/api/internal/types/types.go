@@ -28,7 +28,7 @@ type User struct {
 	Email     string `json:"email"`
 	Avatar    string `json:"avatar"`
 	CreatedAt int64  `json:"createdAt"`
-	UpdetedAt int64  `json:"updetedAt"`
+	UpdatedAt int64  `json:"updetedAt"`
 }
 
 type FileUploadReply struct {
@@ -42,4 +42,17 @@ type CaptchaReply struct {
 	CaptchaId     string `json:"captchaId"`
 	PicPath       string `json:"picPath"`
 	CaptchaLength int    `json:"captchaLength"`
+}
+
+type Role struct {
+	ID   int64  `json:"ID"`
+	Name string `json:"name"`
+}
+
+type CreateRoleReq struct {
+	Name string `json:"name"`
+}
+
+type UpdateRoleReq struct {
+	Role
 }

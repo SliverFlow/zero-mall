@@ -28,7 +28,7 @@ type UserClient interface {
 	Update(ctx context.Context, in *UpdateReq, opts ...grpc.CallOption) (*Nil, error)
 	Delete(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*Nil, error)
 	BatchDelete(ctx context.Context, in *IDsReq, opts ...grpc.CallOption) (*Nil, error)
-	Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginReply, error)
+	Login(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*UserLoginReply, error)
 }
 
 type userClient struct {
@@ -93,8 +93,8 @@ func (c *userClient) BatchDelete(ctx context.Context, in *IDsReq, opts ...grpc.C
 	return out, nil
 }
 
-func (c *userClient) Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginReply, error) {
-	out := new(LoginReply)
+func (c *userClient) Login(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*UserLoginReply, error) {
+	out := new(UserLoginReply)
 	err := c.cc.Invoke(ctx, "/pb.user/login", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -112,7 +112,7 @@ type UserServer interface {
 	Update(context.Context, *UpdateReq) (*Nil, error)
 	Delete(context.Context, *IDReq) (*Nil, error)
 	BatchDelete(context.Context, *IDsReq) (*Nil, error)
-	Login(context.Context, *LoginReq) (*LoginReply, error)
+	Login(context.Context, *UserLoginReq) (*UserLoginReply, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -138,7 +138,7 @@ func (UnimplementedUserServer) Delete(context.Context, *IDReq) (*Nil, error) {
 func (UnimplementedUserServer) BatchDelete(context.Context, *IDsReq) (*Nil, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BatchDelete not implemented")
 }
-func (UnimplementedUserServer) Login(context.Context, *LoginReq) (*LoginReply, error) {
+func (UnimplementedUserServer) Login(context.Context, *UserLoginReq) (*UserLoginReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
@@ -263,7 +263,7 @@ func _User_BatchDelete_Handler(srv interface{}, ctx context.Context, dec func(in
 }
 
 func _User_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(LoginReq)
+	in := new(UserLoginReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -275,7 +275,7 @@ func _User_Login_Handler(srv interface{}, ctx context.Context, dec func(interfac
 		FullMethod: "/pb.user/login",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).Login(ctx, req.(*LoginReq))
+		return srv.(UserServer).Login(ctx, req.(*UserLoginReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }

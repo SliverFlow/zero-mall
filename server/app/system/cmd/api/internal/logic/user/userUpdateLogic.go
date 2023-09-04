@@ -2,27 +2,28 @@ package user
 
 import (
 	"context"
+
 	"server/app/system/cmd/api/internal/svc"
 	"server/app/system/cmd/api/internal/types"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type HealthLogic struct {
+type UserUpdateLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewHealthLogic(ctx context.Context, svcCtx *svc.ServiceContext) *HealthLogic {
-	return &HealthLogic{
+func NewUserUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserUpdateLogic {
+	return &UserUpdateLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *HealthLogic) Health(req *types.NilReq) (resp *types.HealthReply, err error) {
+func (l *UserUpdateLogic) UserUpdate(req *types.NilReq) (resp *types.NilReply, err error) {
 	// todo: add your logic here and delete this line
 
 	return

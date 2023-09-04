@@ -13,13 +13,18 @@ import (
 )
 
 type (
-	LoginReply = pb.LoginReply
-	LoginReq   = pb.LoginReq
-	User       = pb.User
+	CreateRole       = pb.CreateRole
+	NilReply         = pb.NilReply
+	NilReq           = pb.NilReq
+	SystemLoginReply = pb.SystemLoginReply
+	SystemLoginReq   = pb.SystemLoginReq
+	User             = pb.User
 
 	System interface {
 		// 系统登录
-		Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginReply, error)
+		Login(ctx context.Context, in *SystemLoginReq, opts ...grpc.CallOption) (*SystemLoginReply, error)
+		// 创建角色
+		RoleCreate(ctx context.Context, in *CreateRole, opts ...grpc.CallOption) (*NilReply, error)
 	}
 
 	defaultSystem struct {
@@ -34,7 +39,13 @@ func NewSystem(cli zrpc.Client) System {
 }
 
 // 系统登录
-func (m *defaultSystem) Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginReply, error) {
+func (m *defaultSystem) Login(ctx context.Context, in *SystemLoginReq, opts ...grpc.CallOption) (*SystemLoginReply, error) {
 	client := pb.NewSystemClient(m.cli.Conn())
 	return client.Login(ctx, in, opts...)
+}
+
+// 创建角色
+func (m *defaultSystem) RoleCreate(ctx context.Context, in *CreateRole, opts ...grpc.CallOption) (*NilReply, error) {
+	client := pb.NewSystemClient(m.cli.Conn())
+	return client.RoleCreate(ctx, in, opts...)
 }

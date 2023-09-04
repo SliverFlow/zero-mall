@@ -13,17 +13,17 @@ import (
 )
 
 type (
-	CreateReq     = pb.CreateReq
-	IDReq         = pb.IDReq
-	IDsReq        = pb.IDsReq
-	LoginReply    = pb.LoginReply
-	LoginReq      = pb.LoginReq
-	Nil           = pb.Nil
-	PageReply     = pb.PageReply
-	PageReq       = pb.PageReq
-	UpdateReq     = pb.UpdateReq
-	UserInfoReply = pb.UserInfoReply
-	UserReply     = pb.UserReply
+	CreateReq      = pb.CreateReq
+	IDReq          = pb.IDReq
+	IDsReq         = pb.IDsReq
+	Nil            = pb.Nil
+	PageReply      = pb.PageReply
+	PageReq        = pb.PageReq
+	UpdateReq      = pb.UpdateReq
+	UserInfoReply  = pb.UserInfoReply
+	UserLoginReply = pb.UserLoginReply
+	UserLoginReq   = pb.UserLoginReq
+	UserReply      = pb.UserReply
 
 	User interface {
 		Find(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*UserInfoReply, error)
@@ -32,7 +32,7 @@ type (
 		Update(ctx context.Context, in *UpdateReq, opts ...grpc.CallOption) (*Nil, error)
 		Delete(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*Nil, error)
 		BatchDelete(ctx context.Context, in *IDsReq, opts ...grpc.CallOption) (*Nil, error)
-		Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginReply, error)
+		Login(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*UserLoginReply, error)
 	}
 
 	defaultUser struct {
@@ -76,7 +76,7 @@ func (m *defaultUser) BatchDelete(ctx context.Context, in *IDsReq, opts ...grpc.
 	return client.BatchDelete(ctx, in, opts...)
 }
 
-func (m *defaultUser) Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginReply, error) {
+func (m *defaultUser) Login(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*UserLoginReply, error) {
 	client := pb.NewUserClient(m.cli.Conn())
 	return client.Login(ctx, in, opts...)
 }

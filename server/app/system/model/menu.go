@@ -1,6 +1,7 @@
 package model
 
 import (
+	"context"
 	"gorm.io/gorm"
 	"server/common"
 )
@@ -8,6 +9,7 @@ import (
 type (
 	// 数据库操作方法接口
 	menuModel interface {
+		MenuCreate(ctx context.Context, menu Menu) (err error)
 	}
 	// 默认数据库连接对象
 	defaultMenuModel struct {
@@ -35,4 +37,8 @@ func (m *Menu) TableName() string {
 
 func newMenuModel(db *gorm.DB) *defaultMenuModel {
 	return &defaultMenuModel{db}
+}
+
+func (d *defaultMenuModel) MenuCreate(ctx context.Context, menu Menu) (err error) {
+	return nil
 }

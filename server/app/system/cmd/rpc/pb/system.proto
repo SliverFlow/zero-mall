@@ -4,13 +4,16 @@ option go_package = "./pb";
 
 package pb;
 
+message NilReply {}
+message NilReq {}
+
 // 登录入参
-message LoginReq {
+message SystemLoginReq {
   string Username = 1;
   string Password = 2;
 }
 // 登录出参
-message LoginReply {
+message SystemLoginReply {
   User user = 1;
 }
 // sys_user
@@ -28,7 +31,15 @@ message User {
   int64  UpdatedAt = 11;
 }
 
+message CreateRole {
+  string Name = 1;
+}
+
 service system {
   // 系统登录
-  rpc Login (LoginReq) returns (LoginReply);
+  rpc Login (SystemLoginReq) returns (SystemLoginReply);
+
+
+  // 创建角色
+  rpc RoleCreate (CreateRole) returns (NilReply);
 }

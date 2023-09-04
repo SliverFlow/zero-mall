@@ -39,7 +39,7 @@ type User {
     Email string `json:"email"`
     Avatar string `json:"avatar"`
     CreatedAt int64 `json:"createdAt"`
-    UpdetedAt int64 `json:"updetedAt"`
+    UpdatedAt int64 `json:"updetedAt"`
 }
 
 type FileUploadReply {

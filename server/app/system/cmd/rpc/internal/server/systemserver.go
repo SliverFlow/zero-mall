@@ -23,7 +23,13 @@ func NewSystemServer(svcCtx *svc.ServiceContext) *SystemServer {
 }
 
 // 系统登录
-func (s *SystemServer) Login(ctx context.Context, in *pb.LoginReq) (*pb.LoginReply, error) {
+func (s *SystemServer) Login(ctx context.Context, in *pb.SystemLoginReq) (*pb.SystemLoginReply, error) {
 	l := logic.NewLoginLogic(ctx, s.svcCtx)
 	return l.Login(in)
+}
+
+// 创建角色
+func (s *SystemServer) RoleCreate(ctx context.Context, in *pb.CreateRole) (*pb.NilReply, error) {
+	l := logic.NewRoleCreateLogic(ctx, s.svcCtx)
+	return l.RoleCreate(in)
 }

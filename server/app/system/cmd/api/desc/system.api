@@ -8,6 +8,7 @@ info(
 	version: "v1.0"
 )
 import "api/system.api"
+import "api/role.api"
 
 // 公共部分 login captcha file
 @server(
@@ -28,10 +29,27 @@ service system {
 // user 部分
 @server(
 	group : user
-	prefix : system/user
+	prefix : system/v1
 	middleware : Auth
 )
 service system {
 	@handler health
 	get /health (NilReq) returns (HealthReply)
+	@handler userCreate
+	post /user/create (NilReq) returns (NilReply)
+	@handler userUpdate
+	post /user/update (NilReq) returns (NilReply)
+}
+
+// role 部分
+@server(
+	group : role
+	prefix : system/v1
+	middleware : Auth
+)
+service system {
+	@handler roleCreate
+	post /role/create (CreateRoleReq) returns (NilReply)
+	@handler roleUpdate
+	post /role/update (UpdateRoleReq) returns (NilReply)
 }

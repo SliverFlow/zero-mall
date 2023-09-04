@@ -23,7 +23,9 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SystemClient interface {
 	// 系统登录
-	Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginReply, error)
+	Login(ctx context.Context, in *SystemLoginReq, opts ...grpc.CallOption) (*SystemLoginReply, error)
+	// 创建角色
+	RoleCreate(ctx context.Context, in *CreateRole, opts ...grpc.CallOption) (*NilReply, error)
 }
 
 type systemClient struct {
@@ -34,9 +36,18 @@ func NewSystemClient(cc grpc.ClientConnInterface) SystemClient {
 	return &systemClient{cc}
 }
 
-func (c *systemClient) Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginReply, error) {
-	out := new(LoginReply)
+func (c *systemClient) Login(ctx context.Context, in *SystemLoginReq, opts ...grpc.CallOption) (*SystemLoginReply, error) {
+	out := new(SystemLoginReply)
 	err := c.cc.Invoke(ctx, "/pb.system/Login", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *systemClient) RoleCreate(ctx context.Context, in *CreateRole, opts ...grpc.CallOption) (*NilReply, error) {
+	out := new(NilReply)
+	err := c.cc.Invoke(ctx, "/pb.system/RoleCreate", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +59,9 @@ func (c *systemClient) Login(ctx context.Context, in *LoginReq, opts ...grpc.Cal
 // for forward compatibility
 type SystemServer interface {
 	// 系统登录
-	Login(context.Context, *LoginReq) (*LoginReply, error)
+	Login(context.Context, *SystemLoginReq) (*SystemLoginReply, error)
+	// 创建角色
+	RoleCreate(context.Context, *CreateRole) (*NilReply, error)
 	mustEmbedUnimplementedSystemServer()
 }
 
@@ -56,8 +69,11 @@ type SystemServer interface {
 type UnimplementedSystemServer struct {
 }
 
-func (UnimplementedSystemServer) Login(context.Context, *LoginReq) (*LoginReply, error) {
+func (UnimplementedSystemServer) Login(context.Context, *SystemLoginReq) (*SystemLoginReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
+}
+func (UnimplementedSystemServer) RoleCreate(context.Context, *CreateRole) (*NilReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RoleCreate not implemented")
 }
 func (UnimplementedSystemServer) mustEmbedUnimplementedSystemServer() {}
 
@@ -73,7 +89,7 @@ func RegisterSystemServer(s grpc.ServiceRegistrar, srv SystemServer) {
 }
 
 func _System_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(LoginReq)
+	in := new(SystemLoginReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -85,7 +101,25 @@ func _System_Login_Handler(srv interface{}, ctx context.Context, dec func(interf
 		FullMethod: "/pb.system/Login",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SystemServer).Login(ctx, req.(*LoginReq))
+		return srv.(SystemServer).Login(ctx, req.(*SystemLoginReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _System_RoleCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateRole)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SystemServer).RoleCreate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.system/RoleCreate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SystemServer).RoleCreate(ctx, req.(*CreateRole))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -100,6 +134,10 @@ var System_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Login",
 			Handler:    _System_Login_Handler,
+		},
+		{
+			MethodName: "RoleCreate",
+			Handler:    _System_RoleCreate_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -25,10 +25,10 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 }
 
 // Login 系统登录
-func (l *LoginLogic) Login(in *pb.LoginReq) (*pb.LoginReply, error) {
+func (l *LoginLogic) Login(in *pb.SystemLoginReq) (*pb.SystemLoginReply, error) {
 	// todo: add your logic here and delete this line
 
-	return &pb.LoginReply{User: &pb.User{
+	return &pb.SystemLoginReply{User: &pb.User{
 		UserID:    "21111",
 		UUID:      "111",
 		Username:  "1111",

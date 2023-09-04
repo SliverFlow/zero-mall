@@ -1,0 +1,26 @@
+syntax = "v1"
+
+info(
+    title: "role api"
+    desc: "role相关 api model"
+    author: "SliverFlow"
+    email: "202606540@qq.com"
+    version: "v1.0"
+)
+
+type Role {
+    ID int64 `json:"ID"`
+    Name string `json:"name"`
+}
+
+type (
+    CreateRoleReq {
+        Name string `json:"name"`
+    }
+)
+
+type (
+    UpdateRoleReq {
+        Role
+    }
+)

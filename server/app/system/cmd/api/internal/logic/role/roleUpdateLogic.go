@@ -1,28 +1,29 @@
-package user
+package role
 
 import (
 	"context"
+
 	"server/app/system/cmd/api/internal/svc"
 	"server/app/system/cmd/api/internal/types"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type HealthLogic struct {
+type RoleUpdateLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewHealthLogic(ctx context.Context, svcCtx *svc.ServiceContext) *HealthLogic {
-	return &HealthLogic{
+func NewRoleUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *RoleUpdateLogic {
+	return &RoleUpdateLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *HealthLogic) Health(req *types.NilReq) (resp *types.HealthReply, err error) {
+func (l *RoleUpdateLogic) RoleUpdate(req *types.UpdateRoleReq) (resp *types.NilReply, err error) {
 	// todo: add your logic here and delete this line
 
 	return

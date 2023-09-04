@@ -70,11 +70,11 @@ message IDsReq {
   repeated int64 IDs = 1;
 }
 
-message LoginReq {
+message UserLoginReq {
   string Username = 1;
   string Password = 2;
 }
-message LoginReply {
+message UserLoginReply {
   UserReply User = 1;
 }
 
@@ -85,5 +85,5 @@ service user {
   rpc update (UpdateReq)  returns (Nil);
   rpc delete (IDReq) returns (Nil);
   rpc batchDelete (IDsReq) returns (Nil);
-  rpc login(LoginReq) returns (LoginReply);
+  rpc login(UserLoginReq) returns (UserLoginReply);
 }

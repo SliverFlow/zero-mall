@@ -2,8 +2,8 @@ package base
 
 import (
 	"context"
+	"github.com/jinzhu/copier"
 	"github.com/pkg/errors"
-	"server/app/system/cmd/api/internal/config"
 	"server/app/system/cmd/api/internal/svc"
 	"server/app/system/cmd/api/internal/types"
 	userpb "server/app/user/cmd/rpc/pb"
@@ -33,7 +33,7 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 // @param req *types.LoginReq
 // @return resp *types.LoginReply, err error
 func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginReply, err error) {
-	rep, err := l.svcCtx.UserRpc.Login(l.ctx, &userpb.LoginReq{
+	rep, err := l.svcCtx.UserRpc.Login(l.ctx, &userpb.UserLoginReq{
 		Username: req.Username,
 		Password: req.Password,
 	})
@@ -41,26 +41,24 @@ func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginReply, err err
 		return nil, err
 	}
 	u := rep.GetUser()
-	token, err := l.nextToken(l.svcCtx.Config, u.UUID)
+	if u.Role == 3 {
+		return nil, xerr.NewErrMsg("此用户不能登录")
+	}
+	token, err := l.nextToken(u.UUID)
 	if err != nil {
 		return nil, xerr.NewErrMsg("token 获取失败")
 	}
 
+	var user types.User
+	_ = copier.Copy(&user, u)
+
 	return &types.LoginReply{
 		Token: token,
-		User: types.User{
-			Username:  u.Username,
-			UUID:      u.UUID,
-			Nickname:  u.Nickname,
-			Email:     u.Email,
-			Avatar:    u.Avatar,
-			CreatedAt: u.CreatedAt,
-			UpdetedAt: u.UpdatedAt,
-		},
+		User:  user,
 	}, nil
 }
 
-func (l *LoginLogic) nextToken(c config.Config, uuid string) (string, error) {
+func (l *LoginLogic) nextToken(uuid string) (string, error) {
 	conf := l.svcCtx.Config.XJwt
 	jwt := xjwt.NewXJwt([]byte(conf.Secret), conf.Expire, conf.Buffer, conf.Isuser, conf.BlackListPrefix)
 	token, err := jwt.SendToken(uuid)
