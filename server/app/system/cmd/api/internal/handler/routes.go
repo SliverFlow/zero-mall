@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	base "server/app/system/cmd/api/internal/handler/base"
+	menu "server/app/system/cmd/api/internal/handler/menu"
 	role "server/app/system/cmd/api/internal/handler/role"
 	user "server/app/system/cmd/api/internal/handler/user"
 	"server/app/system/cmd/api/internal/svc"
@@ -71,6 +72,20 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Method:  http.MethodPost,
 					Path:    "/role/update",
 					Handler: role.RoleUpdateHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/system/v1"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/menu/listByRole",
+					Handler: menu.MenuListByRoleHandler(serverCtx),
 				},
 			}...,
 		),

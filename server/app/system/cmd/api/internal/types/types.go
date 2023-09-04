@@ -49,10 +49,37 @@ type Role struct {
 	Name string `json:"name"`
 }
 
+type RoleIDReq struct {
+	ID int64 `json:"ID"`
+}
+
 type CreateRoleReq struct {
 	Name string `json:"name"`
 }
 
 type UpdateRoleReq struct {
 	Role
+}
+
+type Menu struct {
+	ID        int64  `json:"ID"`
+	CreatedAt int64  `json:"createdAt"`
+	UpdatedAt int64  `json:"updatedAt"`
+	ParentId  int64  `json:"parentId"`
+	Name      string `json:"name"`
+	Path      string `json:"path"`
+	Component string `json:"component"`
+	Sorted    int64  `json:"sorted"`
+	Role      int64  `json:"role"`
+	Meta      Meta   `json:"meta"`
+	Children  []Menu `json:"children"`
+}
+
+type Meta struct {
+	Title string `json:"title"`
+	Icon  string `json:"icon"`
+}
+
+type MenuListByRoleReply struct {
+	List []Menu `json:"list"`
 }

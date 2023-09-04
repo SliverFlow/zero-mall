@@ -1,0 +1,31 @@
+syntax = "v1"
+
+info(
+    title: "menu api"
+    desc: "menu 相关 api model"
+    author: "SliverFlow"
+    email: "202606540@qq.com"
+    version: "v1.0"
+)
+
+type Menu {
+    ID int64 `json:"ID"`
+    CreatedAt int64 `json:"createdAt"`
+    UpdatedAt int64 `json:"updatedAt"`
+    ParentId int64 `json:"parentId"`
+    Name string `json:"name"`
+    Path string `json:"path"`
+    Component string `json:"component"`
+    Sorted int64 `json:"sorted"`
+    Role int64 `json:"role"`
+    Meta Meta `json:"meta"`
+    Children []Menu `json:"children"`
+}
+type Meta {
+    Title string `json:"title"`
+    Icon string `json:"icon"`
+}
+
+type MenuListByRoleReply {
+    List []Menu `json:"list"`
+}

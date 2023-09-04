@@ -10,6 +10,8 @@ type (
 	// 数据库操作方法接口
 	menuModel interface {
 		MenuCreate(ctx context.Context, menu Menu) (err error)
+		MenuList()
+		MenuListByRole(ctx context.Context, role int64) (list *[]Menu, err error)
 	}
 	// 默认数据库连接对象
 	defaultMenuModel struct {
@@ -23,6 +25,7 @@ type (
 		Path      string                                     `json:"path" gorm:"not null;default'';comment:路由path"`
 		Component string                                     `json:"component" gorm:"not null;default:'';comment:组件位置对应的前端路径"`
 		Sorted    int64                                      `json:"sorted" gorm:"not null;default:0;comment:排序标记"`
+		Role      int64                                      `json:"role" gorm:"not null;default:0;comment:角色 1 普通用户 2 系统商家 3 系统管理员"`
 		Meta      `json:"meta" gorm:"embedded;comment:附加属性"` // embedded gorm tag 嵌套字段
 	}
 	Meta struct {
@@ -41,4 +44,20 @@ func newMenuModel(db *gorm.DB) *defaultMenuModel {
 
 func (d *defaultMenuModel) MenuCreate(ctx context.Context, menu Menu) (err error) {
 	return nil
+}
+
+func (d *defaultMenuModel) MenuList() {
+
+}
+
+// MenuListByRole 根据菜单角色获取菜单
+func (d *defaultMenuModel) MenuListByRole(ctx context.Context, role int64) (list *[]Menu, err error) {
+	tx := d.db.WithContext(ctx)
+
+	var enter []Menu
+	err = tx.Model(&Menu{}).Where("role = ?", role).Find(&enter).Error
+	if err != nil {
+		return nil, err
+	}
+	return &enter, nil
 }

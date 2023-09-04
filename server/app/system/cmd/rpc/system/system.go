@@ -14,8 +14,11 @@ import (
 
 type (
 	CreateRole       = pb.CreateRole
+	Menu             = pb.Menu
+	MenuListReply    = pb.MenuListReply
 	NilReply         = pb.NilReply
 	NilReq           = pb.NilReq
+	RoleIDReq        = pb.RoleIDReq
 	SystemLoginReply = pb.SystemLoginReply
 	SystemLoginReq   = pb.SystemLoginReq
 	User             = pb.User
@@ -25,6 +28,8 @@ type (
 		Login(ctx context.Context, in *SystemLoginReq, opts ...grpc.CallOption) (*SystemLoginReply, error)
 		// 创建角色
 		RoleCreate(ctx context.Context, in *CreateRole, opts ...grpc.CallOption) (*NilReply, error)
+		// 查询某个角色的菜单
+		MenuListByRole(ctx context.Context, in *RoleIDReq, opts ...grpc.CallOption) (*MenuListReply, error)
 	}
 
 	defaultSystem struct {
@@ -48,4 +53,10 @@ func (m *defaultSystem) Login(ctx context.Context, in *SystemLoginReq, opts ...g
 func (m *defaultSystem) RoleCreate(ctx context.Context, in *CreateRole, opts ...grpc.CallOption) (*NilReply, error) {
 	client := pb.NewSystemClient(m.cli.Conn())
 	return client.RoleCreate(ctx, in, opts...)
+}
+
+// 查询某个角色的菜单
+func (m *defaultSystem) MenuListByRole(ctx context.Context, in *RoleIDReq, opts ...grpc.CallOption) (*MenuListReply, error) {
+	client := pb.NewSystemClient(m.cli.Conn())
+	return client.MenuListByRole(ctx, in, opts...)
 }

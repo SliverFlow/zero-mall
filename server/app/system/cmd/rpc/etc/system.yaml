@@ -12,7 +12,7 @@ Mysql:
   #  Path: 121.37.20.40
   #  Password: '123456'
   Port: 3306
-  Dbname: ap-system
+  Dbname: zpshop
   Username: root
   MaxIdleConns: 10
   MaxOpenConns: 10

@@ -33,3 +33,9 @@ func (s *SystemServer) RoleCreate(ctx context.Context, in *pb.CreateRole) (*pb.N
 	l := logic.NewRoleCreateLogic(ctx, s.svcCtx)
 	return l.RoleCreate(in)
 }
+
+// 查询某个角色的菜单
+func (s *SystemServer) MenuListByRole(ctx context.Context, in *pb.RoleIDReq) (*pb.MenuListReply, error) {
+	l := logic.NewMenuListByRoleLogic(ctx, s.svcCtx)
+	return l.MenuListByRole(in)
+}

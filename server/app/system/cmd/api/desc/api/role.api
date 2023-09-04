@@ -14,6 +14,10 @@ type Role {
 }
 
 type (
+    RoleIDReq {
+        ID int64 `json:"ID"`
+    }
+
     CreateRoleReq {
         Name string `json:"name"`
     }

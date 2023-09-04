@@ -26,6 +26,8 @@ type SystemClient interface {
 	Login(ctx context.Context, in *SystemLoginReq, opts ...grpc.CallOption) (*SystemLoginReply, error)
 	// 创建角色
 	RoleCreate(ctx context.Context, in *CreateRole, opts ...grpc.CallOption) (*NilReply, error)
+	// 查询某个角色的菜单
+	MenuListByRole(ctx context.Context, in *RoleIDReq, opts ...grpc.CallOption) (*MenuListReply, error)
 }
 
 type systemClient struct {
@@ -54,6 +56,15 @@ func (c *systemClient) RoleCreate(ctx context.Context, in *CreateRole, opts ...g
 	return out, nil
 }
 
+func (c *systemClient) MenuListByRole(ctx context.Context, in *RoleIDReq, opts ...grpc.CallOption) (*MenuListReply, error) {
+	out := new(MenuListReply)
+	err := c.cc.Invoke(ctx, "/pb.system/MenuListByRole", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SystemServer is the server API for System service.
 // All implementations must embed UnimplementedSystemServer
 // for forward compatibility
@@ -62,6 +73,8 @@ type SystemServer interface {
 	Login(context.Context, *SystemLoginReq) (*SystemLoginReply, error)
 	// 创建角色
 	RoleCreate(context.Context, *CreateRole) (*NilReply, error)
+	// 查询某个角色的菜单
+	MenuListByRole(context.Context, *RoleIDReq) (*MenuListReply, error)
 	mustEmbedUnimplementedSystemServer()
 }
 
@@ -74,6 +87,9 @@ func (UnimplementedSystemServer) Login(context.Context, *SystemLoginReq) (*Syste
 }
 func (UnimplementedSystemServer) RoleCreate(context.Context, *CreateRole) (*NilReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RoleCreate not implemented")
+}
+func (UnimplementedSystemServer) MenuListByRole(context.Context, *RoleIDReq) (*MenuListReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MenuListByRole not implemented")
 }
 func (UnimplementedSystemServer) mustEmbedUnimplementedSystemServer() {}
 
@@ -124,6 +140,24 @@ func _System_RoleCreate_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _System_MenuListByRole_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RoleIDReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SystemServer).MenuListByRole(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.system/MenuListByRole",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SystemServer).MenuListByRole(ctx, req.(*RoleIDReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // System_ServiceDesc is the grpc.ServiceDesc for System service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -138,6 +172,10 @@ var System_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RoleCreate",
 			Handler:    _System_RoleCreate_Handler,
+		},
+		{
+			MethodName: "MenuListByRole",
+			Handler:    _System_MenuListByRole_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

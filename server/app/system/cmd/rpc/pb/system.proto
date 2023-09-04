@@ -35,6 +35,24 @@ message CreateRole {
   string Name = 1;
 }
 
+message Menu {
+  int64 ID = 1;
+  int64 ParentId =2;
+  string Name = 3;
+  string Path = 4;
+  string Component = 5;
+  int64 Sorted = 6;
+  string Title = 7;
+  string Icon = 8;
+}
+
+message RoleIDReq {
+  int64 ID = 1;
+}
+message MenuListReply {
+  repeated Menu List = 1;
+}
+
 service system {
   // 系统登录
   rpc Login (SystemLoginReq) returns (SystemLoginReply);
@@ -42,4 +60,6 @@ service system {
 
   // 创建角色
   rpc RoleCreate (CreateRole) returns (NilReply);
+  // 查询某个角色的菜单
+  rpc MenuListByRole (RoleIDReq) returns (MenuListReply);
 }

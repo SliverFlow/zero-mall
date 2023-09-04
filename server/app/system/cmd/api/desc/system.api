@@ -9,6 +9,7 @@ info(
 )
 import "api/system.api"
 import "api/role.api"
+import "api/menu.api"
 
 // 公共部分 login captcha file
 @server(
@@ -52,4 +53,15 @@ service system {
 	post /role/create (CreateRoleReq) returns (NilReply)
 	@handler roleUpdate
 	post /role/update (UpdateRoleReq) returns (NilReply)
+}
+
+// 菜单部分
+@server(
+	group : menu
+	prefix : system/v1
+	middleware : Auth
+)
+service system {
+	@handler menuListByRole
+	post /menu/listByRole (RoleIDReq) returns (MenuListByRoleReply)
 }
