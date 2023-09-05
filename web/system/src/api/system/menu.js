@@ -1,16 +1,15 @@
 import service from '@/utils/request.js'
 
-export const menuTreeListApi = (data) => {
+export const menuTreeListApi = () => {
   return service({
-    url: '/system/v1/menu/listByRole',
+    url: '/system/v1/menu/listByUUID',
     method: 'post',
-    data: data,
   })
 }
 
 export const menuTreeListAllApi = (data) => {
   return service({
-    url: '/system/menu/treeListAll',
+    url: '/system/v1/menu/listAllByRole',
     method: 'post',
     data: data
   })

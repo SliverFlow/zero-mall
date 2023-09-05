@@ -91,3 +91,9 @@ type Meta struct {
 type MenuListByRoleReply struct {
 	List []Menu `json:"list"`
 }
+
+type MenuChangeStatusReq struct {
+	ID     int64 `json:"ID"`
+	PID    int64 `json:"pid"`
+	Status int64 `json:"status"`
+}

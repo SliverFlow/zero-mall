@@ -9,6 +9,8 @@ func init() {
 	message[DB_DELETE_NOTEXIST] = "数据库中没有此条数据"
 	message[FILE_UPLOAD_ERROR] = "文件上传失败"
 	message[TOKEN_NOT_EXIST] = "未登录，请登录后再使用"
+	message[TOKEN_INBLACKLIST_ERROT] = "黑名单或异地登录"
+	message[TOKEN_EXPIRE_ERROR] = "登录获取 or 未知错误"
 }
 
 func MapErrMsg(code uint32) string {

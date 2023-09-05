@@ -89,8 +89,18 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
-					Path:    "/menu/listByRole",
-					Handler: menu.MenuListByRoleHandler(serverCtx),
+					Path:    "/menu/listByUUID",
+					Handler: menu.MenuListByUUIDHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/menu/listAllByRole",
+					Handler: menu.MenuListAllByRoleHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/menu/changeStatus",
+					Handler: menu.MenuChangeStatusHandler(serverCtx),
 				},
 			}...,
 		),

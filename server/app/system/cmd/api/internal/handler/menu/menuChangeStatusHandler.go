@@ -10,16 +10,16 @@ import (
 	"server/app/system/cmd/api/internal/types"
 )
 
-func MenuListByRoleHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func MenuChangeStatusHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.RoleIDReq
+		var req types.MenuChangeStatusReq
 		if err := httpx.Parse(r, &req); err != nil {
 			result.ParamErrorResult(r, w, err)
 			return
 		}
 
-		l := menu.NewMenuListByRoleLogic(r.Context(), svcCtx)
-		resp, err := l.MenuListByRole(&req)
+		l := menu.NewMenuChangeStatusLogic(r.Context(), svcCtx)
+		resp, err := l.MenuChangeStatus(&req)
 		result.HttpResult(r, w, resp, err)
 	}
 }

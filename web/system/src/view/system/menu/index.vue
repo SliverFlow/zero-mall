@@ -180,7 +180,7 @@ import { formatDate } from '@/utils/format.js'
 import {
   menuChangeStatusApi,
   menuCreateApi,
-  menuFindApi, menuTreeListApi,
+  menuFindApi, menuTreeListAllApi,
   menuUpdateApi
 } from '@/api/system/menu.js'
 import { ElMessage } from 'element-plus'
@@ -207,6 +207,7 @@ const dialogVisible = ref(false)
 const dialogTitle = ref('')
 const formRef = ref(null)
 const formData = ref({
+  ID: 0,
   name: '',
   path: '',
   status: 0,
@@ -243,14 +244,14 @@ const roleData = ref(10)
 
 // 加载表格数据
 const loadData = async() => {
-  const res = await menuTreeListApi({ ID: roleData.value })
+  const res = await menuTreeListAllApi({ ID: roleData.value })
   tableData.value = res.data.list
 }
 loadData()
 
 // 更新状态
 const switchEnable = async(val) => {
-  const res = await menuChangeStatusApi({ id: val.ID, pid: val.parentId, status: val.status })
+  const res = await menuChangeStatusApi({ ID: val.ID, pid: val.parentId, status: val.status })
   if (res['code'] === 0) {
     ElMessage({
       message: '更新状态成功',
@@ -271,7 +272,6 @@ const switchEnable = async(val) => {
     await routerStore.setAsyncRouter()
     routerStore.asyncRouterList.forEach(i => router.addRoute('Layout', i))
   }, 500)
-  console.log(router)
 }
 
 // 打开弹出层

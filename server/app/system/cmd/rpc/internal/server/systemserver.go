@@ -39,3 +39,13 @@ func (s *SystemServer) MenuListByRole(ctx context.Context, in *pb.RoleIDReq) (*p
 	l := logic.NewMenuListByRoleLogic(ctx, s.svcCtx)
 	return l.MenuListByRole(in)
 }
+
+func (s *SystemServer) MenuListAllByRole(ctx context.Context, in *pb.RoleIDReq) (*pb.MenuListReply, error) {
+	l := logic.NewMenuListAllByRoleLogic(ctx, s.svcCtx)
+	return l.MenuListAllByRole(in)
+}
+
+func (s *SystemServer) MenuChangeStatus(ctx context.Context, in *pb.MenuChangeStatusReq) (*pb.NilReply, error) {
+	l := logic.NewMenuChangeStatusLogic(ctx, s.svcCtx)
+	return l.MenuChangeStatus(in)
+}

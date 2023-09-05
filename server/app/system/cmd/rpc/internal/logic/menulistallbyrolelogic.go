@@ -11,23 +11,22 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type MenuListByRoleLogic struct {
+type MenuListAllByRoleLogic struct {
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 	logx.Logger
 }
 
-func NewMenuListByRoleLogic(ctx context.Context, svcCtx *svc.ServiceContext) *MenuListByRoleLogic {
-	return &MenuListByRoleLogic{
+func NewMenuListAllByRoleLogic(ctx context.Context, svcCtx *svc.ServiceContext) *MenuListAllByRoleLogic {
+	return &MenuListAllByRoleLogic{
 		ctx:    ctx,
 		svcCtx: svcCtx,
 		Logger: logx.WithContext(ctx),
 	}
 }
 
-// MenuListByRole 查询某个角色的菜单
-func (l *MenuListByRoleLogic) MenuListByRole(in *pb.RoleIDReq) (*pb.MenuListReply, error) {
-	list, err := l.svcCtx.SystemModel.MenuListByRole(l.ctx, in.ID)
+func (l *MenuListAllByRoleLogic) MenuListAllByRole(in *pb.RoleIDReq) (*pb.MenuListReply, error) {
+	list, err := l.svcCtx.SystemModel.MenuTreeListAllByRole(l.ctx, in.ID)
 	if err != nil {
 		logx.Error("find menu list by role err ", err.Error())
 		return nil, status.Errorf(100001, "查询菜单列表失败")

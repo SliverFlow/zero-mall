@@ -40,7 +40,7 @@ func (m *Auth) Handle(next http.HandlerFunc) http.HandlerFunc {
 		logx.Info("request for auth middleware")
 		authorization := r.Header.Get("Authorization")
 		if authorization == "" { // 未获取到 token
-			result.HttpResult(r, w, nil, xerr.NewErrMsg("非法请求，请登录后再使用"))
+			result.HttpResult(r, w, nil, xerr.NewCodeError(200001))
 			return
 		}
 		// 解析 token
@@ -48,13 +48,13 @@ func (m *Auth) Handle(next http.HandlerFunc) http.HandlerFunc {
 		// 判断 token 是不是在黑名单中
 		ok := jwt.IsRedisBlackList(authorization, m.rsc)
 		if ok {
-			result.HttpResult(r, w, nil, xerr.NewErrMsg("黑名单或异地登录"))
+			result.HttpResult(r, w, nil, xerr.NewCodeError(200005))
 			return
 		}
 
 		claims, err := jwt.ParseToken(authorization)
 		if err != nil {
-			result.HttpResult(r, w, nil, xerr.NewErrMsg(err.Error()))
+			result.HttpResult(r, w, nil, xerr.NewCodeError(200003))
 			return
 		}
 		if claims.ExpiresAt-time.Now().Unix() < claims.BufferTime { // 更换 token

@@ -47,7 +47,7 @@ service.interceptors.response.use(
     }
     // 业务错误类型
     switch (response.data.code) {
-      case 100001:
+      case 200001 || 200002 || 200003 || 200004 || 200005:
         userStore.isLogin = false
         router.push({ name: 'Login' })
     }

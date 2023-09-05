@@ -54,6 +54,11 @@ message RoleIDReq {
 message MenuListReply {
   repeated Menu List = 1;
 }
+message MenuChangeStatusReq {
+  int64 ID = 1;
+  int64 PID = 2;
+  int64 Status = 3;
+}
 
 service system {
   // 系统登录
@@ -64,4 +69,6 @@ service system {
   rpc RoleCreate (CreateRole) returns (NilReply);
   // 查询某个角色的菜单
   rpc MenuListByRole (RoleIDReq) returns (MenuListReply);
+  rpc MenuListAllByRole (RoleIDReq) returns (MenuListReply);
+  rpc MenuChangeStatus (MenuChangeStatusReq) returns (NilReply);
 }

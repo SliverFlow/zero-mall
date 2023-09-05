@@ -65,6 +65,10 @@ service system {
 	middleware : Auth
 )
 service system {
-	@handler menuListByRole
-	post /menu/listByRole (RoleIDReq) returns (MenuListByRoleReply)
+	@handler menuListByUUID
+	post /menu/listByUUID (NilReq) returns (MenuListByRoleReply)
+	@handler menuListAllByRole
+	post /menu/listAllByRole (RoleIDReq) returns (MenuListByRoleReply)
+	@handler menuChangeStatus
+	post /menu/changeStatus (MenuChangeStatusReq) returns (NilReply)
 }

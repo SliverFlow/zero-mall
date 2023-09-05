@@ -10,8 +10,9 @@ type (
 	// 数据库操作方法接口
 	menuModel interface {
 		MenuCreate(ctx context.Context, menu Menu) (err error)
-		MenuList()
 		MenuListByRole(ctx context.Context, role int64) (list *[]Menu, err error)
+		MenuChangeStatus(ctx context.Context, id int64, pid int64, status int64) (err error)
+		MenuTreeListAllByRole(ctx context.Context, role int64) (list *[]Menu, err error)
 	}
 	// 默认数据库连接对象
 	defaultMenuModel struct {
@@ -47,12 +48,42 @@ func (d *defaultMenuModel) MenuCreate(ctx context.Context, menu Menu) (err error
 	return nil
 }
 
-func (d *defaultMenuModel) MenuList() {
-
-}
-
 // MenuListByRole 根据菜单角色获取菜单
 func (d *defaultMenuModel) MenuListByRole(ctx context.Context, role int64) (list *[]Menu, err error) {
+	tx := d.db.WithContext(ctx)
+
+	var enter []Menu
+	if role == 10 {
+		err = tx.Model(&Menu{}).Where("status = ?", 1).Order("sorted asc").Find(&enter).Error
+	} else {
+		err = tx.Model(&Menu{}).Where("role = ? and status = ?", role, 1).Order("sorted asc").Find(&enter).Error
+	}
+
+	if err != nil {
+		return nil, err
+	}
+	return &enter, nil
+}
+
+// MenuChangeStatus 修改菜单状态
+func (d *defaultMenuModel) MenuChangeStatus(ctx context.Context, id int64, pid int64, status int64) (err error) {
+	tx := d.db.WithContext(ctx)
+
+	var ids []int64
+	ids = append(ids, id)
+	if pid == 0 && status == 0 { // 根菜单 将所有的子菜单全部修改
+		var list []Menu
+		if err = tx.Model(&Menu{}).Where("parent_id = ?", id).Find(&list).Error; err != nil {
+			return err
+		}
+		for _, menu := range list {
+			ids = append(ids, int64(menu.ID))
+		}
+	}
+	return tx.Model(&Menu{}).Where("id in ?", ids).Update("status", status).Error
+}
+
+func (d *defaultMenuModel) MenuTreeListAllByRole(ctx context.Context, role int64) (list *[]Menu, err error) {
 	tx := d.db.WithContext(ctx)
 
 	var enter []Menu

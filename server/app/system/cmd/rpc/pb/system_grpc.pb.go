@@ -28,6 +28,8 @@ type SystemClient interface {
 	RoleCreate(ctx context.Context, in *CreateRole, opts ...grpc.CallOption) (*NilReply, error)
 	// 查询某个角色的菜单
 	MenuListByRole(ctx context.Context, in *RoleIDReq, opts ...grpc.CallOption) (*MenuListReply, error)
+	MenuListAllByRole(ctx context.Context, in *RoleIDReq, opts ...grpc.CallOption) (*MenuListReply, error)
+	MenuChangeStatus(ctx context.Context, in *MenuChangeStatusReq, opts ...grpc.CallOption) (*NilReply, error)
 }
 
 type systemClient struct {
@@ -65,6 +67,24 @@ func (c *systemClient) MenuListByRole(ctx context.Context, in *RoleIDReq, opts .
 	return out, nil
 }
 
+func (c *systemClient) MenuListAllByRole(ctx context.Context, in *RoleIDReq, opts ...grpc.CallOption) (*MenuListReply, error) {
+	out := new(MenuListReply)
+	err := c.cc.Invoke(ctx, "/pb.system/MenuListAllByRole", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *systemClient) MenuChangeStatus(ctx context.Context, in *MenuChangeStatusReq, opts ...grpc.CallOption) (*NilReply, error) {
+	out := new(NilReply)
+	err := c.cc.Invoke(ctx, "/pb.system/MenuChangeStatus", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SystemServer is the server API for System service.
 // All implementations must embed UnimplementedSystemServer
 // for forward compatibility
@@ -75,6 +95,8 @@ type SystemServer interface {
 	RoleCreate(context.Context, *CreateRole) (*NilReply, error)
 	// 查询某个角色的菜单
 	MenuListByRole(context.Context, *RoleIDReq) (*MenuListReply, error)
+	MenuListAllByRole(context.Context, *RoleIDReq) (*MenuListReply, error)
+	MenuChangeStatus(context.Context, *MenuChangeStatusReq) (*NilReply, error)
 	mustEmbedUnimplementedSystemServer()
 }
 
@@ -90,6 +112,12 @@ func (UnimplementedSystemServer) RoleCreate(context.Context, *CreateRole) (*NilR
 }
 func (UnimplementedSystemServer) MenuListByRole(context.Context, *RoleIDReq) (*MenuListReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MenuListByRole not implemented")
+}
+func (UnimplementedSystemServer) MenuListAllByRole(context.Context, *RoleIDReq) (*MenuListReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MenuListAllByRole not implemented")
+}
+func (UnimplementedSystemServer) MenuChangeStatus(context.Context, *MenuChangeStatusReq) (*NilReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MenuChangeStatus not implemented")
 }
 func (UnimplementedSystemServer) mustEmbedUnimplementedSystemServer() {}
 
@@ -158,6 +186,42 @@ func _System_MenuListByRole_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _System_MenuListAllByRole_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RoleIDReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SystemServer).MenuListAllByRole(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.system/MenuListAllByRole",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SystemServer).MenuListAllByRole(ctx, req.(*RoleIDReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _System_MenuChangeStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MenuChangeStatusReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SystemServer).MenuChangeStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.system/MenuChangeStatus",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SystemServer).MenuChangeStatus(ctx, req.(*MenuChangeStatusReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // System_ServiceDesc is the grpc.ServiceDesc for System service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -176,6 +240,14 @@ var System_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "MenuListByRole",
 			Handler:    _System_MenuListByRole_Handler,
+		},
+		{
+			MethodName: "MenuListAllByRole",
+			Handler:    _System_MenuListAllByRole_Handler,
+		},
+		{
+			MethodName: "MenuChangeStatus",
+			Handler:    _System_MenuChangeStatus_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

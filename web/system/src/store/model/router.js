@@ -2,13 +2,14 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { menuTreeListApi } from '@/api/system/menu.js'
 import router from '@/router/index.js'
+import { useUserStore } from '@/store/model/user.js'
 
 export const useRouterStore = defineStore('router', () => {
   const menuList = ref([])
   const asyncRouterList = ref([])
   // 设置用户的路由
-  const setAsyncRouter = async(role) => {
-    const res = await menuTreeListApi({ ID: role })
+  const setAsyncRouter = async() => {
+    const res = await menuTreeListApi()
     if (res.code !== 0) {
       return false
     }

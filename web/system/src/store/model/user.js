@@ -28,7 +28,7 @@ export const useUserStore = defineStore('user', () => {
       userInfo.value = res.data.user
 
       const routerStore = useRouterStore()
-      await routerStore.setAsyncRouter(userInfo.value.role)
+      await routerStore.setAsyncRouter()
       routerStore.asyncRouterList.forEach(i => router.addRoute('Layout', i))
 
       isLogin.value = true

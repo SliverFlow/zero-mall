@@ -13,15 +13,16 @@ import (
 )
 
 type (
-	CreateRole       = pb.CreateRole
-	Menu             = pb.Menu
-	MenuListReply    = pb.MenuListReply
-	NilReply         = pb.NilReply
-	NilReq           = pb.NilReq
-	RoleIDReq        = pb.RoleIDReq
-	SystemLoginReply = pb.SystemLoginReply
-	SystemLoginReq   = pb.SystemLoginReq
-	User             = pb.User
+	CreateRole          = pb.CreateRole
+	Menu                = pb.Menu
+	MenuChangeStatusReq = pb.MenuChangeStatusReq
+	MenuListReply       = pb.MenuListReply
+	NilReply            = pb.NilReply
+	NilReq              = pb.NilReq
+	RoleIDReq           = pb.RoleIDReq
+	SystemLoginReply    = pb.SystemLoginReply
+	SystemLoginReq      = pb.SystemLoginReq
+	User                = pb.User
 
 	System interface {
 		// 系统登录
@@ -30,6 +31,8 @@ type (
 		RoleCreate(ctx context.Context, in *CreateRole, opts ...grpc.CallOption) (*NilReply, error)
 		// 查询某个角色的菜单
 		MenuListByRole(ctx context.Context, in *RoleIDReq, opts ...grpc.CallOption) (*MenuListReply, error)
+		MenuListAllByRole(ctx context.Context, in *RoleIDReq, opts ...grpc.CallOption) (*MenuListReply, error)
+		MenuChangeStatus(ctx context.Context, in *MenuChangeStatusReq, opts ...grpc.CallOption) (*NilReply, error)
 	}
 
 	defaultSystem struct {
@@ -59,4 +62,14 @@ func (m *defaultSystem) RoleCreate(ctx context.Context, in *CreateRole, opts ...
 func (m *defaultSystem) MenuListByRole(ctx context.Context, in *RoleIDReq, opts ...grpc.CallOption) (*MenuListReply, error) {
 	client := pb.NewSystemClient(m.cli.Conn())
 	return client.MenuListByRole(ctx, in, opts...)
+}
+
+func (m *defaultSystem) MenuListAllByRole(ctx context.Context, in *RoleIDReq, opts ...grpc.CallOption) (*MenuListReply, error) {
+	client := pb.NewSystemClient(m.cli.Conn())
+	return client.MenuListAllByRole(ctx, in, opts...)
+}
+
+func (m *defaultSystem) MenuChangeStatus(ctx context.Context, in *MenuChangeStatusReq, opts ...grpc.CallOption) (*NilReply, error) {
+	client := pb.NewSystemClient(m.cli.Conn())
+	return client.MenuChangeStatus(ctx, in, opts...)
 }
