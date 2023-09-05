@@ -1,0 +1,11 @@
+Name: product.rpc
+ListenOn: 0.0.0.0:6661
+Etcd:
+  Hosts:
+    - 120.77.237.246:32379
+  #  - etcd:2379
+  Key: product.rpc
+
+Log:
+  ServiceName: product-rpc
+  Level: info

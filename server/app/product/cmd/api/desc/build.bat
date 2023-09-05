@@ -1,0 +1,1 @@
+goctl api go -api product.api -dir ../ -style goZero --home=../../../../../tpl

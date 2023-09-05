@@ -1,9 +1,53 @@
 syntax = "v1"
 
 info(
-    title: "type title here"
-    desc: "type desc here"
-    author: "type author here"
-    email: "type email here"
-    version: "type version here"
+	title: "product api file"
+	desc: "商品相关 api"
+	author: "SliverFlow"
+	email: "202606540@qq.com"
+	version: "v1.0"
 )
+
+import "api/base.api"
+
+// product 不需要鉴权的
+@server(
+	group : public
+	prefix : product/v1
+)
+service product {
+	@handler productList
+	post /product/list (Nil) returns (Nil)
+}
+
+// product 需要鉴权的
+@server(
+	group : private
+	prefix : product/v1
+	middleware : Auth
+)
+service product {
+	@handler productCreate
+	post /product/create (Nil) returns (Nil)
+}
+
+// category 不需要鉴权的
+@server(
+	group : public
+	prefix : category/v1
+)
+service product {
+	@handler categoryList
+	post /category/list (Nil) returns (Nil)
+}
+
+// category 需要鉴权的
+@server(
+	group : private
+	prefix : category/v1
+	middleware : Auth
+)
+service product {
+	@handler categoryCreate
+	post /category/create (Nil) returns (Nil)
+}

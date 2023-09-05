@@ -1,0 +1,11 @@
+Name: product
+Host: 0.0.0.0
+Port: 6660
+
+
+ProductRpc:
+  Etcd:
+    Hosts:
+      - 120.77.237.246:32379
+    #  - etcd:2379
+    Key: product.rpc
