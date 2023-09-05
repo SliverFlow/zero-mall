@@ -24,3 +24,7 @@ type User {
 type UserInfoReply {
     User User `json:"user"`
 }
+type AdminChangeRoleReq {
+    Username string `json:"username"`
+    Role int64 `json:"role"`
+}

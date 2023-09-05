@@ -59,6 +59,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Path:    "/user/findByUUID",
 					Handler: user.UserFindByUUIDHandler(serverCtx),
 				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/user/changeRole",
+					Handler: user.UserAdminChangeRoleHandler(serverCtx),
+				},
 			}...,
 		),
 		rest.WithPrefix("/system/v1"),

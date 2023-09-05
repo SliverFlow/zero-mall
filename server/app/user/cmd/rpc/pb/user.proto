@@ -80,6 +80,10 @@ message UserLoginReply {
 message UUIDReq {
   string UUID = 1;
 }
+message AdminChangeRoleReq {
+  string Username = 1;
+  int64 Role = 2;
+}
 
 service user {
   rpc find (IDReq) returns (UserInfoReply);
@@ -90,4 +94,5 @@ service user {
   rpc batchDelete (IDsReq) returns (Nil);
   rpc login(UserLoginReq) returns (UserLoginReply);
   rpc findByUUID (UUIDReq) returns (UserInfoReply);
+  rpc adminChangeRole(AdminChangeRoleReq) returns (Nil);
 }

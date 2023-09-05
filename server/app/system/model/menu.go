@@ -80,6 +80,9 @@ func (d *defaultMenuModel) MenuChangeStatus(ctx context.Context, id int64, pid i
 			ids = append(ids, int64(menu.ID))
 		}
 	}
+	if pid != 0 && status == 1 {
+		ids = append(ids, pid)
+	}
 	return tx.Model(&Menu{}).Where("id in ?", ids).Update("status", status).Error
 }
 

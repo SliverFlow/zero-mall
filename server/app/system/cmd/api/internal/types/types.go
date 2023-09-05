@@ -51,6 +51,11 @@ type UserInfoReply struct {
 	User User `json:"user"`
 }
 
+type AdminChangeRoleReq struct {
+	Username string `json:"username"`
+	Role     int64  `json:"role"`
+}
+
 type Role struct {
 	ID   int64  `json:"ID"`
 	Name string `json:"name"`

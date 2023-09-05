@@ -30,6 +30,7 @@ type UserClient interface {
 	BatchDelete(ctx context.Context, in *IDsReq, opts ...grpc.CallOption) (*Nil, error)
 	Login(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*UserLoginReply, error)
 	FindByUUID(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*UserInfoReply, error)
+	AdminChangeRole(ctx context.Context, in *AdminChangeRoleReq, opts ...grpc.CallOption) (*Nil, error)
 }
 
 type userClient struct {
@@ -112,6 +113,15 @@ func (c *userClient) FindByUUID(ctx context.Context, in *UUIDReq, opts ...grpc.C
 	return out, nil
 }
 
+func (c *userClient) AdminChangeRole(ctx context.Context, in *AdminChangeRoleReq, opts ...grpc.CallOption) (*Nil, error) {
+	out := new(Nil)
+	err := c.cc.Invoke(ctx, "/pb.user/adminChangeRole", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -124,6 +134,7 @@ type UserServer interface {
 	BatchDelete(context.Context, *IDsReq) (*Nil, error)
 	Login(context.Context, *UserLoginReq) (*UserLoginReply, error)
 	FindByUUID(context.Context, *UUIDReq) (*UserInfoReply, error)
+	AdminChangeRole(context.Context, *AdminChangeRoleReq) (*Nil, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -154,6 +165,9 @@ func (UnimplementedUserServer) Login(context.Context, *UserLoginReq) (*UserLogin
 }
 func (UnimplementedUserServer) FindByUUID(context.Context, *UUIDReq) (*UserInfoReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindByUUID not implemented")
+}
+func (UnimplementedUserServer) AdminChangeRole(context.Context, *AdminChangeRoleReq) (*Nil, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AdminChangeRole not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -312,6 +326,24 @@ func _User_FindByUUID_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_AdminChangeRole_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AdminChangeRoleReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).AdminChangeRole(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.user/adminChangeRole",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).AdminChangeRole(ctx, req.(*AdminChangeRoleReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -350,6 +382,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "findByUUID",
 			Handler:    _User_FindByUUID_Handler,
+		},
+		{
+			MethodName: "adminChangeRole",
+			Handler:    _User_AdminChangeRole_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

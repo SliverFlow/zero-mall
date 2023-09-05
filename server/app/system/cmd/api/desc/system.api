@@ -43,6 +43,8 @@ service system {
 	post /user/update (NilReq) returns (NilReply)
 	@handler userFindByUUID
 	post /user/findByUUID (NilReq) returns (UserInfoReply)
+	@handler userAdminChangeRole
+	post /user/changeRole (AdminChangeRoleReq) returns (NilReply)
 }
 
 // role 部分

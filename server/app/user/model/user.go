@@ -4,6 +4,7 @@ import (
 	"context"
 	"gorm.io/gorm"
 	"server/common"
+	"server/common/xerr"
 )
 
 type (
@@ -16,6 +17,7 @@ type (
 
 		FindByUsername(ctx context.Context, username string) (enter *User, err error)
 		FindByUUID(ctx context.Context, uuid string) (enter *User, err error)
+		AdminChangeRole(ctx context.Context, username string, role int64) (err error)
 	}
 
 	defaultUserModel struct {
@@ -122,4 +124,14 @@ func (d *defaultUserModel) FindByUUID(ctx context.Context, uuid string) (enter *
 		return nil, err
 	}
 	return &u, nil
+}
+
+// AdminChangeRole 管理员方便测试 修改角色
+func (d *defaultUserModel) AdminChangeRole(ctx context.Context, username string, role int64) (err error) {
+	tx := d.db.WithContext(ctx)
+
+	if username != "admin" {
+		return xerr.NewErrMsg("此用户不能修改角色")
+	}
+	return tx.Model(&User{}).Where("username = ?", username).Update("role", role).Error
 }

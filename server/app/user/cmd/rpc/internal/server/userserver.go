@@ -61,3 +61,8 @@ func (s *UserServer) FindByUUID(ctx context.Context, in *pb.UUIDReq) (*pb.UserIn
 	l := logic.NewFindByUUIDLogic(ctx, s.svcCtx)
 	return l.FindByUUID(in)
 }
+
+func (s *UserServer) AdminChangeRole(ctx context.Context, in *pb.AdminChangeRoleReq) (*pb.Nil, error) {
+	l := logic.NewAdminChangeRoleLogic(ctx, s.svcCtx)
+	return l.AdminChangeRole(in)
+}

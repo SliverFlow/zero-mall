@@ -13,18 +13,19 @@ import (
 )
 
 type (
-	CreateReq      = pb.CreateReq
-	IDReq          = pb.IDReq
-	IDsReq         = pb.IDsReq
-	Nil            = pb.Nil
-	PageReply      = pb.PageReply
-	PageReq        = pb.PageReq
-	UUIDReq        = pb.UUIDReq
-	UpdateReq      = pb.UpdateReq
-	UserInfoReply  = pb.UserInfoReply
-	UserLoginReply = pb.UserLoginReply
-	UserLoginReq   = pb.UserLoginReq
-	UserReply      = pb.UserReply
+	AdminChangeRoleReq = pb.AdminChangeRoleReq
+	CreateReq          = pb.CreateReq
+	IDReq              = pb.IDReq
+	IDsReq             = pb.IDsReq
+	Nil                = pb.Nil
+	PageReply          = pb.PageReply
+	PageReq            = pb.PageReq
+	UUIDReq            = pb.UUIDReq
+	UpdateReq          = pb.UpdateReq
+	UserInfoReply      = pb.UserInfoReply
+	UserLoginReply     = pb.UserLoginReply
+	UserLoginReq       = pb.UserLoginReq
+	UserReply          = pb.UserReply
 
 	User interface {
 		Find(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*UserInfoReply, error)
@@ -35,6 +36,7 @@ type (
 		BatchDelete(ctx context.Context, in *IDsReq, opts ...grpc.CallOption) (*Nil, error)
 		Login(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*UserLoginReply, error)
 		FindByUUID(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*UserInfoReply, error)
+		AdminChangeRole(ctx context.Context, in *AdminChangeRoleReq, opts ...grpc.CallOption) (*Nil, error)
 	}
 
 	defaultUser struct {
@@ -86,4 +88,9 @@ func (m *defaultUser) Login(ctx context.Context, in *UserLoginReq, opts ...grpc.
 func (m *defaultUser) FindByUUID(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*UserInfoReply, error) {
 	client := pb.NewUserClient(m.cli.Conn())
 	return client.FindByUUID(ctx, in, opts...)
+}
+
+func (m *defaultUser) AdminChangeRole(ctx context.Context, in *AdminChangeRoleReq, opts ...grpc.CallOption) (*Nil, error) {
+	client := pb.NewUserClient(m.cli.Conn())
+	return client.AdminChangeRole(ctx, in, opts...)
 }

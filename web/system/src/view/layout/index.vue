@@ -116,7 +116,7 @@
                 />
               </div>
               <span>{{ userInfo.nickname }}</span>
-              <el-icon class="el-icon--right" style="position: relative;top:1px;margin-left: 8px;">
+              <el-icon class="el-icon--right" style="position: relative;top:0;margin-left: 8px;">
                 <arrow-down />
               </el-icon>
             </div>
@@ -124,19 +124,19 @@
               <el-dropdown-menu>
                 <el-dropdown-item>
                   <span style="font-weight: 600;">
-                    当前角色：{{ userInfo.role === 1 ? '系统管理员' : '系统商家' }}
+                    当前角色：{{ userInfo.role === 3 ? '系统管理员' : '系统商家' }}
                   </span>
                 </el-dropdown-item>
                 <el-dropdown-item
-                  v-if="userInfo.username==='202606540@qq.com'"
-                  @click="changeRole(1)"
+                  v-if="userInfo.username==='admin'"
+                  @click="changeRole(3)"
                 >
                   <span>
                     切换为：系统管理员
                   </span>
                 </el-dropdown-item>
                 <el-dropdown-item
-                  v-if="userInfo.username==='202606540@qq.com'"
+                  v-if="userInfo.username==='admin'"
                   @click="changeRole(2)"
                 >
                   <span>
@@ -206,7 +206,7 @@ const changeRole = async(val) => {
   const res = await userChangeRoleApi({ username: userInfo.username, role: val })
   if (res.code === 0) {
     ElMessage({
-      message: res.msg,
+      message: '更换管理员角色成功',
       type: 'success',
       showClose: true,
     })
