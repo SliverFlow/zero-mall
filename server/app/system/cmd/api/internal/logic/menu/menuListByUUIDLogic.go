@@ -28,7 +28,7 @@ func NewMenuListByUUIDLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Me
 
 func (l *MenuListByUUIDLogic) MenuListByUUID(req *types.NilReq) (resp *types.MenuListByRoleReply, err error) {
 	uuid, err := xjwt.GetUserUUID(l.ctx)
-	user, err := l.svcCtx.UserRpc.FindByUUID(l.ctx, &userpb.UUIDReq{UUID: uuid})
+	user, err := l.svcCtx.UserRpc.UserFindByUUID(l.ctx, &userpb.UUIDReq{UUID: uuid})
 	if err != nil {
 		return nil, err
 	}

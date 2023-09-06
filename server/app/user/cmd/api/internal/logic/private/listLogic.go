@@ -27,7 +27,7 @@ func NewListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ListLogic {
 
 func (l *ListLogic) List(req *types.PageReq) (resp *types.ListReply, err error) {
 	// todo: add your logic here and delete this line
-	reply, err := l.svcCtx.UserRpc.List(l.ctx, &pb.PageReq{
+	reply, err := l.svcCtx.UserRpc.UserList(l.ctx, &pb.PageReq{
 		Page:     req.Page,
 		PageSize: req.PageSize,
 		KeyWork:  req.KeyWord,

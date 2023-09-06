@@ -86,13 +86,16 @@ message AdminChangeRoleReq {
 }
 
 service user {
-  rpc find (IDReq) returns (UserInfoReply);
-  rpc list (PageReq) returns (PageReply);
-  rpc create (CreateReq) returns (Nil);
-  rpc update (UpdateReq)  returns (Nil);
-  rpc delete (IDReq) returns (Nil);
-  rpc batchDelete (IDsReq) returns (Nil);
+  // 用户相关
+  rpc userFind (IDReq) returns (UserInfoReply);
+  rpc userList (PageReq) returns (PageReply);
+  rpc userCreate (CreateReq) returns (Nil);
+  rpc userUpdate (UpdateReq)  returns (Nil);
+  rpc userDelete (IDReq) returns (Nil);
+  rpc UserBatchDelete (IDsReq) returns (Nil);
   rpc login(UserLoginReq) returns (UserLoginReply);
-  rpc findByUUID (UUIDReq) returns (UserInfoReply);
+  rpc userFindByUUID (UUIDReq) returns (UserInfoReply);
   rpc adminChangeRole(AdminChangeRoleReq) returns (Nil);
+
+  // 商家相关
 }

@@ -22,34 +22,35 @@ func NewUserServer(svcCtx *svc.ServiceContext) *UserServer {
 	}
 }
 
-func (s *UserServer) Find(ctx context.Context, in *pb.IDReq) (*pb.UserInfoReply, error) {
-	l := logic.NewFindLogic(ctx, s.svcCtx)
-	return l.Find(in)
+// 用户相关
+func (s *UserServer) UserFind(ctx context.Context, in *pb.IDReq) (*pb.UserInfoReply, error) {
+	l := logic.NewUserFindLogic(ctx, s.svcCtx)
+	return l.UserFind(in)
 }
 
-func (s *UserServer) List(ctx context.Context, in *pb.PageReq) (*pb.PageReply, error) {
-	l := logic.NewListLogic(ctx, s.svcCtx)
-	return l.List(in)
+func (s *UserServer) UserList(ctx context.Context, in *pb.PageReq) (*pb.PageReply, error) {
+	l := logic.NewUserListLogic(ctx, s.svcCtx)
+	return l.UserList(in)
 }
 
-func (s *UserServer) Create(ctx context.Context, in *pb.CreateReq) (*pb.Nil, error) {
-	l := logic.NewCreateLogic(ctx, s.svcCtx)
-	return l.Create(in)
+func (s *UserServer) UserCreate(ctx context.Context, in *pb.CreateReq) (*pb.Nil, error) {
+	l := logic.NewUserCreateLogic(ctx, s.svcCtx)
+	return l.UserCreate(in)
 }
 
-func (s *UserServer) Update(ctx context.Context, in *pb.UpdateReq) (*pb.Nil, error) {
-	l := logic.NewUpdateLogic(ctx, s.svcCtx)
-	return l.Update(in)
+func (s *UserServer) UserUpdate(ctx context.Context, in *pb.UpdateReq) (*pb.Nil, error) {
+	l := logic.NewUserUpdateLogic(ctx, s.svcCtx)
+	return l.UserUpdate(in)
 }
 
-func (s *UserServer) Delete(ctx context.Context, in *pb.IDReq) (*pb.Nil, error) {
-	l := logic.NewDeleteLogic(ctx, s.svcCtx)
-	return l.Delete(in)
+func (s *UserServer) UserDelete(ctx context.Context, in *pb.IDReq) (*pb.Nil, error) {
+	l := logic.NewUserDeleteLogic(ctx, s.svcCtx)
+	return l.UserDelete(in)
 }
 
-func (s *UserServer) BatchDelete(ctx context.Context, in *pb.IDsReq) (*pb.Nil, error) {
-	l := logic.NewBatchDeleteLogic(ctx, s.svcCtx)
-	return l.BatchDelete(in)
+func (s *UserServer) UserBatchDelete(ctx context.Context, in *pb.IDsReq) (*pb.Nil, error) {
+	l := logic.NewUserBatchDeleteLogic(ctx, s.svcCtx)
+	return l.UserBatchDelete(in)
 }
 
 func (s *UserServer) Login(ctx context.Context, in *pb.UserLoginReq) (*pb.UserLoginReply, error) {
@@ -57,9 +58,9 @@ func (s *UserServer) Login(ctx context.Context, in *pb.UserLoginReq) (*pb.UserLo
 	return l.Login(in)
 }
 
-func (s *UserServer) FindByUUID(ctx context.Context, in *pb.UUIDReq) (*pb.UserInfoReply, error) {
-	l := logic.NewFindByUUIDLogic(ctx, s.svcCtx)
-	return l.FindByUUID(in)
+func (s *UserServer) UserFindByUUID(ctx context.Context, in *pb.UUIDReq) (*pb.UserInfoReply, error) {
+	l := logic.NewUserFindByUUIDLogic(ctx, s.svcCtx)
+	return l.UserFindByUUID(in)
 }
 
 func (s *UserServer) AdminChangeRole(ctx context.Context, in *pb.AdminChangeRoleReq) (*pb.Nil, error) {

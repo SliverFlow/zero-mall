@@ -25,7 +25,7 @@ func NewFindLogic(ctx context.Context, svcCtx *svc.ServiceContext) *FindLogic {
 }
 
 func (l *FindLogic) Find(req *types.IdReq) (resp *types.UserReply, err error) {
-	reply, err := l.svcCtx.UserRpc.Find(l.ctx, &pb.IDReq{ID: req.Id})
+	reply, err := l.svcCtx.UserRpc.UserFind(l.ctx, &pb.IDReq{ID: req.Id})
 	if err != nil {
 		return nil, err
 	}

@@ -9,3 +9,17 @@ Etcd:
 Log:
   ServiceName: product-rpc
   Level: info
+
+Mysql:
+  Path: 127.0.0.1
+  Password: ''
+  #  Path: 121.37.20.40
+  #  Password: '123456'
+  Port: 3306
+  Dbname: zpshop
+  Username: root
+  MaxIdleConns: 10
+  MaxOpenConns: 10
+  LogMode: "dev"
+  LogZap: false
+  Config: charset=utf8mb4&parseTime=True&loc=Local

@@ -28,7 +28,7 @@ func NewUserFindByUUIDLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Us
 
 func (l *UserFindByUUIDLogic) UserFindByUUID(req *types.NilReq) (resp *types.UserInfoReply, err error) {
 	uuid, _ := xjwt.GetUserUUID(l.ctx)
-	reply, err := l.svcCtx.UserRpc.FindByUUID(l.ctx, &pb.UUIDReq{UUID: uuid})
+	reply, err := l.svcCtx.UserRpc.UserFindByUUID(l.ctx, &pb.UUIDReq{UUID: uuid})
 	if err != nil {
 		return nil, err
 	}

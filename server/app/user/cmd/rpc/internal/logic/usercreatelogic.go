@@ -5,29 +5,30 @@ import (
 	"github.com/jinzhu/copier"
 	uuid "github.com/satori/go.uuid"
 	"google.golang.org/grpc/status"
-	"server/app/user/cmd/rpc/internal/svc"
-	"server/app/user/cmd/rpc/pb"
 	"server/app/user/model"
 	"server/common"
+
+	"server/app/user/cmd/rpc/internal/svc"
+	"server/app/user/cmd/rpc/pb"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type CreateLogic struct {
+type UserCreateLogic struct {
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 	logx.Logger
 }
 
-func NewCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CreateLogic {
-	return &CreateLogic{
+func NewUserCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserCreateLogic {
+	return &UserCreateLogic{
 		ctx:    ctx,
 		svcCtx: svcCtx,
 		Logger: logx.WithContext(ctx),
 	}
 }
 
-func (l *CreateLogic) Create(in *pb.CreateReq) (*pb.Nil, error) {
+func (l *UserCreateLogic) UserCreate(in *pb.CreateReq) (*pb.Nil, error) {
 	var u model.User
 	_ = copier.Copy(&u, in)
 	u.Password = common.BcryptHash(in.Password)

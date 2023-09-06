@@ -12,21 +12,21 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type FindByUUIDLogic struct {
+type UserFindByUUIDLogic struct {
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 	logx.Logger
 }
 
-func NewFindByUUIDLogic(ctx context.Context, svcCtx *svc.ServiceContext) *FindByUUIDLogic {
-	return &FindByUUIDLogic{
+func NewUserFindByUUIDLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserFindByUUIDLogic {
+	return &UserFindByUUIDLogic{
 		ctx:    ctx,
 		svcCtx: svcCtx,
 		Logger: logx.WithContext(ctx),
 	}
 }
 
-func (l *FindByUUIDLogic) FindByUUID(in *pb.UUIDReq) (*pb.UserInfoReply, error) {
+func (l *UserFindByUUIDLogic) UserFindByUUID(in *pb.UUIDReq) (*pb.UserInfoReply, error) {
 	user, err := l.svcCtx.UserModel.UserFindByUUID(l.ctx, in.UUID)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -36,7 +36,5 @@ func (l *FindByUUIDLogic) FindByUUID(in *pb.UUIDReq) (*pb.UserInfoReply, error) 
 	}
 
 	u := copyUserFoReply(user)
-	return &pb.UserInfoReply{
-		User: u,
-	}, nil
+	return &pb.UserInfoReply{User: u}, nil
 }

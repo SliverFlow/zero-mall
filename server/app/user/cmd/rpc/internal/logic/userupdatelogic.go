@@ -2,8 +2,8 @@ package logic
 
 import (
 	"context"
-	"errors"
 	"github.com/jinzhu/copier"
+	"github.com/pkg/errors"
 	"google.golang.org/grpc/status"
 	"gorm.io/gorm"
 	"server/app/user/model"
@@ -14,22 +14,21 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type UpdateLogic struct {
+type UserUpdateLogic struct {
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 	logx.Logger
 }
 
-func NewUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UpdateLogic {
-	return &UpdateLogic{
+func NewUserUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserUpdateLogic {
+	return &UserUpdateLogic{
 		ctx:    ctx,
 		svcCtx: svcCtx,
 		Logger: logx.WithContext(ctx),
 	}
 }
 
-// Update 更新用户信息
-func (l *UpdateLogic) Update(in *pb.UpdateReq) (*pb.Nil, error) {
+func (l *UserUpdateLogic) UserUpdate(in *pb.UpdateReq) (*pb.Nil, error) {
 	var u model.User
 	_ = copier.Copy(&u, in)
 	u.ID = uint(int(in.ID))

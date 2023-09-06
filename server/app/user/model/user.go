@@ -9,14 +9,14 @@ import (
 
 type (
 	userModel interface { // 数据库操作接口
-		Create(ctx context.Context, u *User) error
-		Delete(ctx context.Context, id int64) (err error)
-		Update(ctx context.Context, u *User) (err error)
-		Find(ctx context.Context, id int64) (enter *User, err error)
-		List(ctx context.Context, page *common.PageInfo) (enter *[]User, total int64, err error)
+		UserCreate(ctx context.Context, u *User) error
+		UserDelete(ctx context.Context, id int64) (err error)
+		UserUpdate(ctx context.Context, u *User) (err error)
+		UserFind(ctx context.Context, id int64) (enter *User, err error)
+		UserList(ctx context.Context, page *common.PageInfo) (enter *[]User, total int64, err error)
 
-		FindByUsername(ctx context.Context, username string) (enter *User, err error)
-		FindByUUID(ctx context.Context, uuid string) (enter *User, err error)
+		UserFindByUsername(ctx context.Context, username string) (enter *User, err error)
+		UserFindByUUID(ctx context.Context, uuid string) (enter *User, err error)
 		AdminChangeRole(ctx context.Context, username string, role int64) (err error)
 	}
 
@@ -45,7 +45,7 @@ func newUserModel(db *gorm.DB) *defaultUserModel {
 	return &defaultUserModel{db}
 }
 
-func (d *defaultUserModel) Create(ctx context.Context, u *User) (err error) {
+func (d *defaultUserModel) UserCreate(ctx context.Context, u *User) (err error) {
 	tx := d.db.WithContext(ctx)
 
 	if err = tx.Model(&User{}).Create(u).Error; err != nil {
@@ -54,7 +54,7 @@ func (d *defaultUserModel) Create(ctx context.Context, u *User) (err error) {
 	return nil
 }
 
-func (d *defaultUserModel) Delete(ctx context.Context, id int64) (err error) {
+func (d *defaultUserModel) UserDelete(ctx context.Context, id int64) (err error) {
 	tx := d.db.WithContext(ctx)
 
 	if err = tx.Where("id = ?", id).Delete(&User{}).Error; err != nil {
@@ -64,7 +64,7 @@ func (d *defaultUserModel) Delete(ctx context.Context, id int64) (err error) {
 	return nil
 }
 
-func (d *defaultUserModel) Update(ctx context.Context, u *User) (err error) {
+func (d *defaultUserModel) UserUpdate(ctx context.Context, u *User) (err error) {
 	tx := d.db.WithContext(ctx)
 
 	um := make(map[string]any)
@@ -79,7 +79,7 @@ func (d *defaultUserModel) Update(ctx context.Context, u *User) (err error) {
 	return tx.Model(&User{}).Where("id = ?", u.ID).Updates(&um).Error
 }
 
-func (d *defaultUserModel) Find(ctx context.Context, id int64) (enter *User, err error) {
+func (d *defaultUserModel) UserFind(ctx context.Context, id int64) (enter *User, err error) {
 	tx := d.db.WithContext(ctx)
 
 	var u User
@@ -90,7 +90,7 @@ func (d *defaultUserModel) Find(ctx context.Context, id int64) (enter *User, err
 	return &u, nil
 }
 
-func (d *defaultUserModel) List(ctx context.Context, page *common.PageInfo) (enter *[]User, total int64, err error) {
+func (d *defaultUserModel) UserList(ctx context.Context, page *common.PageInfo) (enter *[]User, total int64, err error) {
 	tx := d.db.WithContext(ctx)
 
 	limit, offset, keyWord := page.LimitAndOffsetAndKeyWord()
@@ -108,7 +108,7 @@ func (d *defaultUserModel) List(ctx context.Context, page *common.PageInfo) (ent
 	return &list, total, nil
 }
 
-func (d *defaultUserModel) FindByUsername(ctx context.Context, username string) (enter *User, err error) {
+func (d *defaultUserModel) UserFindByUsername(ctx context.Context, username string) (enter *User, err error) {
 	tx := d.db.WithContext(ctx)
 	var u User
 	if err = tx.Model(&User{}).Where("username = ?", username).First(&u).Error; err != nil {
@@ -117,7 +117,7 @@ func (d *defaultUserModel) FindByUsername(ctx context.Context, username string) 
 	return &u, nil
 }
 
-func (d *defaultUserModel) FindByUUID(ctx context.Context, uuid string) (enter *User, err error) {
+func (d *defaultUserModel) UserFindByUUID(ctx context.Context, uuid string) (enter *User, err error) {
 	tx := d.db.WithContext(ctx)
 	var u User
 	if err = tx.Model(&User{}).Where("uuid = ?", uuid).First(&u).Error; err != nil {

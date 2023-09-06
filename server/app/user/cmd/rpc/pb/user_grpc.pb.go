@@ -22,14 +22,15 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserClient interface {
-	Find(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*UserInfoReply, error)
-	List(ctx context.Context, in *PageReq, opts ...grpc.CallOption) (*PageReply, error)
-	Create(ctx context.Context, in *CreateReq, opts ...grpc.CallOption) (*Nil, error)
-	Update(ctx context.Context, in *UpdateReq, opts ...grpc.CallOption) (*Nil, error)
-	Delete(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*Nil, error)
-	BatchDelete(ctx context.Context, in *IDsReq, opts ...grpc.CallOption) (*Nil, error)
+	// 用户相关
+	UserFind(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*UserInfoReply, error)
+	UserList(ctx context.Context, in *PageReq, opts ...grpc.CallOption) (*PageReply, error)
+	UserCreate(ctx context.Context, in *CreateReq, opts ...grpc.CallOption) (*Nil, error)
+	UserUpdate(ctx context.Context, in *UpdateReq, opts ...grpc.CallOption) (*Nil, error)
+	UserDelete(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*Nil, error)
+	UserBatchDelete(ctx context.Context, in *IDsReq, opts ...grpc.CallOption) (*Nil, error)
 	Login(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*UserLoginReply, error)
-	FindByUUID(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*UserInfoReply, error)
+	UserFindByUUID(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*UserInfoReply, error)
 	AdminChangeRole(ctx context.Context, in *AdminChangeRoleReq, opts ...grpc.CallOption) (*Nil, error)
 }
 
@@ -41,54 +42,54 @@ func NewUserClient(cc grpc.ClientConnInterface) UserClient {
 	return &userClient{cc}
 }
 
-func (c *userClient) Find(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*UserInfoReply, error) {
+func (c *userClient) UserFind(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*UserInfoReply, error) {
 	out := new(UserInfoReply)
-	err := c.cc.Invoke(ctx, "/pb.user/find", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/pb.user/userFind", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *userClient) List(ctx context.Context, in *PageReq, opts ...grpc.CallOption) (*PageReply, error) {
+func (c *userClient) UserList(ctx context.Context, in *PageReq, opts ...grpc.CallOption) (*PageReply, error) {
 	out := new(PageReply)
-	err := c.cc.Invoke(ctx, "/pb.user/list", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/pb.user/userList", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *userClient) Create(ctx context.Context, in *CreateReq, opts ...grpc.CallOption) (*Nil, error) {
+func (c *userClient) UserCreate(ctx context.Context, in *CreateReq, opts ...grpc.CallOption) (*Nil, error) {
 	out := new(Nil)
-	err := c.cc.Invoke(ctx, "/pb.user/create", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/pb.user/userCreate", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *userClient) Update(ctx context.Context, in *UpdateReq, opts ...grpc.CallOption) (*Nil, error) {
+func (c *userClient) UserUpdate(ctx context.Context, in *UpdateReq, opts ...grpc.CallOption) (*Nil, error) {
 	out := new(Nil)
-	err := c.cc.Invoke(ctx, "/pb.user/update", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/pb.user/userUpdate", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *userClient) Delete(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*Nil, error) {
+func (c *userClient) UserDelete(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*Nil, error) {
 	out := new(Nil)
-	err := c.cc.Invoke(ctx, "/pb.user/delete", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/pb.user/userDelete", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *userClient) BatchDelete(ctx context.Context, in *IDsReq, opts ...grpc.CallOption) (*Nil, error) {
+func (c *userClient) UserBatchDelete(ctx context.Context, in *IDsReq, opts ...grpc.CallOption) (*Nil, error) {
 	out := new(Nil)
-	err := c.cc.Invoke(ctx, "/pb.user/batchDelete", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/pb.user/UserBatchDelete", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -104,9 +105,9 @@ func (c *userClient) Login(ctx context.Context, in *UserLoginReq, opts ...grpc.C
 	return out, nil
 }
 
-func (c *userClient) FindByUUID(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*UserInfoReply, error) {
+func (c *userClient) UserFindByUUID(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*UserInfoReply, error) {
 	out := new(UserInfoReply)
-	err := c.cc.Invoke(ctx, "/pb.user/findByUUID", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/pb.user/userFindByUUID", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -126,14 +127,15 @@ func (c *userClient) AdminChangeRole(ctx context.Context, in *AdminChangeRoleReq
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
 type UserServer interface {
-	Find(context.Context, *IDReq) (*UserInfoReply, error)
-	List(context.Context, *PageReq) (*PageReply, error)
-	Create(context.Context, *CreateReq) (*Nil, error)
-	Update(context.Context, *UpdateReq) (*Nil, error)
-	Delete(context.Context, *IDReq) (*Nil, error)
-	BatchDelete(context.Context, *IDsReq) (*Nil, error)
+	// 用户相关
+	UserFind(context.Context, *IDReq) (*UserInfoReply, error)
+	UserList(context.Context, *PageReq) (*PageReply, error)
+	UserCreate(context.Context, *CreateReq) (*Nil, error)
+	UserUpdate(context.Context, *UpdateReq) (*Nil, error)
+	UserDelete(context.Context, *IDReq) (*Nil, error)
+	UserBatchDelete(context.Context, *IDsReq) (*Nil, error)
 	Login(context.Context, *UserLoginReq) (*UserLoginReply, error)
-	FindByUUID(context.Context, *UUIDReq) (*UserInfoReply, error)
+	UserFindByUUID(context.Context, *UUIDReq) (*UserInfoReply, error)
 	AdminChangeRole(context.Context, *AdminChangeRoleReq) (*Nil, error)
 	mustEmbedUnimplementedUserServer()
 }
@@ -142,29 +144,29 @@ type UserServer interface {
 type UnimplementedUserServer struct {
 }
 
-func (UnimplementedUserServer) Find(context.Context, *IDReq) (*UserInfoReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Find not implemented")
+func (UnimplementedUserServer) UserFind(context.Context, *IDReq) (*UserInfoReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserFind not implemented")
 }
-func (UnimplementedUserServer) List(context.Context, *PageReq) (*PageReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+func (UnimplementedUserServer) UserList(context.Context, *PageReq) (*PageReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserList not implemented")
 }
-func (UnimplementedUserServer) Create(context.Context, *CreateReq) (*Nil, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
+func (UnimplementedUserServer) UserCreate(context.Context, *CreateReq) (*Nil, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserCreate not implemented")
 }
-func (UnimplementedUserServer) Update(context.Context, *UpdateReq) (*Nil, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+func (UnimplementedUserServer) UserUpdate(context.Context, *UpdateReq) (*Nil, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserUpdate not implemented")
 }
-func (UnimplementedUserServer) Delete(context.Context, *IDReq) (*Nil, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+func (UnimplementedUserServer) UserDelete(context.Context, *IDReq) (*Nil, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserDelete not implemented")
 }
-func (UnimplementedUserServer) BatchDelete(context.Context, *IDsReq) (*Nil, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method BatchDelete not implemented")
+func (UnimplementedUserServer) UserBatchDelete(context.Context, *IDsReq) (*Nil, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserBatchDelete not implemented")
 }
 func (UnimplementedUserServer) Login(context.Context, *UserLoginReq) (*UserLoginReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
 }
-func (UnimplementedUserServer) FindByUUID(context.Context, *UUIDReq) (*UserInfoReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method FindByUUID not implemented")
+func (UnimplementedUserServer) UserFindByUUID(context.Context, *UUIDReq) (*UserInfoReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserFindByUUID not implemented")
 }
 func (UnimplementedUserServer) AdminChangeRole(context.Context, *AdminChangeRoleReq) (*Nil, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AdminChangeRole not implemented")
@@ -182,110 +184,110 @@ func RegisterUserServer(s grpc.ServiceRegistrar, srv UserServer) {
 	s.RegisterService(&User_ServiceDesc, srv)
 }
 
-func _User_Find_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _User_UserFind_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(IDReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServer).Find(ctx, in)
+		return srv.(UserServer).UserFind(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.user/find",
+		FullMethod: "/pb.user/userFind",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).Find(ctx, req.(*IDReq))
+		return srv.(UserServer).UserFind(ctx, req.(*IDReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _User_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _User_UserList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(PageReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServer).List(ctx, in)
+		return srv.(UserServer).UserList(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.user/list",
+		FullMethod: "/pb.user/userList",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).List(ctx, req.(*PageReq))
+		return srv.(UserServer).UserList(ctx, req.(*PageReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _User_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _User_UserCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServer).Create(ctx, in)
+		return srv.(UserServer).UserCreate(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.user/create",
+		FullMethod: "/pb.user/userCreate",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).Create(ctx, req.(*CreateReq))
+		return srv.(UserServer).UserCreate(ctx, req.(*CreateReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _User_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _User_UserUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServer).Update(ctx, in)
+		return srv.(UserServer).UserUpdate(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.user/update",
+		FullMethod: "/pb.user/userUpdate",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).Update(ctx, req.(*UpdateReq))
+		return srv.(UserServer).UserUpdate(ctx, req.(*UpdateReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _User_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _User_UserDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(IDReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServer).Delete(ctx, in)
+		return srv.(UserServer).UserDelete(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.user/delete",
+		FullMethod: "/pb.user/userDelete",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).Delete(ctx, req.(*IDReq))
+		return srv.(UserServer).UserDelete(ctx, req.(*IDReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _User_BatchDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _User_UserBatchDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(IDsReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServer).BatchDelete(ctx, in)
+		return srv.(UserServer).UserBatchDelete(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.user/batchDelete",
+		FullMethod: "/pb.user/UserBatchDelete",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).BatchDelete(ctx, req.(*IDsReq))
+		return srv.(UserServer).UserBatchDelete(ctx, req.(*IDsReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -308,20 +310,20 @@ func _User_Login_Handler(srv interface{}, ctx context.Context, dec func(interfac
 	return interceptor(ctx, in, info, handler)
 }
 
-func _User_FindByUUID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _User_UserFindByUUID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UUIDReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServer).FindByUUID(ctx, in)
+		return srv.(UserServer).UserFindByUUID(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.user/findByUUID",
+		FullMethod: "/pb.user/userFindByUUID",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).FindByUUID(ctx, req.(*UUIDReq))
+		return srv.(UserServer).UserFindByUUID(ctx, req.(*UUIDReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -352,36 +354,36 @@ var User_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*UserServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "find",
-			Handler:    _User_Find_Handler,
+			MethodName: "userFind",
+			Handler:    _User_UserFind_Handler,
 		},
 		{
-			MethodName: "list",
-			Handler:    _User_List_Handler,
+			MethodName: "userList",
+			Handler:    _User_UserList_Handler,
 		},
 		{
-			MethodName: "create",
-			Handler:    _User_Create_Handler,
+			MethodName: "userCreate",
+			Handler:    _User_UserCreate_Handler,
 		},
 		{
-			MethodName: "update",
-			Handler:    _User_Update_Handler,
+			MethodName: "userUpdate",
+			Handler:    _User_UserUpdate_Handler,
 		},
 		{
-			MethodName: "delete",
-			Handler:    _User_Delete_Handler,
+			MethodName: "userDelete",
+			Handler:    _User_UserDelete_Handler,
 		},
 		{
-			MethodName: "batchDelete",
-			Handler:    _User_BatchDelete_Handler,
+			MethodName: "UserBatchDelete",
+			Handler:    _User_UserBatchDelete_Handler,
 		},
 		{
 			MethodName: "login",
 			Handler:    _User_Login_Handler,
 		},
 		{
-			MethodName: "findByUUID",
-			Handler:    _User_FindByUUID_Handler,
+			MethodName: "userFindByUUID",
+			Handler:    _User_UserFindByUUID_Handler,
 		},
 		{
 			MethodName: "adminChangeRole",

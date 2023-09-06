@@ -3,28 +3,29 @@ package logic
 import (
 	"context"
 	"google.golang.org/grpc/status"
+	"server/common"
+
 	"server/app/user/cmd/rpc/internal/svc"
 	"server/app/user/cmd/rpc/pb"
-	"server/common"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type ListLogic struct {
+type UserListLogic struct {
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 	logx.Logger
 }
 
-func NewListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ListLogic {
-	return &ListLogic{
+func NewUserListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserListLogic {
+	return &UserListLogic{
 		ctx:    ctx,
 		svcCtx: svcCtx,
 		Logger: logx.WithContext(ctx),
 	}
 }
 
-func (l *ListLogic) List(in *pb.PageReq) (*pb.PageReply, error) {
+func (l *UserListLogic) UserList(in *pb.PageReq) (*pb.PageReply, error) {
 	list, total, err := l.svcCtx.UserModel.UserList(l.ctx, &common.PageInfo{
 		Page:     int(in.Page),
 		PageSize: int(in.PageSize),
