@@ -1,12 +1,14 @@
 package model
 
 import (
+	"context"
 	"gorm.io/gorm"
 	"server/common"
 )
 
 type (
 	businessModel interface {
+		BusinessCreate(ctx context.Context, business *Business) (err error)
 	}
 
 	defaultBusinessModel struct {
@@ -32,6 +34,13 @@ func (b *Business) TableName() string {
 	return "business"
 }
 
-func newDefaultBusinessModel(db *gorm.DB) *defaultBusinessModel {
+func newBusinessModel(db *gorm.DB) *defaultBusinessModel {
 	return &defaultBusinessModel{db: db}
+}
+
+// BusinessCreate 创建商家信息
+func (d *defaultUserModel) BusinessCreate(ctx context.Context, business *Business) (err error) {
+	tx := d.db.WithContext(ctx)
+
+	return tx.Model(&Business{}).Create(business).Error
 }

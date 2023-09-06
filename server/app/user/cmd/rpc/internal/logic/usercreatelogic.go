@@ -31,10 +31,16 @@ func NewUserCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserCr
 func (l *UserCreateLogic) UserCreate(in *pb.CreateReq) (*pb.Nil, error) {
 	var u model.User
 	_ = copier.Copy(&u, in)
+
+	ok, err := l.svcCtx.UserModel.CheckUsername(l.ctx, u.Username)
+	if !ok {
+		return nil, status.Errorf(300001, "用户名已存在")
+	}
+
 	u.Password = common.BcryptHash(in.Password)
 	u.UUID = uuid.NewV4().String()
 
-	err := l.svcCtx.UserModel.UserCreate(l.ctx, &u)
+	err = l.svcCtx.UserModel.UserCreate(l.ctx, &u)
 	if err != nil {
 		return nil, status.Errorf(100001, "创建用户失败")
 	}

@@ -8,38 +8,56 @@ info(
 	version: "v1.0"
 )
 import "api/user.api"
+import "api/business.api"
+import "api/base.api"
 
 // user 不需要鉴权的
 @server(
 	group : public
-	prefix : user
+	prefix : v1
 )
 service user {
-	@handler health
-	get /health (NilReq) returns (HealthReply)
-	
 	@handler login
 	post /login (LoginReq) returns (LoginReply)
 	
-	@handler create
-	post /create (CreateReq) returns (NilReply)
+	@handler userCreate
+	post /user/create (CreateReq) returns (NilReply)
 }
 
 // user 需要鉴权的
 @server(
 	group : private
-	prefix : user
+	prefix : v1
 	middleware : Auth
 )
 service user {
+	@handler userFind
+	post /user/find (IdReq) returns (UserReply)
 	
-	@handler find
-	post /find (IdReq) returns (UserReply)
+	@handler userList
+	post /user/list (PageReq) returns (ListReply)
 	
-	@handler list
-	post /list (PageReq) returns (ListReply)
-	
-	@handler update
-	post /update (UpdateReq) returns (NilReply)
-	
+	@handler userUpdate
+	post /user/update (UpdateReq) returns (NilReply)
+}
+
+// business 不鉴权的
+@server(
+	group : public
+	prefix : v1
+)
+service user {
+	@handler businessCreate
+	post /business/create (CreateBusinessReq) returns (Nil)
+}
+
+// business 需要鉴权的
+@server(
+	group : private
+	prefix : v1
+	middleware : Auth
+)
+service user {
+	@handler businessFind
+	post /business/find (Nil) returns (Nil)
 }

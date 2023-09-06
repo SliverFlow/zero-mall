@@ -14,6 +14,8 @@ import (
 
 type (
 	AdminChangeRoleReq = pb.AdminChangeRoleReq
+	Business           = pb.Business
+	BusinessCreateReq  = pb.BusinessCreateReq
 	CreateReq          = pb.CreateReq
 	IDReq              = pb.IDReq
 	IDsReq             = pb.IDsReq
@@ -26,10 +28,12 @@ type (
 	UserLoginReply     = pb.UserLoginReply
 	UserLoginReq       = pb.UserLoginReq
 	UserReply          = pb.UserReply
+	UsernameReq        = pb.UsernameReq
 
 	User interface {
 		// 用户相关
 		UserFind(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*UserInfoReply, error)
+		UserFindByUsername(ctx context.Context, in *UsernameReq, opts ...grpc.CallOption) (*UserInfoReply, error)
 		UserList(ctx context.Context, in *PageReq, opts ...grpc.CallOption) (*PageReply, error)
 		UserCreate(ctx context.Context, in *CreateReq, opts ...grpc.CallOption) (*Nil, error)
 		UserUpdate(ctx context.Context, in *UpdateReq, opts ...grpc.CallOption) (*Nil, error)
@@ -38,6 +42,8 @@ type (
 		Login(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*UserLoginReply, error)
 		UserFindByUUID(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*UserInfoReply, error)
 		AdminChangeRole(ctx context.Context, in *AdminChangeRoleReq, opts ...grpc.CallOption) (*Nil, error)
+		// 商家相关
+		BusinessCreate(ctx context.Context, in *BusinessCreateReq, opts ...grpc.CallOption) (*Nil, error)
 	}
 
 	defaultUser struct {
@@ -55,6 +61,11 @@ func NewUser(cli zrpc.Client) User {
 func (m *defaultUser) UserFind(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*UserInfoReply, error) {
 	client := pb.NewUserClient(m.cli.Conn())
 	return client.UserFind(ctx, in, opts...)
+}
+
+func (m *defaultUser) UserFindByUsername(ctx context.Context, in *UsernameReq, opts ...grpc.CallOption) (*UserInfoReply, error) {
+	client := pb.NewUserClient(m.cli.Conn())
+	return client.UserFindByUsername(ctx, in, opts...)
 }
 
 func (m *defaultUser) UserList(ctx context.Context, in *PageReq, opts ...grpc.CallOption) (*PageReply, error) {
@@ -95,4 +106,10 @@ func (m *defaultUser) UserFindByUUID(ctx context.Context, in *UUIDReq, opts ...g
 func (m *defaultUser) AdminChangeRole(ctx context.Context, in *AdminChangeRoleReq, opts ...grpc.CallOption) (*Nil, error) {
 	client := pb.NewUserClient(m.cli.Conn())
 	return client.AdminChangeRole(ctx, in, opts...)
+}
+
+// 商家相关
+func (m *defaultUser) BusinessCreate(ctx context.Context, in *BusinessCreateReq, opts ...grpc.CallOption) (*Nil, error) {
+	client := pb.NewUserClient(m.cli.Conn())
+	return client.BusinessCreate(ctx, in, opts...)
 }

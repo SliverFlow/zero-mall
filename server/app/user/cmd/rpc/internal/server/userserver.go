@@ -28,6 +28,11 @@ func (s *UserServer) UserFind(ctx context.Context, in *pb.IDReq) (*pb.UserInfoRe
 	return l.UserFind(in)
 }
 
+func (s *UserServer) UserFindByUsername(ctx context.Context, in *pb.UsernameReq) (*pb.UserInfoReply, error) {
+	l := logic.NewUserFindByUsernameLogic(ctx, s.svcCtx)
+	return l.UserFindByUsername(in)
+}
+
 func (s *UserServer) UserList(ctx context.Context, in *pb.PageReq) (*pb.PageReply, error) {
 	l := logic.NewUserListLogic(ctx, s.svcCtx)
 	return l.UserList(in)
@@ -66,4 +71,10 @@ func (s *UserServer) UserFindByUUID(ctx context.Context, in *pb.UUIDReq) (*pb.Us
 func (s *UserServer) AdminChangeRole(ctx context.Context, in *pb.AdminChangeRoleReq) (*pb.Nil, error) {
 	l := logic.NewAdminChangeRoleLogic(ctx, s.svcCtx)
 	return l.AdminChangeRole(in)
+}
+
+// 商家相关
+func (s *UserServer) BusinessCreate(ctx context.Context, in *pb.BusinessCreateReq) (*pb.Nil, error) {
+	l := logic.NewBusinessCreateLogic(ctx, s.svcCtx)
+	return l.BusinessCreate(in)
 }

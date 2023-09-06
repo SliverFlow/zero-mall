@@ -15,22 +15,17 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
 		[]rest.Route{
 			{
-				Method:  http.MethodGet,
-				Path:    "/health",
-				Handler: public.HealthHandler(serverCtx),
-			},
-			{
 				Method:  http.MethodPost,
 				Path:    "/login",
 				Handler: public.LoginHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
-				Path:    "/create",
-				Handler: public.CreateHandler(serverCtx),
+				Path:    "/user/create",
+				Handler: public.UserCreateHandler(serverCtx),
 			},
 		},
-		rest.WithPrefix("/user"),
+		rest.WithPrefix("/v1"),
 	)
 
 	server.AddRoutes(
@@ -39,21 +34,46 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
-					Path:    "/find",
-					Handler: private.FindHandler(serverCtx),
+					Path:    "/user/find",
+					Handler: private.UserFindHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
-					Path:    "/list",
-					Handler: private.ListHandler(serverCtx),
+					Path:    "/user/list",
+					Handler: private.UserListHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
-					Path:    "/update",
-					Handler: private.UpdateHandler(serverCtx),
+					Path:    "/user/update",
+					Handler: private.UserUpdateHandler(serverCtx),
 				},
 			}...,
 		),
-		rest.WithPrefix("/user"),
+		rest.WithPrefix("/v1"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/business/create",
+				Handler: public.BusinessCreateHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/v1"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/business/find",
+					Handler: private.BusinessFindHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/v1"),
 	)
 }

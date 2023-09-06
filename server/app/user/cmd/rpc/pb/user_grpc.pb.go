@@ -24,6 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type UserClient interface {
 	// 用户相关
 	UserFind(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*UserInfoReply, error)
+	UserFindByUsername(ctx context.Context, in *UsernameReq, opts ...grpc.CallOption) (*UserInfoReply, error)
 	UserList(ctx context.Context, in *PageReq, opts ...grpc.CallOption) (*PageReply, error)
 	UserCreate(ctx context.Context, in *CreateReq, opts ...grpc.CallOption) (*Nil, error)
 	UserUpdate(ctx context.Context, in *UpdateReq, opts ...grpc.CallOption) (*Nil, error)
@@ -32,6 +33,8 @@ type UserClient interface {
 	Login(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*UserLoginReply, error)
 	UserFindByUUID(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*UserInfoReply, error)
 	AdminChangeRole(ctx context.Context, in *AdminChangeRoleReq, opts ...grpc.CallOption) (*Nil, error)
+	// 商家相关
+	BusinessCreate(ctx context.Context, in *BusinessCreateReq, opts ...grpc.CallOption) (*Nil, error)
 }
 
 type userClient struct {
@@ -45,6 +48,15 @@ func NewUserClient(cc grpc.ClientConnInterface) UserClient {
 func (c *userClient) UserFind(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*UserInfoReply, error) {
 	out := new(UserInfoReply)
 	err := c.cc.Invoke(ctx, "/pb.user/userFind", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) UserFindByUsername(ctx context.Context, in *UsernameReq, opts ...grpc.CallOption) (*UserInfoReply, error) {
+	out := new(UserInfoReply)
+	err := c.cc.Invoke(ctx, "/pb.user/userFindByUsername", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -123,12 +135,22 @@ func (c *userClient) AdminChangeRole(ctx context.Context, in *AdminChangeRoleReq
 	return out, nil
 }
 
+func (c *userClient) BusinessCreate(ctx context.Context, in *BusinessCreateReq, opts ...grpc.CallOption) (*Nil, error) {
+	out := new(Nil)
+	err := c.cc.Invoke(ctx, "/pb.user/businessCreate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
 type UserServer interface {
 	// 用户相关
 	UserFind(context.Context, *IDReq) (*UserInfoReply, error)
+	UserFindByUsername(context.Context, *UsernameReq) (*UserInfoReply, error)
 	UserList(context.Context, *PageReq) (*PageReply, error)
 	UserCreate(context.Context, *CreateReq) (*Nil, error)
 	UserUpdate(context.Context, *UpdateReq) (*Nil, error)
@@ -137,6 +159,8 @@ type UserServer interface {
 	Login(context.Context, *UserLoginReq) (*UserLoginReply, error)
 	UserFindByUUID(context.Context, *UUIDReq) (*UserInfoReply, error)
 	AdminChangeRole(context.Context, *AdminChangeRoleReq) (*Nil, error)
+	// 商家相关
+	BusinessCreate(context.Context, *BusinessCreateReq) (*Nil, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -146,6 +170,9 @@ type UnimplementedUserServer struct {
 
 func (UnimplementedUserServer) UserFind(context.Context, *IDReq) (*UserInfoReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserFind not implemented")
+}
+func (UnimplementedUserServer) UserFindByUsername(context.Context, *UsernameReq) (*UserInfoReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserFindByUsername not implemented")
 }
 func (UnimplementedUserServer) UserList(context.Context, *PageReq) (*PageReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserList not implemented")
@@ -170,6 +197,9 @@ func (UnimplementedUserServer) UserFindByUUID(context.Context, *UUIDReq) (*UserI
 }
 func (UnimplementedUserServer) AdminChangeRole(context.Context, *AdminChangeRoleReq) (*Nil, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AdminChangeRole not implemented")
+}
+func (UnimplementedUserServer) BusinessCreate(context.Context, *BusinessCreateReq) (*Nil, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BusinessCreate not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -198,6 +228,24 @@ func _User_UserFind_Handler(srv interface{}, ctx context.Context, dec func(inter
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServer).UserFind(ctx, req.(*IDReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_UserFindByUsername_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UsernameReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).UserFindByUsername(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.user/userFindByUsername",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).UserFindByUsername(ctx, req.(*UsernameReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -346,6 +394,24 @@ func _User_AdminChangeRole_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_BusinessCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BusinessCreateReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).BusinessCreate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.user/businessCreate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).BusinessCreate(ctx, req.(*BusinessCreateReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -356,6 +422,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "userFind",
 			Handler:    _User_UserFind_Handler,
+		},
+		{
+			MethodName: "userFindByUsername",
+			Handler:    _User_UserFindByUsername_Handler,
 		},
 		{
 			MethodName: "userList",
@@ -388,6 +458,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "adminChangeRole",
 			Handler:    _User_AdminChangeRole_Handler,
+		},
+		{
+			MethodName: "businessCreate",
+			Handler:    _User_BusinessCreate_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

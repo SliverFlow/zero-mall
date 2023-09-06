@@ -108,7 +108,6 @@
             <el-input v-model="formData.meta.title" placeholder="请输入展示名称" autocomplete="off" />
           </el-form-item>
           <el-form-item prop="title" label="父节点 ID">
-            {{ formData.parentId }}
             <el-cascader
               v-model="formData.parentId"
               style="width:100%"

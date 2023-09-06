@@ -84,10 +84,33 @@ message AdminChangeRoleReq {
   string Username = 1;
   int64 Role = 2;
 }
+message UsernameReq {
+  string Username = 1;
+}
+
+
+// ------------------------------------- Business 相关 ---------------
+message Business {
+  string BusinessID = 1;
+  string UUID = 2;
+  string Name = 3;
+  string Detail = 4;
+  int64 Score = 5;
+  string Image = 6;
+  int64 Status = 7;
+  int64 CreatedAt = 8;
+  int64 UpdatedAt = 9;
+}
+
+message BusinessCreateReq {
+  Business Business = 1;
+  string UUID = 2;
+}
 
 service user {
   // 用户相关
   rpc userFind (IDReq) returns (UserInfoReply);
+  rpc userFindByUsername (UsernameReq) returns (UserInfoReply);
   rpc userList (PageReq) returns (PageReply);
   rpc userCreate (CreateReq) returns (Nil);
   rpc userUpdate (UpdateReq)  returns (Nil);
@@ -98,4 +121,5 @@ service user {
   rpc adminChangeRole(AdminChangeRoleReq) returns (Nil);
 
   // 商家相关
+  rpc businessCreate (BusinessCreateReq) returns (Nil);
 }

@@ -2,6 +2,7 @@ package model
 
 import (
 	"context"
+	"github.com/pkg/errors"
 	"gorm.io/gorm"
 	"server/common"
 	"server/common/xerr"
@@ -18,6 +19,7 @@ type (
 		UserFindByUsername(ctx context.Context, username string) (enter *User, err error)
 		UserFindByUUID(ctx context.Context, uuid string) (enter *User, err error)
 		AdminChangeRole(ctx context.Context, username string, role int64) (err error)
+		CheckUsername(ctx context.Context, username string) (ok bool, err error)
 	}
 
 	defaultUserModel struct {
@@ -134,4 +136,17 @@ func (d *defaultUserModel) AdminChangeRole(ctx context.Context, username string,
 		return xerr.NewErrMsg("此用户不能修改角色")
 	}
 	return tx.Model(&User{}).Where("username = ?", username).Update("role", role).Error
+}
+
+// CheckUsername 验证用户名是否已经存在
+func (d *defaultUserModel) CheckUsername(ctx context.Context, username string) (ok bool, err error) {
+	tx := d.db.WithContext(ctx)
+	var user User
+	if err = tx.Model(&User{}).Where("username = ?", username).First(&user).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return true, nil
+		}
+		return false, err
+	}
+	return false, nil
 }

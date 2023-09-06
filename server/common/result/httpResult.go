@@ -12,7 +12,6 @@ import (
 
 // HttpResult 统一使用这个 http 返回方法
 func HttpResult(r *http.Request, w http.ResponseWriter, resp interface{}, err error) {
-
 	if err != nil {
 		// 错误返回
 		errCode := xerr.SERVER_COMMON_ERROR

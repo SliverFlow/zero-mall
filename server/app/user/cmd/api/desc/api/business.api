@@ -1,0 +1,31 @@
+syntax = "v1"
+
+info(
+    title: "business api file"
+    desc: "商家相关 api"
+    author: "SliverFlow"
+    email: "202606540@qq.com"
+    version: "v1.0"
+)
+
+type Business {
+    BusinessID string `json:"businessId"`
+    UUID string `json:"uuid"`
+    Name string `json:"name"`
+    Detail string `json:"detail"`
+    Score int64 `json:"score"`
+    Image string `json:"image"`
+    Status int64 `json:"status"`
+    CreatedAt int64 `json:"createdAt"`
+    UpdatedAt int64 `json:"updatedAt"`
+}
+
+type CreateBusinessReq {
+    Name string `json:"name"`
+    Detail string `json:"detail"`
+    Image string `json:"image"`
+    Username string `json:"username"`
+    Role int64 `json:"role"`
+    Email string `json:"email"`
+    Password string `json:"password"`
+}

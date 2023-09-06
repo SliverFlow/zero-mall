@@ -72,3 +72,28 @@ type UpdateReq struct {
 	Role     int64  `json:"role"`
 	Status   int64  `json:"status"`
 }
+
+type Business struct {
+	BusinessID string `json:"businessId"`
+	UUID       string `json:"uuid"`
+	Name       string `json:"name"`
+	Detail     string `json:"detail"`
+	Score      int64  `json:"score"`
+	Image      string `json:"image"`
+	Status     int64  `json:"status"`
+	CreatedAt  int64  `json:"createdAt"`
+	UpdatedAt  int64  `json:"updatedAt"`
+}
+
+type CreateBusinessReq struct {
+	Name     string `json:"name"`
+	Detail   string `json:"detail"`
+	Image    string `json:"image"`
+	Username string `json:"username"`
+	Role     int64  `json:"role"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+type Nil struct {
+}

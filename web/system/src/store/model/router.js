@@ -2,7 +2,6 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { menuTreeListApi } from '@/api/system/menu.js'
 import router from '@/router/index.js'
-import { useUserStore } from '@/store/model/user.js'
 
 export const useRouterStore = defineStore('router', () => {
   const menuList = ref([])
