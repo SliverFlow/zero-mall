@@ -49,3 +49,8 @@ func (s *SystemServer) MenuChangeStatus(ctx context.Context, in *pb.MenuChangeSt
 	l := logic.NewMenuChangeStatusLogic(ctx, s.svcCtx)
 	return l.MenuChangeStatus(in)
 }
+
+func (s *SystemServer) MenuCreate(ctx context.Context, in *pb.MenuCreateReq) (*pb.NilReply, error) {
+	l := logic.NewMenuCreateLogic(ctx, s.svcCtx)
+	return l.MenuCreate(in)
+}

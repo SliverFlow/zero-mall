@@ -73,4 +73,6 @@ service system {
 	post /menu/listAllByRole (RoleIDReq) returns (MenuListByRoleReply)
 	@handler menuChangeStatus
 	post /menu/changeStatus (MenuChangeStatusReq) returns (NilReply)
+	@handler menuCreate
+	post /menu/create (MenuCreateReq) returns (NilReply)
 }

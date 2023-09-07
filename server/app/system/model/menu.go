@@ -9,7 +9,7 @@ import (
 type (
 	// 数据库操作方法接口
 	menuModel interface {
-		MenuCreate(ctx context.Context, menu Menu) (err error)
+		MenuCreate(ctx context.Context, menu *Menu) (err error)
 		MenuListByRole(ctx context.Context, role int64) (list *[]Menu, err error)
 		MenuChangeStatus(ctx context.Context, id int64, pid int64, status int64) (err error)
 		MenuTreeListAllByRole(ctx context.Context, role int64) (list *[]Menu, err error)
@@ -44,8 +44,9 @@ func newMenuModel(db *gorm.DB) *defaultMenuModel {
 	return &defaultMenuModel{db}
 }
 
-func (d *defaultMenuModel) MenuCreate(ctx context.Context, menu Menu) (err error) {
-	return nil
+func (d *defaultMenuModel) MenuCreate(ctx context.Context, menu *Menu) (err error) {
+	tx := d.db.WithContext(ctx)
+	return tx.Model(&menu).Create(menu).Error
 }
 
 // MenuListByRole 根据菜单角色获取菜单

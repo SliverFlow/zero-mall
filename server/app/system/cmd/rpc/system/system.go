@@ -16,6 +16,7 @@ type (
 	CreateRole          = pb.CreateRole
 	Menu                = pb.Menu
 	MenuChangeStatusReq = pb.MenuChangeStatusReq
+	MenuCreateReq       = pb.MenuCreateReq
 	MenuListReply       = pb.MenuListReply
 	NilReply            = pb.NilReply
 	NilReq              = pb.NilReq
@@ -33,6 +34,7 @@ type (
 		MenuListByRole(ctx context.Context, in *RoleIDReq, opts ...grpc.CallOption) (*MenuListReply, error)
 		MenuListAllByRole(ctx context.Context, in *RoleIDReq, opts ...grpc.CallOption) (*MenuListReply, error)
 		MenuChangeStatus(ctx context.Context, in *MenuChangeStatusReq, opts ...grpc.CallOption) (*NilReply, error)
+		MenuCreate(ctx context.Context, in *MenuCreateReq, opts ...grpc.CallOption) (*NilReply, error)
 	}
 
 	defaultSystem struct {
@@ -72,4 +74,9 @@ func (m *defaultSystem) MenuListAllByRole(ctx context.Context, in *RoleIDReq, op
 func (m *defaultSystem) MenuChangeStatus(ctx context.Context, in *MenuChangeStatusReq, opts ...grpc.CallOption) (*NilReply, error) {
 	client := pb.NewSystemClient(m.cli.Conn())
 	return client.MenuChangeStatus(ctx, in, opts...)
+}
+
+func (m *defaultSystem) MenuCreate(ctx context.Context, in *MenuCreateReq, opts ...grpc.CallOption) (*NilReply, error) {
+	client := pb.NewSystemClient(m.cli.Conn())
+	return client.MenuCreate(ctx, in, opts...)
 }

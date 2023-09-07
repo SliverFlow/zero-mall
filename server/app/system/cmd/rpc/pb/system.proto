@@ -61,6 +61,17 @@ message MenuChangeStatusReq {
   int64 PID = 2;
   int64 Status = 3;
 }
+message MenuCreateReq {
+  int64 ParentId =2;
+  string Name = 3;
+  string Path = 4;
+  string Component = 5;
+  int64 Sorted = 6;
+  string Title = 7;
+  string Icon = 8;
+  int64 Status = 9;
+  int64 Role = 10;
+}
 
 service system {
   // 系统登录
@@ -73,4 +84,5 @@ service system {
   rpc MenuListByRole (RoleIDReq) returns (MenuListReply);
   rpc MenuListAllByRole (RoleIDReq) returns (MenuListReply);
   rpc MenuChangeStatus (MenuChangeStatusReq) returns (NilReply);
+  rpc MenuCreate (MenuCreateReq) returns (NilReply);
 }

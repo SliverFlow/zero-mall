@@ -102,3 +102,14 @@ type MenuChangeStatusReq struct {
 	PID    int64 `json:"pid"`
 	Status int64 `json:"status"`
 }
+
+type MenuCreateReq struct {
+	ParentId  int64  `json:"parentId"`
+	Name      string `json:"name"`
+	Path      string `json:"path"`
+	Component string `json:"component"`
+	Sorted    int64  `json:"sorted"`
+	Role      int64  `json:"role"`
+	Meta      Meta   `json:"meta"`
+	Status    int64  `json:"status"`
+}

@@ -49,7 +49,7 @@
               />
             </svg>
           </div>
-          <div class="title"><span>{{ route.meta.title }}</span></div>
+          <div class="title"><span>{{ route.matched[1].path === route.path ? "" : route.matched[1].meta.title }} <span v-if="route.matched[1].path !== route.path" class="fn-span">/</span> {{ route.meta.title }}</span></div>
         </div>
         <div class="head-right">
           <div @click="toGithub">
