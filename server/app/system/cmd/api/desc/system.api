@@ -28,7 +28,7 @@ service system {
 	post /login (LoginReq) returns (LoginReply)
 }
 
-// user 部分
+// user 需要鉴权部分
 @server(
 	group : user
 	prefix : system/v1
@@ -45,6 +45,8 @@ service system {
 	post /user/findByUUID (NilReq) returns (UserInfoReply)
 	@handler userAdminChangeRole
 	post /user/changeRole (AdminChangeRoleReq) returns (NilReply)
+	@handler userList
+	post /user/list (PageReq) returns (UserListReply)
 }
 
 // role 部分

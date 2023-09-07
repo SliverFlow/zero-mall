@@ -32,8 +32,8 @@
       <template v-if="v.children && v.children.length === 0">
         <el-tooltip
           :key="v.id"
-          effect="dark"
-          :content="v.title"
+          effect="light"
+          :content="v.meta.title"
           placement="right"
           :disabled="!asideStore.collapseType"
         >

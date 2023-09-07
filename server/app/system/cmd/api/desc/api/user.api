@@ -19,6 +19,7 @@ type User {
     Status int64 `json:"status"`
     CreatedAt int64 `json:"createdAt"`
     UpdatedAt int64 `json:"updatedAt"`
+    Phone string `json:"phone"`
 }
 
 type UserInfoReply {
@@ -27,4 +28,11 @@ type UserInfoReply {
 type AdminChangeRoleReq {
     Username string `json:"username"`
     Role int64 `json:"role"`
+}
+
+type UserListReply {
+    User []User `json:"user"`
+    Total int64 `json:"total"`
+    Page int64 `json:"page"`
+    PageSize int64 `json:"pageSize"`
 }

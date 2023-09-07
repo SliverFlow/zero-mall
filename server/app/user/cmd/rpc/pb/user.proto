@@ -17,6 +17,7 @@ message UserReply {
   int64 Status = 10;
   int64 CreatedAt = 11;
   int64 UpdatedAt = 12;
+  string Phone = 13;
 }
 
 // 用户id 入参

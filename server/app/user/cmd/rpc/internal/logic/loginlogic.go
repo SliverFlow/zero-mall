@@ -28,13 +28,16 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 }
 
 func (l *LoginLogic) Login(in *pb.UserLoginReq) (*pb.UserLoginReply, error) {
-	// todo: add your logic here and delete this line
+
 	user, err := l.svcCtx.UserModel.UserFindByUsername(l.ctx, in.Username)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, status.Errorf(100001, "not find user by username is %s", in.Username)
 		}
 		return nil, err
+	}
+	if user.Status == 0 {
+		return nil, status.Errorf(100001, "用户已经被禁用，请联系管理员解除禁用")
 	}
 	if ok := common.BcryptCheck(in.Password, user.Password); !ok { // 密码比对未成功
 		return nil, status.Errorf(100001, "password check not success")

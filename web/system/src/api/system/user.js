@@ -21,3 +21,11 @@ export const userFindByUUID = () => {
     method: 'post',
   })
 }
+
+export const userListApi = (data) => {
+  return service({
+    url: '/system/v1/user/list',
+    method: 'post',
+    data: data
+  })
+}

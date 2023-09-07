@@ -82,7 +82,7 @@
             </el-button>
             <el-button
               :disabled="scope.row.ID === 2 || scope.row.ID === 3"
-              type="primary"
+              type="danger"
               link
               icon="delete"
               @click="deleteVideoCategory(scope.row.ID)"
@@ -305,16 +305,24 @@ const submitForm = async() => {
   let res
   if (isEdit.value) { // 编辑状态
     res = await menuUpdateApi(formData.value)
+    if (res['code'] === 0) {
+      ElMessage({
+        message: '更新菜单成功',
+        type: 'success',
+        showClose: true,
+      })
+    }
   } else { // 创建状态
     res = await menuCreateApi(formData.value)
+    if (res['code'] === 0) {
+      ElMessage({
+        message: '创建菜单成功',
+        type: 'success',
+        showClose: true,
+      })
+    }
   }
-  if (res['code'] === 0) {
-    ElMessage({
-      message: res.msg,
-      type: 'success',
-      showClose: true,
-    })
-  }
+
   closeDialog()
   await loadData()
 

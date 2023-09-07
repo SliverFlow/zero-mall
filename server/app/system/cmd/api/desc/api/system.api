@@ -47,3 +47,8 @@ type CaptchaReply {
     PicPath string `json:"picPath"`
     CaptchaLength int `json:"captchaLength"`
 }
+type PageReq {
+    Page int64 `json:"page"`
+    PageSize int64 `json:"pageSize"`
+    KeyWord string `json:"keyWord"`
+}

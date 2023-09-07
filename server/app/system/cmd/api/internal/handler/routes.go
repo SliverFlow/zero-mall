@@ -64,6 +64,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Path:    "/user/changeRole",
 					Handler: user.UserAdminChangeRoleHandler(serverCtx),
 				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/user/list",
+					Handler: user.UserListHandler(serverCtx),
+				},
 			}...,
 		),
 		rest.WithPrefix("/system/v1"),

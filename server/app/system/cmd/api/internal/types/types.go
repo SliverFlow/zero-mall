@@ -34,6 +34,12 @@ type CaptchaReply struct {
 	CaptchaLength int    `json:"captchaLength"`
 }
 
+type PageReq struct {
+	Page     int64  `json:"page"`
+	PageSize int64  `json:"pageSize"`
+	KeyWord  string `json:"keyWord"`
+}
+
 type User struct {
 	ID        int64  `json:"ID"`
 	UUID      string `json:"uuid"`
@@ -45,6 +51,7 @@ type User struct {
 	Status    int64  `json:"status"`
 	CreatedAt int64  `json:"createdAt"`
 	UpdatedAt int64  `json:"updatedAt"`
+	Phone     string `json:"phone"`
 }
 
 type UserInfoReply struct {
@@ -54,6 +61,13 @@ type UserInfoReply struct {
 type AdminChangeRoleReq struct {
 	Username string `json:"username"`
 	Role     int64  `json:"role"`
+}
+
+type UserListReply struct {
+	User     []User `json:"user"`
+	Total    int64  `json:"total"`
+	Page     int64  `json:"page"`
+	PageSize int64  `json:"pageSize"`
 }
 
 type Role struct {
