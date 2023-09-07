@@ -28,3 +28,11 @@ export function formatTimeToStr(times, pattern) {
   }
   return d.toLocaleString()
 }
+
+export function formatTimestamp(stamp) {
+  const now = new Date(stamp * 1000)
+  const y = now.getFullYear()
+  const m = now.getMonth() + 1
+  const d = now.getDate()
+  return y + '-' + (m < 10 ? '0' + m : m) + '-' + (d < 10 ? '0' + d : d) + ' ' + now.toTimeString().substr(0, 8)
+}

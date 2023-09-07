@@ -55,12 +55,12 @@
         </el-table-column>
         <el-table-column align="left" label="创建时间" min-width="170">
           <template #default="scope">
-            {{ formatDate(scope.row.createdAt) }}
+            {{ formatTimestamp(scope.row.createdAt) }}
           </template>
         </el-table-column>
         <el-table-column align="left" label="更新时间" min-width="170">
           <template #default="scope">
-            {{ formatDate(scope.row.updatedAt) }}
+            {{ formatTimestamp(scope.row.updatedAt) }}
           </template>
         </el-table-column>
         <el-table-column label="操作" min-width="250" fixed="right">
@@ -175,7 +175,6 @@
 </template>
 <script setup>
 import { ref } from 'vue'
-import { formatDate } from '@/utils/format.js'
 import {
   menuChangeStatusApi,
   menuCreateApi,
@@ -188,6 +187,7 @@ import router from '@/router/index.js'
 import { useMenuStore } from '@/store/model/menu.js'
 import Icon from '@/view/system/menu/component/icon.vue'
 import WarningBar from '@/components/warningBar/warningBar.vue'
+import { formatTimestamp } from '../../../utils/date.js'
 
 const routerStore = useRouterStore()
 const menuStore = useMenuStore()

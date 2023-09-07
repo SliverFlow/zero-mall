@@ -35,6 +35,8 @@ func (l *MenuListAllByRoleLogic) MenuListAllByRole(in *pb.RoleIDReq) (*pb.MenuLi
 	for _, menu := range *list {
 		var m pb.Menu
 		_ = copier.Copy(&m, &menu)
+		m.CreatedAt = menu.CreatedAt.Unix()
+		m.UpdatedAt = menu.UpdatedAt.Unix()
 		enter = append(enter, &m)
 	}
 	return &pb.MenuListReply{List: enter}, nil
