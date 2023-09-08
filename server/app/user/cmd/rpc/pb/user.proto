@@ -102,10 +102,15 @@ message Business {
   int64 CreatedAt = 8;
   int64 UpdatedAt = 9;
 }
-
 message BusinessCreateReq {
   Business Business = 1;
   string UUID = 2;
+}
+message BusinessPageReply {
+  repeated Business Business = 1;
+  int64 Total = 2;
+  int64 Page = 3;
+  int64 PageSize = 4;
 }
 
 service user {
@@ -123,4 +128,6 @@ service user {
 
   // 商家相关
   rpc businessCreate (BusinessCreateReq) returns (Nil);
+  rpc businessList (PageReq) returns (BusinessPageReply);
+
 }

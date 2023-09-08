@@ -16,6 +16,7 @@ type (
 	AdminChangeRoleReq = pb.AdminChangeRoleReq
 	Business           = pb.Business
 	BusinessCreateReq  = pb.BusinessCreateReq
+	BusinessPageReply  = pb.BusinessPageReply
 	CreateReq          = pb.CreateReq
 	IDReq              = pb.IDReq
 	IDsReq             = pb.IDsReq
@@ -44,6 +45,7 @@ type (
 		AdminChangeRole(ctx context.Context, in *AdminChangeRoleReq, opts ...grpc.CallOption) (*Nil, error)
 		// 商家相关
 		BusinessCreate(ctx context.Context, in *BusinessCreateReq, opts ...grpc.CallOption) (*Nil, error)
+		BusinessList(ctx context.Context, in *PageReq, opts ...grpc.CallOption) (*BusinessPageReply, error)
 	}
 
 	defaultUser struct {
@@ -112,4 +114,9 @@ func (m *defaultUser) AdminChangeRole(ctx context.Context, in *AdminChangeRoleRe
 func (m *defaultUser) BusinessCreate(ctx context.Context, in *BusinessCreateReq, opts ...grpc.CallOption) (*Nil, error) {
 	client := pb.NewUserClient(m.cli.Conn())
 	return client.BusinessCreate(ctx, in, opts...)
+}
+
+func (m *defaultUser) BusinessList(ctx context.Context, in *PageReq, opts ...grpc.CallOption) (*BusinessPageReply, error) {
+	client := pb.NewUserClient(m.cli.Conn())
+	return client.BusinessList(ctx, in, opts...)
 }

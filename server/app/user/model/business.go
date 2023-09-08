@@ -9,6 +9,7 @@ import (
 type (
 	businessModel interface {
 		BusinessCreate(ctx context.Context, business *Business) (err error)
+		BusinessList(ctx context.Context, page *common.PageInfo) (enter *[]Business, total int64, err error)
 	}
 
 	defaultBusinessModel struct {
@@ -43,4 +44,21 @@ func (d *defaultUserModel) BusinessCreate(ctx context.Context, business *Busines
 	tx := d.db.WithContext(ctx)
 
 	return tx.Model(&Business{}).Create(business).Error
+}
+
+func (d *defaultUserModel) BusinessList(ctx context.Context, page *common.PageInfo) (enter *[]Business, total int64, err error) {
+	tx := d.db.WithContext(ctx)
+
+	limit, offset, keyWord := page.LimitAndOffsetAndKeyWord()
+	tx = tx.Model(&Business{}).Where("name like ?", keyWord)
+	if err = tx.Count(&total).Error; err != nil {
+		return nil, 0, err
+	}
+
+	var list []Business
+	if err = tx.Limit(limit).Offset(offset).Find(&list).Error; err != nil {
+		return nil, 0, err
+	}
+
+	return &list, total, nil
 }

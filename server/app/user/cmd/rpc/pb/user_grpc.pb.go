@@ -35,6 +35,7 @@ type UserClient interface {
 	AdminChangeRole(ctx context.Context, in *AdminChangeRoleReq, opts ...grpc.CallOption) (*Nil, error)
 	// 商家相关
 	BusinessCreate(ctx context.Context, in *BusinessCreateReq, opts ...grpc.CallOption) (*Nil, error)
+	BusinessList(ctx context.Context, in *PageReq, opts ...grpc.CallOption) (*BusinessPageReply, error)
 }
 
 type userClient struct {
@@ -144,6 +145,15 @@ func (c *userClient) BusinessCreate(ctx context.Context, in *BusinessCreateReq, 
 	return out, nil
 }
 
+func (c *userClient) BusinessList(ctx context.Context, in *PageReq, opts ...grpc.CallOption) (*BusinessPageReply, error) {
+	out := new(BusinessPageReply)
+	err := c.cc.Invoke(ctx, "/pb.user/businessList", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -161,6 +171,7 @@ type UserServer interface {
 	AdminChangeRole(context.Context, *AdminChangeRoleReq) (*Nil, error)
 	// 商家相关
 	BusinessCreate(context.Context, *BusinessCreateReq) (*Nil, error)
+	BusinessList(context.Context, *PageReq) (*BusinessPageReply, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -200,6 +211,9 @@ func (UnimplementedUserServer) AdminChangeRole(context.Context, *AdminChangeRole
 }
 func (UnimplementedUserServer) BusinessCreate(context.Context, *BusinessCreateReq) (*Nil, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BusinessCreate not implemented")
+}
+func (UnimplementedUserServer) BusinessList(context.Context, *PageReq) (*BusinessPageReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BusinessList not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -412,6 +426,24 @@ func _User_BusinessCreate_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_BusinessList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PageReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).BusinessList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.user/businessList",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).BusinessList(ctx, req.(*PageReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -462,6 +494,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "businessCreate",
 			Handler:    _User_BusinessCreate_Handler,
+		},
+		{
+			MethodName: "businessList",
+			Handler:    _User_BusinessList_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	base "server/app/system/cmd/api/internal/handler/base"
+	business "server/app/system/cmd/api/internal/handler/business"
 	menu "server/app/system/cmd/api/internal/handler/menu"
 	role "server/app/system/cmd/api/internal/handler/role"
 	user "server/app/system/cmd/api/internal/handler/user"
@@ -39,11 +40,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		rest.WithMiddlewares(
 			[]rest.Middleware{serverCtx.Auth},
 			[]rest.Route{
-				{
-					Method:  http.MethodGet,
-					Path:    "/health",
-					Handler: user.HealthHandler(serverCtx),
-				},
 				{
 					Method:  http.MethodPost,
 					Path:    "/user/create",
@@ -116,6 +112,20 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Method:  http.MethodPost,
 					Path:    "/menu/create",
 					Handler: menu.MenuCreateHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/system/v1"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/business/list",
+					Handler: business.BusinessListHandler(serverCtx),
 				},
 			}...,
 		),

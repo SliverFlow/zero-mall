@@ -78,3 +78,8 @@ func (s *UserServer) BusinessCreate(ctx context.Context, in *pb.BusinessCreateRe
 	l := logic.NewBusinessCreateLogic(ctx, s.svcCtx)
 	return l.BusinessCreate(in)
 }
+
+func (s *UserServer) BusinessList(ctx context.Context, in *pb.PageReq) (*pb.BusinessPageReply, error) {
+	l := logic.NewBusinessListLogic(ctx, s.svcCtx)
+	return l.BusinessList(in)
+}

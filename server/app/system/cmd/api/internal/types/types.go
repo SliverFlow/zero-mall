@@ -127,3 +127,22 @@ type MenuCreateReq struct {
 	Meta      Meta   `json:"meta"`
 	Status    int64  `json:"status"`
 }
+
+type Business struct {
+	BusinessID string   `json:"businessId"`
+	Name       string   `json:"name"`
+	UUID       string   `json:"uuid"`
+	Detail     string   `json:"detail"`
+	Score      int64    `json:"score"`
+	Image      []string `json:"image"`
+	Status     int64    `json:"status"`
+	CreatedAt  int64    `json:"createdAt"`
+	UpdatedAt  int64    `json:"updatedAt"`
+}
+
+type BusinessListReply struct {
+	List     []Business `json:"list"`
+	Total    int64      `json:"total"`
+	Page     int64      `json:"page"`
+	PageSize int64      `json:"pageSize"`
+}

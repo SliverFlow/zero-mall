@@ -10,7 +10,7 @@ func init() {
 	message[FILE_UPLOAD_ERROR] = "文件上传失败"
 	message[TOKEN_NOT_EXIST] = "未登录，请登录后再使用"
 	message[TOKEN_INBLACKLIST_ERROT] = "黑名单或异地登录"
-	message[TOKEN_INBLACKLIST_ERROT] = "黑名单或异地登录"
+	message[TOKEN_EXPIRE_ERROR] = "登录已过期，请重新登录"
 	message[USERNAME_IS_EXIST] = "用户名已存在"
 }
 

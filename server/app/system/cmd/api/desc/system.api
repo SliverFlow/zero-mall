@@ -11,6 +11,7 @@ import "api/system.api"
 import "api/role.api"
 import "api/menu.api"
 import "api/user.api"
+import "api/business.api"
 
 // 公共部分 login captcha file
 @server(
@@ -35,8 +36,6 @@ service system {
 	middleware : Auth
 )
 service system {
-	@handler health
-	get /health (NilReq) returns (HealthReply)
 	@handler userCreate
 	post /user/create (NilReq) returns (NilReply)
 	@handler userUpdate
@@ -77,4 +76,14 @@ service system {
 	post /menu/changeStatus (MenuChangeStatusReq) returns (NilReply)
 	@handler menuCreate
 	post /menu/create (MenuCreateReq) returns (NilReply)
+}
+
+@server(
+	group: business
+	prefix: system/v1
+	middleware : Auth
+)
+service system {
+	@handler businessList
+	post /business/list (PageReq) returns (BusinessListReply)
 }
