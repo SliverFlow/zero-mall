@@ -1,10 +1,9 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { loginApi } from '@/api/system/base.js'
-import { logoutApi } from '@/api/system/user.js'
-import { ElMessage } from 'element-plus'
 import { useRouterStore } from '@/store/model/router.js'
 import router from '@/router/index.js'
+import { useMenuStore } from '@/store/model/menu.js'
 
 export const useUserStore = defineStore('user', () => {
   const token = ref(window.localStorage.getItem('token') || '')
@@ -54,6 +53,8 @@ export const useUserStore = defineStore('user', () => {
       localStorage.removeItem('zp-aside-store')
       localStorage.removeItem('zp-router-store')
       localStorage.removeItem('token')
+      const asideStore = useMenuStore()
+      asideStore.tabList = [{ title: '仪表盘', path: '/layout/dashboard' }]
       return true
     }
     return false

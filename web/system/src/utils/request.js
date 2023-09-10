@@ -45,9 +45,15 @@ service.interceptors.response.use(
         showClose: true,
       })
     }
+    console.log(response.data)
+
     // 业务错误类型
     switch (response.data.code) {
-      case 200001 || 200002 || 200003 || 200004 || 200005:
+      case 200001:
+      case 200002:
+      case 200003:
+      case 200004:
+      case 200005:
         userStore.isLogin = false
         router.push({ name: 'Login' })
     }

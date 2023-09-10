@@ -22,7 +22,7 @@
       :tree-props="{'children': 'children'}"
     >
       <el-table-column align="left" label="商户编号" min-width="180" prop="businessId" fixed="left" />
-      <el-table-column align="left" label="封面" min-width="180" prop="image">
+      <el-table-column align="left" label="封面" min-width="150" prop="image">
         <template #default="scope">
           <el-image
             style="width: 100px; height: 100px;z-index: 100;"
@@ -91,7 +91,7 @@
             link
             icon="delete"
             @click="deleteVideoCategory(scope.row.ID)"
-          >暂停商户使用
+          >修改商户状态
           </el-button>
         </template>
       </el-table-column>
