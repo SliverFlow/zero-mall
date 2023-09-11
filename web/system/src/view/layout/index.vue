@@ -6,7 +6,8 @@
           src="https://www.gin-vue-admin.com/img/logo.png"
           alt=""
         >
-        <p v-if="!asideStore.collapseType">kva 后台管理系统</p>
+        <p v-if="!asideStore.collapseType && userInfo.role === 3" style="font-family: 'fm'">zero-mall&nbsp;&nbsp;后台管理</p>
+        <p v-if="!asideStore.collapseType && userInfo.role === 2" style="font-family: 'fm'">zero-mall&nbsp;&nbsp;商家管理</p>
       </div>
       <Aside />
     </el-aside>
@@ -49,7 +50,10 @@
               />
             </svg>
           </div>
-          <div class="title"><span>{{ route.matched[1].path === route.path ? "" : route.matched[1].meta.title }} <span v-if="route.matched[1].path !== route.path" class="fn-span">/</span> {{ route.meta.title }}</span></div>
+          <div class="title"><span>{{ route.matched[1].path === route.path ? '' : route.matched[1].meta.title }} <span
+            v-if="route.matched[1].path !== route.path"
+            class="fn-span"
+          >/</span> {{ route.meta.title }}</span></div>
         </div>
         <div class="head-right">
           <div @click="toGithub">
@@ -151,7 +155,9 @@
         </div>
       </el-header>
       <tab />
-      <router-view class="router-con" />
+      <el-main style="padding: 10px 14px">
+        <router-view class="router-con" />
+      </el-main>
     </el-container>
   </el-container>
 </template>

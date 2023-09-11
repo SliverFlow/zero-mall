@@ -145,7 +145,7 @@
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
-                :disabled="item.value === 0"
+                :disabled="item.value === 10"
               />
             </el-select>
           </el-form-item>

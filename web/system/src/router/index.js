@@ -73,7 +73,7 @@ router.beforeEach(async(to) => {
       userStore.userInfo = res.data.user
       return true
     } else {
-      return { name: 'Login' }
+      return false
     }
   }
 

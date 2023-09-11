@@ -28,5 +28,9 @@ import { zhCn } from 'element-plus/es/locale/index'
 .el-button {
   font-weight: 400 !important;
 }
+@font-face {
+  font-family: "fm";
+  src: url('@/assets/汉仪竹心楷.ttf');
+}
 </style>
 

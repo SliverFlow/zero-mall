@@ -2,13 +2,13 @@
   <div id="userLayout">
     <div class="login_panel">
       <div class="login_panel_form">
-        <div class="login_panel_form_title">
+        <div class="login_panel_form_title" style="display: flex;align-items: center;align-content: center;flex-direction: column">
           <!--          <img-->
           <!--            class="login_panel_form_title_logo"-->
           <!--            src=""-->
           <!--            alt-->
           <!--          >-->
-          <p class="login_panel_form_title_p">ZPSHOP 系统后台</p>
+          <p class="login_panel_form_title_p" style="font-family: 'fm'">zero-mall&nbsp;系统后台</p>
         </div>
         <el-form ref="form" :model="formData">
           <el-form-item prop="username">

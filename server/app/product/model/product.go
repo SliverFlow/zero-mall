@@ -30,6 +30,8 @@ type (
 		Price      float64 `json:"price" gorm:"not null;default:0;comment:商品价格"`
 		Stock      int64   `json:"stock" gorm:"not null;default:0;comment:商品数量"`
 		Status     int64   `json:"status" gorm:"not null;default:0;comment:商品状态.0-暂存 1-在售 2-下架 3-删除"`
+
+		Categories []Category `json:"categories" gorm:"many2many:category_product;"`
 	}
 )
 
