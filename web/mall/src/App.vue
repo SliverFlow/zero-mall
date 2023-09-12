@@ -1,17 +1,27 @@
-<script setup>
-import { userLoginApi } from '@/api/user.js'
-
-const login = async() => {
-  const res = await userLoginApi({ username: '1212', password: '1212' })
-  console.log(res)
-}
-login()
-</script>
-
 <template>
-  <div>主页面</div>
+  <div id="app">
+    <router-view/>
+  </div>
 </template>
 
-<style scoped>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
 </style>
