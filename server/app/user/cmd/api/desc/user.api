@@ -18,7 +18,7 @@ import "api/base.api"
 )
 service user {
 	@handler login
-	post /login (LoginReq) returns (LoginReply)
+	post /user/login (LoginReq) returns (LoginReply)
 	
 	@handler userCreate
 	post /user/create (CreateReq) returns (NilReply)
