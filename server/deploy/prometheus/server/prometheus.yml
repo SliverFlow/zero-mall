@@ -16,23 +16,76 @@ rule_files:
 # - "first_rules.yml"
 # - "second_rules.yml"
 
-# A scrape configuration containing exactly one endpoint to scrape:
-# Here it's Prometheus itself.
+
+#scrape_configs:
+#  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+#  - job_name: 'user-api'
+#    static_configs:
+#      - targets: [ 'user-api:5500' ]
+#        labels:
+#          job: user-api
+#          app: user-api
+#          instance: "user-api:5500"
+#          env: test
+#  - job_name: 'user-rpc'
+#    static_configs:
+#      - targets: [ 'user-rpc:5501' ]
+#        labels:
+#          job: user-rpc
+#          app: user-rpc
+#          instance: "user-rpc:5501"
+#          env: test
+#
+#  - job_name: 'system-api'
+#    static_configs:
+#      - targets: [ 'system-api:2200' ]
+#        labels:
+#          job: system-api
+#          app: system-api
+#          instance: "system-api:2200"
+#          env: test
+#  - job_name: 'system-rpc'
+#    static_configs:
+#      - targets: [ 'system-rpc:2201' ]
+#        labels:
+#          job: system-rpc
+#          app: system-rpc
+#          instance: "system-rpc:2201"
+#          env: test
+
 scrape_configs:
-  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: 'prometheus'
+    scrape_interval: 5s  #重写了全局抓取间隔时间，由15秒重写成5秒
+    static_configs:
+      - targets: ['127.0.0.1:9090']
+
+
   - job_name: 'user-api'
     static_configs:
-      - targets: [ 'user-api:9900' ]
+      - targets: [ 'user-api:7899' ]
         labels:
           job: user-api
           app: user-api
-          instance: "user-api:9900"
           env: test
   - job_name: 'user-rpc'
     static_configs:
-      - targets: [ 'user-rpc:9901' ]
+      - targets: [ 'user-rpc:7899' ]
         labels:
           job: user-rpc
           app: user-rpc
-          instance: "user-rpc:9901"
+          env: test
+
+  - job_name: 'system-api'
+    static_configs:
+      - targets: [ 'system-api:7899' ]
+        labels:
+          job: system-api
+          app: system-api
+          env: test
+  - job_name: 'system-rpc'
+    static_configs:
+      - targets: [ 'system-rpc:7899' ]
+        labels:
+          job: system-rpc
+          app: system-rpc
           env: test

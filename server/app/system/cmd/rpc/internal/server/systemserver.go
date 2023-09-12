@@ -54,3 +54,8 @@ func (s *SystemServer) MenuCreate(ctx context.Context, in *pb.MenuCreateReq) (*p
 	l := logic.NewMenuCreateLogic(ctx, s.svcCtx)
 	return l.MenuCreate(in)
 }
+
+func (s *SystemServer) MenuUpdate(ctx context.Context, in *pb.MenuUpdateReq) (*pb.NilReply, error) {
+	l := logic.NewMenuUpdateLogic(ctx, s.svcCtx)
+	return l.MenuUpdate(in)
+}

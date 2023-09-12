@@ -2,6 +2,8 @@ package private
 
 import (
 	"context"
+	"github.com/jinzhu/copier"
+	"server/app/user/cmd/rpc/pb"
 
 	"server/app/user/cmd/api/internal/svc"
 	"server/app/user/cmd/api/internal/types"
@@ -24,7 +26,11 @@ func NewUserUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserUp
 }
 
 func (l *UserUpdateLogic) UserUpdate(req *types.UpdateReq) (resp *types.NilReply, err error) {
-	// todo: add your logic here and delete this line
-
+	var u pb.UpdateReq
+	_ = copier.Copy(&u, req)
+	_, err = l.svcCtx.UserRpc.UserUpdate(l.ctx, &u)
+	if err != nil {
+		return nil, err
+	}
 	return
 }

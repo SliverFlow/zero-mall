@@ -31,6 +31,7 @@ type SystemClient interface {
 	MenuListAllByRole(ctx context.Context, in *RoleIDReq, opts ...grpc.CallOption) (*MenuListReply, error)
 	MenuChangeStatus(ctx context.Context, in *MenuChangeStatusReq, opts ...grpc.CallOption) (*NilReply, error)
 	MenuCreate(ctx context.Context, in *MenuCreateReq, opts ...grpc.CallOption) (*NilReply, error)
+	MenuUpdate(ctx context.Context, in *MenuUpdateReq, opts ...grpc.CallOption) (*NilReply, error)
 }
 
 type systemClient struct {
@@ -95,6 +96,15 @@ func (c *systemClient) MenuCreate(ctx context.Context, in *MenuCreateReq, opts .
 	return out, nil
 }
 
+func (c *systemClient) MenuUpdate(ctx context.Context, in *MenuUpdateReq, opts ...grpc.CallOption) (*NilReply, error) {
+	out := new(NilReply)
+	err := c.cc.Invoke(ctx, "/pb.system/MenuUpdate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SystemServer is the server API for System service.
 // All implementations must embed UnimplementedSystemServer
 // for forward compatibility
@@ -108,6 +118,7 @@ type SystemServer interface {
 	MenuListAllByRole(context.Context, *RoleIDReq) (*MenuListReply, error)
 	MenuChangeStatus(context.Context, *MenuChangeStatusReq) (*NilReply, error)
 	MenuCreate(context.Context, *MenuCreateReq) (*NilReply, error)
+	MenuUpdate(context.Context, *MenuUpdateReq) (*NilReply, error)
 	mustEmbedUnimplementedSystemServer()
 }
 
@@ -132,6 +143,9 @@ func (UnimplementedSystemServer) MenuChangeStatus(context.Context, *MenuChangeSt
 }
 func (UnimplementedSystemServer) MenuCreate(context.Context, *MenuCreateReq) (*NilReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MenuCreate not implemented")
+}
+func (UnimplementedSystemServer) MenuUpdate(context.Context, *MenuUpdateReq) (*NilReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MenuUpdate not implemented")
 }
 func (UnimplementedSystemServer) mustEmbedUnimplementedSystemServer() {}
 
@@ -254,6 +268,24 @@ func _System_MenuCreate_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _System_MenuUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MenuUpdateReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SystemServer).MenuUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.system/MenuUpdate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SystemServer).MenuUpdate(ctx, req.(*MenuUpdateReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // System_ServiceDesc is the grpc.ServiceDesc for System service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -284,6 +316,10 @@ var System_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "MenuCreate",
 			Handler:    _System_MenuCreate_Handler,
+		},
+		{
+			MethodName: "MenuUpdate",
+			Handler:    _System_MenuUpdate_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

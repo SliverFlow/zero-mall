@@ -128,6 +128,18 @@ type MenuCreateReq struct {
 	Status    int64  `json:"status"`
 }
 
+type MenuUpdateReq struct {
+	ID        int64  `json:"ID"`
+	ParentId  int64  `json:"parentId"`
+	Name      string `json:"name"`
+	Path      string `json:"path"`
+	Component string `json:"component"`
+	Sorted    int64  `json:"sorted"`
+	Role      int64  `json:"role"`
+	Meta      Meta   `json:"meta"`
+	Status    int64  `json:"status"`
+}
+
 type Business struct {
 	BusinessID string   `json:"businessId"`
 	Name       string   `json:"name"`

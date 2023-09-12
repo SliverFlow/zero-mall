@@ -33,10 +33,23 @@ SystemRpc:
   Etcd:
     Hosts:
       - 120.77.237.246:32379
+#      - etcd:2379
     Key: system.rpc
 
 UserRpc:
   Etcd:
     Hosts:
       - 120.77.237.246:32379
+#      - etcd:2379
     Key: user.rpc
+
+#Prometheus:
+#  Host: 0.0.0.0
+#  Port: 7899
+#  Path: /metrics
+#
+#Telemetry:
+#  Name: system-api
+#  Endpoint: http://jaeger:14268/api/traces
+#  Sampler: 1.0
+#  Batcher: jaeger

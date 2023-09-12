@@ -27,7 +27,7 @@ Redis:
 
 #Prometheus:
 #  Host: 0.0.0.0
-#  Port: 9900
+#  Port: 7899
 #  Path: /metrics
 #
 #Telemetry:

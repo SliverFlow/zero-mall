@@ -3,14 +3,15 @@ ListenOn: 0.0.0.0:2221
 Etcd:
   Hosts:
   - 120.77.237.246:32379
+#  - etcd:2379
   Key: system.rpc
 
 
 Mysql:
   Path: 127.0.0.1
   Password: ''
-  #  Path: 121.37.20.40
-  #  Password: '123456'
+#  Path: 121.37.20.40
+#  Password: '123456'
   Port: 3306
   Dbname: zpshop
   Username: root
@@ -23,3 +24,14 @@ Mysql:
 CacheRedis:
   - Host: 120.77.237.246:6379
     Pass: "wjh20000905"
+
+#Prometheus:
+#  Host: 0.0.0.0
+#  Port: 7899
+#  Path: /metrics
+#
+#Telemetry:
+#  Name: system-rpc
+#  Endpoint: http://jaeger:14268/api/traces
+#  Sampler: 1.0
+#  Batcher: jaeger

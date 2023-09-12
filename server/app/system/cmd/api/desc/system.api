@@ -76,6 +76,8 @@ service system {
 	post /menu/changeStatus (MenuChangeStatusReq) returns (NilReply)
 	@handler menuCreate
 	post /menu/create (MenuCreateReq) returns (NilReply)
+	@handler menuUpdate
+	post /menu/update (MenuUpdateReq) returns (NilReply)
 }
 
 @server(

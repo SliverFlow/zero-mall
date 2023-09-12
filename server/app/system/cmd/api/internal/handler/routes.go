@@ -113,6 +113,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Path:    "/menu/create",
 					Handler: menu.MenuCreateHandler(serverCtx),
 				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/menu/update",
+					Handler: menu.MenuUpdateHandler(serverCtx),
+				},
 			}...,
 		),
 		rest.WithPrefix("/system/v1"),

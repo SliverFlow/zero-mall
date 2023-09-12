@@ -13,6 +13,8 @@ type (
 		MenuListByRole(ctx context.Context, role int64) (list *[]Menu, err error)
 		MenuChangeStatus(ctx context.Context, id int64, pid int64, status int64) (err error)
 		MenuTreeListAllByRole(ctx context.Context, role int64) (list *[]Menu, err error)
+		MenuUpdate(ctx context.Context, menu *Menu) (err error)
+		MenuFind(ctx context.Context, id int64) (enter *Menu, err error)
 	}
 	// 默认数据库连接对象
 	defaultMenuModel struct {
@@ -49,7 +51,9 @@ func (d *defaultMenuModel) MenuCreate(ctx context.Context, menu *Menu) (err erro
 	return tx.Model(&menu).Create(menu).Error
 }
 
-// MenuListByRole 根据菜单角色获取菜单
+// MenuListByRole
+// Author [SliverFlow]
+// @desc  根据菜单角色获取菜单（状态为激活）
 func (d *defaultMenuModel) MenuListByRole(ctx context.Context, role int64) (list *[]Menu, err error) {
 	tx := d.db.WithContext(ctx)
 
@@ -87,6 +91,9 @@ func (d *defaultMenuModel) MenuChangeStatus(ctx context.Context, id int64, pid i
 	return tx.Model(&Menu{}).Where("id in ?", ids).Update("status", status).Error
 }
 
+// MenuTreeListAllByRole
+// Author [SliverFlow]
+// @desc  查询某角色下的所有菜单
 func (d *defaultMenuModel) MenuTreeListAllByRole(ctx context.Context, role int64) (list *[]Menu, err error) {
 	tx := d.db.WithContext(ctx)
 
@@ -101,4 +108,36 @@ func (d *defaultMenuModel) MenuTreeListAllByRole(ctx context.Context, role int64
 		return nil, err
 	}
 	return &enter, nil
+}
+
+// MenuUpdate
+// Author [SliverFlow]
+// @desc 更新菜单
+func (d *defaultMenuModel) MenuUpdate(ctx context.Context, menu *Menu) (err error) {
+	tx := d.db.WithContext(ctx)
+
+	mMap := make(map[string]any)
+	mMap["name"] = menu.Name
+	mMap["title"] = menu.Title
+	mMap["component"] = menu.Component
+	mMap["icon"] = menu.Icon
+	mMap["status"] = menu.Status
+	mMap["role"] = menu.Role
+	mMap["sorted"] = menu.Sorted
+	mMap["path"] = menu.Path
+	mMap["parent_id"] = menu.ParentId
+	return tx.Model(&Menu{}).Where("id = ?", menu.ID).Updates(mMap).Error
+}
+
+// MenuFind
+// Author [SliverFlow]
+// @desc 根据 id 查询菜单
+func (d *defaultMenuModel) MenuFind(ctx context.Context, id int64) (enter *Menu, err error) {
+	tx := d.db.WithContext(ctx)
+
+	var m Menu
+	if err = tx.Model(&Menu{}).Where("id = ?", id).First(&m).Error; err != nil {
+		return nil, err
+	}
+	return &m, nil
 }
