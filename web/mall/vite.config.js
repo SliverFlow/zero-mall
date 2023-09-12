@@ -18,7 +18,7 @@ export default defineConfig((common, mode) => {
       open: `http://127.0.0.1:${env.VITE_CLI_PORT}`,
       proxy: { // 请求代理
         '/api': {
-          target: `http://${env.VITE_SERVER_URL}:${env.VITE_SERVER_PORT}`,	// 实际请求地址
+          target: `http://127.0.0.1:20011/`,	// 实际请求地址
           // rewrite: (path) => path.replace(/^\/api/, '')
         },
       }

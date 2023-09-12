@@ -13,7 +13,7 @@ import "api/base.api"
 // product 不需要鉴权的
 @server(
 	group : public
-	prefix : product/v1
+	prefix : v1
 )
 service product {
 	@handler productList
@@ -23,7 +23,7 @@ service product {
 // product 需要鉴权的
 @server(
 	group : private
-	prefix : product/v1
+	prefix : v1
 	middleware : Auth
 )
 service product {
@@ -34,7 +34,7 @@ service product {
 // category 不需要鉴权的
 @server(
 	group : public
-	prefix : category/v1
+	prefix : v1
 )
 service product {
 	@handler categoryList
@@ -44,7 +44,7 @@ service product {
 // category 需要鉴权的
 @server(
 	group : private
-	prefix : category/v1
+	prefix : v1
 	middleware : Auth
 )
 service product {

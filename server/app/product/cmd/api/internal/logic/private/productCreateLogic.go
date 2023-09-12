@@ -3,8 +3,10 @@ package private
 import (
 	"context"
 
-	"github.com/zeromicro/go-zero/core/logx"
 	"server/app/product/cmd/api/internal/svc"
+	"server/app/product/cmd/api/internal/types"
+
+	"github.com/zeromicro/go-zero/core/logx"
 )
 
 type ProductCreateLogic struct {
@@ -21,8 +23,8 @@ func NewProductCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Pro
 	}
 }
 
-func (l *ProductCreateLogic) ProductCreate() error {
+func (l *ProductCreateLogic) ProductCreate(req *types.Nil) (resp *types.Nil, err error) {
 	// todo: add your logic here and delete this line
 
-	return nil
+	return
 }

@@ -3,8 +3,10 @@ package private
 import (
 	"context"
 
-	"github.com/zeromicro/go-zero/core/logx"
 	"server/app/product/cmd/api/internal/svc"
+	"server/app/product/cmd/api/internal/types"
+
+	"github.com/zeromicro/go-zero/core/logx"
 )
 
 type CategoryCreateLogic struct {
@@ -21,8 +23,8 @@ func NewCategoryCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ca
 	}
 }
 
-func (l *CategoryCreateLogic) CategoryCreate() error {
+func (l *CategoryCreateLogic) CategoryCreate(req *types.Nil) (resp *types.Nil, err error) {
 	// todo: add your logic here and delete this line
 
-	return nil
+	return
 }

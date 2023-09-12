@@ -20,7 +20,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: public.ProductListHandler(serverCtx),
 			},
 		},
-		rest.WithPrefix("/product/v1"),
+		rest.WithPrefix("/v1"),
 	)
 
 	server.AddRoutes(
@@ -34,7 +34,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 			}...,
 		),
-		rest.WithPrefix("/product/v1"),
+		rest.WithPrefix("/v1"),
 	)
 
 	server.AddRoutes(
@@ -45,7 +45,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: public.CategoryListHandler(serverCtx),
 			},
 		},
-		rest.WithPrefix("/category/v1"),
+		rest.WithPrefix("/v1"),
 	)
 
 	server.AddRoutes(
@@ -59,6 +59,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 			}...,
 		),
-		rest.WithPrefix("/category/v1"),
+		rest.WithPrefix("/v1"),
 	)
 }
