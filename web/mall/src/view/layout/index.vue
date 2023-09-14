@@ -74,7 +74,7 @@
       </div>
     </nav>
     <div class="content" >
-      <router-view style="width: 1220px"/>
+      <router-view/>
     </div>
     <footer>
       <div>
@@ -207,6 +207,8 @@ header {
         align-items: center;
         justify-content: center;
         position: relative;
+        z-index: 999;
+
         .icon {
           width: 20px;
           height: 20px;
@@ -248,9 +250,6 @@ header {
   width: 100%;
   display: flex;
   justify-content: center;
-  >div {
-    width: 1220px;
-  }
 }
 
 footer {
@@ -391,7 +390,7 @@ nav {
 
       input:placeholder-shown {
         font-size: 13px;
-        letter-spacing: 1.4px;
+        letter-spacing: 1.4px; // 字间距
       }
 
       .search-icon {
@@ -432,6 +431,7 @@ nav {
   border-left: 1px solid #ff6a00;
   border-bottom: 1px solid #ff6a00;
   background-color: white;
+  z-index: 999;
   a {
     font-size: 8px !important;
     height: 26px;
