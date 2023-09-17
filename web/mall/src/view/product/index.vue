@@ -76,7 +76,7 @@
     <!--商品列表-->
     <div class="product_list">
       <div class="content">
-        <div class="prod">
+        <div class="prod" @click="toProductDetail(1)">
           <img
             src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202212242022_f9456bf36437f2888d3a7b733319743f.png"
             alt=""
@@ -95,7 +95,7 @@
             <span>分期</span>
           </div>
         </div>
-        <div class="prod">
+        <div class="prod" @click="toProductDetail(1)">
           <img
             src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202212242022_f9456bf36437f2888d3a7b733319743f.png"
             alt=""
@@ -114,7 +114,7 @@
             <span>分期</span>
           </div>
         </div>
-        <div class="prod">
+        <div class="prod" @click="toProductDetail(1)">
           <img
             src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202212242022_f9456bf36437f2888d3a7b733319743f.png"
             alt=""
@@ -133,7 +133,7 @@
             <span>分期</span>
           </div>
         </div>
-        <div class="prod">
+        <div class="prod" @click="toProductDetail(1)">
           <img
             src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202212242022_f9456bf36437f2888d3a7b733319743f.png"
             alt=""
@@ -268,10 +268,37 @@
         </div>
       </div>
     </div>
+    <!--分页-->
+    <div class="pagination">
+      <el-pagination
+        class="page_con"
+        layout="total, sizes, prev, pager, next, jumper"
+        :current-page="page"
+        :page-size="pageSize"
+        :page-sizes="[10, 30, 50, 100]"
+        :total="total"
+        @current-change="handleCurrentChange"
+        @size-change="handleSizeChange"
+      />
+    </div>
   </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+const pageSize = ref(20)
+const page = ref(10)
+const total = ref(1000)
+
+const handleCurrentChange = (val) => {}
+const handleSizeChange = (val) => {}
+
+const toProductDetail = (id) => {
+  router.push({ name: 'ProductDetail' })
+}
 
 </script>
 
@@ -373,7 +400,7 @@
       margin: 0 auto;
 
       .prod {
-        width:297px;
+        width: 297px;
         height: 430px;
         background-color: white;
         display: flex;
@@ -392,15 +419,16 @@
         }
 
         .price {
-          font-size:14px;
+          font-size: 14px;
           color: #ff6700;
           margin-bottom: 14px;
         }
 
-        .tag{
+        .tag {
           display: flex;
           align-items: center;
           justify-content: center;
+
           span {
             height: 18px;
             padding: 2px 6px;
@@ -413,26 +441,91 @@
         }
 
         ul > li > img {
-         width: 34px;
-         height: 34px;
+          width: 34px;
+          height: 34px;
           border: 1px solid #ccc;
           transition: all 0.2s;
           margin-bottom: 14px;
+
           &:hover {
             border: 1px solid #ff6700;
           }
         }
       }
 
-      .prod:nth-child(4n){
+      .prod:nth-child(4n) {
         margin-right: 0;
       }
     }
+  }
+
+  .pagination {
+    width: 100%;
+    background-color: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 18px 0 40px 0;
   }
 }
 
 :deep(.el-collapse-item__content) {
   padding-bottom: 8px;
+}
+
+:deep(.el-pager li.is-active) {
+  color: #ff6700;
+}
+
+:deep(.el-select .el-input.is-focus .el-input__wrapper) {
+  box-shadow: 0 0 0 1px #ff6700 inset !important;
+}
+
+:deep(.el-input__wrapper) {
+  background-color: #f5f5f5;
+}
+:deep(.el-input__wrapper.is-focus) {
+  box-shadow: 0 0 0 1px #ff6700 inset !important;
+}
+
+:deep(.el-pager li) {
+  background-color: #f5f5f5;
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+  border-radius: 0.25rem;
+  border-width: 1px;
+  border-style: solid;
+  --tw-border-opacity: 1;
+  border-color: rgb(209 213 219 / var(--tw-border-opacity));
+  font-size: .875rem;
+  line-height: 1.25rem;
+  --tw-text-opacity: 1;
+  color: rgb(75 85 99 / var(--tw-text-opacity));
+  transition: all 0.2s;
+}
+:deep(.el-pager li):hover {
+  color: #ff6700;
+}
+
+:deep(.btn-prev) , :deep(.btn-next){
+  background-color: #f5f5f5 !important;
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+  border-radius: 0.25rem;
+  border-width: 1px;
+  border-style: solid;
+  --tw-border-opacity: 1;
+  border-color: rgb(209 213 219 / var(--tw-border-opacity));
+  font-size: .875rem;
+  line-height: 1.25rem;
+  --tw-text-opacity: 1;
+  color: rgb(75 85 99 / var(--tw-text-opacity));
+  transition: all 0.2s;
+}
+
+:deep(.btn-prev):hover,:deep(.btn-next):hover {
+  border-color: #ff6700;
+  color: #ff6700;
 }
 
 </style>
