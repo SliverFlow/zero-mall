@@ -39,3 +39,13 @@ ORM框架：gorm
 关系型数据库：mysql
 
 非关系型数据库：redis 
+
+# 3、目录结构
+
+```sh
+|- server 		# 后端服务主目录
+|- web
+	|- system 	# 商户 or 管理员管理系统
+	|- mall   	# 用户显示 & 主体界面
+```
+

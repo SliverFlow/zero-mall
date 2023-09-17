@@ -238,55 +238,73 @@
       <div class="product-info">
         <div class="title">
           <p>手机</p>
-          <span>查看更多 >></span>
+          <span @click="toProductList(1)">查看更多 >></span>
         </div>
         <div class="detail">
-          <img src="https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/9613bd4127fede053f8ba5049eff0392.jpeg?thumb=1&w=351&h=921&f=webp&q=90">
-          <div class="product_list" >
+          <img
+            src="https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/9613bd4127fede053f8ba5049eff0392.jpeg?thumb=1&w=351&h=921&f=webp&q=90"
+          >
+          <div class="product_list">
             <div class="product">
-              <img src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90">
+              <img
+                src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90"
+              >
               <p class="name">Xiaomi MIX Fold 3</p>
               <p class="desc">轻薄折叠屏丨徕卡光学丨全焦段四摄</p>
               <span> 2399 元起 </span>
             </div>
             <div class="product">
-              <img src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90">
+              <img
+                src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90"
+              >
               <p class="name">Xiaomi MIX Fold 3</p>
               <p class="desc">轻薄折叠屏丨徕卡光学丨全焦段四摄</p>
               <span> 2399 元起 </span>
             </div>
             <div class="product">
-              <img src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90">
+              <img
+                src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90"
+              >
               <p class="name">Xiaomi MIX Fold 3</p>
               <p class="desc">轻薄折叠屏丨徕卡光学丨全焦段四摄</p>
               <span> 2399 元起 </span>
             </div>
             <div class="product">
-              <img src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90">
+              <img
+                src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90"
+              >
               <p class="name">Xiaomi MIX Fold 3</p>
               <p class="desc">轻薄折叠屏丨徕卡光学丨全焦段四摄</p>
               <span> 2399 元起 </span>
             </div>
             <div class="product">
-              <img src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90">
+              <img
+                src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90"
+              >
               <p class="name">Xiaomi MIX Fold 3</p>
               <p class="desc">轻薄折叠屏丨徕卡光学丨全焦段四摄</p>
               <span> 2399 元起 </span>
             </div>
             <div class="product">
-              <img src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90">
+              <img
+                src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90"
+              >
               <p class="name">Xiaomi MIX Fold 3</p>
               <p class="desc">轻薄折叠屏丨徕卡光学丨全焦段四摄</p>
               <span> 2399 元起 </span>
             </div>
             <div class="product">
-              <img src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90">
+              <img
+                src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90"
+              >
               <p class="name">Xiaomi MIX Fold 3</p>
               <p class="desc">轻薄折叠屏丨徕卡光学丨全焦段四摄</p>
               <span> 2399 元起 </span>
             </div>
             <div class="product">
-              <img src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90">
+              <img
+                src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90"
+              >
               <p class="name">Xiaomi MIX Fold 3</p>
               <p class="desc">轻薄折叠屏丨徕卡光学丨全焦段四摄</p>
               <span> 2399 元起 </span>
@@ -298,55 +316,73 @@
       <div class="product-info">
         <div class="title">
           <p>手机</p>
-          <span>查看更多 >></span>
+          <span @click="toProductList(1)">查看更多 >></span>
         </div>
         <div class="detail">
-          <img src="https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/9613bd4127fede053f8ba5049eff0392.jpeg?thumb=1&w=351&h=921&f=webp&q=90">
-          <div class="product_list" >
+          <img
+            src="https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/9613bd4127fede053f8ba5049eff0392.jpeg?thumb=1&w=351&h=921&f=webp&q=90"
+          >
+          <div class="product_list">
             <div class="product">
-              <img src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90">
+              <img
+                src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90"
+              >
               <p class="name">Xiaomi MIX Fold 3</p>
               <p class="desc">轻薄折叠屏丨徕卡光学丨全焦段四摄</p>
               <span> 2399 元起 </span>
             </div>
             <div class="product">
-              <img src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90">
+              <img
+                src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90"
+              >
               <p class="name">Xiaomi MIX Fold 3</p>
               <p class="desc">轻薄折叠屏丨徕卡光学丨全焦段四摄</p>
               <span> 2399 元起 </span>
             </div>
             <div class="product">
-              <img src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90">
+              <img
+                src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90"
+              >
               <p class="name">Xiaomi MIX Fold 3</p>
               <p class="desc">轻薄折叠屏丨徕卡光学丨全焦段四摄</p>
               <span> 2399 元起 </span>
             </div>
             <div class="product">
-              <img src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90">
+              <img
+                src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90"
+              >
               <p class="name">Xiaomi MIX Fold 3</p>
               <p class="desc">轻薄折叠屏丨徕卡光学丨全焦段四摄</p>
               <span> 2399 元起 </span>
             </div>
             <div class="product">
-              <img src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90">
+              <img
+                src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90"
+              >
               <p class="name">Xiaomi MIX Fold 3</p>
               <p class="desc">轻薄折叠屏丨徕卡光学丨全焦段四摄</p>
               <span> 2399 元起 </span>
             </div>
             <div class="product">
-              <img src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90">
+              <img
+                src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90"
+              >
               <p class="name">Xiaomi MIX Fold 3</p>
               <p class="desc">轻薄折叠屏丨徕卡光学丨全焦段四摄</p>
               <span> 2399 元起 </span>
             </div>
             <div class="product">
-              <img src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90">
+              <img
+                src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90"
+              >
               <p class="name">Xiaomi MIX Fold 3</p>
               <p class="desc">轻薄折叠屏丨徕卡光学丨全焦段四摄</p>
               <span> 2399 元起 </span>
             </div>
             <div class="product">
-              <img src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90">
+              <img
+                src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90"
+              >
               <p class="name">Xiaomi MIX Fold 3</p>
               <p class="desc">轻薄折叠屏丨徕卡光学丨全焦段四摄</p>
               <span> 2399 元起 </span>
@@ -357,55 +393,73 @@
       <div class="product-info">
         <div class="title">
           <p>手机</p>
-          <span>查看更多 >></span>
+          <span @click="toProductList(1)">查看更多 >></span>
         </div>
         <div class="detail">
-          <img src="https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/9613bd4127fede053f8ba5049eff0392.jpeg?thumb=1&w=351&h=921&f=webp&q=90">
-          <div class="product_list" >
+          <img
+            src="https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/9613bd4127fede053f8ba5049eff0392.jpeg?thumb=1&w=351&h=921&f=webp&q=90"
+          >
+          <div class="product_list">
             <div class="product">
-              <img src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90">
+              <img
+                src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90"
+              >
               <p class="name">Xiaomi MIX Fold 3</p>
               <p class="desc">轻薄折叠屏丨徕卡光学丨全焦段四摄</p>
               <span> 2399 元起 </span>
             </div>
             <div class="product">
-              <img src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90">
+              <img
+                src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90"
+              >
               <p class="name">Xiaomi MIX Fold 3</p>
               <p class="desc">轻薄折叠屏丨徕卡光学丨全焦段四摄</p>
               <span> 2399 元起 </span>
             </div>
             <div class="product">
-              <img src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90">
+              <img
+                src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90"
+              >
               <p class="name">Xiaomi MIX Fold 3</p>
               <p class="desc">轻薄折叠屏丨徕卡光学丨全焦段四摄</p>
               <span> 2399 元起 </span>
             </div>
             <div class="product">
-              <img src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90">
+              <img
+                src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90"
+              >
               <p class="name">Xiaomi MIX Fold 3</p>
               <p class="desc">轻薄折叠屏丨徕卡光学丨全焦段四摄</p>
               <span> 2399 元起 </span>
             </div>
             <div class="product">
-              <img src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90">
+              <img
+                src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90"
+              >
               <p class="name">Xiaomi MIX Fold 3</p>
               <p class="desc">轻薄折叠屏丨徕卡光学丨全焦段四摄</p>
               <span> 2399 元起 </span>
             </div>
             <div class="product">
-              <img src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90">
+              <img
+                src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90"
+              >
               <p class="name">Xiaomi MIX Fold 3</p>
               <p class="desc">轻薄折叠屏丨徕卡光学丨全焦段四摄</p>
               <span> 2399 元起 </span>
             </div>
             <div class="product">
-              <img src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90">
+              <img
+                src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90"
+              >
               <p class="name">Xiaomi MIX Fold 3</p>
               <p class="desc">轻薄折叠屏丨徕卡光学丨全焦段四摄</p>
               <span> 2399 元起 </span>
             </div>
             <div class="product">
-              <img src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90">
+              <img
+                src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202308111609_92d3c7105793aed5afd3e609132840c9.jpg?thumb=1&w=300&h=300&f=webp&q=90"
+              >
               <p class="name">Xiaomi MIX Fold 3</p>
               <p class="desc">轻薄折叠屏丨徕卡光学丨全焦段四摄</p>
               <span> 2399 元起 </span>
@@ -424,7 +478,9 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const carouselItemList = ref([
   { url: 'https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/7bfda2a88bc0ce1f17b44cce285be2d4.jpg?thumb=1&w=1839&h=690&f=webp&q=90' },
   { url: 'https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/da7c749aa3ce4f675ad44d7ca80ad749.jpg?thumb=1&w=1839&h=690&f=webp&q=90' },
@@ -433,6 +489,9 @@ const carouselItemList = ref([
 
 const is_hover_category = ref(false)
 
+const toProductList = (id) => {
+  router.push({ name: 'ProductList' })
+}
 </script>
 
 <style scoped lang="scss">
@@ -588,12 +647,11 @@ const is_hover_category = ref(false)
       height: 610px;
       display: flex;
       justify-content: space-between;
+
       img {
         width: 234px;
         height: 100%
       }
-
-
 
       .product_list {
         width: 976px;
@@ -601,6 +659,7 @@ const is_hover_category = ref(false)
         justify-content: space-between;
         flex-wrap: wrap;
         align-content: space-between;
+
         .product {
           background-color: white;
           width: 235px;
@@ -612,6 +671,7 @@ const is_hover_category = ref(false)
 
           padding-bottom: 40px;
           box-sizing: border-box;
+
           img {
             width: 160px;
             height: 160px;
@@ -620,6 +680,7 @@ const is_hover_category = ref(false)
           .name {
             font-size: 14px;
           }
+
           .desc {
             font-size: 12px;
             color: #9f9d9d;
