@@ -25,7 +25,7 @@ const routes = [
     name: 'Login',
     component: () => import('@/view/login/index.vue'),
   }, {
-    path: '/bub/cart',
+    path: '/buy/cart',
     name: 'Cart',
     component: () => import('@/view/cart/index.vue')
   }

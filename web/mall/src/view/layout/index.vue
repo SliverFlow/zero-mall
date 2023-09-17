@@ -120,7 +120,7 @@
 import { ref } from 'vue'
 import { Search } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
-import MallFooter from '@/view/layout/fotter/mallFooter.vue'
+import MallFooter from '@/view/layout/footer/mallFooter.vue'
 
 const show = ref(false)
 const isFocus = ref(false)
