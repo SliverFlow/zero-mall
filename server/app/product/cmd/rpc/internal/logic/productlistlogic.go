@@ -23,8 +23,8 @@ func NewProductListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Produ
 	}
 }
 
-func (l *ProductListLogic) ProductList(in *pb.Nil) (*pb.Nil, error) {
+func (l *ProductListLogic) ProductList(in *pb.ProductNil) (*pb.ProductNil, error) {
 	// todo: add your logic here and delete this line
 
-	return &pb.Nil{}, nil
+	return &pb.ProductNil{}, nil
 }

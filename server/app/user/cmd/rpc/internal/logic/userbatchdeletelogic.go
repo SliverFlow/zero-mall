@@ -23,8 +23,8 @@ func NewUserBatchDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *U
 	}
 }
 
-func (l *UserBatchDeleteLogic) UserBatchDelete(in *pb.IDsReq) (*pb.Nil, error) {
+func (l *UserBatchDeleteLogic) UserBatchDelete(in *pb.IDsReq) (*pb.UserNil, error) {
 	// todo: add your logic here and delete this line
 
-	return &pb.Nil{}, nil
+	return &pb.UserNil{}, nil
 }

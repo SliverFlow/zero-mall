@@ -45,7 +45,6 @@ service.interceptors.response.use(
         showClose: true,
       })
     }
-    console.log(response.data)
 
     // 业务错误类型
     switch (response.data.code) {

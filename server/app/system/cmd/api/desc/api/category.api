@@ -1,0 +1,39 @@
+syntax = "v1"
+
+info(
+    title: "分类 api"
+    desc: "分类 相关 api model"
+    author: "SliverFlow"
+    email: "202606540@qq.com"
+    version: "v1.0"
+)
+
+type Category {
+    ID int64 `json:"ID"`
+    CategoryID string `json:"categoryId"`
+    ParentId string `json:"parentId"`
+    Name string `json:"name"`
+    Status int64 `json:"status"`
+    Type int64 `json:"type"`
+    Sorted int64 `json:"sorted"`
+    BusinessID string `json:"businessId"`
+    CreatedAt int64 `json:"createdAt"`
+    UpdatedAt int64 `json:"updatedAt"`
+    Children []Category `json:"children"`
+}
+
+type CategoryListAllReply {
+    List []Category `json:"list"`
+}
+type CategoryCreateReq {
+    ParentId string `json:"parentId"`
+    Name string `json:"name"`
+    Sorted int64 `json:"sorted"`
+    Status int64 `json:"status"`
+    Type int64 `json:"type"`
+    BusinessID string `json:"businessId"`
+}
+type CategoryChangeStatusReq {
+    CategoryID string `json:"categoryId"`
+    Status int64 `json:"status"`
+}

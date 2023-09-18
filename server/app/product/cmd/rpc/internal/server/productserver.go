@@ -22,7 +22,22 @@ func NewProductServer(svcCtx *svc.ServiceContext) *ProductServer {
 	}
 }
 
-func (s *ProductServer) ProductList(ctx context.Context, in *pb.Nil) (*pb.Nil, error) {
+func (s *ProductServer) ProductList(ctx context.Context, in *pb.ProductNil) (*pb.ProductNil, error) {
 	l := logic.NewProductListLogic(ctx, s.svcCtx)
 	return l.ProductList(in)
+}
+
+func (s *ProductServer) CategoryListAll(ctx context.Context, in *pb.ProductNil) (*pb.CategoryListAllReply, error) {
+	l := logic.NewCategoryListAllLogic(ctx, s.svcCtx)
+	return l.CategoryListAll(in)
+}
+
+func (s *ProductServer) CategoryCreate(ctx context.Context, in *pb.CategoryCreateReq) (*pb.ProductNil, error) {
+	l := logic.NewCategoryCreateLogic(ctx, s.svcCtx)
+	return l.CategoryCreate(in)
+}
+
+func (s *ProductServer) CategoryChangeStatus(ctx context.Context, in *pb.CategoryChangeStatusReq) (*pb.ProductNil, error) {
+	l := logic.NewCategoryChangeStatusLogic(ctx, s.svcCtx)
+	return l.CategoryChangeStatus(in)
 }

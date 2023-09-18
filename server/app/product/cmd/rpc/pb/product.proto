@@ -2,8 +2,40 @@ syntax = "proto3";
 option go_package = "./pb";
 package pb;
 
-message Nil {}
+message ProductNil {}
+// 公共 分类
+message Category {
+  int64 ID = 1;
+  string CategoryID = 2;
+  string ParentId = 3;
+  string Name = 4;
+  int64 Status = 5;
+  int64 Sorted = 13;
+  int64 Type = 6;
+  string BusinessID = 7;
+  repeated Category Children = 8;
+  int64 CreatedAt = 11;
+  int64 UpdatedAt = 12;
+}
+message CategoryListAllReply {
+  repeated Category List = 1;
+}
+message CategoryCreateReq{
+  string ParentId = 3;
+  string Name = 4;
+  int64 Status = 5;
+  int64 Type = 6;
+  int64 Sorted = 8;
+  string BusinessID = 7;
+}
+message CategoryChangeStatusReq {
+  string CategoryID = 1;
+  int64 Status = 2;
+}
 
 service product {
-  rpc productList (Nil) returns (Nil);
+  rpc productList (ProductNil) returns (ProductNil);
+  rpc categoryListAll (ProductNil) returns (CategoryListAllReply);
+  rpc categoryCreate (CategoryCreateReq) returns (ProductNil);
+  rpc categoryChangeStatus (CategoryChangeStatusReq) returns (ProductNil);
 }

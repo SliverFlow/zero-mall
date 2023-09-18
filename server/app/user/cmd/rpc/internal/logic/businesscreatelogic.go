@@ -29,7 +29,7 @@ func NewBusinessCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Bu
 }
 
 // BusinessCreate 创建商家
-func (l *BusinessCreateLogic) BusinessCreate(in *pb.BusinessCreateReq) (*pb.Nil, error) {
+func (l *BusinessCreateLogic) BusinessCreate(in *pb.BusinessCreateReq) (*pb.UserNil, error) {
 	user, err := l.svcCtx.UserModel.UserFindByUUID(l.ctx, in.GetUUID())
 	if err != nil {
 		logx.Error("find business admin user err", err.Error())
@@ -47,5 +47,5 @@ func (l *BusinessCreateLogic) BusinessCreate(in *pb.BusinessCreateReq) (*pb.Nil,
 		return nil, status.Errorf(100001, "创建商家失败")
 	}
 
-	return &pb.Nil{}, nil
+	return &pb.UserNil{}, nil
 }

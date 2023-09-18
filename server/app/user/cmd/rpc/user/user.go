@@ -20,7 +20,6 @@ type (
 	CreateReq          = pb.CreateReq
 	IDReq              = pb.IDReq
 	IDsReq             = pb.IDsReq
-	Nil                = pb.Nil
 	PageReply          = pb.PageReply
 	PageReq            = pb.PageReq
 	UUIDReq            = pb.UUIDReq
@@ -28,6 +27,7 @@ type (
 	UserInfoReply      = pb.UserInfoReply
 	UserLoginReply     = pb.UserLoginReply
 	UserLoginReq       = pb.UserLoginReq
+	UserNil            = pb.UserNil
 	UserReply          = pb.UserReply
 	UsernameReq        = pb.UsernameReq
 
@@ -36,15 +36,15 @@ type (
 		UserFind(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*UserInfoReply, error)
 		UserFindByUsername(ctx context.Context, in *UsernameReq, opts ...grpc.CallOption) (*UserInfoReply, error)
 		UserList(ctx context.Context, in *PageReq, opts ...grpc.CallOption) (*PageReply, error)
-		UserCreate(ctx context.Context, in *CreateReq, opts ...grpc.CallOption) (*Nil, error)
-		UserUpdate(ctx context.Context, in *UpdateReq, opts ...grpc.CallOption) (*Nil, error)
-		UserDelete(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*Nil, error)
-		UserBatchDelete(ctx context.Context, in *IDsReq, opts ...grpc.CallOption) (*Nil, error)
+		UserCreate(ctx context.Context, in *CreateReq, opts ...grpc.CallOption) (*UserNil, error)
+		UserUpdate(ctx context.Context, in *UpdateReq, opts ...grpc.CallOption) (*UserNil, error)
+		UserDelete(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*UserNil, error)
+		UserBatchDelete(ctx context.Context, in *IDsReq, opts ...grpc.CallOption) (*UserNil, error)
 		Login(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*UserLoginReply, error)
 		UserFindByUUID(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*UserInfoReply, error)
-		AdminChangeRole(ctx context.Context, in *AdminChangeRoleReq, opts ...grpc.CallOption) (*Nil, error)
+		AdminChangeRole(ctx context.Context, in *AdminChangeRoleReq, opts ...grpc.CallOption) (*UserNil, error)
 		// 商家相关
-		BusinessCreate(ctx context.Context, in *BusinessCreateReq, opts ...grpc.CallOption) (*Nil, error)
+		BusinessCreate(ctx context.Context, in *BusinessCreateReq, opts ...grpc.CallOption) (*UserNil, error)
 		BusinessList(ctx context.Context, in *PageReq, opts ...grpc.CallOption) (*BusinessPageReply, error)
 	}
 
@@ -75,22 +75,22 @@ func (m *defaultUser) UserList(ctx context.Context, in *PageReq, opts ...grpc.Ca
 	return client.UserList(ctx, in, opts...)
 }
 
-func (m *defaultUser) UserCreate(ctx context.Context, in *CreateReq, opts ...grpc.CallOption) (*Nil, error) {
+func (m *defaultUser) UserCreate(ctx context.Context, in *CreateReq, opts ...grpc.CallOption) (*UserNil, error) {
 	client := pb.NewUserClient(m.cli.Conn())
 	return client.UserCreate(ctx, in, opts...)
 }
 
-func (m *defaultUser) UserUpdate(ctx context.Context, in *UpdateReq, opts ...grpc.CallOption) (*Nil, error) {
+func (m *defaultUser) UserUpdate(ctx context.Context, in *UpdateReq, opts ...grpc.CallOption) (*UserNil, error) {
 	client := pb.NewUserClient(m.cli.Conn())
 	return client.UserUpdate(ctx, in, opts...)
 }
 
-func (m *defaultUser) UserDelete(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*Nil, error) {
+func (m *defaultUser) UserDelete(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*UserNil, error) {
 	client := pb.NewUserClient(m.cli.Conn())
 	return client.UserDelete(ctx, in, opts...)
 }
 
-func (m *defaultUser) UserBatchDelete(ctx context.Context, in *IDsReq, opts ...grpc.CallOption) (*Nil, error) {
+func (m *defaultUser) UserBatchDelete(ctx context.Context, in *IDsReq, opts ...grpc.CallOption) (*UserNil, error) {
 	client := pb.NewUserClient(m.cli.Conn())
 	return client.UserBatchDelete(ctx, in, opts...)
 }
@@ -105,13 +105,13 @@ func (m *defaultUser) UserFindByUUID(ctx context.Context, in *UUIDReq, opts ...g
 	return client.UserFindByUUID(ctx, in, opts...)
 }
 
-func (m *defaultUser) AdminChangeRole(ctx context.Context, in *AdminChangeRoleReq, opts ...grpc.CallOption) (*Nil, error) {
+func (m *defaultUser) AdminChangeRole(ctx context.Context, in *AdminChangeRoleReq, opts ...grpc.CallOption) (*UserNil, error) {
 	client := pb.NewUserClient(m.cli.Conn())
 	return client.AdminChangeRole(ctx, in, opts...)
 }
 
 // 商家相关
-func (m *defaultUser) BusinessCreate(ctx context.Context, in *BusinessCreateReq, opts ...grpc.CallOption) (*Nil, error) {
+func (m *defaultUser) BusinessCreate(ctx context.Context, in *BusinessCreateReq, opts ...grpc.CallOption) (*UserNil, error) {
 	client := pb.NewUserClient(m.cli.Conn())
 	return client.BusinessCreate(ctx, in, opts...)
 }

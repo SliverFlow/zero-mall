@@ -22,7 +22,10 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ProductClient interface {
-	ProductList(ctx context.Context, in *Nil, opts ...grpc.CallOption) (*Nil, error)
+	ProductList(ctx context.Context, in *ProductNil, opts ...grpc.CallOption) (*ProductNil, error)
+	CategoryListAll(ctx context.Context, in *ProductNil, opts ...grpc.CallOption) (*CategoryListAllReply, error)
+	CategoryCreate(ctx context.Context, in *CategoryCreateReq, opts ...grpc.CallOption) (*ProductNil, error)
+	CategoryChangeStatus(ctx context.Context, in *CategoryChangeStatusReq, opts ...grpc.CallOption) (*ProductNil, error)
 }
 
 type productClient struct {
@@ -33,9 +36,36 @@ func NewProductClient(cc grpc.ClientConnInterface) ProductClient {
 	return &productClient{cc}
 }
 
-func (c *productClient) ProductList(ctx context.Context, in *Nil, opts ...grpc.CallOption) (*Nil, error) {
-	out := new(Nil)
+func (c *productClient) ProductList(ctx context.Context, in *ProductNil, opts ...grpc.CallOption) (*ProductNil, error) {
+	out := new(ProductNil)
 	err := c.cc.Invoke(ctx, "/pb.product/productList", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productClient) CategoryListAll(ctx context.Context, in *ProductNil, opts ...grpc.CallOption) (*CategoryListAllReply, error) {
+	out := new(CategoryListAllReply)
+	err := c.cc.Invoke(ctx, "/pb.product/categoryListAll", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productClient) CategoryCreate(ctx context.Context, in *CategoryCreateReq, opts ...grpc.CallOption) (*ProductNil, error) {
+	out := new(ProductNil)
+	err := c.cc.Invoke(ctx, "/pb.product/categoryCreate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productClient) CategoryChangeStatus(ctx context.Context, in *CategoryChangeStatusReq, opts ...grpc.CallOption) (*ProductNil, error) {
+	out := new(ProductNil)
+	err := c.cc.Invoke(ctx, "/pb.product/categoryChangeStatus", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +76,10 @@ func (c *productClient) ProductList(ctx context.Context, in *Nil, opts ...grpc.C
 // All implementations must embed UnimplementedProductServer
 // for forward compatibility
 type ProductServer interface {
-	ProductList(context.Context, *Nil) (*Nil, error)
+	ProductList(context.Context, *ProductNil) (*ProductNil, error)
+	CategoryListAll(context.Context, *ProductNil) (*CategoryListAllReply, error)
+	CategoryCreate(context.Context, *CategoryCreateReq) (*ProductNil, error)
+	CategoryChangeStatus(context.Context, *CategoryChangeStatusReq) (*ProductNil, error)
 	mustEmbedUnimplementedProductServer()
 }
 
@@ -54,8 +87,17 @@ type ProductServer interface {
 type UnimplementedProductServer struct {
 }
 
-func (UnimplementedProductServer) ProductList(context.Context, *Nil) (*Nil, error) {
+func (UnimplementedProductServer) ProductList(context.Context, *ProductNil) (*ProductNil, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProductList not implemented")
+}
+func (UnimplementedProductServer) CategoryListAll(context.Context, *ProductNil) (*CategoryListAllReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CategoryListAll not implemented")
+}
+func (UnimplementedProductServer) CategoryCreate(context.Context, *CategoryCreateReq) (*ProductNil, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CategoryCreate not implemented")
+}
+func (UnimplementedProductServer) CategoryChangeStatus(context.Context, *CategoryChangeStatusReq) (*ProductNil, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CategoryChangeStatus not implemented")
 }
 func (UnimplementedProductServer) mustEmbedUnimplementedProductServer() {}
 
@@ -71,7 +113,7 @@ func RegisterProductServer(s grpc.ServiceRegistrar, srv ProductServer) {
 }
 
 func _Product_ProductList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Nil)
+	in := new(ProductNil)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -83,7 +125,61 @@ func _Product_ProductList_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: "/pb.product/productList",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProductServer).ProductList(ctx, req.(*Nil))
+		return srv.(ProductServer).ProductList(ctx, req.(*ProductNil))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Product_CategoryListAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProductNil)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServer).CategoryListAll(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.product/categoryListAll",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServer).CategoryListAll(ctx, req.(*ProductNil))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Product_CategoryCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CategoryCreateReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServer).CategoryCreate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.product/categoryCreate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServer).CategoryCreate(ctx, req.(*CategoryCreateReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Product_CategoryChangeStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CategoryChangeStatusReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServer).CategoryChangeStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.product/categoryChangeStatus",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServer).CategoryChangeStatus(ctx, req.(*CategoryChangeStatusReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -98,6 +194,18 @@ var Product_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "productList",
 			Handler:    _Product_ProductList_Handler,
+		},
+		{
+			MethodName: "categoryListAll",
+			Handler:    _Product_CategoryListAll_Handler,
+		},
+		{
+			MethodName: "categoryCreate",
+			Handler:    _Product_CategoryCreate_Handler,
+		},
+		{
+			MethodName: "categoryChangeStatus",
+			Handler:    _Product_CategoryChangeStatus_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

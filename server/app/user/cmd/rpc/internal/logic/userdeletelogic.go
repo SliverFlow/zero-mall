@@ -23,8 +23,8 @@ func NewUserDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserDe
 	}
 }
 
-func (l *UserDeleteLogic) UserDelete(in *pb.IDReq) (*pb.Nil, error) {
+func (l *UserDeleteLogic) UserDelete(in *pb.IDReq) (*pb.UserNil, error) {
 	// todo: add your logic here and delete this line
 
-	return &pb.Nil{}, nil
+	return &pb.UserNil{}, nil
 }

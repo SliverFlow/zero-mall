@@ -27,7 +27,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 
 	return &ServiceContext{
 		Config:       c,
-		ProductModel: model.NewProductModel(nil),
+		ProductModel: model.NewProductModel(db),
 	}
 }
 

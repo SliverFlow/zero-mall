@@ -6,6 +6,7 @@ import (
 
 	base "server/app/system/cmd/api/internal/handler/base"
 	business "server/app/system/cmd/api/internal/handler/business"
+	category "server/app/system/cmd/api/internal/handler/category"
 	menu "server/app/system/cmd/api/internal/handler/menu"
 	role "server/app/system/cmd/api/internal/handler/role"
 	user "server/app/system/cmd/api/internal/handler/user"
@@ -131,6 +132,30 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Method:  http.MethodPost,
 					Path:    "/business/list",
 					Handler: business.BusinessListHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/system/v1"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/category/listAll",
+					Handler: category.CategoryListAllHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/category/create",
+					Handler: category.CategoryCreateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/category/changeStatus",
+					Handler: category.CategoryChangeStatusHandler(serverCtx),
 				},
 			}...,
 		),

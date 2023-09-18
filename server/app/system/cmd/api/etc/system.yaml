@@ -43,6 +43,13 @@ UserRpc:
 #      - etcd:2379
     Key: user.rpc
 
+ProductRpc:
+  Etcd:
+    Hosts:
+      - 120.77.237.246:32379
+    #      - etcd:2379
+    Key: product.rpc
+
 #Prometheus:
 #  Host: 0.0.0.0
 #  Port: 7899

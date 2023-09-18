@@ -28,7 +28,7 @@ func NewUserCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserCr
 	}
 }
 
-func (l *UserCreateLogic) UserCreate(in *pb.CreateReq) (*pb.Nil, error) {
+func (l *UserCreateLogic) UserCreate(in *pb.CreateReq) (*pb.UserNil, error) {
 	var u model.User
 	_ = copier.Copy(&u, in)
 
@@ -44,5 +44,5 @@ func (l *UserCreateLogic) UserCreate(in *pb.CreateReq) (*pb.Nil, error) {
 	if err != nil {
 		return nil, status.Errorf(100001, "创建用户失败")
 	}
-	return &pb.Nil{}, nil
+	return &pb.UserNil{}, nil
 }

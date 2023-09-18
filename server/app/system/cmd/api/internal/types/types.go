@@ -158,3 +158,35 @@ type BusinessListReply struct {
 	Page     int64      `json:"page"`
 	PageSize int64      `json:"pageSize"`
 }
+
+type Category struct {
+	ID         int64      `json:"ID"`
+	CategoryID string     `json:"categoryId"`
+	ParentId   string     `json:"parentId"`
+	Name       string     `json:"name"`
+	Status     int64      `json:"status"`
+	Type       int64      `json:"type"`
+	Sorted     int64      `json:"sorted"`
+	BusinessID string     `json:"businessId"`
+	CreatedAt  int64      `json:"createdAt"`
+	UpdatedAt  int64      `json:"updatedAt"`
+	Children   []Category `json:"children"`
+}
+
+type CategoryListAllReply struct {
+	List []Category `json:"list"`
+}
+
+type CategoryCreateReq struct {
+	ParentId   string `json:"parentId"`
+	Name       string `json:"name"`
+	Sorted     int64  `json:"sorted"`
+	Status     int64  `json:"status"`
+	Type       int64  `json:"type"`
+	BusinessID string `json:"businessId"`
+}
+
+type CategoryChangeStatusReq struct {
+	CategoryID string `json:"categoryId"`
+	Status     int64  `json:"status"`
+}

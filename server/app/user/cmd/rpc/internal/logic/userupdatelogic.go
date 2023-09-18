@@ -28,7 +28,7 @@ func NewUserUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserUp
 	}
 }
 
-func (l *UserUpdateLogic) UserUpdate(in *pb.UpdateReq) (*pb.Nil, error) {
+func (l *UserUpdateLogic) UserUpdate(in *pb.UpdateReq) (*pb.UserNil, error) {
 	var u model.User
 	_ = copier.Copy(&u, in)
 	u.ID = uint(int(in.ID))
@@ -41,5 +41,5 @@ func (l *UserUpdateLogic) UserUpdate(in *pb.UpdateReq) (*pb.Nil, error) {
 		}
 		return nil, err
 	}
-	return &pb.Nil{}, nil
+	return &pb.UserNil{}, nil
 }

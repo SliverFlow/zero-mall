@@ -26,15 +26,15 @@ type UserClient interface {
 	UserFind(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*UserInfoReply, error)
 	UserFindByUsername(ctx context.Context, in *UsernameReq, opts ...grpc.CallOption) (*UserInfoReply, error)
 	UserList(ctx context.Context, in *PageReq, opts ...grpc.CallOption) (*PageReply, error)
-	UserCreate(ctx context.Context, in *CreateReq, opts ...grpc.CallOption) (*Nil, error)
-	UserUpdate(ctx context.Context, in *UpdateReq, opts ...grpc.CallOption) (*Nil, error)
-	UserDelete(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*Nil, error)
-	UserBatchDelete(ctx context.Context, in *IDsReq, opts ...grpc.CallOption) (*Nil, error)
+	UserCreate(ctx context.Context, in *CreateReq, opts ...grpc.CallOption) (*UserNil, error)
+	UserUpdate(ctx context.Context, in *UpdateReq, opts ...grpc.CallOption) (*UserNil, error)
+	UserDelete(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*UserNil, error)
+	UserBatchDelete(ctx context.Context, in *IDsReq, opts ...grpc.CallOption) (*UserNil, error)
 	Login(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*UserLoginReply, error)
 	UserFindByUUID(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*UserInfoReply, error)
-	AdminChangeRole(ctx context.Context, in *AdminChangeRoleReq, opts ...grpc.CallOption) (*Nil, error)
+	AdminChangeRole(ctx context.Context, in *AdminChangeRoleReq, opts ...grpc.CallOption) (*UserNil, error)
 	// 商家相关
-	BusinessCreate(ctx context.Context, in *BusinessCreateReq, opts ...grpc.CallOption) (*Nil, error)
+	BusinessCreate(ctx context.Context, in *BusinessCreateReq, opts ...grpc.CallOption) (*UserNil, error)
 	BusinessList(ctx context.Context, in *PageReq, opts ...grpc.CallOption) (*BusinessPageReply, error)
 }
 
@@ -73,8 +73,8 @@ func (c *userClient) UserList(ctx context.Context, in *PageReq, opts ...grpc.Cal
 	return out, nil
 }
 
-func (c *userClient) UserCreate(ctx context.Context, in *CreateReq, opts ...grpc.CallOption) (*Nil, error) {
-	out := new(Nil)
+func (c *userClient) UserCreate(ctx context.Context, in *CreateReq, opts ...grpc.CallOption) (*UserNil, error) {
+	out := new(UserNil)
 	err := c.cc.Invoke(ctx, "/pb.user/userCreate", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -82,8 +82,8 @@ func (c *userClient) UserCreate(ctx context.Context, in *CreateReq, opts ...grpc
 	return out, nil
 }
 
-func (c *userClient) UserUpdate(ctx context.Context, in *UpdateReq, opts ...grpc.CallOption) (*Nil, error) {
-	out := new(Nil)
+func (c *userClient) UserUpdate(ctx context.Context, in *UpdateReq, opts ...grpc.CallOption) (*UserNil, error) {
+	out := new(UserNil)
 	err := c.cc.Invoke(ctx, "/pb.user/userUpdate", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -91,8 +91,8 @@ func (c *userClient) UserUpdate(ctx context.Context, in *UpdateReq, opts ...grpc
 	return out, nil
 }
 
-func (c *userClient) UserDelete(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*Nil, error) {
-	out := new(Nil)
+func (c *userClient) UserDelete(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*UserNil, error) {
+	out := new(UserNil)
 	err := c.cc.Invoke(ctx, "/pb.user/userDelete", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -100,8 +100,8 @@ func (c *userClient) UserDelete(ctx context.Context, in *IDReq, opts ...grpc.Cal
 	return out, nil
 }
 
-func (c *userClient) UserBatchDelete(ctx context.Context, in *IDsReq, opts ...grpc.CallOption) (*Nil, error) {
-	out := new(Nil)
+func (c *userClient) UserBatchDelete(ctx context.Context, in *IDsReq, opts ...grpc.CallOption) (*UserNil, error) {
+	out := new(UserNil)
 	err := c.cc.Invoke(ctx, "/pb.user/UserBatchDelete", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -127,8 +127,8 @@ func (c *userClient) UserFindByUUID(ctx context.Context, in *UUIDReq, opts ...gr
 	return out, nil
 }
 
-func (c *userClient) AdminChangeRole(ctx context.Context, in *AdminChangeRoleReq, opts ...grpc.CallOption) (*Nil, error) {
-	out := new(Nil)
+func (c *userClient) AdminChangeRole(ctx context.Context, in *AdminChangeRoleReq, opts ...grpc.CallOption) (*UserNil, error) {
+	out := new(UserNil)
 	err := c.cc.Invoke(ctx, "/pb.user/adminChangeRole", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -136,8 +136,8 @@ func (c *userClient) AdminChangeRole(ctx context.Context, in *AdminChangeRoleReq
 	return out, nil
 }
 
-func (c *userClient) BusinessCreate(ctx context.Context, in *BusinessCreateReq, opts ...grpc.CallOption) (*Nil, error) {
-	out := new(Nil)
+func (c *userClient) BusinessCreate(ctx context.Context, in *BusinessCreateReq, opts ...grpc.CallOption) (*UserNil, error) {
+	out := new(UserNil)
 	err := c.cc.Invoke(ctx, "/pb.user/businessCreate", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -162,15 +162,15 @@ type UserServer interface {
 	UserFind(context.Context, *IDReq) (*UserInfoReply, error)
 	UserFindByUsername(context.Context, *UsernameReq) (*UserInfoReply, error)
 	UserList(context.Context, *PageReq) (*PageReply, error)
-	UserCreate(context.Context, *CreateReq) (*Nil, error)
-	UserUpdate(context.Context, *UpdateReq) (*Nil, error)
-	UserDelete(context.Context, *IDReq) (*Nil, error)
-	UserBatchDelete(context.Context, *IDsReq) (*Nil, error)
+	UserCreate(context.Context, *CreateReq) (*UserNil, error)
+	UserUpdate(context.Context, *UpdateReq) (*UserNil, error)
+	UserDelete(context.Context, *IDReq) (*UserNil, error)
+	UserBatchDelete(context.Context, *IDsReq) (*UserNil, error)
 	Login(context.Context, *UserLoginReq) (*UserLoginReply, error)
 	UserFindByUUID(context.Context, *UUIDReq) (*UserInfoReply, error)
-	AdminChangeRole(context.Context, *AdminChangeRoleReq) (*Nil, error)
+	AdminChangeRole(context.Context, *AdminChangeRoleReq) (*UserNil, error)
 	// 商家相关
-	BusinessCreate(context.Context, *BusinessCreateReq) (*Nil, error)
+	BusinessCreate(context.Context, *BusinessCreateReq) (*UserNil, error)
 	BusinessList(context.Context, *PageReq) (*BusinessPageReply, error)
 	mustEmbedUnimplementedUserServer()
 }
@@ -188,16 +188,16 @@ func (UnimplementedUserServer) UserFindByUsername(context.Context, *UsernameReq)
 func (UnimplementedUserServer) UserList(context.Context, *PageReq) (*PageReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserList not implemented")
 }
-func (UnimplementedUserServer) UserCreate(context.Context, *CreateReq) (*Nil, error) {
+func (UnimplementedUserServer) UserCreate(context.Context, *CreateReq) (*UserNil, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserCreate not implemented")
 }
-func (UnimplementedUserServer) UserUpdate(context.Context, *UpdateReq) (*Nil, error) {
+func (UnimplementedUserServer) UserUpdate(context.Context, *UpdateReq) (*UserNil, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserUpdate not implemented")
 }
-func (UnimplementedUserServer) UserDelete(context.Context, *IDReq) (*Nil, error) {
+func (UnimplementedUserServer) UserDelete(context.Context, *IDReq) (*UserNil, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserDelete not implemented")
 }
-func (UnimplementedUserServer) UserBatchDelete(context.Context, *IDsReq) (*Nil, error) {
+func (UnimplementedUserServer) UserBatchDelete(context.Context, *IDsReq) (*UserNil, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserBatchDelete not implemented")
 }
 func (UnimplementedUserServer) Login(context.Context, *UserLoginReq) (*UserLoginReply, error) {
@@ -206,10 +206,10 @@ func (UnimplementedUserServer) Login(context.Context, *UserLoginReq) (*UserLogin
 func (UnimplementedUserServer) UserFindByUUID(context.Context, *UUIDReq) (*UserInfoReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserFindByUUID not implemented")
 }
-func (UnimplementedUserServer) AdminChangeRole(context.Context, *AdminChangeRoleReq) (*Nil, error) {
+func (UnimplementedUserServer) AdminChangeRole(context.Context, *AdminChangeRoleReq) (*UserNil, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AdminChangeRole not implemented")
 }
-func (UnimplementedUserServer) BusinessCreate(context.Context, *BusinessCreateReq) (*Nil, error) {
+func (UnimplementedUserServer) BusinessCreate(context.Context, *BusinessCreateReq) (*UserNil, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BusinessCreate not implemented")
 }
 func (UnimplementedUserServer) BusinessList(context.Context, *PageReq) (*BusinessPageReply, error) {

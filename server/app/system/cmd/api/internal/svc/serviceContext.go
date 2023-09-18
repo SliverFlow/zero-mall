@@ -8,6 +8,8 @@ import (
 	"github.com/zeromicro/go-zero/rest"
 	"github.com/zeromicro/go-zero/zrpc"
 	"os"
+	pruductpb "server/app/product/cmd/rpc/pb"
+	"server/app/product/cmd/rpc/product"
 	"server/app/system/cmd/api/internal/config"
 	systempb "server/app/system/cmd/rpc/pb"
 	"server/app/system/cmd/rpc/system"
@@ -21,8 +23,9 @@ type ServiceContext struct {
 	Config config.Config
 	Auth   rest.Middleware
 
-	SystemRpc system.System
-	UserRpc   user.User
+	SystemRpc  system.System
+	UserRpc    user.User
+	ProductRpc product.Product
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -30,10 +33,11 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	client := NewRedisClient(c.Redis)
 
 	return &ServiceContext{
-		Config:    c,
-		Auth:      middleware.NewAuthMiddleware(jwtConf.Secret, jwtConf.Expire, jwtConf.Buffer, jwtConf.Isuser, jwtConf.BlackListPrefix, client).Handle, // 认证中间件
-		SystemRpc: newSystemRpc(c.SystemRpc),
-		UserRpc:   newUserRpc(c.UserRpc),
+		Config:     c,
+		Auth:       middleware.NewAuthMiddleware(jwtConf.Secret, jwtConf.Expire, jwtConf.Buffer, jwtConf.Isuser, jwtConf.BlackListPrefix, client).Handle, // 认证中间件
+		SystemRpc:  newSystemRpc(c.SystemRpc),
+		UserRpc:    newUserRpc(c.UserRpc),
+		ProductRpc: newProductRpc(c.ProductRpc),
 	}
 }
 
@@ -65,7 +69,7 @@ func newSystemRpc(c zrpc.RpcClientConf) systempb.SystemClient {
 	return system.NewSystem(client)
 }
 
-// 强依赖 user pb
+// 强依赖 user rpc
 func newUserRpc(c zrpc.RpcClientConf) userpb.UserClient {
 	client, err := zrpc.NewClient(c)
 	if err != nil {
@@ -75,4 +79,15 @@ func newUserRpc(c zrpc.RpcClientConf) userpb.UserClient {
 	}
 	logx.Info("[RPC CONNECTION SUCCESS ] user rpc connection success : %v\n")
 	return user.NewUser(client)
+}
+
+// 弱依赖 product rpc
+func newProductRpc(c zrpc.RpcClientConf) pruductpb.ProductClient {
+	client, err := zrpc.NewClient(c)
+	if err != nil {
+		logx.Errorf("[RPC CONNECTION ERROR] product rpc client conn err: %v\n ", err)
+		return nil
+	}
+	logx.Info("[RPC CONNECTION SUCCESS ] product rpc connection success : %v\n")
+	return product.NewProduct(client)
 }

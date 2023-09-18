@@ -13,6 +13,9 @@ type (
 		CategoryFind(ctx context.Context, categoryId string) (enter *Category, err error)
 		CategoryUpdate(ctx context.Context, category *Category) (err error)
 		CategoryDelete(ctx context.Context, categoryId string) (err error)
+
+		CategoryListAll(ctx context.Context) (enter *[]Category, err error)
+		CategoryChangeStatus(ctx context.Context, categoryId string, status int64) (err error)
 	}
 
 	defaultCategoryModel struct {
@@ -28,6 +31,7 @@ type (
 		ParentId   string    `json:"parentId" gorm:"not null;default:'';comment:父分类id 当id=0时说明是根节点,一级类别 "`
 		Name       string    `json:"name" gorm:"not null;default:'';comment:分类名"`
 		Status     int64     `json:"status" gorm:"not null;default:0;comment:类别状态 0-暂存 1-正常,2-已废弃"`
+		Sorted     int64     `json:"sorted" gorm:"not null;default:0;comment:排序标记"`
 		Type       int64     `json:"type" gorm:"not null;default:0;comment:分类类别 0 系统类别 1 商家添加的类别"`
 		BusinessID string    `json:"businessId" gorm:"not null;default:'';comment:商户 id 只有为商家类别的时候才拥有值"`
 		Products   []Product `json:"products" gorm:"many2many:category_product;"`
@@ -109,4 +113,43 @@ func (d *defaultCategoryModel) CategoryDelete(ctx context.Context, categoryId st
 	tx := d.db.WithContext(ctx)
 
 	return tx.Where("category_id = ?").Delete(&Category{}).Error
+}
+
+// CategoryListAll
+// Author [SliverFlow]
+// @desc 查询所有分类信息
+func (d *defaultCategoryModel) CategoryListAll(ctx context.Context) (enter *[]Category, err error) {
+	tx := d.db.WithContext(ctx)
+
+	var list []Category
+	if err = tx.Model(&Category{}).Order("sorted asc").Find(&list).Error; err != nil {
+		return nil, err
+	}
+
+	return &list, nil
+}
+
+// CategoryChangeStatus
+// Author [SliverFlow]
+// @desc 更新分类状态
+func (d *defaultCategoryModel) CategoryChangeStatus(ctx context.Context, categoryId string, status int64) (err error) {
+	tx := d.db.WithContext(ctx)
+	var ids []string
+	ids = append(ids, categoryId)
+
+	enter, err := d.CategoryFind(ctx, categoryId)
+	if err != nil {
+		return err
+	}
+	if enter.ParentId == "0" && status == 0 {
+		var list []Category
+		if err = tx.Where(&Category{}).Where("parent_id = ?", enter.CategoryID).Find(&list).Error; err != nil {
+			return err
+		}
+		for _, c := range list {
+			ids = append(ids, c.CategoryID)
+		}
+	}
+
+	return tx.Model(&Category{}).Where("category_id in ?", ids).Update("status", status).Error
 }

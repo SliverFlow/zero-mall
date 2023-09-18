@@ -37,6 +37,7 @@ type Config struct {
 		ImgHeight int
 		ImgWidth  int
 	}
-	SystemRpc zrpc.RpcClientConf
-	UserRpc   zrpc.RpcClientConf
+	SystemRpc  zrpc.RpcClientConf
+	UserRpc    zrpc.RpcClientConf
+	ProductRpc zrpc.RpcClientConf
 }

@@ -70,6 +70,7 @@
               link
               icon="plus"
               :disabled="scope.row.parentId !== 0"
+              v-if="scope.row.parentId == 0"
               @click="addMenu(scope.row.ID, scope.row.role)"
             >添加子菜单
             </el-button>

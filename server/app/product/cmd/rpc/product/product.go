@@ -13,10 +13,17 @@ import (
 )
 
 type (
-	Nil = pb.Nil
+	Category                = pb.Category
+	CategoryChangeStatusReq = pb.CategoryChangeStatusReq
+	CategoryCreateReq       = pb.CategoryCreateReq
+	CategoryListAllReply    = pb.CategoryListAllReply
+	ProductNil              = pb.ProductNil
 
 	Product interface {
-		ProductList(ctx context.Context, in *Nil, opts ...grpc.CallOption) (*Nil, error)
+		ProductList(ctx context.Context, in *ProductNil, opts ...grpc.CallOption) (*ProductNil, error)
+		CategoryListAll(ctx context.Context, in *ProductNil, opts ...grpc.CallOption) (*CategoryListAllReply, error)
+		CategoryCreate(ctx context.Context, in *CategoryCreateReq, opts ...grpc.CallOption) (*ProductNil, error)
+		CategoryChangeStatus(ctx context.Context, in *CategoryChangeStatusReq, opts ...grpc.CallOption) (*ProductNil, error)
 	}
 
 	defaultProduct struct {
@@ -30,7 +37,22 @@ func NewProduct(cli zrpc.Client) Product {
 	}
 }
 
-func (m *defaultProduct) ProductList(ctx context.Context, in *Nil, opts ...grpc.CallOption) (*Nil, error) {
+func (m *defaultProduct) ProductList(ctx context.Context, in *ProductNil, opts ...grpc.CallOption) (*ProductNil, error) {
 	client := pb.NewProductClient(m.cli.Conn())
 	return client.ProductList(ctx, in, opts...)
+}
+
+func (m *defaultProduct) CategoryListAll(ctx context.Context, in *ProductNil, opts ...grpc.CallOption) (*CategoryListAllReply, error) {
+	client := pb.NewProductClient(m.cli.Conn())
+	return client.CategoryListAll(ctx, in, opts...)
+}
+
+func (m *defaultProduct) CategoryCreate(ctx context.Context, in *CategoryCreateReq, opts ...grpc.CallOption) (*ProductNil, error) {
+	client := pb.NewProductClient(m.cli.Conn())
+	return client.CategoryCreate(ctx, in, opts...)
+}
+
+func (m *defaultProduct) CategoryChangeStatus(ctx context.Context, in *CategoryChangeStatusReq, opts ...grpc.CallOption) (*ProductNil, error) {
+	client := pb.NewProductClient(m.cli.Conn())
+	return client.CategoryChangeStatus(ctx, in, opts...)
 }

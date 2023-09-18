@@ -12,6 +12,7 @@ import "api/role.api"
 import "api/menu.api"
 import "api/user.api"
 import "api/business.api"
+import "api/category.api"
 
 // 公共部分 login captcha file
 @server(
@@ -88,4 +89,19 @@ service system {
 service system {
 	@handler businessList
 	post /business/list (PageReq) returns (BusinessListReply)
+}
+
+// 分类部分
+@server(
+	group: category
+	prefix: system/v1
+	middleware : Auth
+)
+service system {
+	@handler categoryListAll
+	post /category/listAll (NilReq) returns (CategoryListAllReply)
+	@handler categoryCreate
+	post /category/create (CategoryCreateReq) returns (NilReply)
+	@handler categoryChangeStatus
+	post /category/changeStatus (CategoryChangeStatusReq) returns (NilReply)
 }

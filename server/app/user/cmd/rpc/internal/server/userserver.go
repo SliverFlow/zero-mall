@@ -38,22 +38,22 @@ func (s *UserServer) UserList(ctx context.Context, in *pb.PageReq) (*pb.PageRepl
 	return l.UserList(in)
 }
 
-func (s *UserServer) UserCreate(ctx context.Context, in *pb.CreateReq) (*pb.Nil, error) {
+func (s *UserServer) UserCreate(ctx context.Context, in *pb.CreateReq) (*pb.UserNil, error) {
 	l := logic.NewUserCreateLogic(ctx, s.svcCtx)
 	return l.UserCreate(in)
 }
 
-func (s *UserServer) UserUpdate(ctx context.Context, in *pb.UpdateReq) (*pb.Nil, error) {
+func (s *UserServer) UserUpdate(ctx context.Context, in *pb.UpdateReq) (*pb.UserNil, error) {
 	l := logic.NewUserUpdateLogic(ctx, s.svcCtx)
 	return l.UserUpdate(in)
 }
 
-func (s *UserServer) UserDelete(ctx context.Context, in *pb.IDReq) (*pb.Nil, error) {
+func (s *UserServer) UserDelete(ctx context.Context, in *pb.IDReq) (*pb.UserNil, error) {
 	l := logic.NewUserDeleteLogic(ctx, s.svcCtx)
 	return l.UserDelete(in)
 }
 
-func (s *UserServer) UserBatchDelete(ctx context.Context, in *pb.IDsReq) (*pb.Nil, error) {
+func (s *UserServer) UserBatchDelete(ctx context.Context, in *pb.IDsReq) (*pb.UserNil, error) {
 	l := logic.NewUserBatchDeleteLogic(ctx, s.svcCtx)
 	return l.UserBatchDelete(in)
 }
@@ -68,13 +68,13 @@ func (s *UserServer) UserFindByUUID(ctx context.Context, in *pb.UUIDReq) (*pb.Us
 	return l.UserFindByUUID(in)
 }
 
-func (s *UserServer) AdminChangeRole(ctx context.Context, in *pb.AdminChangeRoleReq) (*pb.Nil, error) {
+func (s *UserServer) AdminChangeRole(ctx context.Context, in *pb.AdminChangeRoleReq) (*pb.UserNil, error) {
 	l := logic.NewAdminChangeRoleLogic(ctx, s.svcCtx)
 	return l.AdminChangeRole(in)
 }
 
 // 商家相关
-func (s *UserServer) BusinessCreate(ctx context.Context, in *pb.BusinessCreateReq) (*pb.Nil, error) {
+func (s *UserServer) BusinessCreate(ctx context.Context, in *pb.BusinessCreateReq) (*pb.UserNil, error) {
 	l := logic.NewBusinessCreateLogic(ctx, s.svcCtx)
 	return l.BusinessCreate(in)
 }
