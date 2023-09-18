@@ -117,7 +117,7 @@ func (d *defaultCategoryModel) CategoryDelete(ctx context.Context, categoryId st
 
 // CategoryListAll
 // Author [SliverFlow]
-// @desc 查询所有分类信息
+// @desc 查询所有分类信息 按照排序标记排序
 func (d *defaultCategoryModel) CategoryListAll(ctx context.Context) (enter *[]Category, err error) {
 	tx := d.db.WithContext(ctx)
 
