@@ -157,6 +157,21 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Path:    "/category/changeStatus",
 					Handler: category.CategoryChangeStatusHandler(serverCtx),
 				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/category/find",
+					Handler: category.CategoryFindHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/category/update",
+					Handler: category.CategoryUpdateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/category/batchDelete",
+					Handler: category.CategoryBatchDeleteHandler(serverCtx),
+				},
 			}...,
 		),
 		rest.WithPrefix("/system/v1"),

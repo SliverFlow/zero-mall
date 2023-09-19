@@ -41,3 +41,23 @@ func (s *ProductServer) CategoryChangeStatus(ctx context.Context, in *pb.Categor
 	l := logic.NewCategoryChangeStatusLogic(ctx, s.svcCtx)
 	return l.CategoryChangeStatus(in)
 }
+
+func (s *ProductServer) CategoryFind(ctx context.Context, in *pb.CategoryIDReq) (*pb.Category, error) {
+	l := logic.NewCategoryFindLogic(ctx, s.svcCtx)
+	return l.CategoryFind(in)
+}
+
+func (s *ProductServer) CategoryUpdate(ctx context.Context, in *pb.CategoryUpdateReq) (*pb.ProductNil, error) {
+	l := logic.NewCategoryUpdateLogic(ctx, s.svcCtx)
+	return l.CategoryUpdate(in)
+}
+
+func (s *ProductServer) CategoryBatchDelete(ctx context.Context, in *pb.CategoryIDSReq) (*pb.ProductNil, error) {
+	l := logic.NewCategoryBatchDeleteLogic(ctx, s.svcCtx)
+	return l.CategoryBatchDelete(in)
+}
+
+func (s *ProductServer) CategoryFindChildrenID(ctx context.Context, in *pb.CategoryIDReq) (*pb.CategoryIDSReply, error) {
+	l := logic.NewCategoryFindChildrenIDLogic(ctx, s.svcCtx)
+	return l.CategoryFindChildrenID(in)
+}

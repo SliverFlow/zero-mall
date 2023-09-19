@@ -32,10 +32,32 @@ message CategoryChangeStatusReq {
   string CategoryID = 1;
   int64 Status = 2;
 }
+message CategoryIDReq {
+  string CategoryID = 1;
+}
+message CategoryUpdateReq {
+  string CategoryID = 2;
+  string ParentId = 3;
+  string Name = 4;
+  int64 Status = 5;
+  int64 Sorted = 13;
+  int64 Type = 6;
+  string BusinessID = 7;
+}
+message CategoryIDSReq {
+  repeated string IDS = 1;
+}
+message CategoryIDSReply {
+  repeated string IDS = 1;
+}
 
 service product {
   rpc productList (ProductNil) returns (ProductNil);
   rpc categoryListAll (ProductNil) returns (CategoryListAllReply);
   rpc categoryCreate (CategoryCreateReq) returns (ProductNil);
   rpc categoryChangeStatus (CategoryChangeStatusReq) returns (ProductNil);
+  rpc categoryFind (CategoryIDReq) returns (Category);
+  rpc categoryUpdate (CategoryUpdateReq) returns (ProductNil);
+  rpc categoryBatchDelete (CategoryIDSReq) returns (ProductNil);
+  rpc categoryFindChildrenID (CategoryIDReq) returns (CategoryIDSReply);
 }

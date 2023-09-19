@@ -104,4 +104,10 @@ service system {
 	post /category/create (CategoryCreateReq) returns (NilReply)
 	@handler categoryChangeStatus
 	post /category/changeStatus (CategoryChangeStatusReq) returns (NilReply)
+	@handler categoryFind
+	post /category/find (CategoryIDReq) returns (Category);
+	@handler categoryUpdate
+	post /category/update (CategoryUpdateReq) returns (NilReply);
+	@handler categoryBatchDelete
+	post /category/batchDelete (CategoryBatchDelteReq) returns (NilReply);
 }

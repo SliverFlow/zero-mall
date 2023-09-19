@@ -27,11 +27,11 @@ func NewCategoryCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ca
 func (l *CategoryCreateLogic) CategoryCreate(req *types.CategoryCreateReq) (resp *types.NilReply, err error) {
 
 	_, err = l.svcCtx.ProductRpc.CategoryCreate(l.ctx, &pb.CategoryCreateReq{
-		ParentId:   req.ParentId,
-		Name:       req.Name,
-		Status:     req.Status,
-		Type:       req.Type,
-		BusinessID: req.BusinessID,
+		ParentId: req.ParentId,
+		Name:     req.Name,
+		Status:   req.Status,
+		Type:     req.Type,
+		Sorted:   req.Sorted,
 	})
 	if err != nil {
 		return nil, err

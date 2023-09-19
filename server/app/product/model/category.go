@@ -16,6 +16,8 @@ type (
 
 		CategoryListAll(ctx context.Context) (enter *[]Category, err error)
 		CategoryChangeStatus(ctx context.Context, categoryId string, status int64) (err error)
+		CategoryFindChildrenID(ctx context.Context, categoryId string) (enter *[]string, err error)
+		CategoryBatchDelete(ctx context.Context, ids []string) (err error)
 	}
 
 	defaultCategoryModel struct {
@@ -102,6 +104,7 @@ func (d *defaultCategoryModel) CategoryUpdate(ctx context.Context, category *Cat
 	cm["name"] = category.Name
 	cm["status"] = category.Status
 	cm["type"] = category.Type
+	cm["sorted"] = category.Sorted
 
 	return tx.Model(&Category{}).Where("category_id = ?", category.CategoryID).Updates(cm).Error
 }
@@ -152,4 +155,30 @@ func (d *defaultCategoryModel) CategoryChangeStatus(ctx context.Context, categor
 	}
 
 	return tx.Model(&Category{}).Where("category_id in ?", ids).Update("status", status).Error
+}
+
+// CategoryFindChildrenID
+// Author [SliverFlow]
+// @desc 查询某个分类ID下的所有子分类ID
+func (d *defaultCategoryModel) CategoryFindChildrenID(ctx context.Context, categoryId string) (enter *[]string, err error) {
+	tx := d.db.WithContext(ctx)
+
+	var categorys []Category
+	if err = tx.Model(&Category{}).Where("parent_id = ?", categoryId).Find(&categorys).Error; err != nil {
+		return nil, err
+	}
+	ids := make([]string, 0)
+	for _, c := range categorys {
+		ids = append(ids, c.CategoryID)
+	}
+	return &ids, nil
+}
+
+// CategoryBatchDelete
+// Author [SliverFlow]
+// @desc 批量删除
+func (d *defaultCategoryModel) CategoryBatchDelete(ctx context.Context, ids []string) (err error) {
+	tx := d.db.WithContext(ctx)
+
+	return tx.Where("category_id in ?", ids).Delete(&Category{}).Error
 }

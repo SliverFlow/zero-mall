@@ -12,6 +12,11 @@
         <el-form-item prop="parentId" label="父分类ID：" style="width: 35%;" label-width="100px">
           <el-input v-model="formData.parentId" disabled/>
         </el-form-item>
+        <el-form-item prop="sorted" label="排序标记：" style="width: 35%;" label-width="100px">
+          <el-input-number v-model="formData.sorted" :min="0" :max="100" class="mx-4" />
+        </el-form-item>
+
+
         <el-form-item prop="parentId" label="类型：" style="width: 45%;" label-width="80px">
           <el-select v-model="formData.type"
                      disabled
@@ -46,8 +51,9 @@
 
 <script setup>
 import { ref } from 'vue'
-import { categoryCreateApi, categoryUpdateApi } from '@/api/system/category.js'
+import { categoryCreateApi, categoryFindApi, categoryUpdateApi } from '@/api/system/category.js'
 import { ElMessage } from 'element-plus'
+import Form from '@/view/system/menu/component/form.vue'
 
 // 驱动父类方法
 const emit = defineEmits(['success'])
@@ -66,7 +72,8 @@ const formData = ref({
   parentId: '',
   status: 0,
   type: 0,
-  businessId: ''
+  businessId: '',
+  sorted: 0
 })
 // 弹出层开关
 const dialogVisible = ref(false)
@@ -75,19 +82,26 @@ const dialogVisible = ref(false)
 const initFormData = () => {
   formData.value = {
     ID: 0,
+    categoryId: '',
     parentId: '',
     status: 0,
     type: 0,
-    businessId: ''
+    businessId: '',
+    sorted: 0
   }
 }
-const openDialog = (val) => {
+const openDialog = async(val) => {
   title.value = val
+  if (isEdit.value) { // 编辑状态 数据回显
+    const res = await categoryFindApi({categoryId: formData.value.categoryId})
+    formData.value = res.data
+  }
   dialogVisible.value = true
 }
 const closeDialog = () => {
   dialogVisible.value = false
   initFormData()
+  isEdit.value = false
 }
 
 // 设置 form ID
@@ -98,11 +112,16 @@ const setFormParentId = (id) => {
 // handleClose 默认关闭的回调
 const handleClose = () => {
   dialogVisible.value = false
+  isEdit.value = false
+  initFormData()
 }
 
 // 弹出层提交
 const enterDialog = async() => {
   let res
+  console.log(formData.value)
+  formData.value.sorted = parseInt(formData.value.sorted)
+  console.log(formData.value)
   if (isEdit.value) { // 编辑菜单
     res = await categoryUpdateApi(formData.value)
   } else { // 添加菜单
@@ -118,11 +137,17 @@ const enterDialog = async() => {
   }
 }
 
+// 设置 ID
+const setFormCategoryId = (id) => {
+  formData.value.categoryId = id
+}
+
 // 暴露给父组件的操作
 defineExpose({
   openDialog,
   isEdit,
-  setFormParentId
+  setFormParentId,
+  setFormCategoryId
 })
 </script>
 

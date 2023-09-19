@@ -26,6 +26,10 @@ type ProductClient interface {
 	CategoryListAll(ctx context.Context, in *ProductNil, opts ...grpc.CallOption) (*CategoryListAllReply, error)
 	CategoryCreate(ctx context.Context, in *CategoryCreateReq, opts ...grpc.CallOption) (*ProductNil, error)
 	CategoryChangeStatus(ctx context.Context, in *CategoryChangeStatusReq, opts ...grpc.CallOption) (*ProductNil, error)
+	CategoryFind(ctx context.Context, in *CategoryIDReq, opts ...grpc.CallOption) (*Category, error)
+	CategoryUpdate(ctx context.Context, in *CategoryUpdateReq, opts ...grpc.CallOption) (*ProductNil, error)
+	CategoryBatchDelete(ctx context.Context, in *CategoryIDSReq, opts ...grpc.CallOption) (*ProductNil, error)
+	CategoryFindChildrenID(ctx context.Context, in *CategoryIDReq, opts ...grpc.CallOption) (*CategoryIDSReply, error)
 }
 
 type productClient struct {
@@ -72,6 +76,42 @@ func (c *productClient) CategoryChangeStatus(ctx context.Context, in *CategoryCh
 	return out, nil
 }
 
+func (c *productClient) CategoryFind(ctx context.Context, in *CategoryIDReq, opts ...grpc.CallOption) (*Category, error) {
+	out := new(Category)
+	err := c.cc.Invoke(ctx, "/pb.product/categoryFind", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productClient) CategoryUpdate(ctx context.Context, in *CategoryUpdateReq, opts ...grpc.CallOption) (*ProductNil, error) {
+	out := new(ProductNil)
+	err := c.cc.Invoke(ctx, "/pb.product/categoryUpdate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productClient) CategoryBatchDelete(ctx context.Context, in *CategoryIDSReq, opts ...grpc.CallOption) (*ProductNil, error) {
+	out := new(ProductNil)
+	err := c.cc.Invoke(ctx, "/pb.product/categoryBatchDelete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productClient) CategoryFindChildrenID(ctx context.Context, in *CategoryIDReq, opts ...grpc.CallOption) (*CategoryIDSReply, error) {
+	out := new(CategoryIDSReply)
+	err := c.cc.Invoke(ctx, "/pb.product/categoryFindChildrenID", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProductServer is the server API for Product service.
 // All implementations must embed UnimplementedProductServer
 // for forward compatibility
@@ -80,6 +120,10 @@ type ProductServer interface {
 	CategoryListAll(context.Context, *ProductNil) (*CategoryListAllReply, error)
 	CategoryCreate(context.Context, *CategoryCreateReq) (*ProductNil, error)
 	CategoryChangeStatus(context.Context, *CategoryChangeStatusReq) (*ProductNil, error)
+	CategoryFind(context.Context, *CategoryIDReq) (*Category, error)
+	CategoryUpdate(context.Context, *CategoryUpdateReq) (*ProductNil, error)
+	CategoryBatchDelete(context.Context, *CategoryIDSReq) (*ProductNil, error)
+	CategoryFindChildrenID(context.Context, *CategoryIDReq) (*CategoryIDSReply, error)
 	mustEmbedUnimplementedProductServer()
 }
 
@@ -98,6 +142,18 @@ func (UnimplementedProductServer) CategoryCreate(context.Context, *CategoryCreat
 }
 func (UnimplementedProductServer) CategoryChangeStatus(context.Context, *CategoryChangeStatusReq) (*ProductNil, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CategoryChangeStatus not implemented")
+}
+func (UnimplementedProductServer) CategoryFind(context.Context, *CategoryIDReq) (*Category, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CategoryFind not implemented")
+}
+func (UnimplementedProductServer) CategoryUpdate(context.Context, *CategoryUpdateReq) (*ProductNil, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CategoryUpdate not implemented")
+}
+func (UnimplementedProductServer) CategoryBatchDelete(context.Context, *CategoryIDSReq) (*ProductNil, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CategoryBatchDelete not implemented")
+}
+func (UnimplementedProductServer) CategoryFindChildrenID(context.Context, *CategoryIDReq) (*CategoryIDSReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CategoryFindChildrenID not implemented")
 }
 func (UnimplementedProductServer) mustEmbedUnimplementedProductServer() {}
 
@@ -184,6 +240,78 @@ func _Product_CategoryChangeStatus_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Product_CategoryFind_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CategoryIDReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServer).CategoryFind(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.product/categoryFind",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServer).CategoryFind(ctx, req.(*CategoryIDReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Product_CategoryUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CategoryUpdateReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServer).CategoryUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.product/categoryUpdate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServer).CategoryUpdate(ctx, req.(*CategoryUpdateReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Product_CategoryBatchDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CategoryIDSReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServer).CategoryBatchDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.product/categoryBatchDelete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServer).CategoryBatchDelete(ctx, req.(*CategoryIDSReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Product_CategoryFindChildrenID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CategoryIDReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServer).CategoryFindChildrenID(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.product/categoryFindChildrenID",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServer).CategoryFindChildrenID(ctx, req.(*CategoryIDReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Product_ServiceDesc is the grpc.ServiceDesc for Product service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -206,6 +334,22 @@ var Product_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "categoryChangeStatus",
 			Handler:    _Product_CategoryChangeStatus_Handler,
+		},
+		{
+			MethodName: "categoryFind",
+			Handler:    _Product_CategoryFind_Handler,
+		},
+		{
+			MethodName: "categoryUpdate",
+			Handler:    _Product_CategoryUpdate_Handler,
+		},
+		{
+			MethodName: "categoryBatchDelete",
+			Handler:    _Product_CategoryBatchDelete_Handler,
+		},
+		{
+			MethodName: "categoryFindChildrenID",
+			Handler:    _Product_CategoryFindChildrenID_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

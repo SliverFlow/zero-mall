@@ -26,10 +26,29 @@ export const categoryChangeStatus = (data) => {
   })
 }
 
+// 更新分类
 export const categoryUpdateApi = (data) => {
   return service({
     method: 'post',
     url: '/system/v1/category/update',
+    data: data
+  })
+}
+
+// 查询分类信息
+export const categoryFindApi = (data) => {
+  return service({
+    method: 'post',
+    url: '/system/v1/category/find',
+    data: data
+  })
+}
+
+// 批量删除
+export const categoryBatchDeleteApi = (data) => {
+  return service({
+    method: 'post',
+    url: '/system/v1/category/batchDelete',
     data: data
   })
 }

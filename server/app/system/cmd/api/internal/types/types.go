@@ -178,15 +178,36 @@ type CategoryListAllReply struct {
 }
 
 type CategoryCreateReq struct {
-	ParentId   string `json:"parentId"`
-	Name       string `json:"name"`
-	Sorted     int64  `json:"sorted"`
-	Status     int64  `json:"status"`
-	Type       int64  `json:"type"`
-	BusinessID string `json:"businessId"`
+	ParentId string `json:"parentId"`
+	Name     string `json:"name"`
+	Sorted   int64  `json:"sorted"`
+	Status   int64  `json:"status"`
+	Type     int64  `json:"type"`
 }
 
 type CategoryChangeStatusReq struct {
 	CategoryID string `json:"categoryId"`
 	Status     int64  `json:"status"`
+}
+
+type CategoryIDReq struct {
+	CategoryID string `json:"categoryId"`
+}
+
+type CategoryUpdateReq struct {
+	ParentId   string `json:"parentId"`
+	Name       string `json:"name"`
+	Sorted     int64  `json:"sorted"`
+	Status     int64  `json:"status"`
+	Type       int64  `json:"type"`
+	CategoryID string `json:"categoryId"`
+}
+
+type IDAndPID struct {
+	ParentId   string `json:"parentId"`
+	CategoryID string `json:"categoryId"`
+}
+
+type CategoryBatchDelteReq struct {
+	KVS []IDAndPID `json:"kvs"`
 }

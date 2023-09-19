@@ -31,9 +31,27 @@ type CategoryCreateReq {
     Sorted int64 `json:"sorted"`
     Status int64 `json:"status"`
     Type int64 `json:"type"`
-    BusinessID string `json:"businessId"`
 }
 type CategoryChangeStatusReq {
     CategoryID string `json:"categoryId"`
     Status int64 `json:"status"`
+}
+type CategoryIDReq {
+    CategoryID string `json:"categoryId"`
+}
+type CategoryUpdateReq {
+    ParentId string `json:"parentId"`
+    Name string `json:"name"`
+    Sorted int64 `json:"sorted"`
+    Status int64 `json:"status"`
+    Type int64 `json:"type"`
+    CategoryID string `json:"categoryId"`
+}
+// 父 ID 和分类 ID
+type IDAndPID {
+    ParentId string `json:"parentId"`
+    CategoryID string `json:"categoryId"`
+}
+type CategoryBatchDelteReq {
+    KVS []IDAndPID `json:"kvs"`
 }
