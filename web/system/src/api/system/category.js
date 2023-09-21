@@ -52,3 +52,12 @@ export const categoryBatchDeleteApi = (data) => {
     data: data
   })
 }
+
+// 指定删除
+export const categoryDeleteApi = (data) => {
+  return service({
+    method: 'post',
+    url: '/system/v1/category/delete',
+    data: data
+  })
+}

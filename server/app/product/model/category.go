@@ -115,7 +115,7 @@ func (d *defaultCategoryModel) CategoryUpdate(ctx context.Context, category *Cat
 func (d *defaultCategoryModel) CategoryDelete(ctx context.Context, categoryId string) (err error) {
 	tx := d.db.WithContext(ctx)
 
-	return tx.Where("category_id = ?").Delete(&Category{}).Error
+	return tx.Where("category_id = ?", categoryId).Delete(&Category{}).Error
 }
 
 // CategoryListAll

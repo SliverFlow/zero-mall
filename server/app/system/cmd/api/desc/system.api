@@ -110,4 +110,6 @@ service system {
 	post /category/update (CategoryUpdateReq) returns (NilReply);
 	@handler categoryBatchDelete
 	post /category/batchDelete (CategoryBatchDelteReq) returns (NilReply);
+	@handler categoryDelete
+	post /category/delete (CategoryIDReq) returns (NilReply);
 }

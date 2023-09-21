@@ -2,6 +2,7 @@ syntax = "proto3";
 option go_package = "./pb";
 package pb;
 
+// 解决 pb 包下的命名冲突问题 nil 返回以及入参统一使用 服务名下的 nil
 message ProductNil {}
 // 公共 分类
 message Category {
@@ -52,12 +53,24 @@ message CategoryIDSReply {
 }
 
 service product {
-  rpc productList (ProductNil) returns (ProductNil);
+  // @desc 所有的分类列表
   rpc categoryListAll (ProductNil) returns (CategoryListAllReply);
+  // @desc 分类创建
   rpc categoryCreate (CategoryCreateReq) returns (ProductNil);
+  // @desc 修改分类状态
   rpc categoryChangeStatus (CategoryChangeStatusReq) returns (ProductNil);
+  // @desc 根据 分类 id 查询分类
   rpc categoryFind (CategoryIDReq) returns (Category);
+  // @desc 更新分类
   rpc categoryUpdate (CategoryUpdateReq) returns (ProductNil);
+  // @desc 批量删除分类
   rpc categoryBatchDelete (CategoryIDSReq) returns (ProductNil);
+  // @desc 分局父分类 id 查询子分类 id 列表
   rpc categoryFindChildrenID (CategoryIDReq) returns (CategoryIDSReply);
+  // @desc 单个删除分类
+  rpc categoryDelete (CategoryIDReq)  returns (ProductNil);
+
+
+  // 商品列表 分页
+  rpc productList (ProductNil) returns (ProductNil);
 }

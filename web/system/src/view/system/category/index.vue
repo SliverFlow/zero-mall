@@ -1,6 +1,6 @@
 <template>
   <div>
-    <warning-bar title="子分类会跟随父菜单的修改而修改，例如：父菜单的删除会造成父菜单下的所有菜单删除，修改状态同理。"/>
+    <warning-bar title="子分类会跟随父分类的修改而修改，例如：父分类的删除会造成父分类下的所有分类删除，修改状态同理。"/>
     <div class="gva-table-box">
       <div class="gva-btn-list">
         <el-button
@@ -10,7 +10,7 @@
         >添加主分类
         </el-button>
         <el-button
-          type="primary"
+          type="danger"
           icon="delete"
           @click="batchDeleteCategory"
         >批量删除
@@ -105,7 +105,7 @@ import { formatTimestamp } from '@/utils/date.js'
 import { ref } from 'vue'
 import {
   categoryBatchDeleteApi,
-  categoryChangeStatus,
+  categoryChangeStatus, categoryDeleteApi,
   categoryListAllApi
 } from '@/api/system/category.js'
 import WarningBar from '@/components/warningBar/warningBar.vue'
@@ -184,11 +184,24 @@ const batchDeleteCategory = async() => {
   const res = await categoryBatchDeleteApi({ kvs: kvs.value })
   if (res.code === 0) {
     ElMessage({
-      message: '删除菜单成功',
+      message: '删除分类成功',
       type: 'success',
     })
     await loadTableData()
   }
+}
+
+// 指定删除
+const deleteCategory = async (id) => {
+  const res = await categoryDeleteApi({categoryId: id})
+  if (res.code === 0) {
+    ElMessage({
+      message: '删除分类成功',
+      type: 'success',
+    })
+    await loadTableData()
+  }
+  
 }
 </script>
 
