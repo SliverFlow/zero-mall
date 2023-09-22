@@ -25,7 +25,7 @@ func NewRoleCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *RoleCr
 }
 
 // RoleCreate 创建角色
-func (l *RoleCreateLogic) RoleCreate(in *pb.CreateRole) (*pb.NilReply, error) {
+func (l *RoleCreateLogic) RoleCreate(in *pb.CreateRole) (*pb.SystemNil, error) {
 	err := l.svcCtx.SystemModel.RoleCreate(l.ctx, &model.Role{
 		Name: in.GetName(),
 	})
@@ -33,5 +33,5 @@ func (l *RoleCreateLogic) RoleCreate(in *pb.CreateRole) (*pb.NilReply, error) {
 		logx.Error("create role err", err.Error())
 		return nil, status.Errorf(100001, "创建角色失败")
 	}
-	return &pb.NilReply{}, nil
+	return &pb.SystemNil{}, nil
 }

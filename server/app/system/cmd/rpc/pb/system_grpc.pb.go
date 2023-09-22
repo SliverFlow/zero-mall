@@ -25,13 +25,16 @@ type SystemClient interface {
 	// 系统登录
 	Login(ctx context.Context, in *SystemLoginReq, opts ...grpc.CallOption) (*SystemLoginReply, error)
 	// 创建角色
-	RoleCreate(ctx context.Context, in *CreateRole, opts ...grpc.CallOption) (*NilReply, error)
+	RoleCreate(ctx context.Context, in *CreateRole, opts ...grpc.CallOption) (*SystemNil, error)
 	// 查询某个角色的菜单
 	MenuListByRole(ctx context.Context, in *RoleIDReq, opts ...grpc.CallOption) (*MenuListReply, error)
 	MenuListAllByRole(ctx context.Context, in *RoleIDReq, opts ...grpc.CallOption) (*MenuListReply, error)
-	MenuChangeStatus(ctx context.Context, in *MenuChangeStatusReq, opts ...grpc.CallOption) (*NilReply, error)
-	MenuCreate(ctx context.Context, in *MenuCreateReq, opts ...grpc.CallOption) (*NilReply, error)
-	MenuUpdate(ctx context.Context, in *MenuUpdateReq, opts ...grpc.CallOption) (*NilReply, error)
+	MenuChangeStatus(ctx context.Context, in *MenuChangeStatusReq, opts ...grpc.CallOption) (*SystemNil, error)
+	MenuCreate(ctx context.Context, in *MenuCreateReq, opts ...grpc.CallOption) (*SystemNil, error)
+	MenuUpdate(ctx context.Context, in *MenuUpdateReq, opts ...grpc.CallOption) (*SystemNil, error)
+	MenuFind(ctx context.Context, in *MenuIDReq, opts ...grpc.CallOption) (*Menu, error)
+	MenuDelete(ctx context.Context, in *MenuIDsReq, opts ...grpc.CallOption) (*SystemNil, error)
+	MenuFindChildrenID(ctx context.Context, in *MenuIDReq, opts ...grpc.CallOption) (*MenuIDsReply, error)
 }
 
 type systemClient struct {
@@ -51,8 +54,8 @@ func (c *systemClient) Login(ctx context.Context, in *SystemLoginReq, opts ...gr
 	return out, nil
 }
 
-func (c *systemClient) RoleCreate(ctx context.Context, in *CreateRole, opts ...grpc.CallOption) (*NilReply, error) {
-	out := new(NilReply)
+func (c *systemClient) RoleCreate(ctx context.Context, in *CreateRole, opts ...grpc.CallOption) (*SystemNil, error) {
+	out := new(SystemNil)
 	err := c.cc.Invoke(ctx, "/pb.system/RoleCreate", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -78,8 +81,8 @@ func (c *systemClient) MenuListAllByRole(ctx context.Context, in *RoleIDReq, opt
 	return out, nil
 }
 
-func (c *systemClient) MenuChangeStatus(ctx context.Context, in *MenuChangeStatusReq, opts ...grpc.CallOption) (*NilReply, error) {
-	out := new(NilReply)
+func (c *systemClient) MenuChangeStatus(ctx context.Context, in *MenuChangeStatusReq, opts ...grpc.CallOption) (*SystemNil, error) {
+	out := new(SystemNil)
 	err := c.cc.Invoke(ctx, "/pb.system/MenuChangeStatus", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -87,8 +90,8 @@ func (c *systemClient) MenuChangeStatus(ctx context.Context, in *MenuChangeStatu
 	return out, nil
 }
 
-func (c *systemClient) MenuCreate(ctx context.Context, in *MenuCreateReq, opts ...grpc.CallOption) (*NilReply, error) {
-	out := new(NilReply)
+func (c *systemClient) MenuCreate(ctx context.Context, in *MenuCreateReq, opts ...grpc.CallOption) (*SystemNil, error) {
+	out := new(SystemNil)
 	err := c.cc.Invoke(ctx, "/pb.system/MenuCreate", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -96,9 +99,36 @@ func (c *systemClient) MenuCreate(ctx context.Context, in *MenuCreateReq, opts .
 	return out, nil
 }
 
-func (c *systemClient) MenuUpdate(ctx context.Context, in *MenuUpdateReq, opts ...grpc.CallOption) (*NilReply, error) {
-	out := new(NilReply)
+func (c *systemClient) MenuUpdate(ctx context.Context, in *MenuUpdateReq, opts ...grpc.CallOption) (*SystemNil, error) {
+	out := new(SystemNil)
 	err := c.cc.Invoke(ctx, "/pb.system/MenuUpdate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *systemClient) MenuFind(ctx context.Context, in *MenuIDReq, opts ...grpc.CallOption) (*Menu, error) {
+	out := new(Menu)
+	err := c.cc.Invoke(ctx, "/pb.system/MenuFind", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *systemClient) MenuDelete(ctx context.Context, in *MenuIDsReq, opts ...grpc.CallOption) (*SystemNil, error) {
+	out := new(SystemNil)
+	err := c.cc.Invoke(ctx, "/pb.system/MenuDelete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *systemClient) MenuFindChildrenID(ctx context.Context, in *MenuIDReq, opts ...grpc.CallOption) (*MenuIDsReply, error) {
+	out := new(MenuIDsReply)
+	err := c.cc.Invoke(ctx, "/pb.system/MenuFindChildrenID", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -112,13 +142,16 @@ type SystemServer interface {
 	// 系统登录
 	Login(context.Context, *SystemLoginReq) (*SystemLoginReply, error)
 	// 创建角色
-	RoleCreate(context.Context, *CreateRole) (*NilReply, error)
+	RoleCreate(context.Context, *CreateRole) (*SystemNil, error)
 	// 查询某个角色的菜单
 	MenuListByRole(context.Context, *RoleIDReq) (*MenuListReply, error)
 	MenuListAllByRole(context.Context, *RoleIDReq) (*MenuListReply, error)
-	MenuChangeStatus(context.Context, *MenuChangeStatusReq) (*NilReply, error)
-	MenuCreate(context.Context, *MenuCreateReq) (*NilReply, error)
-	MenuUpdate(context.Context, *MenuUpdateReq) (*NilReply, error)
+	MenuChangeStatus(context.Context, *MenuChangeStatusReq) (*SystemNil, error)
+	MenuCreate(context.Context, *MenuCreateReq) (*SystemNil, error)
+	MenuUpdate(context.Context, *MenuUpdateReq) (*SystemNil, error)
+	MenuFind(context.Context, *MenuIDReq) (*Menu, error)
+	MenuDelete(context.Context, *MenuIDsReq) (*SystemNil, error)
+	MenuFindChildrenID(context.Context, *MenuIDReq) (*MenuIDsReply, error)
 	mustEmbedUnimplementedSystemServer()
 }
 
@@ -129,7 +162,7 @@ type UnimplementedSystemServer struct {
 func (UnimplementedSystemServer) Login(context.Context, *SystemLoginReq) (*SystemLoginReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
 }
-func (UnimplementedSystemServer) RoleCreate(context.Context, *CreateRole) (*NilReply, error) {
+func (UnimplementedSystemServer) RoleCreate(context.Context, *CreateRole) (*SystemNil, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RoleCreate not implemented")
 }
 func (UnimplementedSystemServer) MenuListByRole(context.Context, *RoleIDReq) (*MenuListReply, error) {
@@ -138,14 +171,23 @@ func (UnimplementedSystemServer) MenuListByRole(context.Context, *RoleIDReq) (*M
 func (UnimplementedSystemServer) MenuListAllByRole(context.Context, *RoleIDReq) (*MenuListReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MenuListAllByRole not implemented")
 }
-func (UnimplementedSystemServer) MenuChangeStatus(context.Context, *MenuChangeStatusReq) (*NilReply, error) {
+func (UnimplementedSystemServer) MenuChangeStatus(context.Context, *MenuChangeStatusReq) (*SystemNil, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MenuChangeStatus not implemented")
 }
-func (UnimplementedSystemServer) MenuCreate(context.Context, *MenuCreateReq) (*NilReply, error) {
+func (UnimplementedSystemServer) MenuCreate(context.Context, *MenuCreateReq) (*SystemNil, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MenuCreate not implemented")
 }
-func (UnimplementedSystemServer) MenuUpdate(context.Context, *MenuUpdateReq) (*NilReply, error) {
+func (UnimplementedSystemServer) MenuUpdate(context.Context, *MenuUpdateReq) (*SystemNil, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MenuUpdate not implemented")
+}
+func (UnimplementedSystemServer) MenuFind(context.Context, *MenuIDReq) (*Menu, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MenuFind not implemented")
+}
+func (UnimplementedSystemServer) MenuDelete(context.Context, *MenuIDsReq) (*SystemNil, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MenuDelete not implemented")
+}
+func (UnimplementedSystemServer) MenuFindChildrenID(context.Context, *MenuIDReq) (*MenuIDsReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MenuFindChildrenID not implemented")
 }
 func (UnimplementedSystemServer) mustEmbedUnimplementedSystemServer() {}
 
@@ -286,6 +328,60 @@ func _System_MenuUpdate_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _System_MenuFind_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MenuIDReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SystemServer).MenuFind(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.system/MenuFind",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SystemServer).MenuFind(ctx, req.(*MenuIDReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _System_MenuDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MenuIDsReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SystemServer).MenuDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.system/MenuDelete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SystemServer).MenuDelete(ctx, req.(*MenuIDsReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _System_MenuFindChildrenID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MenuIDReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SystemServer).MenuFindChildrenID(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.system/MenuFindChildrenID",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SystemServer).MenuFindChildrenID(ctx, req.(*MenuIDReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // System_ServiceDesc is the grpc.ServiceDesc for System service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -320,6 +416,18 @@ var System_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "MenuUpdate",
 			Handler:    _System_MenuUpdate_Handler,
+		},
+		{
+			MethodName: "MenuFind",
+			Handler:    _System_MenuFind_Handler,
+		},
+		{
+			MethodName: "MenuDelete",
+			Handler:    _System_MenuDelete_Handler,
+		},
+		{
+			MethodName: "MenuFindChildrenID",
+			Handler:    _System_MenuFindChildrenID_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

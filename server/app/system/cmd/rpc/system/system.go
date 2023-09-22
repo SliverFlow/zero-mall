@@ -17,26 +17,31 @@ type (
 	Menu                = pb.Menu
 	MenuChangeStatusReq = pb.MenuChangeStatusReq
 	MenuCreateReq       = pb.MenuCreateReq
+	MenuIDReq           = pb.MenuIDReq
+	MenuIDsReply        = pb.MenuIDsReply
+	MenuIDsReq          = pb.MenuIDsReq
 	MenuListReply       = pb.MenuListReply
 	MenuUpdateReq       = pb.MenuUpdateReq
-	NilReply            = pb.NilReply
-	NilReq              = pb.NilReq
 	RoleIDReq           = pb.RoleIDReq
 	SystemLoginReply    = pb.SystemLoginReply
 	SystemLoginReq      = pb.SystemLoginReq
+	SystemNil           = pb.SystemNil
 	User                = pb.User
 
 	System interface {
 		// 系统登录
 		Login(ctx context.Context, in *SystemLoginReq, opts ...grpc.CallOption) (*SystemLoginReply, error)
 		// 创建角色
-		RoleCreate(ctx context.Context, in *CreateRole, opts ...grpc.CallOption) (*NilReply, error)
+		RoleCreate(ctx context.Context, in *CreateRole, opts ...grpc.CallOption) (*SystemNil, error)
 		// 查询某个角色的菜单
 		MenuListByRole(ctx context.Context, in *RoleIDReq, opts ...grpc.CallOption) (*MenuListReply, error)
 		MenuListAllByRole(ctx context.Context, in *RoleIDReq, opts ...grpc.CallOption) (*MenuListReply, error)
-		MenuChangeStatus(ctx context.Context, in *MenuChangeStatusReq, opts ...grpc.CallOption) (*NilReply, error)
-		MenuCreate(ctx context.Context, in *MenuCreateReq, opts ...grpc.CallOption) (*NilReply, error)
-		MenuUpdate(ctx context.Context, in *MenuUpdateReq, opts ...grpc.CallOption) (*NilReply, error)
+		MenuChangeStatus(ctx context.Context, in *MenuChangeStatusReq, opts ...grpc.CallOption) (*SystemNil, error)
+		MenuCreate(ctx context.Context, in *MenuCreateReq, opts ...grpc.CallOption) (*SystemNil, error)
+		MenuUpdate(ctx context.Context, in *MenuUpdateReq, opts ...grpc.CallOption) (*SystemNil, error)
+		MenuFind(ctx context.Context, in *MenuIDReq, opts ...grpc.CallOption) (*Menu, error)
+		MenuDelete(ctx context.Context, in *MenuIDsReq, opts ...grpc.CallOption) (*SystemNil, error)
+		MenuFindChildrenID(ctx context.Context, in *MenuIDReq, opts ...grpc.CallOption) (*MenuIDsReply, error)
 	}
 
 	defaultSystem struct {
@@ -57,7 +62,7 @@ func (m *defaultSystem) Login(ctx context.Context, in *SystemLoginReq, opts ...g
 }
 
 // 创建角色
-func (m *defaultSystem) RoleCreate(ctx context.Context, in *CreateRole, opts ...grpc.CallOption) (*NilReply, error) {
+func (m *defaultSystem) RoleCreate(ctx context.Context, in *CreateRole, opts ...grpc.CallOption) (*SystemNil, error) {
 	client := pb.NewSystemClient(m.cli.Conn())
 	return client.RoleCreate(ctx, in, opts...)
 }
@@ -73,17 +78,32 @@ func (m *defaultSystem) MenuListAllByRole(ctx context.Context, in *RoleIDReq, op
 	return client.MenuListAllByRole(ctx, in, opts...)
 }
 
-func (m *defaultSystem) MenuChangeStatus(ctx context.Context, in *MenuChangeStatusReq, opts ...grpc.CallOption) (*NilReply, error) {
+func (m *defaultSystem) MenuChangeStatus(ctx context.Context, in *MenuChangeStatusReq, opts ...grpc.CallOption) (*SystemNil, error) {
 	client := pb.NewSystemClient(m.cli.Conn())
 	return client.MenuChangeStatus(ctx, in, opts...)
 }
 
-func (m *defaultSystem) MenuCreate(ctx context.Context, in *MenuCreateReq, opts ...grpc.CallOption) (*NilReply, error) {
+func (m *defaultSystem) MenuCreate(ctx context.Context, in *MenuCreateReq, opts ...grpc.CallOption) (*SystemNil, error) {
 	client := pb.NewSystemClient(m.cli.Conn())
 	return client.MenuCreate(ctx, in, opts...)
 }
 
-func (m *defaultSystem) MenuUpdate(ctx context.Context, in *MenuUpdateReq, opts ...grpc.CallOption) (*NilReply, error) {
+func (m *defaultSystem) MenuUpdate(ctx context.Context, in *MenuUpdateReq, opts ...grpc.CallOption) (*SystemNil, error) {
 	client := pb.NewSystemClient(m.cli.Conn())
 	return client.MenuUpdate(ctx, in, opts...)
+}
+
+func (m *defaultSystem) MenuFind(ctx context.Context, in *MenuIDReq, opts ...grpc.CallOption) (*Menu, error) {
+	client := pb.NewSystemClient(m.cli.Conn())
+	return client.MenuFind(ctx, in, opts...)
+}
+
+func (m *defaultSystem) MenuDelete(ctx context.Context, in *MenuIDsReq, opts ...grpc.CallOption) (*SystemNil, error) {
+	client := pb.NewSystemClient(m.cli.Conn())
+	return client.MenuDelete(ctx, in, opts...)
+}
+
+func (m *defaultSystem) MenuFindChildrenID(ctx context.Context, in *MenuIDReq, opts ...grpc.CallOption) (*MenuIDsReply, error) {
+	client := pb.NewSystemClient(m.cli.Conn())
+	return client.MenuFindChildrenID(ctx, in, opts...)
 }

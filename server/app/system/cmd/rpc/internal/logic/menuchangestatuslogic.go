@@ -24,12 +24,12 @@ func NewMenuChangeStatusLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 	}
 }
 
-func (l *MenuChangeStatusLogic) MenuChangeStatus(in *pb.MenuChangeStatusReq) (*pb.NilReply, error) {
+func (l *MenuChangeStatusLogic) MenuChangeStatus(in *pb.MenuChangeStatusReq) (*pb.SystemNil, error) {
 	err := l.svcCtx.SystemModel.MenuChangeStatus(l.ctx, in.GetID(), in.GetPID(), in.GetStatus())
 	if err != nil {
 		logx.Error("update menu status err", err.Error())
 		return nil, status.Errorf(100001, "更新菜单状态失败")
 	}
 
-	return &pb.NilReply{}, nil
+	return &pb.SystemNil{}, nil
 }

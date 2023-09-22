@@ -70,7 +70,7 @@
               link
               icon="plus"
               :disabled="scope.row.parentId !== 0"
-              v-if="scope.row.parentId == 0"
+              v-if="scope.row.parentId === 0"
               @click="addMenu(scope.row.ID, scope.row.role)"
             >添加子菜单
             </el-button>
@@ -86,7 +86,7 @@
               type="danger"
               link
               icon="delete"
-              @click="deleteVideoCategory(scope.row.ID)"
+              @click="deleteCategory(scope.row.ID)"
             >删除
             </el-button>
           </template>
@@ -178,7 +178,7 @@
 import { ref } from 'vue'
 import {
   menuChangeStatusApi,
-  menuCreateApi,
+  menuCreateApi, menuDeleteApi,
   menuFindApi, menuTreeListAllApi,
   menuUpdateApi
 } from '@/api/system/menu.js'
@@ -218,6 +218,7 @@ const formData = ref({
     icon: '',
     title: '',
   },
+  role: 0,
 })
 // 级联选择器
 const menuOption = ref([
@@ -336,9 +337,9 @@ const submitForm = async() => {
 
 // 编辑菜单
 const editMenu = async(val) => {
-  const res = await menuFindApi({ id: val })
+  const res = await menuFindApi({ ID: val })
   isEdit.value = true
-  formData.value = res.data.menu
+  formData.value = res.data
   setMenuOption()
   openDialog('编辑菜单')
 }
@@ -370,6 +371,19 @@ const asyncMenuOptions = (tableData, optionData, disabled) => {
       optionData.push(option)
     }
   })
+}
+
+// 删除分类
+const deleteCategory = async (val) => {
+  const res = await menuDeleteApi({ID: val})
+  if (res.code === 0) {
+    ElMessage({
+      message: '删除菜单成功',
+      type: 'success',
+      showClose: true,
+    })
+    await loadData()
+  }
 }
 </script>
 <style lang="scss" scoped>

@@ -201,7 +201,7 @@ const deleteCategory = async (id) => {
     })
     await loadTableData()
   }
-  
+
 }
 </script>
 

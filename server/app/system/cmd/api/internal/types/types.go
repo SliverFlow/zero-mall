@@ -7,10 +7,6 @@ type NilReq struct {
 type NilReply struct {
 }
 
-type HealthReply struct {
-	Message string `json:"message"`
-}
-
 type LoginReq struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
@@ -38,6 +34,10 @@ type PageReq struct {
 	Page     int64  `json:"page"`
 	PageSize int64  `json:"pageSize"`
 	KeyWord  string `json:"keyWord"`
+}
+
+type IDReq struct {
+	ID int64 `json:"ID"`
 }
 
 type User struct {

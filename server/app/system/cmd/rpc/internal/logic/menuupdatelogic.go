@@ -24,7 +24,7 @@ func NewMenuUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *MenuUp
 	}
 }
 
-func (l *MenuUpdateLogic) MenuUpdate(in *pb.MenuUpdateReq) (*pb.NilReply, error) {
+func (l *MenuUpdateLogic) MenuUpdate(in *pb.MenuUpdateReq) (*pb.SystemNil, error) {
 	var m model.Menu
 	_ = copier.Copy(&m, in)
 	m.ID = uint(in.GetID())
@@ -35,5 +35,5 @@ func (l *MenuUpdateLogic) MenuUpdate(in *pb.MenuUpdateReq) (*pb.NilReply, error)
 		return nil, status.Errorf(100001, "菜单更新失败")
 	}
 
-	return &pb.NilReply{}, nil
+	return &pb.SystemNil{}, nil
 }

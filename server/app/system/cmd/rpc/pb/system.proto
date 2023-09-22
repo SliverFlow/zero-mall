@@ -4,8 +4,7 @@ option go_package = "./pb";
 
 package pb;
 
-message NilReply {}
-message NilReq {}
+message SystemNil {}
 
 // 登录入参
 message SystemLoginReq {
@@ -84,6 +83,15 @@ message MenuUpdateReq {
   int64 Status = 9;
   int64 Role = 10;
 }
+message MenuIDReq {
+  int64 ID = 1;
+}
+message MenuIDsReq {
+  repeated int64 IDs = 1;
+}
+message MenuIDsReply {
+  repeated int64 IDs = 1;
+}
 
 service system {
   // 系统登录
@@ -91,11 +99,14 @@ service system {
 
 
   // 创建角色
-  rpc RoleCreate (CreateRole) returns (NilReply);
+  rpc RoleCreate (CreateRole) returns (SystemNil);
   // 查询某个角色的菜单
   rpc MenuListByRole (RoleIDReq) returns (MenuListReply);
   rpc MenuListAllByRole (RoleIDReq) returns (MenuListReply);
-  rpc MenuChangeStatus (MenuChangeStatusReq) returns (NilReply);
-  rpc MenuCreate (MenuCreateReq) returns (NilReply);
-  rpc MenuUpdate (MenuUpdateReq) returns (NilReply);
+  rpc MenuChangeStatus (MenuChangeStatusReq) returns (SystemNil);
+  rpc MenuCreate (MenuCreateReq) returns (SystemNil);
+  rpc MenuUpdate (MenuUpdateReq) returns (SystemNil);
+  rpc MenuFind (MenuIDReq) returns (Menu);
+  rpc MenuDelete (MenuIDsReq) returns (SystemNil);
+  rpc MenuFindChildrenID (MenuIDReq) returns (MenuIDsReply);
 }

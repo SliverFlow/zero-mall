@@ -46,3 +46,12 @@ export const menuFindApi = (data) => {
     data: data
   })
 }
+
+// 删除分类
+export const menuDeleteApi = (data) => {
+  return service({
+    url: '/system/v1/menu/delete',
+    method: 'post',
+    data: data
+  })
+}

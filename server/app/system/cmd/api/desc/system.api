@@ -79,6 +79,11 @@ service system {
 	post /menu/create (MenuCreateReq) returns (NilReply)
 	@handler menuUpdate
 	post /menu/update (MenuUpdateReq) returns (NilReply)
+	@handler menuFind
+	post /menu/find (IDReq) returns (Menu)
+	@handler menuDelete
+	post /menu/delete (IDReq) returns (NilReply)
+	
 }
 
 @server(

@@ -15,6 +15,8 @@ type (
 		MenuTreeListAllByRole(ctx context.Context, role int64) (list *[]Menu, err error)
 		MenuUpdate(ctx context.Context, menu *Menu) (err error)
 		MenuFind(ctx context.Context, id int64) (enter *Menu, err error)
+		MenuBatchDelete(ctx context.Context, ids []int64) (err error)
+		MenuFindChildrenID(ctx context.Context, id int64) (ids []int64, err error)
 	}
 	// 默认数据库连接对象
 	defaultMenuModel struct {
@@ -140,4 +142,30 @@ func (d *defaultMenuModel) MenuFind(ctx context.Context, id int64) (enter *Menu,
 		return nil, err
 	}
 	return &m, nil
+}
+
+// MenuBatchDelete
+// Author [SliverFlow]
+// @desc 批量删除
+func (d *defaultMenuModel) MenuBatchDelete(ctx context.Context, ids []int64) (err error) {
+	tx := d.db.WithContext(ctx)
+
+	return tx.Where("id in ?", ids).Delete(&Menu{}).Error
+}
+
+// MenuFindChildrenID
+// Author [SliverFlow]
+// @desc 查询子菜单 id
+func (d *defaultMenuModel) MenuFindChildrenID(ctx context.Context, id int64) (ids []int64, err error) {
+	tx := d.db.WithContext(ctx)
+
+	var list []Menu
+	if err = tx.Model(&Menu{}).Where("parent_id = ?", id).Find(&list).Error; err != nil {
+		return nil, err
+	}
+	var res []int64
+	for _, menu := range list {
+		res = append(res, int64(menu.ID))
+	}
+	return res, nil
 }

@@ -26,7 +26,7 @@ func NewMenuCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *MenuCr
 	}
 }
 
-func (l *MenuCreateLogic) MenuCreate(in *pb.MenuCreateReq) (*pb.NilReply, error) {
+func (l *MenuCreateLogic) MenuCreate(in *pb.MenuCreateReq) (*pb.SystemNil, error) {
 	var menu model.Menu
 	_ = copier.Copy(&menu, in)
 	menu.Title = in.GetTitle()
@@ -38,5 +38,5 @@ func (l *MenuCreateLogic) MenuCreate(in *pb.MenuCreateReq) (*pb.NilReply, error)
 		return nil, status.Errorf(100001, "菜单创建失败")
 	}
 
-	return &pb.NilReply{}, nil
+	return &pb.SystemNil{}, nil
 }

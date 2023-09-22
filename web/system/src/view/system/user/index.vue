@@ -1,11 +1,11 @@
 <template>
   <div class="gva-table-box">
     <div class="gva-btn-list" style="float: right">
-      <el-input placeholder="请输入用户昵称关键字" style="width: 183px;margin-right: 16px" suffix-icon="user" />
+      <el-input placeholder="请输入用户昵称关键字" v-model="keyWord" style="width: 183px;margin-right: 16px" suffix-icon="user" />
       <el-button
         type="primary"
         icon="search"
-        @click="editMenu(scope.row.ID)"
+        @click="loadTableData"
       >搜索
       </el-button>
     </div>
