@@ -668,6 +668,7 @@ const toProductList = (id) => {
           align-items: center;
           flex-direction: column;
           justify-content: space-between;
+          transition: all 0.3s;
 
           padding-bottom: 40px;
           box-sizing: border-box;
@@ -693,6 +694,11 @@ const toProductList = (id) => {
             font-size: 14px;
           }
 
+        }
+
+        .product:hover {
+          cursor: pointer;
+          box-shadow: 0px 0px 37px -7px rgba(0, 0, 0, 0.18);
         }
       }
     }
