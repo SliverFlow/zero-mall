@@ -36,3 +36,11 @@ type UserListReply {
     Page int64 `json:"page"`
     PageSize int64 `json:"pageSize"`
 }
+type UserChangeStatusReq {
+    ID int64 `json:"ID"`
+    Status int64 `json:"status"`
+}
+
+type UserIDReq {
+    ID int64 `json:"ID"`
+}

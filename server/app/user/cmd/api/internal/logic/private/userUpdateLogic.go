@@ -26,7 +26,7 @@ func NewUserUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserUp
 }
 
 func (l *UserUpdateLogic) UserUpdate(req *types.UpdateReq) (resp *types.NilReply, err error) {
-	var u pb.UpdateReq
+	var u pb.UserUpdateReq
 	_ = copier.Copy(&u, req)
 	_, err = l.svcCtx.UserRpc.UserUpdate(l.ctx, &u)
 	if err != nil {

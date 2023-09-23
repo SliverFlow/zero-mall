@@ -26,3 +26,7 @@ type BusinessListReply {
     Page int64 `json:"page"`
     PageSize int64 `json:"pageSize"`
 }
+type BusinessChangeStatusReq {
+    BusinessID string `json:"businessId"`
+    Status int64 `json:"status"`
+}

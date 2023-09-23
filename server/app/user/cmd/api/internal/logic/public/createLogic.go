@@ -25,7 +25,7 @@ func NewCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CreateLogi
 }
 
 func (l *CreateLogic) Create(req *types.CreateReq) (resp *types.NilReply, err error) {
-	var createIn pb.CreateReq
+	var createIn pb.UserCreateReq
 	_ = copier.Copy(&createIn, req)
 	_, err = l.svcCtx.UserRpc.UserCreate(l.ctx, &createIn)
 	if err != nil {

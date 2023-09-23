@@ -27,6 +27,9 @@ func NewBusinessListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Busi
 	}
 }
 
+// BusinessList
+// Author [SliverFlow]
+// @desc 商户分页列表
 func (l *BusinessListLogic) BusinessList(req *types.PageReq) (resp *types.BusinessListReply, err error) {
 	reply, err := l.svcCtx.UserRpc.BusinessList(l.ctx, &pb.PageReq{
 		Page:     req.Page,

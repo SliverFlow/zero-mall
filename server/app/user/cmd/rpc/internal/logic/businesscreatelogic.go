@@ -28,7 +28,9 @@ func NewBusinessCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Bu
 	}
 }
 
-// BusinessCreate 创建商家
+// BusinessCreate
+// Author [SliverFlow]
+// @desc 创建商家
 func (l *BusinessCreateLogic) BusinessCreate(in *pb.BusinessCreateReq) (*pb.UserNil, error) {
 	user, err := l.svcCtx.UserModel.UserFindByUUID(l.ctx, in.GetUUID())
 	if err != nil {

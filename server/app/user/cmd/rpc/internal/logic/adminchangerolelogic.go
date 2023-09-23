@@ -24,6 +24,9 @@ func NewAdminChangeRoleLogic(ctx context.Context, svcCtx *svc.ServiceContext) *A
 	}
 }
 
+// AdminChangeRole
+// Author [SliverFlow]
+// @desc 管理员账户切换角色
 func (l *AdminChangeRoleLogic) AdminChangeRole(in *pb.AdminChangeRoleReq) (*pb.UserNil, error) {
 	err := l.svcCtx.UserModel.AdminChangeRole(l.ctx, in.GetUsername(), in.GetRole())
 	if err != nil {

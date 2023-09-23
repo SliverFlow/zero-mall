@@ -26,6 +26,9 @@ func NewUserFindByUsernameLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 	}
 }
 
+// UserFindByUsername
+// Author [SliverFlow]
+// @desc 根据用户名查找用户
 func (l *UserFindByUsernameLogic) UserFindByUsername(in *pb.UsernameReq) (*pb.UserInfoReply, error) {
 	user, err := l.svcCtx.UserModel.UserFindByUsername(l.ctx, in.GetUsername())
 	if err != nil {

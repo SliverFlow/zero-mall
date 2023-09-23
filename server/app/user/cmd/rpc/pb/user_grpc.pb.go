@@ -26,16 +26,18 @@ type UserClient interface {
 	UserFind(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*UserInfoReply, error)
 	UserFindByUsername(ctx context.Context, in *UsernameReq, opts ...grpc.CallOption) (*UserInfoReply, error)
 	UserList(ctx context.Context, in *PageReq, opts ...grpc.CallOption) (*PageReply, error)
-	UserCreate(ctx context.Context, in *CreateReq, opts ...grpc.CallOption) (*UserNil, error)
-	UserUpdate(ctx context.Context, in *UpdateReq, opts ...grpc.CallOption) (*UserNil, error)
+	UserCreate(ctx context.Context, in *UserCreateReq, opts ...grpc.CallOption) (*UserNil, error)
+	UserUpdate(ctx context.Context, in *UserUpdateReq, opts ...grpc.CallOption) (*UserNil, error)
 	UserDelete(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*UserNil, error)
 	UserBatchDelete(ctx context.Context, in *IDsReq, opts ...grpc.CallOption) (*UserNil, error)
 	Login(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*UserLoginReply, error)
 	UserFindByUUID(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*UserInfoReply, error)
 	AdminChangeRole(ctx context.Context, in *AdminChangeRoleReq, opts ...grpc.CallOption) (*UserNil, error)
+	UserChangeStatus(ctx context.Context, in *UserChangeStatusReq, opts ...grpc.CallOption) (*UserNil, error)
 	// 商家相关
 	BusinessCreate(ctx context.Context, in *BusinessCreateReq, opts ...grpc.CallOption) (*UserNil, error)
 	BusinessList(ctx context.Context, in *PageReq, opts ...grpc.CallOption) (*BusinessPageReply, error)
+	BusinessChangeStatus(ctx context.Context, in *BusinessChangeStatusReq, opts ...grpc.CallOption) (*UserNil, error)
 }
 
 type userClient struct {
@@ -73,7 +75,7 @@ func (c *userClient) UserList(ctx context.Context, in *PageReq, opts ...grpc.Cal
 	return out, nil
 }
 
-func (c *userClient) UserCreate(ctx context.Context, in *CreateReq, opts ...grpc.CallOption) (*UserNil, error) {
+func (c *userClient) UserCreate(ctx context.Context, in *UserCreateReq, opts ...grpc.CallOption) (*UserNil, error) {
 	out := new(UserNil)
 	err := c.cc.Invoke(ctx, "/pb.user/userCreate", in, out, opts...)
 	if err != nil {
@@ -82,7 +84,7 @@ func (c *userClient) UserCreate(ctx context.Context, in *CreateReq, opts ...grpc
 	return out, nil
 }
 
-func (c *userClient) UserUpdate(ctx context.Context, in *UpdateReq, opts ...grpc.CallOption) (*UserNil, error) {
+func (c *userClient) UserUpdate(ctx context.Context, in *UserUpdateReq, opts ...grpc.CallOption) (*UserNil, error) {
 	out := new(UserNil)
 	err := c.cc.Invoke(ctx, "/pb.user/userUpdate", in, out, opts...)
 	if err != nil {
@@ -136,6 +138,15 @@ func (c *userClient) AdminChangeRole(ctx context.Context, in *AdminChangeRoleReq
 	return out, nil
 }
 
+func (c *userClient) UserChangeStatus(ctx context.Context, in *UserChangeStatusReq, opts ...grpc.CallOption) (*UserNil, error) {
+	out := new(UserNil)
+	err := c.cc.Invoke(ctx, "/pb.user/userChangeStatus", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *userClient) BusinessCreate(ctx context.Context, in *BusinessCreateReq, opts ...grpc.CallOption) (*UserNil, error) {
 	out := new(UserNil)
 	err := c.cc.Invoke(ctx, "/pb.user/businessCreate", in, out, opts...)
@@ -154,6 +165,15 @@ func (c *userClient) BusinessList(ctx context.Context, in *PageReq, opts ...grpc
 	return out, nil
 }
 
+func (c *userClient) BusinessChangeStatus(ctx context.Context, in *BusinessChangeStatusReq, opts ...grpc.CallOption) (*UserNil, error) {
+	out := new(UserNil)
+	err := c.cc.Invoke(ctx, "/pb.user/businessChangeStatus", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -162,16 +182,18 @@ type UserServer interface {
 	UserFind(context.Context, *IDReq) (*UserInfoReply, error)
 	UserFindByUsername(context.Context, *UsernameReq) (*UserInfoReply, error)
 	UserList(context.Context, *PageReq) (*PageReply, error)
-	UserCreate(context.Context, *CreateReq) (*UserNil, error)
-	UserUpdate(context.Context, *UpdateReq) (*UserNil, error)
+	UserCreate(context.Context, *UserCreateReq) (*UserNil, error)
+	UserUpdate(context.Context, *UserUpdateReq) (*UserNil, error)
 	UserDelete(context.Context, *IDReq) (*UserNil, error)
 	UserBatchDelete(context.Context, *IDsReq) (*UserNil, error)
 	Login(context.Context, *UserLoginReq) (*UserLoginReply, error)
 	UserFindByUUID(context.Context, *UUIDReq) (*UserInfoReply, error)
 	AdminChangeRole(context.Context, *AdminChangeRoleReq) (*UserNil, error)
+	UserChangeStatus(context.Context, *UserChangeStatusReq) (*UserNil, error)
 	// 商家相关
 	BusinessCreate(context.Context, *BusinessCreateReq) (*UserNil, error)
 	BusinessList(context.Context, *PageReq) (*BusinessPageReply, error)
+	BusinessChangeStatus(context.Context, *BusinessChangeStatusReq) (*UserNil, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -188,10 +210,10 @@ func (UnimplementedUserServer) UserFindByUsername(context.Context, *UsernameReq)
 func (UnimplementedUserServer) UserList(context.Context, *PageReq) (*PageReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserList not implemented")
 }
-func (UnimplementedUserServer) UserCreate(context.Context, *CreateReq) (*UserNil, error) {
+func (UnimplementedUserServer) UserCreate(context.Context, *UserCreateReq) (*UserNil, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserCreate not implemented")
 }
-func (UnimplementedUserServer) UserUpdate(context.Context, *UpdateReq) (*UserNil, error) {
+func (UnimplementedUserServer) UserUpdate(context.Context, *UserUpdateReq) (*UserNil, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserUpdate not implemented")
 }
 func (UnimplementedUserServer) UserDelete(context.Context, *IDReq) (*UserNil, error) {
@@ -209,11 +231,17 @@ func (UnimplementedUserServer) UserFindByUUID(context.Context, *UUIDReq) (*UserI
 func (UnimplementedUserServer) AdminChangeRole(context.Context, *AdminChangeRoleReq) (*UserNil, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AdminChangeRole not implemented")
 }
+func (UnimplementedUserServer) UserChangeStatus(context.Context, *UserChangeStatusReq) (*UserNil, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserChangeStatus not implemented")
+}
 func (UnimplementedUserServer) BusinessCreate(context.Context, *BusinessCreateReq) (*UserNil, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BusinessCreate not implemented")
 }
 func (UnimplementedUserServer) BusinessList(context.Context, *PageReq) (*BusinessPageReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BusinessList not implemented")
+}
+func (UnimplementedUserServer) BusinessChangeStatus(context.Context, *BusinessChangeStatusReq) (*UserNil, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BusinessChangeStatus not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -283,7 +311,7 @@ func _User_UserList_Handler(srv interface{}, ctx context.Context, dec func(inter
 }
 
 func _User_UserCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateReq)
+	in := new(UserCreateReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -295,13 +323,13 @@ func _User_UserCreate_Handler(srv interface{}, ctx context.Context, dec func(int
 		FullMethod: "/pb.user/userCreate",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).UserCreate(ctx, req.(*CreateReq))
+		return srv.(UserServer).UserCreate(ctx, req.(*UserCreateReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _User_UserUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateReq)
+	in := new(UserUpdateReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -313,7 +341,7 @@ func _User_UserUpdate_Handler(srv interface{}, ctx context.Context, dec func(int
 		FullMethod: "/pb.user/userUpdate",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).UserUpdate(ctx, req.(*UpdateReq))
+		return srv.(UserServer).UserUpdate(ctx, req.(*UserUpdateReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -408,6 +436,24 @@ func _User_AdminChangeRole_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_UserChangeStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserChangeStatusReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).UserChangeStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.user/userChangeStatus",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).UserChangeStatus(ctx, req.(*UserChangeStatusReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _User_BusinessCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(BusinessCreateReq)
 	if err := dec(in); err != nil {
@@ -440,6 +486,24 @@ func _User_BusinessList_Handler(srv interface{}, ctx context.Context, dec func(i
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServer).BusinessList(ctx, req.(*PageReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_BusinessChangeStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BusinessChangeStatusReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).BusinessChangeStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.user/businessChangeStatus",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).BusinessChangeStatus(ctx, req.(*BusinessChangeStatusReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -492,12 +556,20 @@ var User_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _User_AdminChangeRole_Handler,
 		},
 		{
+			MethodName: "userChangeStatus",
+			Handler:    _User_UserChangeStatus_Handler,
+		},
+		{
 			MethodName: "businessCreate",
 			Handler:    _User_BusinessCreate_Handler,
 		},
 		{
 			MethodName: "businessList",
 			Handler:    _User_BusinessList_Handler,
+		},
+		{
+			MethodName: "businessChangeStatus",
+			Handler:    _User_BusinessChangeStatus_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

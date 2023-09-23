@@ -26,7 +26,7 @@ func NewBusinessCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Bu
 
 func (l *BusinessCreateLogic) BusinessCreate(req *types.CreateBusinessReq) (resp *types.Nil, err error) {
 
-	_, err = l.svcCtx.UserRpc.UserCreate(l.ctx, &pb.CreateReq{
+	_, err = l.svcCtx.UserRpc.UserCreate(l.ctx, &pb.UserCreateReq{
 		Username: req.Username,
 		Email:    req.Email,
 		Password: req.Password,

@@ -1,7 +1,8 @@
 <template>
   <div class="gva-table-box">
     <div class="gva-btn-list" style="float: right">
-      <el-input placeholder="请输入用户昵称关键字" v-model="keyWord" style="width: 183px;margin-right: 16px" suffix-icon="user" />
+      <el-input placeholder="请输入用户昵称关键字" v-model="keyWord" style="width: 183px;margin-right: 16px"
+                suffix-icon="user"/>
       <el-button
         type="primary"
         icon="search"
@@ -15,7 +16,7 @@
       row-key="ID"
       :tree-props="{'children': 'children'}"
     >
-      <el-table-column align="left" label="ID" min-width="50" prop="ID" fixed="left" />
+      <el-table-column align="left" label="ID" min-width="50" prop="ID" fixed="left"/>
       <el-table-column align="left" label="头像" min-width="70" prop="avatar">
         <template #default="scope">
           <el-avatar
@@ -25,13 +26,13 @@
           />
         </template>
       </el-table-column>
-      <el-table-column align="left" label="登录名" min-width="140" prop="username" />
-      <el-table-column align="left" label="昵称" min-width="140" prop="nickname" />
+      <el-table-column align="left" label="登录名" min-width="140" prop="username"/>
+      <el-table-column align="left" label="昵称" min-width="140" prop="nickname"/>
       <el-table-column align="left" label="角色" min-width="100" prop="role">
         <template #default="scope">
-          <el-text v-if="scope.row.role === 3" type="primary">超级管理员</el-text>
+          <el-text v-if="scope.row.role === 1" type="primary">超级管理员</el-text>
           <el-text v-if="scope.row.role === 2" type="warning">商家</el-text>
-          <el-text v-if="scope.row.role === 1" type="success">普通用户</el-text>
+          <el-text v-if="scope.row.role === 0" type="success">普通用户</el-text>
         </template>
       </el-table-column>
       <el-table-column align="left" label="状态" min-width="110" prop="status">
@@ -49,8 +50,8 @@
           />
         </template>
       </el-table-column>
-      <el-table-column align="left" label="电话号码" min-width="120" prop="phone" />
-      <el-table-column align="left" label="邮箱" min-width="170" prop="email" />
+      <el-table-column align="left" label="电话号码" min-width="120" prop="phone"/>
+      <el-table-column align="left" label="邮箱" min-width="170" prop="email"/>
       <el-table-column align="left" label="创建时间" min-width="170">
         <template #default="scope">
           {{ formatTimestamp(scope.row.createdAt) }}
@@ -68,7 +69,7 @@
             type="danger"
             link
             icon="delete"
-            @click="deleteVideoCategory(scope.row.ID)"
+            @click="deleteUser(scope.row.ID)"
           >删除
           </el-button>
         </template>
@@ -80,7 +81,7 @@
         layout="total, sizes, prev, pager, next, jumper"
         :current-page="page"
         :page-size="pageSize"
-        :page-sizes="[10, 30, 50, 100]"
+        :page-sizes="[5, 10, 15, 20]"
         :total="total"
         @current-change="handleCurrentChange"
         @size-change="handleSizeChange"
@@ -91,21 +92,24 @@
 <script setup>
 import { ref } from 'vue'
 import { formatTimestamp } from '@/utils/date.js'
-import { userListApi } from '@/api/system/user.js'
+import { userChangeStatusApi, userDeleteApi, userListApi } from '@/api/system/user.js'
+import { ElMessage } from 'element-plus'
 
 // 分页相关
 const page = ref(1)
-const pageSize = ref(10)
+const pageSize = ref(5)
 const keyWord = ref('')
 // 表格相关
 const total = ref(0)
 const tableData = ref([])
 
-const handleCurrentChange = (val) => {
-  console.log(val)
+const handleCurrentChange = async(val) => {
+  page.value = val
+  await loadTableData()
 }
-const handleSizeChange = () => {
-  console.log(val)
+const handleSizeChange = async(val) => {
+  pageSize.value = val
+  await loadTableData()
 }
 const loadTableData = async() => {
   const res = await userListApi({ page: page.value, pageSize: pageSize.value, keyWord: keyWord.value })
@@ -115,4 +119,30 @@ const loadTableData = async() => {
   }
 }
 loadTableData()
+
+// 更换用户状态
+const switchEnable = async(val) => {
+  const res = await userChangeStatusApi({ ID: val.ID, status: val.status })
+  if (res.code === 0) {
+    ElMessage({
+      message: '更新用户状态成功',
+      type: 'success',
+      showClose: true,
+    })
+    await loadTableData()
+  }
+}
+
+const deleteUser = async (id) => {
+  const res = await userDeleteApi({ID: id})
+  if (res.code === 0) {
+    ElMessage({
+      message: '删除用户成功',
+      type: 'success',
+      showClose: true,
+    })
+    await loadTableData()
+  }
+
+}
 </script>

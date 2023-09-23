@@ -28,7 +28,10 @@ func NewUserUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserUp
 	}
 }
 
-func (l *UserUpdateLogic) UserUpdate(in *pb.UpdateReq) (*pb.UserNil, error) {
+// UserUpdate
+// Author [SliverFlow]
+// @desc 用户更新
+func (l *UserUpdateLogic) UserUpdate(in *pb.UserUpdateReq) (*pb.UserNil, error) {
 	var u model.User
 	_ = copier.Copy(&u, in)
 	u.ID = uint(int(in.ID))

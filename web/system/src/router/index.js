@@ -3,7 +3,7 @@ import Npregress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { useUserStore } from '@/store/model/user.js'
 import { useRouterStore } from '@/store/model/router.js'
-import { userFindByUUID } from '@/api/system/user.js'
+import { userFindByUUIDApi } from '@/api/system/user.js'
 
 export const ng = Npregress.configure({ showSpinner: false })
 
@@ -68,7 +68,7 @@ router.beforeEach(async(to) => {
 
   if (to.name === 'Dashboard') {
     // 更新 userinfo 会强制触发 token 过期的情况
-    const res = await userFindByUUID()
+    const res = await userFindByUUIDApi()
     if (res.code === 0) {
       userStore.userInfo = res.data.user
       return true

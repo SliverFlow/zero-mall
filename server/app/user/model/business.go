@@ -10,6 +10,7 @@ type (
 	businessModel interface {
 		BusinessCreate(ctx context.Context, business *Business) (err error)
 		BusinessList(ctx context.Context, page *common.PageInfo) (enter *[]Business, total int64, err error)
+		BusinessChangeStatus(ctx context.Context, id string, status int64) (err error)
 	}
 
 	defaultBusinessModel struct {
@@ -40,13 +41,13 @@ func newBusinessModel(db *gorm.DB) *defaultBusinessModel {
 }
 
 // BusinessCreate 创建商家信息
-func (d *defaultUserModel) BusinessCreate(ctx context.Context, business *Business) (err error) {
+func (d *defaultBusinessModel) BusinessCreate(ctx context.Context, business *Business) (err error) {
 	tx := d.db.WithContext(ctx)
 
 	return tx.Model(&Business{}).Create(business).Error
 }
 
-func (d *defaultUserModel) BusinessList(ctx context.Context, page *common.PageInfo) (enter *[]Business, total int64, err error) {
+func (d *defaultBusinessModel) BusinessList(ctx context.Context, page *common.PageInfo) (enter *[]Business, total int64, err error) {
 	tx := d.db.WithContext(ctx)
 
 	limit, offset, keyWord := page.LimitAndOffsetAndKeyWord()
@@ -61,4 +62,11 @@ func (d *defaultUserModel) BusinessList(ctx context.Context, page *common.PageIn
 	}
 
 	return &list, total, nil
+}
+
+// BusinessChangeStatus 修改商户状态
+func (d *defaultBusinessModel) BusinessChangeStatus(ctx context.Context, id string, status int64) (err error) {
+	tx := d.db.WithContext(ctx)
+
+	return tx.Model(&Business{}).Where("business_id = ?", id).Update("status", status).Error
 }

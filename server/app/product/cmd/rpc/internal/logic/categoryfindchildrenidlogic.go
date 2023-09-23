@@ -24,6 +24,9 @@ func NewCategoryFindChildrenIDLogic(ctx context.Context, svcCtx *svc.ServiceCont
 	}
 }
 
+// CategoryFindChildrenID
+// Author [SliverFlow]
+// @desc  查询子分类 id
 func (l *CategoryFindChildrenIDLogic) CategoryFindChildrenID(in *pb.CategoryIDReq) (*pb.CategoryIDSReply, error) {
 	enter, err := l.svcCtx.ProductModel.CategoryFindChildrenID(l.ctx, in.CategoryID)
 	if err != nil {

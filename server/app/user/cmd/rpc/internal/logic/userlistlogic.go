@@ -25,6 +25,9 @@ func NewUserListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserList
 	}
 }
 
+// UserList
+// Author [SliverFlow]
+// @desc 用户分页列表
 func (l *UserListLogic) UserList(in *pb.PageReq) (*pb.PageReply, error) {
 	list, total, err := l.svcCtx.UserModel.UserList(l.ctx, &common.PageInfo{
 		Page:     int(in.Page),

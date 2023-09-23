@@ -13,39 +13,43 @@ import (
 )
 
 type (
-	AdminChangeRoleReq = pb.AdminChangeRoleReq
-	Business           = pb.Business
-	BusinessCreateReq  = pb.BusinessCreateReq
-	BusinessPageReply  = pb.BusinessPageReply
-	CreateReq          = pb.CreateReq
-	IDReq              = pb.IDReq
-	IDsReq             = pb.IDsReq
-	PageReply          = pb.PageReply
-	PageReq            = pb.PageReq
-	UUIDReq            = pb.UUIDReq
-	UpdateReq          = pb.UpdateReq
-	UserInfoReply      = pb.UserInfoReply
-	UserLoginReply     = pb.UserLoginReply
-	UserLoginReq       = pb.UserLoginReq
-	UserNil            = pb.UserNil
-	UserReply          = pb.UserReply
-	UsernameReq        = pb.UsernameReq
+	AdminChangeRoleReq      = pb.AdminChangeRoleReq
+	Business                = pb.Business
+	BusinessChangeStatusReq = pb.BusinessChangeStatusReq
+	BusinessCreateReq       = pb.BusinessCreateReq
+	BusinessPageReply       = pb.BusinessPageReply
+	IDReq                   = pb.IDReq
+	IDsReq                  = pb.IDsReq
+	PageReply               = pb.PageReply
+	PageReq                 = pb.PageReq
+	UUIDReq                 = pb.UUIDReq
+	UserChangeStatusReq     = pb.UserChangeStatusReq
+	UserCreateReq           = pb.UserCreateReq
+	UserInfoReply           = pb.UserInfoReply
+	UserLoginReply          = pb.UserLoginReply
+	UserLoginReq            = pb.UserLoginReq
+	UserNil                 = pb.UserNil
+	UserReply               = pb.UserReply
+	UserUpdateReq           = pb.UserUpdateReq
+	UsernameReq             = pb.UsernameReq
 
 	User interface {
 		// 用户相关
 		UserFind(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*UserInfoReply, error)
 		UserFindByUsername(ctx context.Context, in *UsernameReq, opts ...grpc.CallOption) (*UserInfoReply, error)
 		UserList(ctx context.Context, in *PageReq, opts ...grpc.CallOption) (*PageReply, error)
-		UserCreate(ctx context.Context, in *CreateReq, opts ...grpc.CallOption) (*UserNil, error)
-		UserUpdate(ctx context.Context, in *UpdateReq, opts ...grpc.CallOption) (*UserNil, error)
+		UserCreate(ctx context.Context, in *UserCreateReq, opts ...grpc.CallOption) (*UserNil, error)
+		UserUpdate(ctx context.Context, in *UserUpdateReq, opts ...grpc.CallOption) (*UserNil, error)
 		UserDelete(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*UserNil, error)
 		UserBatchDelete(ctx context.Context, in *IDsReq, opts ...grpc.CallOption) (*UserNil, error)
 		Login(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*UserLoginReply, error)
 		UserFindByUUID(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*UserInfoReply, error)
 		AdminChangeRole(ctx context.Context, in *AdminChangeRoleReq, opts ...grpc.CallOption) (*UserNil, error)
+		UserChangeStatus(ctx context.Context, in *UserChangeStatusReq, opts ...grpc.CallOption) (*UserNil, error)
 		// 商家相关
 		BusinessCreate(ctx context.Context, in *BusinessCreateReq, opts ...grpc.CallOption) (*UserNil, error)
 		BusinessList(ctx context.Context, in *PageReq, opts ...grpc.CallOption) (*BusinessPageReply, error)
+		BusinessChangeStatus(ctx context.Context, in *BusinessChangeStatusReq, opts ...grpc.CallOption) (*UserNil, error)
 	}
 
 	defaultUser struct {
@@ -75,12 +79,12 @@ func (m *defaultUser) UserList(ctx context.Context, in *PageReq, opts ...grpc.Ca
 	return client.UserList(ctx, in, opts...)
 }
 
-func (m *defaultUser) UserCreate(ctx context.Context, in *CreateReq, opts ...grpc.CallOption) (*UserNil, error) {
+func (m *defaultUser) UserCreate(ctx context.Context, in *UserCreateReq, opts ...grpc.CallOption) (*UserNil, error) {
 	client := pb.NewUserClient(m.cli.Conn())
 	return client.UserCreate(ctx, in, opts...)
 }
 
-func (m *defaultUser) UserUpdate(ctx context.Context, in *UpdateReq, opts ...grpc.CallOption) (*UserNil, error) {
+func (m *defaultUser) UserUpdate(ctx context.Context, in *UserUpdateReq, opts ...grpc.CallOption) (*UserNil, error) {
 	client := pb.NewUserClient(m.cli.Conn())
 	return client.UserUpdate(ctx, in, opts...)
 }
@@ -110,6 +114,11 @@ func (m *defaultUser) AdminChangeRole(ctx context.Context, in *AdminChangeRoleRe
 	return client.AdminChangeRole(ctx, in, opts...)
 }
 
+func (m *defaultUser) UserChangeStatus(ctx context.Context, in *UserChangeStatusReq, opts ...grpc.CallOption) (*UserNil, error) {
+	client := pb.NewUserClient(m.cli.Conn())
+	return client.UserChangeStatus(ctx, in, opts...)
+}
+
 // 商家相关
 func (m *defaultUser) BusinessCreate(ctx context.Context, in *BusinessCreateReq, opts ...grpc.CallOption) (*UserNil, error) {
 	client := pb.NewUserClient(m.cli.Conn())
@@ -119,4 +128,9 @@ func (m *defaultUser) BusinessCreate(ctx context.Context, in *BusinessCreateReq,
 func (m *defaultUser) BusinessList(ctx context.Context, in *PageReq, opts ...grpc.CallOption) (*BusinessPageReply, error) {
 	client := pb.NewUserClient(m.cli.Conn())
 	return client.BusinessList(ctx, in, opts...)
+}
+
+func (m *defaultUser) BusinessChangeStatus(ctx context.Context, in *BusinessChangeStatusReq, opts ...grpc.CallOption) (*UserNil, error) {
+	client := pb.NewUserClient(m.cli.Conn())
+	return client.BusinessChangeStatus(ctx, in, opts...)
 }

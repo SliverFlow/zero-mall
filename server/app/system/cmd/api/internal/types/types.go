@@ -70,6 +70,15 @@ type UserListReply struct {
 	PageSize int64  `json:"pageSize"`
 }
 
+type UserChangeStatusReq struct {
+	ID     int64 `json:"ID"`
+	Status int64 `json:"status"`
+}
+
+type UserIDReq struct {
+	ID int64 `json:"ID"`
+}
+
 type Role struct {
 	ID   int64  `json:"ID"`
 	Name string `json:"name"`
@@ -157,6 +166,11 @@ type BusinessListReply struct {
 	Total    int64      `json:"total"`
 	Page     int64      `json:"page"`
 	PageSize int64      `json:"pageSize"`
+}
+
+type BusinessChangeStatusReq struct {
+	BusinessID string `json:"businessId"`
+	Status     int64  `json:"status"`
 }
 
 type Category struct {

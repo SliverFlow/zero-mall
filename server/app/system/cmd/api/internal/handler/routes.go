@@ -43,16 +43,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
-					Path:    "/user/create",
-					Handler: user.UserCreateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/user/update",
-					Handler: user.UserUpdateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
 					Path:    "/user/findByUUID",
 					Handler: user.UserFindByUUIDHandler(serverCtx),
 				},
@@ -65,6 +55,16 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Method:  http.MethodPost,
 					Path:    "/user/list",
 					Handler: user.UserListHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/user/changeStatus",
+					Handler: user.UserChangeStatusHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/user/delete",
+					Handler: user.UserDeleteHandler(serverCtx),
 				},
 			}...,
 		),
@@ -142,6 +142,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Method:  http.MethodPost,
 					Path:    "/business/list",
 					Handler: business.BusinessListHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/business/changeStatus",
+					Handler: business.BusinessChangeStatusHandler(serverCtx),
 				},
 			}...,
 		),

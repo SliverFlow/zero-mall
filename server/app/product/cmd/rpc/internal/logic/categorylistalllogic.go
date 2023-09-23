@@ -24,6 +24,9 @@ func NewCategoryListAllLogic(ctx context.Context, svcCtx *svc.ServiceContext) *C
 	}
 }
 
+// CategoryListAll
+// Author [SliverFlow]
+// @desc  查询所有分类
 func (l *CategoryListAllLogic) CategoryListAll(in *pb.ProductNil) (*pb.CategoryListAllReply, error) {
 	enter, err := l.svcCtx.ProductModel.CategoryListAll(l.ctx)
 	if err != nil {

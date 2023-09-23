@@ -38,12 +38,12 @@ func (s *UserServer) UserList(ctx context.Context, in *pb.PageReq) (*pb.PageRepl
 	return l.UserList(in)
 }
 
-func (s *UserServer) UserCreate(ctx context.Context, in *pb.CreateReq) (*pb.UserNil, error) {
+func (s *UserServer) UserCreate(ctx context.Context, in *pb.UserCreateReq) (*pb.UserNil, error) {
 	l := logic.NewUserCreateLogic(ctx, s.svcCtx)
 	return l.UserCreate(in)
 }
 
-func (s *UserServer) UserUpdate(ctx context.Context, in *pb.UpdateReq) (*pb.UserNil, error) {
+func (s *UserServer) UserUpdate(ctx context.Context, in *pb.UserUpdateReq) (*pb.UserNil, error) {
 	l := logic.NewUserUpdateLogic(ctx, s.svcCtx)
 	return l.UserUpdate(in)
 }
@@ -73,6 +73,11 @@ func (s *UserServer) AdminChangeRole(ctx context.Context, in *pb.AdminChangeRole
 	return l.AdminChangeRole(in)
 }
 
+func (s *UserServer) UserChangeStatus(ctx context.Context, in *pb.UserChangeStatusReq) (*pb.UserNil, error) {
+	l := logic.NewUserChangeStatusLogic(ctx, s.svcCtx)
+	return l.UserChangeStatus(in)
+}
+
 // 商家相关
 func (s *UserServer) BusinessCreate(ctx context.Context, in *pb.BusinessCreateReq) (*pb.UserNil, error) {
 	l := logic.NewBusinessCreateLogic(ctx, s.svcCtx)
@@ -82,4 +87,9 @@ func (s *UserServer) BusinessCreate(ctx context.Context, in *pb.BusinessCreateRe
 func (s *UserServer) BusinessList(ctx context.Context, in *pb.PageReq) (*pb.BusinessPageReply, error) {
 	l := logic.NewBusinessListLogic(ctx, s.svcCtx)
 	return l.BusinessList(in)
+}
+
+func (s *UserServer) BusinessChangeStatus(ctx context.Context, in *pb.BusinessChangeStatusReq) (*pb.UserNil, error) {
+	l := logic.NewBusinessChangeStatusLogic(ctx, s.svcCtx)
+	return l.BusinessChangeStatus(in)
 }

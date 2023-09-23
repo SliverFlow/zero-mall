@@ -26,6 +26,9 @@ func NewCategoryCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ca
 	}
 }
 
+// CategoryCreate
+// Author [SliverFlow]
+// @desc 创建分类
 func (l *CategoryCreateLogic) CategoryCreate(in *pb.CategoryCreateReq) (*pb.ProductNil, error) {
 	id := strconv.FormatInt(common.SnowWorker.NextId(), 10)
 	err := l.svcCtx.ProductModel.CategoryCreate(l.ctx, &model.Category{

@@ -20,6 +20,7 @@ type (
 		UserFindByUUID(ctx context.Context, uuid string) (enter *User, err error)
 		AdminChangeRole(ctx context.Context, username string, role int64) (err error)
 		CheckUsername(ctx context.Context, username string) (ok bool, err error)
+		UserChangeStatus(ctx context.Context, id int64, status int64) (err error)
 	}
 
 	defaultUserModel struct {
@@ -51,20 +52,13 @@ func newUserModel(db *gorm.DB) *defaultUserModel {
 func (d *defaultUserModel) UserCreate(ctx context.Context, u *User) (err error) {
 	tx := d.db.WithContext(ctx)
 
-	if err = tx.Model(&User{}).Create(u).Error; err != nil {
-		return err
-	}
-	return nil
+	return tx.Model(&User{}).Create(u).Error
 }
 
 func (d *defaultUserModel) UserDelete(ctx context.Context, id int64) (err error) {
 	tx := d.db.WithContext(ctx)
 
-	if err = tx.Where("id = ?", id).Delete(&User{}).Error; err != nil {
-		return err
-	}
-
-	return nil
+	return tx.Where("id = ?", id).Delete(&User{}).Error
 }
 
 func (d *defaultUserModel) UserUpdate(ctx context.Context, u *User) (err error) {
@@ -150,4 +144,11 @@ func (d *defaultUserModel) CheckUsername(ctx context.Context, username string) (
 		return false, err
 	}
 	return false, nil
+}
+
+// UserChangeStatus 更新用户状态
+func (d *defaultUserModel) UserChangeStatus(ctx context.Context, id int64, status int64) (err error) {
+	tx := d.db.WithContext(ctx)
+
+	return tx.Model(&User{}).Where("id = ?", id).Update("status", status).Error
 }

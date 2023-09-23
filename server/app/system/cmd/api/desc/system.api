@@ -37,16 +37,16 @@ service system {
 	middleware : Auth
 )
 service system {
-	@handler userCreate
-	post /user/create (NilReq) returns (NilReply)
-	@handler userUpdate
-	post /user/update (NilReq) returns (NilReply)
 	@handler userFindByUUID
 	post /user/findByUUID (NilReq) returns (UserInfoReply)
 	@handler userAdminChangeRole
 	post /user/changeRole (AdminChangeRoleReq) returns (NilReply)
 	@handler userList
 	post /user/list (PageReq) returns (UserListReply)
+	@handler userChangeStatus
+	post /user/changeStatus (UserChangeStatusReq) returns (NilReply)
+	@handler userDelete
+	post /user/delete (UserIDReq) returns (NilReply)
 }
 
 // role 部分
@@ -86,6 +86,7 @@ service system {
 	
 }
 
+// 商家部分
 @server(
 	group: business
 	prefix: system/v1
@@ -94,6 +95,8 @@ service system {
 service system {
 	@handler businessList
 	post /business/list (PageReq) returns (BusinessListReply)
+	@handler businessChangeStatus
+	post /business/changeStatus (BusinessChangeStatusReq) returns (NilReply)
 }
 
 // 分类部分

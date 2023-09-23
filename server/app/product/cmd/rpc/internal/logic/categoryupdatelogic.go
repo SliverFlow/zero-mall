@@ -24,6 +24,9 @@ func NewCategoryUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ca
 	}
 }
 
+// CategoryUpdate
+// Author [SliverFlow]
+// @desc  更新分类信息
 func (l *CategoryUpdateLogic) CategoryUpdate(in *pb.CategoryUpdateReq) (*pb.ProductNil, error) {
 	err := l.svcCtx.ProductModel.CategoryUpdate(l.ctx, &model.Category{
 		CategoryID: in.GetCategoryID(),

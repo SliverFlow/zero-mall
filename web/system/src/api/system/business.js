@@ -7,3 +7,12 @@ export const businessListApi = (data) => {
     data: data
   })
 }
+
+// 修改商户状态
+export const businessChangeStatusApi = (data) => {
+  return service({
+    url: '/system/v1/business/changeStatus',
+    method: 'post',
+    data: data
+  })
+}

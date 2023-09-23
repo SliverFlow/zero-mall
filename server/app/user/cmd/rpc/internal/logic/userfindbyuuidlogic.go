@@ -26,6 +26,9 @@ func NewUserFindByUUIDLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Us
 	}
 }
 
+// UserFindByUUID
+// Author [SliverFlow]
+// @desc 根据 uuid 查找用户
 func (l *UserFindByUUIDLogic) UserFindByUUID(in *pb.UUIDReq) (*pb.UserInfoReply, error) {
 	user, err := l.svcCtx.UserModel.UserFindByUUID(l.ctx, in.UUID)
 	if err != nil {

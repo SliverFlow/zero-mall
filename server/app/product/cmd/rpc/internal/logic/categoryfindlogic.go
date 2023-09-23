@@ -27,6 +27,9 @@ func NewCategoryFindLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Cate
 	}
 }
 
+// CategoryFind
+// Author [SliverFlow]
+// @desc  查询分类
 func (l *CategoryFindLogic) CategoryFind(in *pb.CategoryIDReq) (*pb.Category, error) {
 	enter, err := l.svcCtx.ProductModel.CategoryFind(l.ctx, in.GetCategoryID())
 	if err != nil {

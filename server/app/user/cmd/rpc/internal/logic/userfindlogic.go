@@ -28,7 +28,9 @@ func NewUserFindLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserFind
 	}
 }
 
-// 用户相关
+// UserFind
+// Author [SliverFlow]
+// @desc 根据 uid 查找用户
 func (l *UserFindLogic) UserFind(in *pb.IDReq) (*pb.UserInfoReply, error) {
 	user, err := l.svcCtx.UserModel.UserFind(l.ctx, in.ID)
 	if err != nil {

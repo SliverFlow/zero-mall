@@ -28,7 +28,10 @@ func NewUserCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserCr
 	}
 }
 
-func (l *UserCreateLogic) UserCreate(in *pb.CreateReq) (*pb.UserNil, error) {
+// UserCreate
+// Author [SliverFlow]
+// @desc 创建用户
+func (l *UserCreateLogic) UserCreate(in *pb.UserCreateReq) (*pb.UserNil, error) {
 	var u model.User
 	_ = copier.Copy(&u, in)
 

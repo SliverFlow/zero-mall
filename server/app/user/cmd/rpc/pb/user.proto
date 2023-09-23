@@ -45,17 +45,18 @@ message PageReply {
 // 空出参
 message UserNil {}
 //  创建用户
-message CreateReq {
+message UserCreateReq {
   string Username = 4;
   string Email = 5;
   string Nickname = 6;
   string Password = 7;
   string Avatar = 8;
   int64 Role = 9;
+  string Phone = 10;
 }
 
 // 更新用户信息
-message UpdateReq {
+message UserUpdateReq {
   int64 ID = 1;
   string Username = 4;
   string Email = 5;
@@ -88,6 +89,10 @@ message AdminChangeRoleReq {
 message UsernameReq {
   string Username = 1;
 }
+message UserChangeStatusReq {
+  int64 ID = 1;
+  int64 Status = 2;
+}
 
 
 // ------------------------------------- Business 相关 ---------------
@@ -106,11 +111,17 @@ message BusinessCreateReq {
   Business Business = 1;
   string UUID = 2;
 }
+// 商家分页列表
 message BusinessPageReply {
   repeated Business Business = 1;
   int64 Total = 2;
   int64 Page = 3;
   int64 PageSize = 4;
+}
+// 更新商家状态
+message BusinessChangeStatusReq {
+  string BusinessID = 1;
+  int64 Status = 2;
 }
 
 service user {
@@ -118,16 +129,18 @@ service user {
   rpc userFind (IDReq) returns (UserInfoReply);
   rpc userFindByUsername (UsernameReq) returns (UserInfoReply);
   rpc userList (PageReq) returns (PageReply);
-  rpc userCreate (CreateReq) returns (UserNil);
-  rpc userUpdate (UpdateReq)  returns (UserNil);
+  rpc userCreate (UserCreateReq) returns (UserNil);
+  rpc userUpdate (UserUpdateReq)  returns (UserNil);
   rpc userDelete (IDReq) returns (UserNil);
   rpc UserBatchDelete (IDsReq) returns (UserNil);
   rpc login(UserLoginReq) returns (UserLoginReply);
   rpc userFindByUUID (UUIDReq) returns (UserInfoReply);
   rpc adminChangeRole(AdminChangeRoleReq) returns (UserNil);
+  rpc userChangeStatus (UserChangeStatusReq) returns (UserNil);
 
   // 商家相关
   rpc businessCreate (BusinessCreateReq) returns (UserNil);
   rpc businessList (PageReq) returns (BusinessPageReply);
+  rpc businessChangeStatus (BusinessChangeStatusReq) returns (UserNil);
 
 }

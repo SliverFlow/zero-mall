@@ -133,7 +133,7 @@
                 </el-dropdown-item>
                 <el-dropdown-item
                   v-if="userInfo.username==='admin'"
-                  @click="changeRole(3)"
+                  @click="changeRole(1)"
                 >
                   <span>
                     切换为：系统管理员

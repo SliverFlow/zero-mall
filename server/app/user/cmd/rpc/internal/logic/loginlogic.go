@@ -27,6 +27,9 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 	}
 }
 
+// Login
+// Author [SliverFlow]
+// @desc 用户登录
 func (l *LoginLogic) Login(in *pb.UserLoginReq) (*pb.UserLoginReply, error) {
 
 	user, err := l.svcCtx.UserModel.UserFindByUsername(l.ctx, in.Username)
