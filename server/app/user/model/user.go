@@ -78,6 +78,9 @@ func (d *defaultUserModel) UserUpdate(ctx context.Context, u *User) (err error) 
 
 func (d *defaultUserModel) UserFind(ctx context.Context, id int64) (enter *User, err error) {
 	tx := d.db.WithContext(ctx)
+	span, carrier := common.Tracer(ctx, "find-user")
+	carrier.Set("name", "gorm")
+	defer span.End()
 
 	var u User
 	if err = tx.Model(&User{}).Where("id = ?", id).First(&u).Error; err != nil {

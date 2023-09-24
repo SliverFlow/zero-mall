@@ -16,7 +16,7 @@ type InitMysqlDB struct {
 	password string
 }
 
-// NewInitMysqlDB
+// newInitMysqlDB
 // Author [SliverFlow]
 // @desc 实例化
 func newInitMysqlDB(username, password, ip string, port int) *InitMysqlDB {
@@ -35,7 +35,7 @@ func (im *InitMysqlDB) dsn() string {
 	return fmt.Sprintf("%s:%s@tcp(%s:%d)/", im.username, im.password, im.ip, im.port)
 }
 
-// CreateDatabase
+// createDatabase
 // Author [SliverFlow]
 // @desc 创建数据库
 func (im *InitMysqlDB) createDatabase(dbName string) error {

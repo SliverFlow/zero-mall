@@ -19,42 +19,42 @@ services:
       - shop_server
   #    restart: always
 
-  #prometheus监控 — Prometheus for monitoring
-  prometheus:
-    image: prom/prometheus:v2.28.1
-    container_name: prometheus
-    environment:
-      # 时区上海 - Time zone Shanghai (Change if needed)
-      TZ: Asia/Shanghai
-    volumes:
-      - ./deploy/prometheus/server/prometheus.yml:/etc/prometheus/prometheus.yml
-      - ./data/prometheus/data:/prometheus
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.path=/prometheus'
-#    restart: always
-    user: root
-    ports:
-      - 9090:9090
-    networks:
-      - shop_server
+#  #prometheus监控 — Prometheus for monitoring
+#  prometheus:
+#    image: prom/prometheus:v2.28.1
+#    container_name: prometheus
+#    environment:
+#      # 时区上海 - Time zone Shanghai (Change if needed)
+#      TZ: Asia/Shanghai
+#    volumes:
+#      - ./deploy/prometheus/server/prometheus.yml:/etc/prometheus/prometheus.yml
+#      - ./data/prometheus/data:/prometheus
+#    command:
+#      - '--config.file=/etc/prometheus/prometheus.yml'
+#      - '--storage.tsdb.path=/prometheus'
+##    restart: always
+#    user: root
+#    ports:
+#      - 9090:9090
+#    networks:
+#      - shop_server
 
-  #查看prometheus监控数据 - Grafana to view Prometheus monitoring data
-  grafana:
-    image: grafana/grafana:8.0.6
-    container_name: grafana
-    hostname: grafana
-    user: root
-    environment:
-      # 时区上海 - Time zone Shanghai (Change if needed)
-      TZ: Asia/Shanghai
-#    restart: always
-    volumes:
-      - ./data/grafana/data:/var/lib/grafana
-    ports:
-      - "3000:3000"
-    networks:
-      - shop_server
+#  #查看prometheus监控数据 - Grafana to view Prometheus monitoring data
+#  grafana:
+#    image: grafana/grafana:8.0.6
+#    container_name: grafana
+#    hostname: grafana
+#    user: root
+#    environment:
+#      # 时区上海 - Time zone Shanghai (Change if needed)
+#      TZ: Asia/Shanghai
+##    restart: always
+#    volumes:
+#      - ./data/grafana/data:/var/lib/grafana
+#    ports:
+#      - "3000:3000"
+#    networks:
+#      - shop_server
 
   jaeger:
     image: jaegertracing/all-in-one:latest
@@ -76,18 +76,18 @@ services:
       - shop_server
 
 
-  etcd-manage:
-    build:
-      context: deploy/etcd-manage
-    environment:
-      - TZ=Asia/Shanghai
-    ports:
-      - "7000:8080"                    # 设置容器8080端口映射指定宿主机端口，用于宿主机访问可视化web
-    depends_on: # 依赖容器
-      - etcd                                          # 在 etcd 服务容器启动后启动
-    networks:
-      - shop_server
-  #    restart: always
+#  etcd-manage:
+#    build:
+#      context: deploy/etcd-manage
+#    environment:
+#      - TZ=Asia/Shanghai
+#    ports:
+#      - "7000:8080"                    # 设置容器8080端口映射指定宿主机端口，用于宿主机访问可视化web
+#    depends_on: # 依赖容器
+#      - etcd                                          # 在 etcd 服务容器启动后启动
+#    networks:
+#      - shop_server
+#  #    restart: always
 
   user-rpc: # 自定义容器名称
     build:
@@ -118,59 +118,52 @@ services:
     networks:
       - shop_server
 #    restart: always                      # 指定容器退出后的重启策略为始终重启
-  system-rpc: # 自定义容器名称
-    build:
-      context: ./                 # 指定构建使用的 Dockerfile 文件
-      dockerfile: app/system/cmd/rpc/Dockerfile
-    environment: # 设置环境变量
-      - TZ=Asia/Shanghai
-    privileged: true
-    ports: # 设置端口映射
-      - "2221:2221"  # 课件服务rpc端口
-    stdin_open: true                     # 打开标准输入，可以接受外部输入
-    tty: true
-    networks:
-      - shop_server
-  #    restart: always                      # 指定容器退出后的重启策略为始终重启
-
-  system-api: # 自定义容器名称
-    build:
-      context: ./                 # 指定构建使用的 Dockerfile 文件
-      dockerfile: app/system/cmd/api/Dockerfile
-    environment: # 设置环境变量
-      - TZ=Asia/Shanghai
-    privileged: true
-    ports: # 设置端口映射
-      - "2220:2220"  # 课件服务rpc端口
-    stdin_open: true                     # 打开标准输入，可以接受外部输入
-    tty: true
-    networks:
-      - shop_server
-  #    restart: always                      # 指定容器退出后的重启策略为始终重启
-
-
-
-
-
-
-
-
-#  elasticsearch:
-#    image: docker.elastic.co/elasticsearch/elasticsearch:7.13.4
-#    container_name: elasticsearch
-#    user: root
-#    environment:
-#      - discovery.type=single-node
-#      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+#  system-rpc: # 自定义容器名称
+#    build:
+#      context: ./                 # 指定构建使用的 Dockerfile 文件
+#      dockerfile: app/system/cmd/rpc/Dockerfile
+#    environment: # 设置环境变量
 #      - TZ=Asia/Shanghai
-#    volumes:
-#      - ./data/elasticsearch/data:/usr/share/elasticsearch/data
-##    restart: always
-#    ports:
-#      - 9200:9200
-#      - 9300:9300
+#    privileged: true
+#    ports: # 设置端口映射
+#      - "2221:2221"  # 课件服务rpc端口
+#    stdin_open: true                     # 打开标准输入，可以接受外部输入
+#    tty: true
 #    networks:
 #      - shop_server
+#  #    restart: always                      # 指定容器退出后的重启策略为始终重启
+
+#  system-api: # 自定义容器名称
+#    build:
+#      context: ./                 # 指定构建使用的 Dockerfile 文件
+#      dockerfile: app/system/cmd/api/Dockerfile
+#    environment: # 设置环境变量
+#      - TZ=Asia/Shanghai
+#    privileged: true
+#    ports: # 设置端口映射
+#      - "2220:2220"  # 课件服务rpc端口
+#    stdin_open: true                     # 打开标准输入，可以接受外部输入
+#    tty: true
+#    networks:
+#      - shop_server
+#  #    restart: always                      # 指定容器退出后的重启策略为始终重启
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.13.4
+    container_name: elasticsearch
+    user: root
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./data/elasticsearch/data:/usr/share/elasticsearch/data
+#    restart: always
+    ports:
+      - 9200:9200
+      - 9300:9300
+    networks:
+      - shop_server
 
 
 #  #查看elasticsearch数据 - Kibana to view Elasticsearch data

@@ -34,7 +34,7 @@ CacheRedis:
 #  Path: /metrics
 #  Port: 7899
 #
-## 链路追踪
+# 链路追踪
 #Telemetry:
 #  Name: user-rpc
 #  Endpoint: http://jaeger:14268/api/traces
