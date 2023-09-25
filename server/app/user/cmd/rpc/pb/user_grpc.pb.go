@@ -38,6 +38,8 @@ type UserClient interface {
 	BusinessCreate(ctx context.Context, in *BusinessCreateReq, opts ...grpc.CallOption) (*UserNil, error)
 	BusinessList(ctx context.Context, in *PageReq, opts ...grpc.CallOption) (*BusinessPageReply, error)
 	BusinessChangeStatus(ctx context.Context, in *BusinessChangeStatusReq, opts ...grpc.CallOption) (*UserNil, error)
+	BusinessFind(ctx context.Context, in *BusinessIDReq, opts ...grpc.CallOption) (*Business, error)
+	BusinessFindByUUID(ctx context.Context, in *BusinessUUIDReq, opts ...grpc.CallOption) (*Business, error)
 }
 
 type userClient struct {
@@ -174,6 +176,24 @@ func (c *userClient) BusinessChangeStatus(ctx context.Context, in *BusinessChang
 	return out, nil
 }
 
+func (c *userClient) BusinessFind(ctx context.Context, in *BusinessIDReq, opts ...grpc.CallOption) (*Business, error) {
+	out := new(Business)
+	err := c.cc.Invoke(ctx, "/pb.user/businessFind", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) BusinessFindByUUID(ctx context.Context, in *BusinessUUIDReq, opts ...grpc.CallOption) (*Business, error) {
+	out := new(Business)
+	err := c.cc.Invoke(ctx, "/pb.user/businessFindByUUID", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -194,6 +214,8 @@ type UserServer interface {
 	BusinessCreate(context.Context, *BusinessCreateReq) (*UserNil, error)
 	BusinessList(context.Context, *PageReq) (*BusinessPageReply, error)
 	BusinessChangeStatus(context.Context, *BusinessChangeStatusReq) (*UserNil, error)
+	BusinessFind(context.Context, *BusinessIDReq) (*Business, error)
+	BusinessFindByUUID(context.Context, *BusinessUUIDReq) (*Business, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -242,6 +264,12 @@ func (UnimplementedUserServer) BusinessList(context.Context, *PageReq) (*Busines
 }
 func (UnimplementedUserServer) BusinessChangeStatus(context.Context, *BusinessChangeStatusReq) (*UserNil, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BusinessChangeStatus not implemented")
+}
+func (UnimplementedUserServer) BusinessFind(context.Context, *BusinessIDReq) (*Business, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BusinessFind not implemented")
+}
+func (UnimplementedUserServer) BusinessFindByUUID(context.Context, *BusinessUUIDReq) (*Business, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BusinessFindByUUID not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -508,6 +536,42 @@ func _User_BusinessChangeStatus_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_BusinessFind_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BusinessIDReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).BusinessFind(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.user/businessFind",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).BusinessFind(ctx, req.(*BusinessIDReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_BusinessFindByUUID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BusinessUUIDReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).BusinessFindByUUID(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.user/businessFindByUUID",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).BusinessFindByUUID(ctx, req.(*BusinessUUIDReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -570,6 +634,14 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "businessChangeStatus",
 			Handler:    _User_BusinessChangeStatus_Handler,
+		},
+		{
+			MethodName: "businessFind",
+			Handler:    _User_BusinessFind_Handler,
+		},
+		{
+			MethodName: "businessFindByUUID",
+			Handler:    _User_BusinessFindByUUID_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

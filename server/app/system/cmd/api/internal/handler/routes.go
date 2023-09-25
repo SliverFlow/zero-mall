@@ -148,6 +148,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Path:    "/business/changeStatus",
 					Handler: business.BusinessChangeStatusHandler(serverCtx),
 				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/business/find",
+					Handler: business.BusinessFindHandler(serverCtx),
+				},
 			}...,
 		),
 		rest.WithPrefix("/system/v1"),

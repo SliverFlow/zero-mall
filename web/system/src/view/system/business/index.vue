@@ -64,12 +64,12 @@
           />
         </template>
       </el-table-column>
-      <el-table-column align="left" label="创建时间" min-width="170">
+      <el-table-column align="left" label="创建时间" min-width="200">
         <template #default="scope">
           {{ formatTimestamp(scope.row.createdAt) }}
         </template>
       </el-table-column>
-      <el-table-column align="left" label="更新时间" min-width="170">
+      <el-table-column align="left" label="更新时间" min-width="200">
         <template #default="scope">
           {{ formatTimestamp(scope.row.updatedAt) }}
         </template>

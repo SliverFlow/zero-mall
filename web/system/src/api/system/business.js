@@ -16,3 +16,11 @@ export const businessChangeStatusApi = (data) => {
     data: data
   })
 }
+
+// 获取商户信息
+export const businessFindApi = () => {
+  return service({
+    url: '/system/v1/business/find',
+    method: 'post'
+  })
+}

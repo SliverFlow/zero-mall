@@ -17,7 +17,9 @@ type (
 	Business                = pb.Business
 	BusinessChangeStatusReq = pb.BusinessChangeStatusReq
 	BusinessCreateReq       = pb.BusinessCreateReq
+	BusinessIDReq           = pb.BusinessIDReq
 	BusinessPageReply       = pb.BusinessPageReply
+	BusinessUUIDReq         = pb.BusinessUUIDReq
 	IDReq                   = pb.IDReq
 	IDsReq                  = pb.IDsReq
 	PageReply               = pb.PageReply
@@ -50,6 +52,8 @@ type (
 		BusinessCreate(ctx context.Context, in *BusinessCreateReq, opts ...grpc.CallOption) (*UserNil, error)
 		BusinessList(ctx context.Context, in *PageReq, opts ...grpc.CallOption) (*BusinessPageReply, error)
 		BusinessChangeStatus(ctx context.Context, in *BusinessChangeStatusReq, opts ...grpc.CallOption) (*UserNil, error)
+		BusinessFind(ctx context.Context, in *BusinessIDReq, opts ...grpc.CallOption) (*Business, error)
+		BusinessFindByUUID(ctx context.Context, in *BusinessUUIDReq, opts ...grpc.CallOption) (*Business, error)
 	}
 
 	defaultUser struct {
@@ -133,4 +137,14 @@ func (m *defaultUser) BusinessList(ctx context.Context, in *PageReq, opts ...grp
 func (m *defaultUser) BusinessChangeStatus(ctx context.Context, in *BusinessChangeStatusReq, opts ...grpc.CallOption) (*UserNil, error) {
 	client := pb.NewUserClient(m.cli.Conn())
 	return client.BusinessChangeStatus(ctx, in, opts...)
+}
+
+func (m *defaultUser) BusinessFind(ctx context.Context, in *BusinessIDReq, opts ...grpc.CallOption) (*Business, error) {
+	client := pb.NewUserClient(m.cli.Conn())
+	return client.BusinessFind(ctx, in, opts...)
+}
+
+func (m *defaultUser) BusinessFindByUUID(ctx context.Context, in *BusinessUUIDReq, opts ...grpc.CallOption) (*Business, error) {
+	client := pb.NewUserClient(m.cli.Conn())
+	return client.BusinessFindByUUID(ctx, in, opts...)
 }

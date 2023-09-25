@@ -93,3 +93,13 @@ func (s *UserServer) BusinessChangeStatus(ctx context.Context, in *pb.BusinessCh
 	l := logic.NewBusinessChangeStatusLogic(ctx, s.svcCtx)
 	return l.BusinessChangeStatus(in)
 }
+
+func (s *UserServer) BusinessFind(ctx context.Context, in *pb.BusinessIDReq) (*pb.Business, error) {
+	l := logic.NewBusinessFindLogic(ctx, s.svcCtx)
+	return l.BusinessFind(in)
+}
+
+func (s *UserServer) BusinessFindByUUID(ctx context.Context, in *pb.BusinessUUIDReq) (*pb.Business, error) {
+	l := logic.NewBusinessFindByUUIDLogic(ctx, s.svcCtx)
+	return l.BusinessFindByUUID(in)
+}

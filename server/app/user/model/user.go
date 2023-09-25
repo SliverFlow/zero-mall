@@ -35,7 +35,7 @@ type (
 		Nickname string `json:"nickname" gorm:"not null;default:'';comment:用户显示昵称"`
 		Password string `json:"password" gorm:"not null;default:'';comment:用户登录密码"`
 		Avatar   string `json:"avatar" gorm:"not null;default:'';comment:用户头像"`
-		Role     int64  `json:"role" gorm:"not null;default:0;comment:用户类型 0 普通用户 2 商家 1 系统管理员"`
+		Role     int64  `json:"role" gorm:"not null;default:1;comment:用户类型 1 普通用户 2 商家 3 系统管理员"`
 		Status   int64  `json:"status" gorm:"not null;default:1;comment:用户状态 1 开启 0 禁用 "`
 		Phone    string `json:"phone"  gorm:"not null;default:'';comment:手机号码"`
 	}

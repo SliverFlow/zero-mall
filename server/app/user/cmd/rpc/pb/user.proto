@@ -123,6 +123,12 @@ message BusinessChangeStatusReq {
   string BusinessID = 1;
   int64 Status = 2;
 }
+message BusinessIDReq {
+  string BusinessID = 1;
+}
+message BusinessUUIDReq {
+  string UUID = 1;
+}
 
 service user {
   // 用户相关
@@ -142,5 +148,7 @@ service user {
   rpc businessCreate (BusinessCreateReq) returns (UserNil);
   rpc businessList (PageReq) returns (BusinessPageReply);
   rpc businessChangeStatus (BusinessChangeStatusReq) returns (UserNil);
+  rpc businessFind (BusinessIDReq) returns (Business);
+  rpc businessFindByUUID (BusinessUUIDReq) returns (Business);
 
 }

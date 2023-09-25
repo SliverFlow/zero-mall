@@ -30,3 +30,6 @@ type BusinessChangeStatusReq {
     BusinessID string `json:"businessId"`
     Status int64 `json:"status"`
 }
+type BusinessIDReq {
+    BusinessID string `json:"businessId"`
+}

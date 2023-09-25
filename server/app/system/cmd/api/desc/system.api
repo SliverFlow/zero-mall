@@ -97,6 +97,8 @@ service system {
 	post /business/list (PageReq) returns (BusinessListReply)
 	@handler businessChangeStatus
 	post /business/changeStatus (BusinessChangeStatusReq) returns (NilReply)
+	@handler businessFind
+	post /business/find (NilReq) returns (Business)
 }
 
 // 分类部分

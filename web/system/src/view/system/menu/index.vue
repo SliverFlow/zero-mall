@@ -23,6 +23,7 @@
         :data="tableData"
         row-key="ID"
         :tree-props="{'children': 'children'}"
+        :header-cell-style="{background:'#f7fbff'}"
       >
         <el-table-column align="left" label="ID" min-width="100" prop="ID" fixed="left" />
         <el-table-column align="left" label="菜单名称" min-width="150" prop="meta.title" />
@@ -39,7 +40,7 @@
           </template>
         </el-table-column>
         <el-table-column align="left" label="排序" min-width="100" prop="sorted" />
-        <el-table-column align="left" label="状态" min-width="150">
+        <el-table-column align="left" label="状态" min-width="100">
           <template #default="scope">
             <el-switch
               v-model="scope.row.status"
@@ -53,12 +54,12 @@
             />
           </template>
         </el-table-column>
-        <el-table-column align="left" label="创建时间" min-width="170">
+        <el-table-column align="left" label="创建时间" min-width="200">
           <template #default="scope">
             {{ formatTimestamp(scope.row.createdAt) }}
           </template>
         </el-table-column>
-        <el-table-column align="left" label="更新时间" min-width="170">
+        <el-table-column align="left" label="更新时间" min-width="200">
           <template #default="scope">
             {{ formatTimestamp(scope.row.updatedAt) }}
           </template>
@@ -218,7 +219,7 @@ const formData = ref({
     icon: '',
     title: '',
   },
-  role: 0,
+  role: 3,
 })
 // 级联选择器
 const menuOption = ref([
@@ -391,6 +392,9 @@ const deleteCategory = async (val) => {
   .el-icon {
     color: #4D70FF;
   }
+}
+:deep(.el-table__row>.el-table__cell) {
+  padding: 8px 0;
 }
 
 </style>

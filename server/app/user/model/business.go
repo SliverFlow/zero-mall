@@ -11,6 +11,8 @@ type (
 		BusinessCreate(ctx context.Context, business *Business) (err error)
 		BusinessList(ctx context.Context, page *common.PageInfo) (enter *[]Business, total int64, err error)
 		BusinessChangeStatus(ctx context.Context, id string, status int64) (err error)
+		BusinessFind(ctx context.Context, businessId string) (enter *Business, err error)
+		BusinessFindByUUID(ctx context.Context, uuid string) (enter *Business, err error)
 	}
 
 	defaultBusinessModel struct {
@@ -69,4 +71,29 @@ func (d *defaultBusinessModel) BusinessChangeStatus(ctx context.Context, id stri
 	tx := d.db.WithContext(ctx)
 
 	return tx.Model(&Business{}).Where("business_id = ?", id).Update("status", status).Error
+}
+
+// BusinessFind 查询商户信息
+func (d *defaultBusinessModel) BusinessFind(ctx context.Context, businessId string) (enter *Business, err error) {
+	span, _ := common.Tracer(ctx, "business-find")
+	defer span.End()
+
+	var b Business
+	if err = d.db.Model(&Business{}).Where("business_id = ?", businessId).First(&b).Error; err != nil {
+		return nil, err
+	}
+
+	return &b, nil
+}
+
+func (d *defaultBusinessModel) BusinessFindByUUID(ctx context.Context, uuid string) (enter *Business, err error) {
+	span, _ := common.Tracer(ctx, "business-find-uuid")
+	defer span.End()
+
+	var b Business
+	if err = d.db.Model(&Business{}).Where("uuid = ?", uuid).First(&b).Error; err != nil {
+		return nil, err
+	}
+
+	return &b, nil
 }

@@ -13,7 +13,6 @@
       :label="item.title"
       :name="item.path"
     >
-      {{ item.content }}
     </el-tab-pane>
   </el-tabs>
 </template>

@@ -30,9 +30,9 @@
       <el-table-column align="left" label="昵称" min-width="140" prop="nickname"/>
       <el-table-column align="left" label="角色" min-width="100" prop="role">
         <template #default="scope">
-          <el-text v-if="scope.row.role === 1" type="primary">超级管理员</el-text>
+          <el-text v-if="scope.row.role === 3" type="primary">超级管理员</el-text>
           <el-text v-if="scope.row.role === 2" type="warning">商家</el-text>
-          <el-text v-if="scope.row.role === 0" type="success">普通用户</el-text>
+          <el-text v-if="scope.row.role === 1" type="success">普通用户</el-text>
         </template>
       </el-table-column>
       <el-table-column align="left" label="状态" min-width="110" prop="status">
@@ -52,17 +52,17 @@
       </el-table-column>
       <el-table-column align="left" label="电话号码" min-width="120" prop="phone"/>
       <el-table-column align="left" label="邮箱" min-width="170" prop="email"/>
-      <el-table-column align="left" label="创建时间" min-width="170">
+      <el-table-column align="left" label="创建时间" min-width="200">
         <template #default="scope">
           {{ formatTimestamp(scope.row.createdAt) }}
         </template>
       </el-table-column>
-      <el-table-column align="left" label="更新时间" min-width="170">
+      <el-table-column align="left" label="更新时间" min-width="200">
         <template #default="scope">
           {{ formatTimestamp(scope.row.updatedAt) }}
         </template>
       </el-table-column>
-      <el-table-column label="操作" min-width="110" fixed="right">
+      <el-table-column label="操作" min-width="90" fixed="right">
         <template #default="scope">
           <el-button
             :disabled="scope.row.ID === 1"
@@ -97,7 +97,7 @@ import { ElMessage } from 'element-plus'
 
 // 分页相关
 const page = ref(1)
-const pageSize = ref(5)
+const pageSize = ref(10)
 const keyWord = ref('')
 // 表格相关
 const total = ref(0)
@@ -146,3 +146,8 @@ const deleteUser = async (id) => {
 
 }
 </script>
+<style lang="scss" scoped>
+:deep(.el-table__row>.el-table__cell) {
+  padding: 8px 0;
+}
+</style>

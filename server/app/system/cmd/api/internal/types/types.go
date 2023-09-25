@@ -173,6 +173,10 @@ type BusinessChangeStatusReq struct {
 	Status     int64  `json:"status"`
 }
 
+type BusinessIDReq struct {
+	BusinessID string `json:"businessId"`
+}
+
 type Category struct {
 	ID         int64      `json:"ID"`
 	CategoryID string     `json:"categoryId"`

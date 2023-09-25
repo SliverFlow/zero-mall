@@ -456,7 +456,7 @@ const toProductDetail = (id) => {
 
       .prod:hover {
         cursor: pointer;
-        box-shadow: 0px 0px 37px -7px rgba(0, 0, 0, 0.18);
+        box-shadow: 0 0 37px -7px rgba(0, 0, 0, 0.18);
       }
 
       .prod:nth-child(4n) {

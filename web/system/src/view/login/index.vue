@@ -90,7 +90,7 @@ const form = ref(null)
 // form 表单数据
 const formData = ref({
   captchaId: '',
-  username: 'admin',
+  username: 'zhengjunxing',
   password: '123456',
   captcha: ''
 })
