@@ -36,7 +36,7 @@
     <div class="right">
       <el-tabs v-model="activeName" class="demo-tabs">
         <el-tab-pane label="相关信息" name="business">
-          <el-form-item label="介绍：">
+          <el-form-item label="介绍：" style="margin-top: 16px">
             <el-input v-model="formData.detail" :disabled="!isEditDetail" :autosize="{ minRows: 2, maxRows: 10 }"
                       type="textarea"/>
           </el-form-item>
@@ -60,7 +60,7 @@
           <div class="btn-list">
             <el-button @click="isEditDetail = true" v-if="!isEditDetail" type="primary" icon="edit">点击修改详情
             </el-button>
-            <el-button v-if="isEditDetail" type="primary" icon="check">确认</el-button>
+            <el-button @click="enterEditDetail"  v-if="isEditDetail" type="primary" icon="check">确认</el-button>
             <el-button @click="closeEditDetail" v-if="isEditDetail" icon="close">取消</el-button>
           </div>
         </el-tab-pane>
@@ -73,7 +73,8 @@
 <script setup>
 import { ref } from 'vue'
 import { formatTimestamp } from '@/utils/date.js'
-import { businessFindApi } from '@/api/system/business.js'
+import { businessFindApi, businessUpdateApi } from '@/api/system/business.js'
+import { ElMessage } from 'element-plus'
 
 const activeName = ref('business')
 // 是否编辑名称
@@ -82,9 +83,9 @@ const isEdit = ref(false)
 const isEditDetail = ref(false)
 // 表单信息
 const formData = ref({
-  businessName: '脑子挖掉了专卖店',
-  createdAt: 1694009237,
-  detail: '卖店你脑子你脑子挖掉了专卖店你脑子挖掉了专卖店你脑子挖掉了专卖店掉了专卖卖店你脑子你脑子挖掉了专卖店你脑子挖掉了专卖店你脑子挖掉了专卖店掉了专卖卖店你脑子你脑子挖掉了专卖店你脑子挖掉了专卖店你脑子挖掉了专卖店掉了专卖',
+  businessName: '',
+  createdAt: 0,
+  detail: '',
   status: 0,
   score: 3,
   businessId: '',
@@ -103,18 +104,39 @@ const loadFormData = async() => {
 }
 loadFormData()
 // 提交修改的商户信息
-const enterBusinessName = () => {
-
+const enterBusinessName = async() => {
+  const res = await businessUpdateApi(formData.value)
+  if (res.code === 0) {
+    ElMessage({
+      message: '更新商户信息成功',
+      type: 'success',
+    })
+    await loadFormData()
+    isEdit.value = false
+  }
 }
 // 关闭修改商户信息
-const closeBusinessName = () => {
+const closeBusinessName = async () => {
   // 数据回调
+  await loadFormData()
   isEdit.value = false
 }
 
 // 关闭修改相亲
 const closeEditDetail = () => {
   isEditDetail.value = false
+}
+// 提交修改详情
+const enterEditDetail = async () => {
+  const res = await businessUpdateApi(formData.value)
+  if (res.code === 0) {
+    ElMessage({
+      message: '更新商户信息成功',
+      type: 'success',
+    })
+    await loadFormData()
+    isEditDetail.value = false
+  }
 }
 </script>
 

@@ -61,3 +61,11 @@ export const categoryDeleteApi = (data) => {
     data: data
   })
 }
+
+// 分类列表 添加商品时的查询
+export const categoryTressListApi = () => {
+  return service({
+    method: 'post',
+    url: '/system/v1/category/treeList',
+  })
+}

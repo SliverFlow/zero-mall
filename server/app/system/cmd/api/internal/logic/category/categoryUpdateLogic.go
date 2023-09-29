@@ -24,6 +24,9 @@ func NewCategoryUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ca
 	}
 }
 
+// CategoryUpdate
+// Author [SliverFlow]
+// @desc 分类修改
 func (l *CategoryUpdateLogic) CategoryUpdate(req *types.CategoryUpdateReq) (resp *types.NilReply, err error) {
 	_, err = l.svcCtx.ProductRpc.CategoryUpdate(l.ctx, &pb.CategoryUpdateReq{
 		CategoryID: req.CategoryID,

@@ -1,0 +1,51 @@
+syntax = "v1"
+
+info(
+    title: "商品相关 api"
+    desc: "商品相关 相关 api model"
+    author: "SliverFlow"
+    email: "202606540@qq.com"
+    version: "v1.0"
+)
+
+import "api/category.api"
+
+type Product {
+    ProductID string `json:"productId"`
+    BusinessID string `json:"businessId"`
+    Name string `json:"name"`
+    Subtitle string `json:"subtitle"`
+    Image string `json:"image"`
+    Detail string `json:"detail"`
+    Price float64 `json:"price"`
+    Stock int64 `json:"stock"`
+    Status int64 `json:"status"`
+    Categories []Category `json:"categories"`
+    CreatedAt int64 `json:"createdAt"`
+    UpdatedAt int64 `json:"updatedAt"`
+}
+
+type ProductCreateReq {
+    Name string `json:"name"`
+    Subtitle string `json:"subtitle"`
+    Image []string `json:"image"`
+    Detail string `json:"detail"`
+    Price float64 `json:"price"`
+    Stock int64 `json:"stock"`
+    Status int64 `json:"status"`
+    Categories []Category `json:"categories"`
+}
+type ProductListReq {
+    Page int64 `json:"page"`
+    PageSize int64 `json:"pageSize"`
+    KeyWord string `json:"keyWord"`
+}
+type ProductListReply {
+    Page int64 `json:"page"`
+    PageSize int64 `json:"pageSize"`
+    Total int64 `json:"total"`
+    List []Product `json:"list"`
+}
+type ProductDeleteReq {
+    ProductID string `json:"productId"`
+}

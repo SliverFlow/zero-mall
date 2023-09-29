@@ -15,15 +15,16 @@ Redis:
   Host: "120.77.237.246:6379"
   Pass: wjh20000905
 
-Oss:
-  Type: local
-  Local:
-    Path: 'uploads'
-  Alioss:
-    Endpoint: ""
-    AccessKeyId: ""
-    AccessKeySecret: ""
-    BucketName: "zpshop"
+StsAliOss:
+  AccessKeyId: ""
+  AccessKeySecret: ""
+  Endpoint: ""
+  Duration: 1500
+  RoleArn: ""
+  SessionName: "zero_mall_0905"
+  Region: "oss-cn-hangzhou"
+  Bucket: "zero-mall"
+
 Captcha:
   KeyLong: 6
   ImgHeight: 80

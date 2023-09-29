@@ -4,6 +4,7 @@ import (
 	"github.com/zeromicro/go-zero/core/stores/redis"
 	"github.com/zeromicro/go-zero/rest"
 	"github.com/zeromicro/go-zero/zrpc"
+	"server/common/xupload"
 )
 
 type Config struct {
@@ -19,18 +20,7 @@ type Config struct {
 	}
 	Redis redis.RedisConf
 
-	Oss struct {
-		Type  string
-		Local struct {
-			Path string
-		}
-		Alioss struct {
-			Endpoint        string
-			AccessKeyId     string
-			AccessKeySecret string
-			BucketName      string
-		}
-	}
+	StsAliOss xupload.StsConfig //  阿里云oss临时上传凭证配置
 
 	Captcha struct {
 		KeyLong   int

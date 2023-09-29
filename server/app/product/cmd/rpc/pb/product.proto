@@ -52,6 +52,47 @@ message CategoryIDSReply {
   repeated string IDS = 1;
 }
 
+// ------------------ 商品相关 -------------------------
+message ProductReply {
+  string ProductID = 1;
+  string Name = 2;
+  string CategoryID = 3;
+  string Subtitle = 4;
+  string Image = 5;
+  string Detail = 6;
+  float Price = 7;
+  int64 Stock = 8;
+  int64 Status = 9;
+  repeated Category Categories = 10;
+  int64 CreatedAt = 11;
+  int64 UpdatedAt = 12;
+}
+message ProductCreateReq {
+  string BusinessID = 1;
+  string Name = 2;
+  string Subtitle = 4;
+  string Image = 5;
+  string Detail = 6;
+  float Price = 7;
+  int64 Stock = 8;
+  int64 Status = 9;
+  repeated Category Categories = 10;
+}
+message ProductListReq {
+  int64 Page = 1;
+  int64 PageSize = 2;
+  string KeyWord = 3;
+}
+message ProductListReply {
+  int64 Page = 1;
+  int64 PageSize = 2;
+  int64 Total = 3;
+  repeated ProductReply List = 4;
+}
+message ProductDeleteReq {
+  repeated string IDs = 1;
+}
+
 service product {
   // @desc 所有的分类列表
   rpc categoryListAll (ProductNil) returns (CategoryListAllReply);
@@ -72,5 +113,7 @@ service product {
 
 
   // 商品列表 分页
-  rpc productList (ProductNil) returns (ProductNil);
+  rpc productList (ProductListReq) returns (ProductListReply);
+  rpc productCreate (ProductCreateReq) returns (ProductNil);
+  rpc productDelete (ProductDeleteReq) returns (ProductNil);
 }

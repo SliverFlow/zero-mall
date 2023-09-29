@@ -24,6 +24,9 @@ func NewCategoryBatchDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext
 	}
 }
 
+// CategoryBatchDelete
+// Author [SliverFlow]
+// @desc   批量删除分类
 func (l *CategoryBatchDeleteLogic) CategoryBatchDelete(req *types.CategoryBatchDelteReq) (resp *types.NilReply, err error) {
 	var ids []string
 	for _, kv := range req.KVS {

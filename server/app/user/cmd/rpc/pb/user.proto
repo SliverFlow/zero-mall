@@ -150,5 +150,6 @@ service user {
   rpc businessChangeStatus (BusinessChangeStatusReq) returns (UserNil);
   rpc businessFind (BusinessIDReq) returns (Business);
   rpc businessFindByUUID (BusinessUUIDReq) returns (Business);
+  rpc businessUpdate (Business) returns (UserNil);
 
 }

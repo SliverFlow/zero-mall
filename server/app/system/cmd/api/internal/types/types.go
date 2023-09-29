@@ -17,13 +17,6 @@ type LoginReply struct {
 	User  User   `json:"user"`
 }
 
-type FileUploadReply struct {
-	FileStoreName string `json:"fileStoreName"`
-	Name          string `json:"name"`
-	Url           string `json:"url"`
-	FileSize      int64  `json:"fileSize"`
-}
-
 type CaptchaReply struct {
 	CaptchaId     string `json:"captchaId"`
 	PicPath       string `json:"picPath"`
@@ -177,6 +170,16 @@ type BusinessIDReq struct {
 	BusinessID string `json:"businessId"`
 }
 
+type BusinessUpdateReq struct {
+	BusinessID string   `json:"businessId"`
+	Name       string   `json:"name"`
+	UUID       string   `json:"uuid"`
+	Detail     string   `json:"detail"`
+	Score      int64    `json:"score"`
+	Image      []string `json:"image"`
+	Status     int64    `json:"status"`
+}
+
 type Category struct {
 	ID         int64      `json:"ID"`
 	CategoryID string     `json:"categoryId"`
@@ -228,4 +231,60 @@ type IDAndPID struct {
 
 type CategoryBatchDelteReq struct {
 	KVS []IDAndPID `json:"kvs"`
+}
+
+type Product struct {
+	ProductID  string     `json:"productId"`
+	BusinessID string     `json:"businessId"`
+	Name       string     `json:"name"`
+	Subtitle   string     `json:"subtitle"`
+	Image      string     `json:"image"`
+	Detail     string     `json:"detail"`
+	Price      float64    `json:"price"`
+	Stock      int64      `json:"stock"`
+	Status     int64      `json:"status"`
+	Categories []Category `json:"categories"`
+	CreatedAt  int64      `json:"createdAt"`
+	UpdatedAt  int64      `json:"updatedAt"`
+}
+
+type ProductCreateReq struct {
+	Name       string     `json:"name"`
+	Subtitle   string     `json:"subtitle"`
+	Image      []string   `json:"image"`
+	Detail     string     `json:"detail"`
+	Price      float64    `json:"price"`
+	Stock      int64      `json:"stock"`
+	Status     int64      `json:"status"`
+	Categories []Category `json:"categories"`
+}
+
+type ProductListReq struct {
+	Page     int64  `json:"page"`
+	PageSize int64  `json:"pageSize"`
+	KeyWord  string `json:"keyWord"`
+}
+
+type ProductListReply struct {
+	Page     int64     `json:"page"`
+	PageSize int64     `json:"pageSize"`
+	Total    int64     `json:"total"`
+	List     []Product `json:"list"`
+}
+
+type ProductDeleteReq struct {
+	ProductID string `json:"productId"`
+}
+
+type FileTokenReply struct {
+	AccessKeyId     string `json:"accessKeyId"`
+	AccessKeySecret string `json:"accessKeySecret"`
+	StsToken        string `json:"stsToken"`
+	Region          string `json:"region"`
+	Bucket          string `json:"bucket"`
+	FilePath        string `json:"filePath"`
+}
+
+type FileTokenReq struct {
+	Path string `path:"path"`
 }

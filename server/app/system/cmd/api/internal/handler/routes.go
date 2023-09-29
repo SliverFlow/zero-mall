@@ -7,7 +7,9 @@ import (
 	base "server/app/system/cmd/api/internal/handler/base"
 	business "server/app/system/cmd/api/internal/handler/business"
 	category "server/app/system/cmd/api/internal/handler/category"
+	file "server/app/system/cmd/api/internal/handler/file"
 	menu "server/app/system/cmd/api/internal/handler/menu"
+	product "server/app/system/cmd/api/internal/handler/product"
 	role "server/app/system/cmd/api/internal/handler/role"
 	user "server/app/system/cmd/api/internal/handler/user"
 	"server/app/system/cmd/api/internal/svc"
@@ -22,11 +24,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodPost,
 				Path:    "/captcha",
 				Handler: base.CaptchaHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/file/upload",
-				Handler: base.UploadHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
@@ -153,6 +150,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Path:    "/business/find",
 					Handler: business.BusinessFindHandler(serverCtx),
 				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/business/update",
+					Handler: business.BusinessUpdateHandler(serverCtx),
+				},
 			}...,
 		),
 		rest.WithPrefix("/system/v1"),
@@ -196,6 +198,49 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Method:  http.MethodPost,
 					Path:    "/category/delete",
 					Handler: category.CategoryDeleteHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/category/treeList",
+					Handler: category.CategoryTreeListHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/system/v1"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/product/create",
+					Handler: product.ProductCreateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/product/list",
+					Handler: product.ProductListHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/product/delete",
+					Handler: product.ProductDeleteHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/system/v1"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/file/token/:path",
+					Handler: file.FileTokenHandler(serverCtx),
 				},
 			}...,
 		),

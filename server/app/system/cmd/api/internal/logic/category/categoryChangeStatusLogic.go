@@ -24,6 +24,9 @@ func NewCategoryChangeStatusLogic(ctx context.Context, svcCtx *svc.ServiceContex
 	}
 }
 
+// CategoryChangeStatus
+// Author [SliverFlow]
+// @desc  分类修改状态
 func (l *CategoryChangeStatusLogic) CategoryChangeStatus(req *types.CategoryChangeStatusReq) (resp *types.NilReply, err error) {
 	_, err = l.svcCtx.ProductRpc.CategoryChangeStatus(l.ctx, &pb.CategoryChangeStatusReq{
 		CategoryID: req.CategoryID,

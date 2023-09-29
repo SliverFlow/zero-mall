@@ -13,6 +13,7 @@ type (
 		BusinessChangeStatus(ctx context.Context, id string, status int64) (err error)
 		BusinessFind(ctx context.Context, businessId string) (enter *Business, err error)
 		BusinessFindByUUID(ctx context.Context, uuid string) (enter *Business, err error)
+		BusinessUpdate(ctx context.Context, business *Business) (err error)
 	}
 
 	defaultBusinessModel struct {
@@ -86,6 +87,7 @@ func (d *defaultBusinessModel) BusinessFind(ctx context.Context, businessId stri
 	return &b, nil
 }
 
+// BusinessFindByUUID 根据用户 uuid 查询商户信息
 func (d *defaultBusinessModel) BusinessFindByUUID(ctx context.Context, uuid string) (enter *Business, err error) {
 	span, _ := common.Tracer(ctx, "business-find-uuid")
 	defer span.End()
@@ -96,4 +98,19 @@ func (d *defaultBusinessModel) BusinessFindByUUID(ctx context.Context, uuid stri
 	}
 
 	return &b, nil
+}
+
+// BusinessUpdate 更新商户信息
+func (d *defaultBusinessModel) BusinessUpdate(ctx context.Context, business *Business) (err error) {
+	span, _ := common.Tracer(ctx, "business-update")
+	defer span.End()
+
+	bm := make(map[string]any)
+	bm["name"] = business.Name
+	bm["image"] = business.Image
+	bm["status"] = business.Status
+	bm["detail"] = business.Detail
+	bm["score"] = business.Score
+
+	return d.db.Model(&Business{}).Where("business_id = ?", business.BusinessID).Updates(&bm).Error
 }

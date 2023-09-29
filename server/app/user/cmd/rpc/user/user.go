@@ -54,6 +54,7 @@ type (
 		BusinessChangeStatus(ctx context.Context, in *BusinessChangeStatusReq, opts ...grpc.CallOption) (*UserNil, error)
 		BusinessFind(ctx context.Context, in *BusinessIDReq, opts ...grpc.CallOption) (*Business, error)
 		BusinessFindByUUID(ctx context.Context, in *BusinessUUIDReq, opts ...grpc.CallOption) (*Business, error)
+		BusinessUpdate(ctx context.Context, in *Business, opts ...grpc.CallOption) (*UserNil, error)
 	}
 
 	defaultUser struct {
@@ -147,4 +148,9 @@ func (m *defaultUser) BusinessFind(ctx context.Context, in *BusinessIDReq, opts 
 func (m *defaultUser) BusinessFindByUUID(ctx context.Context, in *BusinessUUIDReq, opts ...grpc.CallOption) (*Business, error) {
 	client := pb.NewUserClient(m.cli.Conn())
 	return client.BusinessFindByUUID(ctx, in, opts...)
+}
+
+func (m *defaultUser) BusinessUpdate(ctx context.Context, in *Business, opts ...grpc.CallOption) (*UserNil, error) {
+	client := pb.NewUserClient(m.cli.Conn())
+	return client.BusinessUpdate(ctx, in, opts...)
 }

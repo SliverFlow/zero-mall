@@ -24,3 +24,12 @@ export const businessFindApi = () => {
     method: 'post'
   })
 }
+
+// 更新商户信息
+export const businessUpdateApi = (data) => {
+  return service({
+    url: '/system/v1/business/update',
+    method: 'post',
+    data: data
+  })
+}

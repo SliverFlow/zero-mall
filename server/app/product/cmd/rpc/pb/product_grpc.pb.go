@@ -22,24 +22,26 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ProductClient interface {
-	// 所有的分类列表
+	// @desc 所有的分类列表
 	CategoryListAll(ctx context.Context, in *ProductNil, opts ...grpc.CallOption) (*CategoryListAllReply, error)
-	// 分类创建
+	// @desc 分类创建
 	CategoryCreate(ctx context.Context, in *CategoryCreateReq, opts ...grpc.CallOption) (*ProductNil, error)
-	// 修改分类状态
+	// @desc 修改分类状态
 	CategoryChangeStatus(ctx context.Context, in *CategoryChangeStatusReq, opts ...grpc.CallOption) (*ProductNil, error)
-	// 根据 分类 id 查询分类
+	// @desc 根据 分类 id 查询分类
 	CategoryFind(ctx context.Context, in *CategoryIDReq, opts ...grpc.CallOption) (*Category, error)
-	// 更新分类
+	// @desc 更新分类
 	CategoryUpdate(ctx context.Context, in *CategoryUpdateReq, opts ...grpc.CallOption) (*ProductNil, error)
-	// 批量删除分类
+	// @desc 批量删除分类
 	CategoryBatchDelete(ctx context.Context, in *CategoryIDSReq, opts ...grpc.CallOption) (*ProductNil, error)
-	// 分局父分类 id 查询子分类 id 列表
+	// @desc 分局父分类 id 查询子分类 id 列表
 	CategoryFindChildrenID(ctx context.Context, in *CategoryIDReq, opts ...grpc.CallOption) (*CategoryIDSReply, error)
-	// @desc  单个删除分类
+	// @desc 单个删除分类
 	CategoryDelete(ctx context.Context, in *CategoryIDReq, opts ...grpc.CallOption) (*ProductNil, error)
 	// 商品列表 分页
-	ProductList(ctx context.Context, in *ProductNil, opts ...grpc.CallOption) (*ProductNil, error)
+	ProductList(ctx context.Context, in *ProductListReq, opts ...grpc.CallOption) (*ProductListReply, error)
+	ProductCreate(ctx context.Context, in *ProductCreateReq, opts ...grpc.CallOption) (*ProductNil, error)
+	ProductDelete(ctx context.Context, in *ProductDeleteReq, opts ...grpc.CallOption) (*ProductNil, error)
 }
 
 type productClient struct {
@@ -122,9 +124,27 @@ func (c *productClient) CategoryDelete(ctx context.Context, in *CategoryIDReq, o
 	return out, nil
 }
 
-func (c *productClient) ProductList(ctx context.Context, in *ProductNil, opts ...grpc.CallOption) (*ProductNil, error) {
-	out := new(ProductNil)
+func (c *productClient) ProductList(ctx context.Context, in *ProductListReq, opts ...grpc.CallOption) (*ProductListReply, error) {
+	out := new(ProductListReply)
 	err := c.cc.Invoke(ctx, "/pb.product/productList", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productClient) ProductCreate(ctx context.Context, in *ProductCreateReq, opts ...grpc.CallOption) (*ProductNil, error) {
+	out := new(ProductNil)
+	err := c.cc.Invoke(ctx, "/pb.product/productCreate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productClient) ProductDelete(ctx context.Context, in *ProductDeleteReq, opts ...grpc.CallOption) (*ProductNil, error) {
+	out := new(ProductNil)
+	err := c.cc.Invoke(ctx, "/pb.product/productDelete", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -135,24 +155,26 @@ func (c *productClient) ProductList(ctx context.Context, in *ProductNil, opts ..
 // All implementations must embed UnimplementedProductServer
 // for forward compatibility
 type ProductServer interface {
-	// 所有的分类列表
+	// @desc 所有的分类列表
 	CategoryListAll(context.Context, *ProductNil) (*CategoryListAllReply, error)
-	// 分类创建
+	// @desc 分类创建
 	CategoryCreate(context.Context, *CategoryCreateReq) (*ProductNil, error)
-	// 修改分类状态
+	// @desc 修改分类状态
 	CategoryChangeStatus(context.Context, *CategoryChangeStatusReq) (*ProductNil, error)
-	// 根据 分类 id 查询分类
+	// @desc 根据 分类 id 查询分类
 	CategoryFind(context.Context, *CategoryIDReq) (*Category, error)
-	// 更新分类
+	// @desc 更新分类
 	CategoryUpdate(context.Context, *CategoryUpdateReq) (*ProductNil, error)
-	// 批量删除分类
+	// @desc 批量删除分类
 	CategoryBatchDelete(context.Context, *CategoryIDSReq) (*ProductNil, error)
-	// 分局父分类 id 查询子分类 id 列表
+	// @desc 分局父分类 id 查询子分类 id 列表
 	CategoryFindChildrenID(context.Context, *CategoryIDReq) (*CategoryIDSReply, error)
-	// @desc  单个删除分类
+	// @desc 单个删除分类
 	CategoryDelete(context.Context, *CategoryIDReq) (*ProductNil, error)
 	// 商品列表 分页
-	ProductList(context.Context, *ProductNil) (*ProductNil, error)
+	ProductList(context.Context, *ProductListReq) (*ProductListReply, error)
+	ProductCreate(context.Context, *ProductCreateReq) (*ProductNil, error)
+	ProductDelete(context.Context, *ProductDeleteReq) (*ProductNil, error)
 	mustEmbedUnimplementedProductServer()
 }
 
@@ -184,8 +206,14 @@ func (UnimplementedProductServer) CategoryFindChildrenID(context.Context, *Categ
 func (UnimplementedProductServer) CategoryDelete(context.Context, *CategoryIDReq) (*ProductNil, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CategoryDelete not implemented")
 }
-func (UnimplementedProductServer) ProductList(context.Context, *ProductNil) (*ProductNil, error) {
+func (UnimplementedProductServer) ProductList(context.Context, *ProductListReq) (*ProductListReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProductList not implemented")
+}
+func (UnimplementedProductServer) ProductCreate(context.Context, *ProductCreateReq) (*ProductNil, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ProductCreate not implemented")
+}
+func (UnimplementedProductServer) ProductDelete(context.Context, *ProductDeleteReq) (*ProductNil, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ProductDelete not implemented")
 }
 func (UnimplementedProductServer) mustEmbedUnimplementedProductServer() {}
 
@@ -345,7 +373,7 @@ func _Product_CategoryDelete_Handler(srv interface{}, ctx context.Context, dec f
 }
 
 func _Product_ProductList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ProductNil)
+	in := new(ProductListReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -357,7 +385,43 @@ func _Product_ProductList_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: "/pb.product/productList",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProductServer).ProductList(ctx, req.(*ProductNil))
+		return srv.(ProductServer).ProductList(ctx, req.(*ProductListReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Product_ProductCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProductCreateReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServer).ProductCreate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.product/productCreate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServer).ProductCreate(ctx, req.(*ProductCreateReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Product_ProductDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProductDeleteReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServer).ProductDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.product/productDelete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServer).ProductDelete(ctx, req.(*ProductDeleteReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -404,6 +468,14 @@ var Product_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "productList",
 			Handler:    _Product_ProductList_Handler,
+		},
+		{
+			MethodName: "productCreate",
+			Handler:    _Product_ProductCreate_Handler,
+		},
+		{
+			MethodName: "productDelete",
+			Handler:    _Product_ProductDelete_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

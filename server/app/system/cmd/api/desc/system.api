@@ -13,6 +13,8 @@ import "api/menu.api"
 import "api/user.api"
 import "api/business.api"
 import "api/category.api"
+import "api/product.api"
+import "api/file.api"
 
 // 公共部分 login captcha file
 @server(
@@ -22,10 +24,6 @@ import "api/category.api"
 service system {
 	@handler captcha
 	post /captcha (NilReq) returns (CaptchaReply)
-	
-	@handler upload
-	post /file/upload returns (FileUploadReply)
-	
 	@handler login
 	post /login (LoginReq) returns (LoginReply)
 }
@@ -99,6 +97,8 @@ service system {
 	post /business/changeStatus (BusinessChangeStatusReq) returns (NilReply)
 	@handler businessFind
 	post /business/find (NilReq) returns (Business)
+	@handler businessUpdate
+	post /business/update (BusinessUpdateReq) returns (NilReply)
 }
 
 // 分类部分
@@ -122,4 +122,32 @@ service system {
 	post /category/batchDelete (CategoryBatchDelteReq) returns (NilReply);
 	@handler categoryDelete
 	post /category/delete (CategoryIDReq) returns (NilReply);
+	@handler categoryTreeList
+	post /category/treeList (NilReq) returns (CategoryListAllReply)
+}
+
+// 商品部分
+@server (
+	group: product
+	prefix: system/v1
+	middleware : Auth
+)
+service system {
+	@handler productCreate
+	post /product/create (ProductCreateReq) returns (NilReply);
+	@handler productList
+	post /product/list (ProductListReq) returns (ProductListReply);
+	@handler productDelete
+	post /product/delete (ProductDeleteReq) returns (NilReply);
+}
+
+// 文件部分
+@server (
+	group: file
+	prefix: system/v1
+	middleware : Auth
+)
+service system {
+	@handler fileToken
+	post /file/token/:path (FileTokenReq) returns (FileTokenReply);
 }

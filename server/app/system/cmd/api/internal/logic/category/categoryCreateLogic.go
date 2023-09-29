@@ -24,6 +24,9 @@ func NewCategoryCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ca
 	}
 }
 
+// CategoryCreate
+// Author [SliverFlow]
+// @desc   分类创建
 func (l *CategoryCreateLogic) CategoryCreate(req *types.CategoryCreateReq) (resp *types.NilReply, err error) {
 
 	_, err = l.svcCtx.ProductRpc.CategoryCreate(l.ctx, &pb.CategoryCreateReq{

@@ -33,3 +33,12 @@ type BusinessChangeStatusReq {
 type BusinessIDReq {
     BusinessID string `json:"businessId"`
 }
+type BusinessUpdateReq {
+    BusinessID string `json:"businessId"`
+    Name string `json:"name"`
+    UUID string `json:"uuid"`
+    Detail string `json:"detail"`
+    Score int64 `json:"score"`
+    Image []string `json:"image"`
+    Status int64 `json:"status"`
+}

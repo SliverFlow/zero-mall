@@ -40,6 +40,7 @@ type UserClient interface {
 	BusinessChangeStatus(ctx context.Context, in *BusinessChangeStatusReq, opts ...grpc.CallOption) (*UserNil, error)
 	BusinessFind(ctx context.Context, in *BusinessIDReq, opts ...grpc.CallOption) (*Business, error)
 	BusinessFindByUUID(ctx context.Context, in *BusinessUUIDReq, opts ...grpc.CallOption) (*Business, error)
+	BusinessUpdate(ctx context.Context, in *Business, opts ...grpc.CallOption) (*UserNil, error)
 }
 
 type userClient struct {
@@ -194,6 +195,15 @@ func (c *userClient) BusinessFindByUUID(ctx context.Context, in *BusinessUUIDReq
 	return out, nil
 }
 
+func (c *userClient) BusinessUpdate(ctx context.Context, in *Business, opts ...grpc.CallOption) (*UserNil, error) {
+	out := new(UserNil)
+	err := c.cc.Invoke(ctx, "/pb.user/businessUpdate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -216,6 +226,7 @@ type UserServer interface {
 	BusinessChangeStatus(context.Context, *BusinessChangeStatusReq) (*UserNil, error)
 	BusinessFind(context.Context, *BusinessIDReq) (*Business, error)
 	BusinessFindByUUID(context.Context, *BusinessUUIDReq) (*Business, error)
+	BusinessUpdate(context.Context, *Business) (*UserNil, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -270,6 +281,9 @@ func (UnimplementedUserServer) BusinessFind(context.Context, *BusinessIDReq) (*B
 }
 func (UnimplementedUserServer) BusinessFindByUUID(context.Context, *BusinessUUIDReq) (*Business, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BusinessFindByUUID not implemented")
+}
+func (UnimplementedUserServer) BusinessUpdate(context.Context, *Business) (*UserNil, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BusinessUpdate not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -572,6 +586,24 @@ func _User_BusinessFindByUUID_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_BusinessUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Business)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).BusinessUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.user/businessUpdate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).BusinessUpdate(ctx, req.(*Business))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -642,6 +674,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "businessFindByUUID",
 			Handler:    _User_BusinessFindByUUID_Handler,
+		},
+		{
+			MethodName: "businessUpdate",
+			Handler:    _User_BusinessUpdate_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

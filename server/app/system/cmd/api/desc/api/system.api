@@ -29,12 +29,12 @@ type (
 )
 
 
-type FileUploadReply {
-    FileStoreName string `json:"fileStoreName"`
-    Name string `json:"name"`
-    Url string `json:"url"`
-    FileSize int64 `json:"fileSize"`
-}
+//type FileUploadReply {
+//    FileStoreName string `json:"fileStoreName"`
+//    Name string `json:"name"`
+//    Url string `json:"url"`
+//    FileSize int64 `json:"fileSize"`
+//}
 
 type CaptchaReply {
     CaptchaId string `json:"captchaId"`
