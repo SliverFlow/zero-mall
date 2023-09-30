@@ -1,12 +1,24 @@
 <template>
   <div class="gva-table-box">
-    <div class="gva-btn-list">
+    <div class="gva-btn-list" style="display: flex;justify-content: space-between;margin-bottom: 20px">
       <el-button
         type="primary"
         icon="plus"
         @click="addProduct"
       >添加商品
       </el-button>
+      <div >
+        <el-input
+          placeholder="请输入商品名"
+          v-model="keyWord" style="width: 183px;margin-right: 16px"
+                  suffix-icon="MilkTea"/>
+        <el-button
+          type="primary"
+          icon="search"
+          @click="loadTableData"
+        >搜索
+        </el-button>
+      </div>
     </div>
     <el-table
       :data="tableData"
@@ -86,7 +98,7 @@
             type="primary"
             link
             icon="edit"
-            @click="findBusinessUser(scope.row.uuid)"
+            @click="() => editProduct(scope.row.productId)"
           >编辑
           </el-button>
           <el-button
@@ -94,7 +106,7 @@
             link
             icon="pointer"
             v-if="scope.row.status === 0 || scope.row.status === 2"
-            @click="changeStatus(scope.row.businessId,2)"
+            @click="changeStatus(scope.row.productId,1)"
           >上架
           </el-button>
           <el-button
@@ -102,7 +114,7 @@
             link
             icon="bottom"
             v-if=" scope.row.status === 1"
-            @click="changeStatus(scope.row.businessId,0)"
+            @click="changeStatus(scope.row.productId,2)"
           >下架
           </el-button>
           <el-button
@@ -127,18 +139,16 @@
       />
     </div>
 
-    <product-form ref="productForm"/>
+    <product-form ref="productForm" @success="loadTableData"/>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import { productDeleteApi, productListApi } from '@/api/system/product.js'
+import { productChangeStatusApi, productDeleteApi, productListApi } from '@/api/system/product.js'
 import { formatTimestamp } from '@/utils/date.js'
 import { ElMessage } from 'element-plus'
 import ProductForm from '@/view/business/product/component/productForm.vue'
-import { getOssClient } from '@/utils/oss/oss.js'
-import { getUUID } from '@/utils/uuid.js'
 
 // 分页相关
 const page = ref(1)
@@ -152,8 +162,8 @@ const productForm = ref(null)
 
 
 // 加载表格数据
-const loadTableData = async () => {
-  const res = await productListApi({page: page.value,pageSize: pageSize.value,keyWord: keyWord.value})
+const loadTableData = async() => {
+  const res = await productListApi({ page: page.value, pageSize: pageSize.value, keyWord: keyWord.value })
   if (res.code === 0) {
     tableData.value = res.data.list
     total.value = res.data.total
@@ -161,25 +171,46 @@ const loadTableData = async () => {
 }
 loadTableData()
 // 页数发生变化
-const handleCurrentChange = async (val) => {
+const handleCurrentChange = async(val) => {
   page.value = val
   await loadTableData()
 }
 // 页面大小发生变化
-const handleSizeChange = async (val) => {
+const handleSizeChange = async(val) => {
   pageSize.value = val
-  await  loadTableData()
+  await loadTableData()
 }
 // 添加商品
 const addProduct = () => {
-  productForm.value.openDialog()
+  productForm.value.isEdit = false
+  productForm.value.openDialog('添加商品')
 }
+
+// 编辑商品
+const editProduct = (id) => {
+  productForm.value.isEdit = true
+  productForm.value.setProductID(id)
+  productForm.value.openDialog('编辑商品信息')
+}
+
 // 删除商品
-const deleteProduct = async (id) => {
-  const res = await productDeleteApi({productId: id})
+const deleteProduct = async(id) => {
+  const res = await productDeleteApi({ productId: id })
   if (res.code === 0) {
     ElMessage({
       message: '删除商品成功',
+      type: 'success',
+    })
+    await loadTableData()
+  }
+}
+
+// 修改商户状态
+const changeStatus = async (id,status) => {
+  const res = await productChangeStatusApi({ productId: id, status: status })
+  if (res.code === 0) {
+    ElMessage({
+      message: '操作成功',
       type: 'success',
     })
     await loadTableData()

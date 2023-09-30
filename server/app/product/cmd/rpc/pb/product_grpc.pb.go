@@ -42,6 +42,11 @@ type ProductClient interface {
 	ProductList(ctx context.Context, in *ProductListReq, opts ...grpc.CallOption) (*ProductListReply, error)
 	ProductCreate(ctx context.Context, in *ProductCreateReq, opts ...grpc.CallOption) (*ProductNil, error)
 	ProductDelete(ctx context.Context, in *ProductDeleteReq, opts ...grpc.CallOption) (*ProductNil, error)
+	// @desc 下架某商家的所有商品
+	ProductStaging(ctx context.Context, in *ProductStagingReq, opts ...grpc.CallOption) (*ProductNil, error)
+	ProductChangeStatus(ctx context.Context, in *ProductChangeStatusReq, opts ...grpc.CallOption) (*ProductNil, error)
+	ProductFind(ctx context.Context, in *ProductFindReq, opts ...grpc.CallOption) (*ProductReply, error)
+	ProductUpdate(ctx context.Context, in *ProductUpdateReq, opts ...grpc.CallOption) (*ProductNil, error)
 }
 
 type productClient struct {
@@ -151,6 +156,42 @@ func (c *productClient) ProductDelete(ctx context.Context, in *ProductDeleteReq,
 	return out, nil
 }
 
+func (c *productClient) ProductStaging(ctx context.Context, in *ProductStagingReq, opts ...grpc.CallOption) (*ProductNil, error) {
+	out := new(ProductNil)
+	err := c.cc.Invoke(ctx, "/pb.product/ProductStaging", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productClient) ProductChangeStatus(ctx context.Context, in *ProductChangeStatusReq, opts ...grpc.CallOption) (*ProductNil, error) {
+	out := new(ProductNil)
+	err := c.cc.Invoke(ctx, "/pb.product/ProductChangeStatus", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productClient) ProductFind(ctx context.Context, in *ProductFindReq, opts ...grpc.CallOption) (*ProductReply, error) {
+	out := new(ProductReply)
+	err := c.cc.Invoke(ctx, "/pb.product/ProductFind", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productClient) ProductUpdate(ctx context.Context, in *ProductUpdateReq, opts ...grpc.CallOption) (*ProductNil, error) {
+	out := new(ProductNil)
+	err := c.cc.Invoke(ctx, "/pb.product/ProductUpdate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProductServer is the server API for Product service.
 // All implementations must embed UnimplementedProductServer
 // for forward compatibility
@@ -175,6 +216,11 @@ type ProductServer interface {
 	ProductList(context.Context, *ProductListReq) (*ProductListReply, error)
 	ProductCreate(context.Context, *ProductCreateReq) (*ProductNil, error)
 	ProductDelete(context.Context, *ProductDeleteReq) (*ProductNil, error)
+	// @desc 下架某商家的所有商品
+	ProductStaging(context.Context, *ProductStagingReq) (*ProductNil, error)
+	ProductChangeStatus(context.Context, *ProductChangeStatusReq) (*ProductNil, error)
+	ProductFind(context.Context, *ProductFindReq) (*ProductReply, error)
+	ProductUpdate(context.Context, *ProductUpdateReq) (*ProductNil, error)
 	mustEmbedUnimplementedProductServer()
 }
 
@@ -214,6 +260,18 @@ func (UnimplementedProductServer) ProductCreate(context.Context, *ProductCreateR
 }
 func (UnimplementedProductServer) ProductDelete(context.Context, *ProductDeleteReq) (*ProductNil, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProductDelete not implemented")
+}
+func (UnimplementedProductServer) ProductStaging(context.Context, *ProductStagingReq) (*ProductNil, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ProductStaging not implemented")
+}
+func (UnimplementedProductServer) ProductChangeStatus(context.Context, *ProductChangeStatusReq) (*ProductNil, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ProductChangeStatus not implemented")
+}
+func (UnimplementedProductServer) ProductFind(context.Context, *ProductFindReq) (*ProductReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ProductFind not implemented")
+}
+func (UnimplementedProductServer) ProductUpdate(context.Context, *ProductUpdateReq) (*ProductNil, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ProductUpdate not implemented")
 }
 func (UnimplementedProductServer) mustEmbedUnimplementedProductServer() {}
 
@@ -426,6 +484,78 @@ func _Product_ProductDelete_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Product_ProductStaging_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProductStagingReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServer).ProductStaging(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.product/ProductStaging",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServer).ProductStaging(ctx, req.(*ProductStagingReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Product_ProductChangeStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProductChangeStatusReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServer).ProductChangeStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.product/ProductChangeStatus",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServer).ProductChangeStatus(ctx, req.(*ProductChangeStatusReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Product_ProductFind_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProductFindReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServer).ProductFind(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.product/ProductFind",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServer).ProductFind(ctx, req.(*ProductFindReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Product_ProductUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProductUpdateReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServer).ProductUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.product/ProductUpdate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServer).ProductUpdate(ctx, req.(*ProductUpdateReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Product_ServiceDesc is the grpc.ServiceDesc for Product service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -476,6 +606,22 @@ var Product_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "productDelete",
 			Handler:    _Product_ProductDelete_Handler,
+		},
+		{
+			MethodName: "ProductStaging",
+			Handler:    _Product_ProductStaging_Handler,
+		},
+		{
+			MethodName: "ProductChangeStatus",
+			Handler:    _Product_ProductChangeStatus_Handler,
+		},
+		{
+			MethodName: "ProductFind",
+			Handler:    _Product_ProductFind_Handler,
+		},
+		{
+			MethodName: "ProductUpdate",
+			Handler:    _Product_ProductUpdate_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

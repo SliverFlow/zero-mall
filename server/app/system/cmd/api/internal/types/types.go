@@ -238,7 +238,7 @@ type Product struct {
 	BusinessID string     `json:"businessId"`
 	Name       string     `json:"name"`
 	Subtitle   string     `json:"subtitle"`
-	Image      string     `json:"image"`
+	Image      []string   `json:"image"`
 	Detail     string     `json:"detail"`
 	Price      float64    `json:"price"`
 	Stock      int64      `json:"stock"`
@@ -274,6 +274,28 @@ type ProductListReply struct {
 
 type ProductDeleteReq struct {
 	ProductID string `json:"productId"`
+}
+
+type ProductChangeStatusReq struct {
+	ProductID string `json:"productId"`
+	Status    int64  `json:"status"`
+}
+
+type ProductFindReq struct {
+	ProductID string `json:"productId"`
+}
+
+type ProductUpdateReq struct {
+	ProductID  string     `json:"productId"`
+	BusinessID string     `json:"businessId"`
+	Name       string     `json:"name"`
+	Subtitle   string     `json:"subtitle"`
+	Image      []string   `json:"image"`
+	Detail     string     `json:"detail"`
+	Price      float64    `json:"price"`
+	Stock      int64      `json:"stock"`
+	Status     int64      `json:"status"`
+	Categories []Category `json:"categories"`
 }
 
 type FileTokenReply struct {

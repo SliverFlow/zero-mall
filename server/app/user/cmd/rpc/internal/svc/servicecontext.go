@@ -2,8 +2,11 @@ package svc
 
 import (
 	"github.com/zeromicro/go-zero/core/logx"
+	"github.com/zeromicro/go-zero/zrpc"
 	"gorm.io/gorm"
 	"os"
+	pruductpb "server/app/product/cmd/rpc/pb"
+	"server/app/product/cmd/rpc/product"
 	"server/app/user/cmd/rpc/internal/config"
 	"server/app/user/model"
 	"server/common"
@@ -12,7 +15,8 @@ import (
 type ServiceContext struct {
 	Config config.Config
 
-	UserModel model.UserModel
+	UserModel  model.UserModel
+	ProductRpc product.Product
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -25,8 +29,9 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	autoMigrate(db)
 
 	return &ServiceContext{
-		Config:    c,
-		UserModel: model.NewUserModel(db),
+		Config:     c,
+		UserModel:  model.NewUserModel(db),
+		ProductRpc: newProductRpc(c.ProductRpc),
 	}
 }
 
@@ -41,4 +46,15 @@ func autoMigrate(db *gorm.DB) {
 		os.Exit(0)
 	}
 	logx.Info("[DATABASE AutoMigrate SUCCESS]")
+}
+
+// 弱依赖 product rpc
+func newProductRpc(c zrpc.RpcClientConf) pruductpb.ProductClient {
+	client, err := zrpc.NewClient(c)
+	if err != nil {
+		logx.Errorf("[RPC CONNECTION ERROR] product rpc client conn err: %v\n ", err)
+		return nil
+	}
+	logx.Info("[RPC CONNECTION SUCCESS ] product rpc connection success : %v\n")
+	return product.NewProduct(client)
 }

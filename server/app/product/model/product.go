@@ -2,6 +2,7 @@ package model
 
 import (
 	"context"
+	"fmt"
 	"gorm.io/gorm"
 	"server/common"
 )
@@ -13,6 +14,9 @@ type (
 		ProductList(ctx context.Context, page *common.PageInfo) (enter *[]Product, total int64, err error)
 		ProductFind(ctx context.Context, productId string) (enter *Product, err error)
 		ProductUpdate(ctx context.Context, product *Product) (err error)
+
+		ProductStagingByBusinessID(ctx context.Context, businessId string) (err error)
+		ProductChangeStatus(ctx context.Context, productId string, status int64) (err error)
 	}
 
 	defaultProductModel struct {
@@ -69,6 +73,14 @@ func (d *defaultProductModel) ProductDelete(ctx context.Context, ids []string) (
 	span, _ := d.tracer(ctx, "product-delete")
 	defer span.End()
 
+	var p Product
+	// 更新关系
+	err = tx.Model(&Product{}).Preload("Categories").Where("product_id = ?", ids[0]).First(&p).Error
+	err = tx.Model(&p).Association("Categories").Delete(p.Categories)
+	if err != nil {
+		return err
+	}
+
 	return tx.Where("product_id in ?", ids).Delete(&Product{}).Error
 }
 
@@ -100,7 +112,7 @@ func (d *defaultProductModel) ProductFind(ctx context.Context, productId string)
 	tx := d.db.WithContext(ctx)
 
 	var c Product
-	if err = tx.Model(&Product{}).Where("product_id = ?", productId).First(&c).Error; err != nil {
+	if err = tx.Model(&Product{}).Preload("Categories").Where("product_id = ?", productId).First(&c).Error; err != nil {
 		return nil, err
 	}
 	return &c, nil
@@ -114,14 +126,37 @@ func (d *defaultProductModel) ProductUpdate(ctx context.Context, product *Produc
 	span, _ := d.tracer(ctx, "product-update")
 	defer span.End()
 
-	cm := make(map[string]any)
-	cm["name"] = product.Name
-	cm["subtitle"] = product.Subtitle
-	cm["price"] = product.Price
-	cm["stock"] = product.Stock
-	cm["image"] = product.Image
-	cm["detail"] = product.Detail
-	cm["status"] = product.Status
+	fmt.Println(product.Categories)
 
-	return tx.Model(&Product{}).Where("product_id = ?", product.ProductID).Updates(cm).Error
+	var p Product
+	// 更新关系
+	err = tx.Model(&Product{}).Preload("Categories").Where("product_id = ?", product.ProductID).First(&p).Error
+	err = tx.Model(&p).Association("Categories").Replace(product.Categories)
+	if err != nil {
+		return err
+	}
+
+	return tx.Model(&Product{}).Where("product_id = ?", product.ProductID).Updates(product).Error
+}
+
+// ProductStagingByBusinessID
+// Author [SliverFlow]
+// @desc 根据商户 id 下架所有商品
+func (d *defaultProductModel) ProductStagingByBusinessID(ctx context.Context, businessId string) (err error) {
+	tx := d.db.WithContext(ctx)
+	span, _ := d.tracer(ctx, "product-update-status-staging")
+	defer span.End()
+
+	return tx.Model(&Product{}).Where("business_id = ?", businessId).Update("status", 0).Error
+}
+
+// ProductChangeStatus
+// Author [SliverFlow]
+// @desc 更新商品状态
+func (d *defaultProductModel) ProductChangeStatus(ctx context.Context, productId string, status int64) (err error) {
+	tx := d.db.WithContext(ctx)
+	span, _ := d.tracer(ctx, "product-update-status")
+	defer span.End()
+
+	return tx.Model(&Product{}).Where("product_id = ?", productId).Update("status", status).Error
 }

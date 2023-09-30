@@ -2,6 +2,7 @@ package product
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/jinzhu/copier"
 	"server/app/product/cmd/rpc/pb"
 
@@ -42,6 +43,7 @@ func (l *ProductListLogic) ProductList(req *types.ProductListReq) (resp *types.P
 	for _, v := range pbreply.List {
 		var p types.Product
 		_ = copier.Copy(&p, v)
+		_ = json.Unmarshal([]byte(v.Image), &p.Image)
 		if v.Categories != nil { // 组装分类
 			var list []types.Category
 			for _, category := range v.Categories {

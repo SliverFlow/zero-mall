@@ -11,4 +11,6 @@ type Config struct {
 
 	Mysql      xconfig.Mysql
 	CacheRedis cache.CacheConf
+
+	ProductRpc zrpc.RpcClientConf
 }

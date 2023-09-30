@@ -228,6 +228,21 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Path:    "/product/delete",
 					Handler: product.ProductDeleteHandler(serverCtx),
 				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/product/changeStatus",
+					Handler: product.ProductChangeStatusHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/product/find",
+					Handler: product.ProductFindHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/product/update",
+					Handler: product.ProductUpdateHandler(serverCtx),
+				},
 			}...,
 		),
 		rest.WithPrefix("/system/v1"),

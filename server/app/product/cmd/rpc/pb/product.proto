@@ -55,8 +55,8 @@ message CategoryIDSReply {
 // ------------------ 商品相关 -------------------------
 message ProductReply {
   string ProductID = 1;
+  string BusinessID = 3;
   string Name = 2;
-  string CategoryID = 3;
   string Subtitle = 4;
   string Image = 5;
   string Detail = 6;
@@ -92,6 +92,28 @@ message ProductListReply {
 message ProductDeleteReq {
   repeated string IDs = 1;
 }
+message ProductStagingReq {
+  string BusinessID = 1;
+}
+message ProductChangeStatusReq {
+  string ProductID = 1;
+  int64 Status = 2;
+}
+message ProductFindReq {
+  string ProductID = 1;
+}
+message ProductUpdateReq {
+  string ProductID = 1;
+  string BusinessID = 3;
+  string Name = 2;
+  string Subtitle = 4;
+  string Image = 5;
+  string Detail = 6;
+  float Price = 7;
+  int64 Stock = 8;
+  int64 Status = 9;
+  repeated Category Categories = 10;
+}
 
 service product {
   // @desc 所有的分类列表
@@ -116,4 +138,9 @@ service product {
   rpc productList (ProductListReq) returns (ProductListReply);
   rpc productCreate (ProductCreateReq) returns (ProductNil);
   rpc productDelete (ProductDeleteReq) returns (ProductNil);
+  // @desc 下架某商家的所有商品
+  rpc ProductStaging (ProductStagingReq)  returns (ProductNil);
+  rpc ProductChangeStatus (ProductChangeStatusReq) returns (ProductNil);
+  rpc ProductFind (ProductFindReq) returns (ProductReply);
+  rpc ProductUpdate (ProductUpdateReq) returns (ProductNil);
 }

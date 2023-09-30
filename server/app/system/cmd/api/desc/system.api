@@ -139,6 +139,12 @@ service system {
 	post /product/list (ProductListReq) returns (ProductListReply);
 	@handler productDelete
 	post /product/delete (ProductDeleteReq) returns (NilReply);
+	@handler productChangeStatus
+	post /product/changeStatus (ProductChangeStatusReq) returns (NilReply);
+	@handler productFind
+	post /product/find (ProductFindReq) returns (Product);
+	@handler productUpdate
+	post /product/update (ProductUpdateReq) returns (NilReply);
 }
 
 // 文件部分

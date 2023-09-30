@@ -85,3 +85,24 @@ func (s *ProductServer) ProductDelete(ctx context.Context, in *pb.ProductDeleteR
 	l := logic.NewProductDeleteLogic(ctx, s.svcCtx)
 	return l.ProductDelete(in)
 }
+
+// @desc 下架某商家的所有商品
+func (s *ProductServer) ProductStaging(ctx context.Context, in *pb.ProductStagingReq) (*pb.ProductNil, error) {
+	l := logic.NewProductStagingLogic(ctx, s.svcCtx)
+	return l.ProductStaging(in)
+}
+
+func (s *ProductServer) ProductChangeStatus(ctx context.Context, in *pb.ProductChangeStatusReq) (*pb.ProductNil, error) {
+	l := logic.NewProductChangeStatusLogic(ctx, s.svcCtx)
+	return l.ProductChangeStatus(in)
+}
+
+func (s *ProductServer) ProductFind(ctx context.Context, in *pb.ProductFindReq) (*pb.ProductReply, error) {
+	l := logic.NewProductFindLogic(ctx, s.svcCtx)
+	return l.ProductFind(in)
+}
+
+func (s *ProductServer) ProductUpdate(ctx context.Context, in *pb.ProductUpdateReq) (*pb.ProductNil, error) {
+	l := logic.NewProductUpdateLogic(ctx, s.svcCtx)
+	return l.ProductUpdate(in)
+}

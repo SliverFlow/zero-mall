@@ -26,6 +26,9 @@ func NewProductListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Produ
 	}
 }
 
+// ProductList
+// Author [SliverFlow]
+// @desc  商品分页列表
 func (l *ProductListLogic) ProductList(in *pb.ProductListReq) (*pb.ProductListReply, error) {
 	list, total, err := l.svcCtx.ProductModel.ProductList(l.ctx, &common.PageInfo{
 		Page:     int(in.GetPage()),

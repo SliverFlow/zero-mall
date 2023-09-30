@@ -16,11 +16,11 @@ Redis:
   Pass: wjh20000905
 
 StsAliOss:
-  AccessKeyId: ""
-  AccessKeySecret: ""
-  Endpoint: ""
+  AccessKeyId: "LTAI5t8ZHhFSdqPpDgPrQZAj"
+  AccessKeySecret: "BK7V5FMrTh2DYrElAf550C8kXVesWJ"
+  Endpoint: "sts.cn-hangzhou.aliyuncs.com"
   Duration: 1500
-  RoleArn: ""
+  RoleArn: "acs:ram::1619301782374409:role/zero-mall-web-role"
   SessionName: "zero_mall_0905"
   Region: "oss-cn-hangzhou"
   Bucket: "zero-mall"

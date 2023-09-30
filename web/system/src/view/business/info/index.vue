@@ -49,18 +49,26 @@
             />
           </el-form-item>
           <el-form-item label="状态：">
-            <el-text v-if="formData.status === 0" type="info">暂存</el-text>
-            <el-text v-if="formData.status === 1" type="success">正常</el-text>
             <el-text v-if="formData.status === 2" type="danger">禁用</el-text>
+            <el-switch
+              v-else
+              v-model="formData.status"
+              :disabled="!isEditDetail"
+              inline-prompt
+              :active-value="1"
+              :inactive-value="0"
+              active-text="正常"
+              inactive-text="暂存"
+            />
           </el-form-item>
           <div style="color: #606266">
-            信息更新事件：
-            <el-text type="success">{{ formatTimestamp(formData.createdAt) }}</el-text>
+            信息更新时间：
+            <el-text type="success">{{ formatTimestamp(formData.updatedAt) }}</el-text>
           </div>
           <div class="btn-list">
             <el-button @click="isEditDetail = true" v-if="!isEditDetail" type="primary" icon="edit">点击修改详情
             </el-button>
-            <el-button @click="enterEditDetail"  v-if="isEditDetail" type="primary" icon="check">确认</el-button>
+            <el-button @click="enterEditDetail" v-if="isEditDetail" type="primary" icon="check">确认</el-button>
             <el-button @click="closeEditDetail" v-if="isEditDetail" icon="close">取消</el-button>
           </div>
         </el-tab-pane>
@@ -71,10 +79,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch, watchEffect } from 'vue'
 import { formatTimestamp } from '@/utils/date.js'
 import { businessFindApi, businessUpdateApi } from '@/api/system/business.js'
 import { ElMessage } from 'element-plus'
+import { Watch } from '@element-plus/icons-vue'
 
 const activeName = ref('business')
 // 是否编辑名称
@@ -98,7 +107,6 @@ const formData = ref({
 const loadFormData = async() => {
   const res = await businessFindApi()
   if (res.code === 0) {
-    console.log(res)
     formData.value = res.data
   }
 }
@@ -116,7 +124,7 @@ const enterBusinessName = async() => {
   }
 }
 // 关闭修改商户信息
-const closeBusinessName = async () => {
+const closeBusinessName = async() => {
   // 数据回调
   await loadFormData()
   isEdit.value = false
@@ -127,7 +135,7 @@ const closeEditDetail = () => {
   isEditDetail.value = false
 }
 // 提交修改详情
-const enterEditDetail = async () => {
+const enterEditDetail = async() => {
   const res = await businessUpdateApi(formData.value)
   if (res.code === 0) {
     ElMessage({
@@ -138,6 +146,18 @@ const enterEditDetail = async () => {
     isEditDetail.value = false
   }
 }
+
+// 监听取消修改状态
+watch(isEdit, async(val, old) => {
+  if (!val) {
+    await loadFormData()
+  }
+})
+watch(isEditDetail, async(val, old) => {
+  if (!val) {
+    await loadFormData()
+  }
+})
 </script>
 
 <style scoped lang="scss">

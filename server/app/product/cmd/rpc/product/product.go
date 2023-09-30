@@ -21,12 +21,16 @@ type (
 	CategoryIDSReq          = pb.CategoryIDSReq
 	CategoryListAllReply    = pb.CategoryListAllReply
 	CategoryUpdateReq       = pb.CategoryUpdateReq
+	ProductChangeStatusReq  = pb.ProductChangeStatusReq
 	ProductCreateReq        = pb.ProductCreateReq
 	ProductDeleteReq        = pb.ProductDeleteReq
+	ProductFindReq          = pb.ProductFindReq
 	ProductListReply        = pb.ProductListReply
 	ProductListReq          = pb.ProductListReq
 	ProductNil              = pb.ProductNil
 	ProductReply            = pb.ProductReply
+	ProductStagingReq       = pb.ProductStagingReq
+	ProductUpdateReq        = pb.ProductUpdateReq
 
 	Product interface {
 		// @desc 所有的分类列表
@@ -49,6 +53,11 @@ type (
 		ProductList(ctx context.Context, in *ProductListReq, opts ...grpc.CallOption) (*ProductListReply, error)
 		ProductCreate(ctx context.Context, in *ProductCreateReq, opts ...grpc.CallOption) (*ProductNil, error)
 		ProductDelete(ctx context.Context, in *ProductDeleteReq, opts ...grpc.CallOption) (*ProductNil, error)
+		// @desc 下架某商家的所有商品
+		ProductStaging(ctx context.Context, in *ProductStagingReq, opts ...grpc.CallOption) (*ProductNil, error)
+		ProductChangeStatus(ctx context.Context, in *ProductChangeStatusReq, opts ...grpc.CallOption) (*ProductNil, error)
+		ProductFind(ctx context.Context, in *ProductFindReq, opts ...grpc.CallOption) (*ProductReply, error)
+		ProductUpdate(ctx context.Context, in *ProductUpdateReq, opts ...grpc.CallOption) (*ProductNil, error)
 	}
 
 	defaultProduct struct {
@@ -124,4 +133,25 @@ func (m *defaultProduct) ProductCreate(ctx context.Context, in *ProductCreateReq
 func (m *defaultProduct) ProductDelete(ctx context.Context, in *ProductDeleteReq, opts ...grpc.CallOption) (*ProductNil, error) {
 	client := pb.NewProductClient(m.cli.Conn())
 	return client.ProductDelete(ctx, in, opts...)
+}
+
+// @desc 下架某商家的所有商品
+func (m *defaultProduct) ProductStaging(ctx context.Context, in *ProductStagingReq, opts ...grpc.CallOption) (*ProductNil, error) {
+	client := pb.NewProductClient(m.cli.Conn())
+	return client.ProductStaging(ctx, in, opts...)
+}
+
+func (m *defaultProduct) ProductChangeStatus(ctx context.Context, in *ProductChangeStatusReq, opts ...grpc.CallOption) (*ProductNil, error) {
+	client := pb.NewProductClient(m.cli.Conn())
+	return client.ProductChangeStatus(ctx, in, opts...)
+}
+
+func (m *defaultProduct) ProductFind(ctx context.Context, in *ProductFindReq, opts ...grpc.CallOption) (*ProductReply, error) {
+	client := pb.NewProductClient(m.cli.Conn())
+	return client.ProductFind(ctx, in, opts...)
+}
+
+func (m *defaultProduct) ProductUpdate(ctx context.Context, in *ProductUpdateReq, opts ...grpc.CallOption) (*ProductNil, error) {
+	client := pb.NewProductClient(m.cli.Conn())
+	return client.ProductUpdate(ctx, in, opts...)
 }
