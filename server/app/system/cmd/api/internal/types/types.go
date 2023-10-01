@@ -238,7 +238,7 @@ type Product struct {
 	BusinessID string     `json:"businessId"`
 	Name       string     `json:"name"`
 	Subtitle   string     `json:"subtitle"`
-	Image      []string   `json:"image"`
+	Image      []Image    `json:"image"`
 	Detail     string     `json:"detail"`
 	Price      float64    `json:"price"`
 	Stock      int64      `json:"stock"`
@@ -251,7 +251,7 @@ type Product struct {
 type ProductCreateReq struct {
 	Name       string     `json:"name"`
 	Subtitle   string     `json:"subtitle"`
-	Image      []string   `json:"image"`
+	Image      []Image    `json:"image"`
 	Detail     string     `json:"detail"`
 	Price      float64    `json:"price"`
 	Stock      int64      `json:"stock"`
@@ -290,12 +290,16 @@ type ProductUpdateReq struct {
 	BusinessID string     `json:"businessId"`
 	Name       string     `json:"name"`
 	Subtitle   string     `json:"subtitle"`
-	Image      []string   `json:"image"`
+	Image      []Image    `json:"image"`
 	Detail     string     `json:"detail"`
 	Price      float64    `json:"price"`
 	Stock      int64      `json:"stock"`
 	Status     int64      `json:"status"`
 	Categories []Category `json:"categories"`
+}
+
+type Image struct {
+	Url string `json:"url"`
 }
 
 type FileTokenReply struct {

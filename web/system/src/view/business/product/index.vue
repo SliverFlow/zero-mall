@@ -29,17 +29,20 @@
       <el-table-column align="left" label="商品编号" min-width="180" prop="productId" fixed="left"/>
       <el-table-column align="left" label="封面" min-width="150" prop="image">
         <template #default="scope">
-          <el-image
-            style="width: 100px; height: 100px;z-index: 100;"
-            :src="scope.row.image[0]"
-            :zoom-rate="1.2"
-            close-on-press-escape
-            preview-teleported
-            lazy
-            :preview-src-list="scope.row.image"
-            :initial-index="4"
-            fit="cover"
-          />
+          <el-carousel :interval="3000" arrow="never" indicator-position="none" style="height: 100px;width: 100px">
+            <el-carousel-item v-for="(v,k) in scope.row.image">
+              <el-image
+                style="width: 100px; height: 100px;z-index: 100;"
+                :zoom-rate="1.2"
+                close-on-press-escape
+                preview-teleported
+                :src="v.url"
+                lazy
+                :initial-index="4"
+                fit="cover"
+              />
+            </el-carousel-item>
+          </el-carousel>
         </template>
       </el-table-column>
       <el-table-column align="left" label="名称" min-width="170" prop="name">
@@ -168,6 +171,7 @@ const loadTableData = async() => {
     tableData.value = res.data.list
     total.value = res.data.total
   }
+  console.log(tableData.value[0].image[0])
 }
 loadTableData()
 // 页数发生变化

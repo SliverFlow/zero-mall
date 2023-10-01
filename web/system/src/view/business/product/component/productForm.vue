@@ -17,23 +17,14 @@
             @change="handleCascaderChange"
           />
         </el-form-item>
-        <el-form-item prop="name" label="图片：" style="width: 100%;" label-width="100px">
-          <template v-for="(v,k) in formData.image">
-            <el-image
-              style="width: 100px; height: 100px;z-index: 100;margin-right: 10px"
-              :src="v"
-              :zoom-rate="1.2"
-              close-on-press-escape
-              preview-teleported
-              lazy
-              fit="cover"
-            />
-          </template>
+        <el-form-item prop="name" label="图片：" label-width="100px">
           <el-upload
-            style="height: 100px;width: 100px"
             list-type="picture-card"
+            v-model:file-list="formData.image"
+            :before-remove="beforeRemove"
+            :before-upload="beforeUpload"
+            :on-success="onSuccess"
             :http-request="uploadFile"
-            :show-file-list="false"
           >
             <el-icon>
               <Plus/>
@@ -50,7 +41,7 @@
         <el-form-item prop="sorted" label="库存：" style="width: 35%;" label-width="100px">
           <el-input-number v-model="formData.stock" :min="1" :max="1000" class="mx-4"/>
         </el-form-item>
-        <el-form-item prop="price" label="价格：" style="width: 35%;" label-width="100px">
+        <el-form-item prop="price" label="价格：" style="width: 50%;" label-width="100px">
           <el-input-number v-model="formData.price" :min="1" :max="1000000" class="mx-4"/>
         </el-form-item>
       </el-form>
@@ -100,12 +91,11 @@ const categoryOptions = ref([])
 const dialogVisible = ref(false)
 
 // 加载
-const loadCategoryOptions = async () => {
+const loadCategoryOptions = async() => {
   // 获取分类列表
   const categoryReq = await categoryTressListApi()
   if (categoryReq.code === 0) {
     categoryOptions.value = categoryReq.data.list
-    console.log(categoryReq.data.list)
   }
 }
 loadCategoryOptions()
@@ -122,7 +112,7 @@ const initFormData = () => {
     stock: 0,
     status: 0,
     categories: [],
-    category: []
+    category: [],
   }
 }
 // 级联选择器发生改变的时候
@@ -154,6 +144,8 @@ const openDialog = async(val) => {
     const res = await productFindApi({ productId: formData.value.productId })
     formData.value = res.data
     formData.value.category = []
+    // formData.value.price = formData.value.price.toFixed(2)
+
     if (res.data.categories && res.data.categories.length > 0) {
       res.data.categories.forEach(i => {
         categoryOptions.value.forEach(v => {
@@ -164,11 +156,9 @@ const openDialog = async(val) => {
         formData.value.category.push(i.ID)
       })
     }
-    console.log(formData.value)
   }
   title.value = val
   dialogVisible.value = true
-
 }
 //  关闭
 const closeDialog = () => {
@@ -178,6 +168,7 @@ const closeDialog = () => {
 const enterDialog = async() => {
   console.log(formData.value)
   // TODO 表单验证
+  console.log(formData.value)
   let res
   if (isEdit.value) {
     // 商品更新
@@ -219,7 +210,7 @@ const uploadFile = async(file) => {
       message: '上传文件成功',
       type: 'success',
     })
-    formData.value.image.push(res.url)
+    formData.value.image.push({ url: res.url })
   } catch (err) {
     ElMessage({
       message: '上传文件失败',
@@ -227,6 +218,31 @@ const uploadFile = async(file) => {
     })
   }
 }
+const beforeRemove = (file, files) => {
+  formData.value.image.forEach(i => {
+    if (i.url === file.url) {
+      formData.value.image.splice(formData.value.image.indexOf(i), 1)
+    }
+  })
+  return false
+}
+const beforeUpload = (file) => {
+  window.URL.revokeObjectURL(file.raw)
+}
+const onSuccess = (res, file, files) => {
+
+}
+
+watch(() => formData.value.image, () => {
+  formData.value.image.forEach(i => {
+    if (i.raw) {
+      formData.value.image.splice(formData.value.image.indexOf(i), 1)
+    }
+  })
+}, {
+  immediate: true,
+  deep: true
+})
 
 watchEffect(async() => {
   // 打开弹出层的时候初始化
@@ -248,10 +264,6 @@ defineExpose({
 </script>
 
 <style scoped lang="scss">
-:deep(.el-upload--picture-card) {
-  width: 100% !important;
-  height: 100% !important;
-}
 
 :deep(.el-textarea__inner) {
   resize: none;

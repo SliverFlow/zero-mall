@@ -1,5 +1,6 @@
 <template>
   <el-upload
+    v-model:file-list="fileList"
     list-type="picture-card"
     :http-request="uploadFile"
     :on-success="uploadSuccess"
@@ -7,17 +8,6 @@
   >
     <el-icon><Plus /></el-icon>
   </el-upload>
-  <template v-for="(v,k) in fileList">
-    <el-image
-      style="width: 100px; height: 100px;z-index: 100;"
-      :src="v"
-      :zoom-rate="1.2"
-      close-on-press-escape
-      preview-teleported
-      lazy
-      fit="cover"
-    />
-  </template>
 </template>
 
 <script setup>

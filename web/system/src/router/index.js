@@ -14,6 +14,11 @@ const routes = [
     component: () => import('@/view/login/index.vue')
   },
   {
+    name: 'Upload',
+    path: '/upload',
+    component: () => import('@/components/upload/upload.vue')
+  },
+  {
     name: 'Index',
     path: '/',
     redirect: '/layout/dashboard',

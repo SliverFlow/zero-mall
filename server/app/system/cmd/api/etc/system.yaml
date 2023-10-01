@@ -23,7 +23,7 @@ StsAliOss:
   RoleArn: "acs:ram::1619301782374409:role/zero-mall-web-role"
   SessionName: "zero_mall_0905"
   Region: "oss-cn-hangzhou"
-  Bucket: "zero-mall"
+  Bucket: "zjxzero"
 
 Captcha:
   KeyLong: 6
