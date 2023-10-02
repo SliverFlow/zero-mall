@@ -8,7 +8,6 @@
         close-on-press-escape
         preview-teleported
         lazy
-        preview-src-list=""
         :initial-index="4"
         fit="cover"
       />

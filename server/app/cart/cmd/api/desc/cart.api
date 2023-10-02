@@ -1,0 +1,22 @@
+syntax = "v1"
+
+info(
+	title: "购物车 api file"
+	desc: "购物车 api"
+	author: "SliverFlow"
+	email: "202606540@qq.com"
+	version: "v1.0"
+)
+
+import "api/cart.api"
+
+// cart 鉴权的
+@server(
+	group : private
+	prefix : v1
+	middleware : Auth
+)
+service cart {
+	@handler cartFind
+	post /cart/find (Nil) returns (Nil);
+}

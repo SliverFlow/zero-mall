@@ -22,7 +22,7 @@
     </div>
     <el-table
       :data="tableData"
-      style="z-index: 0"
+      style="z-index: 0;height: calc(100vh - 284px)"
       row-key="ID"
       :tree-props="{'children': 'children'}"
     >
@@ -171,7 +171,6 @@ const loadTableData = async() => {
     tableData.value = res.data.list
     total.value = res.data.total
   }
-  console.log(tableData.value[0].image[0])
 }
 loadTableData()
 // 页数发生变化

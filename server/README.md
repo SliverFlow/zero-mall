@@ -29,3 +29,21 @@ cmd
   rpc # 提供 rpc 服务
 model # orm 模型
 ```
+端口映射
+```shell
+system:
+  api: 2220
+  rpc: 2221
+order:
+  api: 3330
+  rpc: 3331
+cart:
+  api: 4440
+  rpc: 4441
+user:
+  api: 5550
+  rpc: 5551
+product:
+  api: 6660
+  rpc: 6661  
+```
