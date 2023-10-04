@@ -1,64 +1,30 @@
 <template>
   <div class="content_container">
-    <div class="title">
-      <p>首页</p>
-      <span> > </span>
-      <p>全部商品</p>
-    </div>
+    <div class="title" />
     <!--分类显示-->
     <div class="category_container">
       <div class="category_content">
         <el-collapse accordion>
-          <el-collapse-item name="active">
+          <el-collapse-item name="active" class="title-info">
             <template #title>
-              <div class="category_item">
-                <p class="main">主分类</p>
-                <a href="" class="secondary">次分类</a>
-                <a href="" class="secondary">次分类</a>
-                <a href="" class="secondary">次分类</a>
-                <a href="" class="secondary">次分类</a>
-                <a href="" class="secondary">次分类</a>
-                <a href="" class="secondary">次分类</a>
-                <a href="" class="secondary">次分类</a>
-                <a href="" class="secondary">次分类</a>
+              <span>首页</span>
+              <span>></span>
+              <span>全部商品</span>
+              <span>></span>
+              <p>展开分类 : </p>
+            </template>
+            <template v-for="(v,k) in categoryList">
+              <div class="category_item" style="margin-bottom: 10px">
+                <p :class="{active: v.categoryId === categoryId}" @click="reload(v.categoryId)">{{ v.name }}</p>
+                <template v-for="(i,k) in v.children">
+                  <a
+                    :class="{active: i.categoryId === categoryId}"
+                    class="secondary"
+                    @click="reload(i.categoryId)"
+                  >{{ i.name }}</a>
+                </template>
               </div>
             </template>
-            <div class="category_item" style="margin-bottom: 10px">
-              <p>主分类</p>
-              <a href="">次分类</a>
-              <a href="">次分类</a>
-              <a href="">次分类</a>
-              <a href="">次分类</a>
-              <a href="">次分类</a>
-              <a href="">次分类</a>
-              <a href="">次分类</a>
-              <a href="">次分类</a>
-              <a href="">次分类</a>
-            </div>
-            <div class="category_item" style="margin-bottom: 10px">
-              <p>主分类</p>
-              <a href="">次分类</a>
-              <a href="">次分类</a>
-              <a href="">次分类</a>
-              <a href="">次分类</a>
-              <a href="">次分类</a>
-              <a href="">次分类</a>
-              <a href="">次分类</a>
-              <a href="">次分类</a>
-              <a href="">次分类</a>
-            </div>
-            <div class="category_item" style="margin-bottom: 10px">
-              <p>主分类</p>
-              <a href="">次分类</a>
-              <a href="">次分类</a>
-              <a href="">次分类</a>
-              <a href="">次分类</a>
-              <a href="">次分类</a>
-              <a href="">次分类</a>
-              <a href="">次分类</a>
-              <a href="">次分类</a>
-              <a href="">次分类</a>
-            </div>
           </el-collapse-item>
         </el-collapse>
       </div>
@@ -76,196 +42,32 @@
     <!--商品列表-->
     <div class="product_list">
       <div class="content">
-        <div class="prod" @click="toProductDetail(1)">
-          <img
-            src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202212242022_f9456bf36437f2888d3a7b733319743f.png"
-            alt=""
-          >
-          <el-text style="width: 240px;" truncated>两挂一柜（3匹）全屋空调套餐 新风系列</el-text>
-          <span class="price">13997元</span>
-          <ul>
-            <li>
-              <img
-                src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202303281923_3b9ebd24f96ac04d2b2bc9addfb78051.png"
-                alt=""
-              >
-            </li>
-          </ul>
-          <div class="tag">
-            <span>分期</span>
+        <template v-for="(v) in productList">
+          <div class="prod" @click="toProductDetail(v.productId)">
+            <img
+              :src="v.image[0].url"
+              alt=""
+            >
+            <el-text style="width: 240px;display: flex;align-items: center;justify-content: center" truncated>{{
+              v.name
+            }}
+            </el-text>
+            <span class="price">{{ v.price }}元</span>
+            <ul>
+              <template v-for="(i,k) in v.image">
+                <li>
+                  <img
+                    :src="i.url"
+                    alt=""
+                  >
+                </li>
+              </template>
+            </ul>
+            <div class="tag">
+              <span>分期</span>
+            </div>
           </div>
-        </div>
-        <div class="prod" @click="toProductDetail(1)">
-          <img
-            src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202212242022_f9456bf36437f2888d3a7b733319743f.png"
-            alt=""
-          >
-          <el-text style="width: 240px;" truncated>两挂一柜（3匹）全屋空调套餐 新风系列</el-text>
-          <span class="price">13997元</span>
-          <ul>
-            <li>
-              <img
-                src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202303281923_3b9ebd24f96ac04d2b2bc9addfb78051.png"
-                alt=""
-              >
-            </li>
-          </ul>
-          <div class="tag">
-            <span>分期</span>
-          </div>
-        </div>
-        <div class="prod" @click="toProductDetail(1)">
-          <img
-            src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202212242022_f9456bf36437f2888d3a7b733319743f.png"
-            alt=""
-          >
-          <el-text style="width: 240px;" truncated>两挂一柜（3匹）全屋空调套餐 新风系列</el-text>
-          <span class="price">13997元</span>
-          <ul>
-            <li>
-              <img
-                src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202303281923_3b9ebd24f96ac04d2b2bc9addfb78051.png"
-                alt=""
-              >
-            </li>
-          </ul>
-          <div class="tag">
-            <span>分期</span>
-          </div>
-        </div>
-        <div class="prod" @click="toProductDetail(1)">
-          <img
-            src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202212242022_f9456bf36437f2888d3a7b733319743f.png"
-            alt=""
-          >
-          <el-text style="width: 240px;" truncated>两挂一柜（3匹）全屋空调套餐 新风系列</el-text>
-          <span class="price">13997元</span>
-          <ul>
-            <li>
-              <img
-                src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202303281923_3b9ebd24f96ac04d2b2bc9addfb78051.png"
-                alt=""
-              >
-            </li>
-          </ul>
-          <div class="tag">
-            <span>分期</span>
-          </div>
-        </div>
-        <div class="prod">
-          <img
-            src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202212242022_f9456bf36437f2888d3a7b733319743f.png"
-            alt=""
-          >
-          <el-text style="width: 240px;" truncated>两挂一柜（3匹）全屋空调套餐 新风系列</el-text>
-          <span class="price">13997元</span>
-          <ul>
-            <li>
-              <img
-                src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202303281923_3b9ebd24f96ac04d2b2bc9addfb78051.png"
-                alt=""
-              >
-            </li>
-          </ul>
-          <div class="tag">
-            <span>分期</span>
-          </div>
-        </div>
-        <div class="prod">
-          <img
-            src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202212242022_f9456bf36437f2888d3a7b733319743f.png"
-            alt=""
-          >
-          <el-text style="width: 240px;" truncated>两挂一柜（3匹）全屋空调套餐 新风系列</el-text>
-          <span class="price">13997元</span>
-          <ul>
-            <li>
-              <img
-                src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202303281923_3b9ebd24f96ac04d2b2bc9addfb78051.png"
-                alt=""
-              >
-            </li>
-          </ul>
-          <div class="tag">
-            <span>分期</span>
-          </div>
-        </div>
-        <div class="prod">
-          <img
-            src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202212242022_f9456bf36437f2888d3a7b733319743f.png"
-            alt=""
-          >
-          <el-text style="width: 240px;" truncated>两挂一柜（3匹）全屋空调套餐 新风系列</el-text>
-          <span class="price">13997元</span>
-          <ul>
-            <li>
-              <img
-                src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202303281923_3b9ebd24f96ac04d2b2bc9addfb78051.png"
-                alt=""
-              >
-            </li>
-          </ul>
-          <div class="tag">
-            <span>分期</span>
-          </div>
-        </div>
-        <div class="prod">
-          <img
-            src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202212242022_f9456bf36437f2888d3a7b733319743f.png"
-            alt=""
-          >
-          <el-text style="width: 240px;" truncated>两挂一柜（3匹）全屋空调套餐 新风系列</el-text>
-          <span class="price">13997元</span>
-          <ul>
-            <li>
-              <img
-                src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202303281923_3b9ebd24f96ac04d2b2bc9addfb78051.png"
-                alt=""
-              >
-            </li>
-          </ul>
-          <div class="tag">
-            <span>分期</span>
-          </div>
-        </div>
-        <div class="prod">
-          <img
-            src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202212242022_f9456bf36437f2888d3a7b733319743f.png"
-            alt=""
-          >
-          <el-text style="width: 240px;" truncated>两挂一柜（3匹）全屋空调套餐 新风系列</el-text>
-          <span class="price">13997元</span>
-          <ul>
-            <li>
-              <img
-                src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202303281923_3b9ebd24f96ac04d2b2bc9addfb78051.png"
-                alt=""
-              >
-            </li>
-          </ul>
-          <div class="tag">
-            <span>分期</span>
-          </div>
-        </div>
-        <div class="prod">
-          <img
-            src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202212242022_f9456bf36437f2888d3a7b733319743f.png"
-            alt=""
-          >
-          <el-text style="width: 240px;" truncated>两挂一柜（3匹）全屋空调套餐 新风系列</el-text>
-          <span class="price">13997元</span>
-          <ul>
-            <li>
-              <img
-                src="https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202303281923_3b9ebd24f96ac04d2b2bc9addfb78051.png"
-                alt=""
-              >
-            </li>
-          </ul>
-          <div class="tag">
-            <span>分期</span>
-          </div>
-        </div>
+        </template>
       </div>
     </div>
     <!--分页-->
@@ -285,253 +87,76 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { inject, onBeforeMount, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { categoryIDByProductListApi, categoryListApi } from '@/api/category.js'
 
+const keyWord = inject('keyWord')
 const router = useRouter()
-const pageSize = ref(20)
-const page = ref(10)
-const total = ref(1000)
+const route = useRoute()
+const categoryId = ref(route.query.id)
+const pageSize = ref(8)
+const page = ref(1)
+const total = ref(0)
+const productList = ref([])
+const categoryList = ref([])
 
-const handleCurrentChange = (val) => {}
-const handleSizeChange = (val) => {}
+const handleCurrentChange = (val) => {
+  page.value = val
+  loadData()
+}
+const handleSizeChange = (val) => {
+  pageSize.value = val
+  loadData()
+}
 
 const toProductDetail = (id) => {
-  router.push({ name: 'ProductDetail' })
+  router.push({ name: 'ProductDetail', query: { id: id }})
 }
+
+const loadData = async() => {
+  if (!categoryId.value) {
+    categoryId.value = ''
+  }
+  console.log(keyWord)
+  const res = await categoryIDByProductListApi({
+    categoryId: categoryId.value,
+    page: page.value,
+    pageSize: pageSize.value,
+    keyWord: keyWord.value
+  })
+  console.log(res)
+  productList.value = res.data.productList
+  total.value = res.data.total
+}
+loadData()
+const loadCategoryList = async() => {
+  const res = await categoryListApi()
+  categoryList.value = res.data.list
+}
+
+const reload = async(id) => {
+  categoryId.value = id
+  await loadData()
+}
+
+onBeforeMount(() => {
+  loadCategoryList()
+})
 
 </script>
 
 <style scoped lang="scss">
+@import "@/style/product.scss";
 
-.content_container {
-  width: 100%;
-  background-color: #f5f5f5;
-  display: flex;
-  flex-direction: column;
-  padding-bottom: 20px;
-
-  .title {
-    width: 1220px;
-    height: 40px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    color: #757575;
-
-    p {
-      font-size: 12px;
-    }
-
-    span {
-      font-size: 12px;
-      margin: 0 8px;
-    }
-  }
-
-  .category_container {
-    width: 100%;
-    background-color: white;
-
-    .category_content {
-      width: 1220px;
-      margin: 0 auto;
-
-      .category_item {
-        display: flex;
-        align-items: center;
-
-        p {
-          font-size: 15px;
-          margin-right: 10px;
-        }
-
-        a {
-          font-size: 14px;
-          margin-left: 14px;
-          transition: all 0.3s;
-        }
-
-        a:hover {
-          color: #ff6700;
-        }
-      }
-    }
-  }
-
-  .screen {
-    width: 100%;
-    height: 60px;
-    background-color: #f5f5f5;
-
-    .content {
-      width: 1220px;
-      margin: 10px auto;
-      height: 100%;
-      display: flex;
-      align-items: center;
-
-      p {
-        font-size: 14px;
-        color: #424242;
-        transition: all 0.3s;
-        cursor: pointer;
-      }
-
-      p:hover {
-        color: #ff6700;
-      }
-
-      span {
-        margin: 0 35px;
-        font-size: 12px;
-        color: rgba(159, 157, 157, 0.65);
-      }
-    }
-  }
-
-  .product_list {
-    width: 100%;
-    background-color: #f5f5f5;
-
-    .content {
-      width: 1220px;
-      background-color: bisque;
-      margin: 0 auto;
-
-      .prod {
-        width: 297px;
-        height: 430px;
-        background-color: white;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        margin-right: 10px;
-        margin-bottom: 10px;
-        float: left;
-        transition: all 0.3s;
-
-        img {
-          width: 200px;
-          height: 200px;
-          margin-bottom: 20px;
-        }
-
-        .price {
-          font-size: 14px;
-          color: #ff6700;
-          margin-bottom: 14px;
-        }
-
-        .tag {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-
-          span {
-            height: 18px;
-            padding: 2px 6px;
-            font-size: 13px;
-            line-height: 18px;
-            background: radial-gradient(circle, #51a4eb, #62b9f1);
-            color: white;
-            border-radius: 2px;
-          }
-        }
-
-        ul > li > img {
-          width: 34px;
-          height: 34px;
-          border: 1px solid #ccc;
-          transition: all 0.2s;
-          margin-bottom: 14px;
-
-          &:hover {
-            border: 1px solid #ff6700;
-          }
-        }
-      }
-
-      .prod:hover {
-        cursor: pointer;
-        box-shadow: 0 0 37px -7px rgba(0, 0, 0, 0.18);
-      }
-
-      .prod:nth-child(4n) {
-        margin-right: 0;
-      }
-    }
-  }
-
-  .pagination {
-    width: 100%;
-    background-color: #f5f5f5;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 18px 0 40px 0;
+.title-info {
+  span {
+    color: #5a5d5a;
+    margin-right: 14px;
   }
 }
 
-:deep(.el-collapse-item__content) {
-  padding-bottom: 8px;
-}
-
-:deep(.el-pager li.is-active) {
+.active {
   color: #ff6700;
 }
-
-:deep(.el-select .el-input.is-focus .el-input__wrapper) {
-  box-shadow: 0 0 0 1px #ff6700 inset !important;
-}
-
-:deep(.el-input__wrapper) {
-  background-color: #f5f5f5;
-}
-:deep(.el-input__wrapper.is-focus) {
-  box-shadow: 0 0 0 1px #ff6700 inset !important;
-}
-
-:deep(.el-pager li) {
-  background-color: #f5f5f5;
-  margin-left: 0.25rem;
-  margin-right: 0.25rem;
-  border-radius: 0.25rem;
-  border-width: 1px;
-  border-style: solid;
-  --tw-border-opacity: 1;
-  border-color: rgb(209 213 219 / var(--tw-border-opacity));
-  font-size: .875rem;
-  line-height: 1.25rem;
-  --tw-text-opacity: 1;
-  color: rgb(75 85 99 / var(--tw-text-opacity));
-  transition: all 0.2s;
-}
-:deep(.el-pager li):hover {
-  color: #ff6700;
-}
-
-:deep(.btn-prev) , :deep(.btn-next){
-  background-color: #f5f5f5 !important;
-  margin-left: 0.25rem;
-  margin-right: 0.25rem;
-  border-radius: 0.25rem;
-  border-width: 1px;
-  border-style: solid;
-  --tw-border-opacity: 1;
-  border-color: rgb(209 213 219 / var(--tw-border-opacity));
-  font-size: .875rem;
-  line-height: 1.25rem;
-  --tw-text-opacity: 1;
-  color: rgb(75 85 99 / var(--tw-text-opacity));
-  transition: all 0.2s;
-}
-
-:deep(.btn-prev):hover,:deep(.btn-next):hover {
-  border-color: #ff6700;
-  color: #ff6700;
-}
-
 </style>

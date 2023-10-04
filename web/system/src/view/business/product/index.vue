@@ -27,7 +27,7 @@
       :tree-props="{'children': 'children'}"
     >
       <el-table-column align="left" label="商品编号" min-width="180" prop="productId" fixed="left"/>
-      <el-table-column align="left" label="封面" min-width="150" prop="image">
+      <el-table-column align="left" label="图片" min-width="150" prop="image">
         <template #default="scope">
           <el-carousel :interval="3000" arrow="never" indicator-position="none" style="height: 100px;width: 100px">
             <el-carousel-item v-for="(v,k) in scope.row.image">

@@ -24,6 +24,6 @@ Mysql:
   LogZap: false
   Config: charset=utf8mb4&parseTime=True&loc=Local
 
-CacheRedis:
+Redis:
   - Host: 120.77.237.246:6379
     Pass: "wjh20000905"

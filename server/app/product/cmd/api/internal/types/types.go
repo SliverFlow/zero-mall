@@ -3,3 +3,46 @@ package types
 
 type Nil struct {
 }
+
+type Product struct {
+	ProductID  string     `json:"productId"`
+	BusinessID string     `json:"businessId"`
+	Name       string     `json:"name"`
+	Subtitle   string     `json:"subtitle"`
+	Image      []Image    `json:"image"`
+	Detail     string     `json:"detail"`
+	Price      float64    `json:"price"`
+	Stock      int64      `json:"stock"`
+	Categories []Category `json:"categories"`
+}
+
+type Image struct {
+	Url string `json:"url"`
+}
+
+type Category struct {
+	CategoryID  string     `json:"categoryId"`
+	Name        string     `json:"name"`
+	Children    []Category `json:"children"`
+	ProductList []Product  `json:"productList"`
+}
+
+type CategoryListReply struct {
+	List []Category `json:"list"`
+}
+
+type CategoryIDByProductListReq struct {
+	CategoryID string `json:"categoryId"`
+	Page       int64  `json:"page"`
+	PageSize   int64  `json:"pageSize"`
+	KeyWord    string `json:"keyWord"`
+}
+
+type CategoryIDByProductListReply struct {
+	CategoryID  string    `json:"categoryId"`
+	Name        string    `json:"name"`
+	ProductList []Product `json:"productList"`
+	Total       int64     `json:"total"`
+	Page        int64     `json:"page"`
+	PageSize    int64     `json:"pageSize"`
+}

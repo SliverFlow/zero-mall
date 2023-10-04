@@ -3,7 +3,7 @@
     <header>
       <div>
         <div class="left">
-          <a href="">mall官网</a>
+          <a href="#/index">mall官网</a>
           <span>|</span>
           <a href="">mall商城</a>
           <span>|</span>
@@ -88,14 +88,16 @@
           </div>
           <div class="search" style="width: 300px;height: 48px">
             <input
+              v-model="keyWord"
               type="text"
               placeholder="输入商品名称"
               :class="{icon_fover: isFocus}"
               @focus="isFocus = !isFocus"
               @focusout="isFocus = !isFocus"
             >
-            <el-icon :size="25" class="search-icon" :class="{icon_fover: isFocus,search_icon_hover: isFocus}">
-              <Search />
+            <el-icon @click="search" :size="25" class="search-icon"
+                     :class="{icon_fover: isFocus,search_icon_hover: isFocus}">
+              <Search/>
             </el-icon>
             <div v-if="isFocus" class="input_word">
               <a href="">全部商品</a>
@@ -110,14 +112,14 @@
       </div>
     </nav>
     <div class="content">
-      <router-view />
+      <router-view/>
     </div>
-    <mall-footer></mall-footer>
+    <mall-footer/>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, provide } from 'vue'
 import { Search } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
 import MallFooter from '@/view/layout/footer/mallFooter.vue'
@@ -125,6 +127,7 @@ import MallFooter from '@/view/layout/footer/mallFooter.vue'
 const show = ref(false)
 const isFocus = ref(false)
 const router = useRouter()
+const keyWord = ref('')
 
 const toLogin = () => {
   router.push({ name: 'Login' })
@@ -132,6 +135,15 @@ const toLogin = () => {
 const toCart = () => {
   router.push({ name: 'Cart' })
 }
+
+const search = () => {
+  console.log("ddd",keyWord.value)
+  if (router.currentRoute.value.name !== 'ProductList') {
+    router.push({ name: 'ProductList' })
+  }
+}
+
+provide('keyWord', keyWord)
 
 </script>
 

@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option go_package = "./pb";
+
+package pb;
+
+message OrderNil {}
+
+service order {
+  rpc orderCreate (OrderNil) returns (OrderNil);
+}

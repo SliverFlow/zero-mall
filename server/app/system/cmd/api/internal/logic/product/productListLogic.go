@@ -46,10 +46,12 @@ func (l *ProductListLogic) ProductList(req *types.ProductListReq) (resp *types.P
 		_ = json.Unmarshal([]byte(v.Image), &p.Image)
 		if v.Categories != nil { // 组装分类
 			var list []types.Category
-			for _, category := range v.Categories {
-				var c types.Category
-				_ = copier.Copy(&c, category)
-				list = append(list, c)
+			for _, category := range v.Categories { // 只取子分类
+				if category.ParentId != "0" {
+					var c types.Category
+					_ = copier.Copy(&c, category)
+					list = append(list, c)
+				}
 			}
 			p.Categories = list
 		}

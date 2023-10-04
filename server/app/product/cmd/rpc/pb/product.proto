@@ -52,6 +52,22 @@ message CategoryIDSReply {
   repeated string IDS = 1;
 }
 
+message categoryIDByProductListReply {
+  string CategoryID = 2;
+  string ParentId = 3;
+  string Name = 4;
+  repeated ProductReply Products = 9;
+  int64 Total = 1;
+  int64 Page = 5;
+  int64 PageSize = 6;
+}
+message CategoryIDByProductListReq {
+  string CategoryID = 2;
+  string KeyWord = 3;
+  int64 Page = 1;
+  int64 PageSize = 4;
+}
+
 // ------------------ 商品相关 -------------------------
 message ProductReply {
   string ProductID = 1;
@@ -143,4 +159,6 @@ service product {
   rpc ProductChangeStatus (ProductChangeStatusReq) returns (ProductNil);
   rpc ProductFind (ProductFindReq) returns (ProductReply);
   rpc ProductUpdate (ProductUpdateReq) returns (ProductNil);
+
+  rpc categoryIDByProductList (CategoryIDByProductListReq) returns (categoryIDByProductListReply);
 }

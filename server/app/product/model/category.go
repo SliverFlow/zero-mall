@@ -18,6 +18,8 @@ type (
 		CategoryChangeStatus(ctx context.Context, categoryId string, status int64) (err error)
 		CategoryFindChildrenID(ctx context.Context, categoryId string) (enter *[]string, err error)
 		CategoryBatchDelete(ctx context.Context, ids []string) (err error)
+
+		CategoryIDByProductList(ctx context.Context, categoryId string, page *common.PageInfo) (enter *Category, total int64, err error)
 	}
 
 	defaultCategoryModel struct {
@@ -182,4 +184,42 @@ func (d *defaultCategoryModel) CategoryBatchDelete(ctx context.Context, ids []st
 	tx := d.db.WithContext(ctx)
 
 	return tx.Where("category_id in ?", ids).Delete(&Category{}).Error
+}
+
+// CategoryIDByProductList
+// Author [SliverFlow]
+// @desc 查询某个分类下的所有商品
+func (d *defaultProductModel) CategoryIDByProductList(ctx context.Context, categoryId string, page *common.PageInfo) (enter *Category, total int64, err error) {
+	tx := d.db.WithContext(ctx)
+	span, _ := d.tracer(ctx, "category-id-by-product-list")
+	defer span.End()
+
+	limit, offset, keyWord := page.LimitAndOffsetAndKeyWord()
+
+	var category Category
+
+	if categoryId == "" {
+		var list []Product
+		if err = tx.Model(&Product{}).Where("name like ? and status in ?", keyWord, []int64{1, 2}).Count(&total).Limit(limit).Offset(offset).Find(&category.Products).Find(&list).Error; err != nil {
+			return nil, 0, err
+		}
+		category.Products = list
+		return &category, total, nil
+	}
+
+	if err = tx.Model(&Category{}).Preload("Products", func(db *gorm.DB) *gorm.DB {
+		return db.Where("name like ? and status in ?", keyWord, []int64{1, 2})
+	}).Where("category_id = ?", categoryId).First(&category).Error; err != nil {
+		return nil, 0, err
+	}
+
+	total = int64(len(category.Products))
+
+	if err = tx.Model(&Category{}).Preload("Products", func(db *gorm.DB) *gorm.DB {
+		return db.Where("name like ? and status in ?", keyWord, []int64{1, 2}).Limit(limit).Offset(offset)
+	}).Where("category_id = ?", categoryId).First(&category).Error; err != nil {
+		return nil, 0, err
+	}
+
+	return &category, total, nil
 }

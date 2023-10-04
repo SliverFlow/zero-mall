@@ -44,6 +44,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/category/list",
 				Handler: public.CategoryListHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/category/productList",
+				Handler: public.CategoryIDByProductListHandler(serverCtx),
+			},
 		},
 		rest.WithPrefix("/v1"),
 	)

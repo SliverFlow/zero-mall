@@ -123,6 +123,7 @@ const handleCascaderChange = (val) => {
         if (v.ID === val[1]) {
           formData.value.categories = []
           formData.value.categories.push(v)
+          formData.value.categories.push(i)
         }
       })
     }

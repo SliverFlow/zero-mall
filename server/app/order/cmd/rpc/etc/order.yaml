@@ -1,0 +1,21 @@
+Name: order.rpc
+ListenOn: 0.0.0.0:3331
+Etcd:
+  Hosts:
+    - 120.77.237.246:32379
+  #  - etcd:2379
+  Key: order.rpc
+
+Mysql:
+  Path: 127.0.0.1
+  Password: ''
+  #  Path: 121.37.20.40
+  #  Password: '123456'
+  Port: 3306
+  Dbname: zpshop
+  Username: root
+  MaxIdleConns: 10
+  MaxOpenConns: 10
+  LogMode: "dev"
+  LogZap: false
+  Config: charset=utf8mb4&parseTime=True&loc=Local
