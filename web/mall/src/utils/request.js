@@ -38,13 +38,13 @@ service.interceptors.response.use(
       // userStore.setToken(response.headers['new-token'])
     }
     // 判断请求是否成功
-    // if (response.data.code !== 0) {
-    //   ElMessage({
-    //     message: response.data.message,
-    //     type: 'error',
-    //     showClose: true,
-    //   })
-    // }
+    if (response.data.code !== 0) {
+      ElMessage({
+        message: response.data.message,
+        type: 'error',
+        showClose: true,
+      })
+    }
 
     // 业务错误类型
     // switch (response.data.code) {

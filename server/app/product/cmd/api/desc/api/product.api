@@ -8,7 +8,7 @@ info(
     version: "type version here"
 )
 
-type Nil{
+type Nil {
 }
 
 type Product {
@@ -25,6 +25,19 @@ type Product {
 
 type Image {
     Url string `json:"url"`
+}
+type ProductFindReq {
+    ProductID string `json:"productId"`
+}
+type ProductFindReqly {
+    ProductID string `json:"productId"`
+    Name string `json:"name"`
+    Subtitle string `json:"subtitle"`
+    Image []Image `json:"image"`
+    Detail string `json:"detail"`
+    Price float64 `json:"price"`
+    Stock int64 `json:"stock"`
+    BudinessName string `json:"businessName"`
 }
 
 

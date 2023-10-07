@@ -18,6 +18,8 @@ import "api/product.api"
 service product {
 	@handler productList
 	post /product/list (Nil) returns (Nil)
+	@handler productFind
+	post /product/find (ProductFindReq) returns (ProductFindReqly)
 }
 
 // product 需要鉴权的

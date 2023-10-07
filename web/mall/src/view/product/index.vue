@@ -1,6 +1,6 @@
 <template>
   <div class="content_container">
-    <div class="title" />
+    <div class="title"/>
     <!--分类显示-->
     <div class="category_container">
       <div class="category_content">
@@ -14,7 +14,7 @@
               <p>展开分类 : </p>
             </template>
             <template v-for="(v,k) in categoryList">
-              <div class="category_item" style="margin-bottom: 10px">
+              <div class="category_item" style="margin: 2px 0 10px 0">
                 <p :class="{active: v.categoryId === categoryId}" @click="reload(v.categoryId)">{{ v.name }}</p>
                 <template v-for="(i,k) in v.children">
                   <a
@@ -49,8 +49,8 @@
               alt=""
             >
             <el-text style="width: 240px;display: flex;align-items: center;justify-content: center" truncated>{{
-              v.name
-            }}
+                v.name
+              }}
             </el-text>
             <span class="price">{{ v.price }}元</span>
             <ul>
@@ -87,11 +87,13 @@
 </template>
 
 <script setup>
-import { inject, onBeforeMount, ref } from 'vue'
+import { inject, onBeforeMount, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { categoryIDByProductListApi, categoryListApi } from '@/api/category.js'
+import { useActiveStore } from '@/pinia/model/active.js'
 
 const keyWord = inject('keyWord')
+const activeStore = useActiveStore()
 const router = useRouter()
 const route = useRoute()
 const categoryId = ref(route.query.id)
@@ -111,21 +113,19 @@ const handleSizeChange = (val) => {
 }
 
 const toProductDetail = (id) => {
-  router.push({ name: 'ProductDetail', query: { id: id }})
+  router.push({ name: 'ProductDetail', query: { id: id } })
 }
 
 const loadData = async() => {
   if (!categoryId.value) {
     categoryId.value = ''
   }
-  console.log(keyWord)
   const res = await categoryIDByProductListApi({
     categoryId: categoryId.value,
     page: page.value,
     pageSize: pageSize.value,
     keyWord: keyWord.value
   })
-  console.log(res)
   productList.value = res.data.productList
   total.value = res.data.total
 }
@@ -144,6 +144,12 @@ onBeforeMount(() => {
   loadCategoryList()
 })
 
+watch(() => activeStore.active, async(val, old) => {
+  if (val) {
+    await loadData()
+    activeStore.active = false
+  }
+})
 </script>
 
 <style scoped lang="scss">

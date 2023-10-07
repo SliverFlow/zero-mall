@@ -9,4 +9,5 @@ type Config struct {
 	rest.RestConf
 
 	ProductRpc zrpc.RpcClientConf
+	UserRpc    zrpc.RpcClientConf
 }

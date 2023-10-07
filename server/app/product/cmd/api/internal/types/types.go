@@ -20,6 +20,21 @@ type Image struct {
 	Url string `json:"url"`
 }
 
+type ProductFindReq struct {
+	ProductID string `json:"productId"`
+}
+
+type ProductFindReqly struct {
+	ProductID    string  `json:"productId"`
+	Name         string  `json:"name"`
+	Subtitle     string  `json:"subtitle"`
+	Image        []Image `json:"image"`
+	Detail       string  `json:"detail"`
+	Price        float64 `json:"price"`
+	Stock        int64   `json:"stock"`
+	BudinessName string  `json:"businessName"`
+}
+
 type Category struct {
 	CategoryID  string     `json:"categoryId"`
 	Name        string     `json:"name"`

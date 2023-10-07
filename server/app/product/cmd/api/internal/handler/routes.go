@@ -19,6 +19,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/product/list",
 				Handler: public.ProductListHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/product/find",
+				Handler: public.ProductFindHandler(serverCtx),
+			},
 		},
 		rest.WithPrefix("/v1"),
 	)

@@ -30,4 +30,8 @@ a {
 ::-webkit-scrollbar {
   display: none;
 }
+@font-face {
+  font-family: "fm";
+  src: url('@/assets/汉仪竹心楷.ttf');
+}
 </style>
