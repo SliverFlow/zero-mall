@@ -13,27 +13,29 @@ import (
 )
 
 type (
-	AdminChangeRoleReq      = pb.AdminChangeRoleReq
-	Business                = pb.Business
-	BusinessChangeStatusReq = pb.BusinessChangeStatusReq
-	BusinessCreateReq       = pb.BusinessCreateReq
-	BusinessIDReq           = pb.BusinessIDReq
-	BusinessPageReply       = pb.BusinessPageReply
-	BusinessUUIDReq         = pb.BusinessUUIDReq
-	IDReq                   = pb.IDReq
-	IDsReq                  = pb.IDsReq
-	PageReply               = pb.PageReply
-	PageReq                 = pb.PageReq
-	UUIDReq                 = pb.UUIDReq
-	UserChangeStatusReq     = pb.UserChangeStatusReq
-	UserCreateReq           = pb.UserCreateReq
-	UserInfoReply           = pb.UserInfoReply
-	UserLoginReply          = pb.UserLoginReply
-	UserLoginReq            = pb.UserLoginReq
-	UserNil                 = pb.UserNil
-	UserReply               = pb.UserReply
-	UserUpdateReq           = pb.UserUpdateReq
-	UsernameReq             = pb.UsernameReq
+	AdminChangeRoleReq           = pb.AdminChangeRoleReq
+	Business                     = pb.Business
+	BusinessChangeStatusReq      = pb.BusinessChangeStatusReq
+	BusinessCreateReq            = pb.BusinessCreateReq
+	BusinessIDReq                = pb.BusinessIDReq
+	BusinessPageReply            = pb.BusinessPageReply
+	BusinessUUIDReq              = pb.BusinessUUIDReq
+	IDReq                        = pb.IDReq
+	IDsReq                       = pb.IDsReq
+	PageReply                    = pb.PageReply
+	PageReq                      = pb.PageReq
+	PhoneReq                     = pb.PhoneReq
+	UUIDReq                      = pb.UUIDReq
+	UserChangeStatusReq          = pb.UserChangeStatusReq
+	UserCreateReq                = pb.UserCreateReq
+	UserFindByPhoneOrUsernameReq = pb.UserFindByPhoneOrUsernameReq
+	UserInfoReply                = pb.UserInfoReply
+	UserLoginReply               = pb.UserLoginReply
+	UserLoginReq                 = pb.UserLoginReq
+	UserNil                      = pb.UserNil
+	UserReply                    = pb.UserReply
+	UserUpdateReq                = pb.UserUpdateReq
+	UsernameReq                  = pb.UsernameReq
 
 	User interface {
 		// 用户相关
@@ -48,6 +50,8 @@ type (
 		UserFindByUUID(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*UserInfoReply, error)
 		AdminChangeRole(ctx context.Context, in *AdminChangeRoleReq, opts ...grpc.CallOption) (*UserNil, error)
 		UserChangeStatus(ctx context.Context, in *UserChangeStatusReq, opts ...grpc.CallOption) (*UserNil, error)
+		UserFindByPhoneOrUsername(ctx context.Context, in *UserFindByPhoneOrUsernameReq, opts ...grpc.CallOption) (*UserInfoReply, error)
+		UserCheckPhone(ctx context.Context, in *PhoneReq, opts ...grpc.CallOption) (*UserNil, error)
 		// 商家相关
 		BusinessCreate(ctx context.Context, in *BusinessCreateReq, opts ...grpc.CallOption) (*UserNil, error)
 		BusinessList(ctx context.Context, in *PageReq, opts ...grpc.CallOption) (*BusinessPageReply, error)
@@ -122,6 +126,16 @@ func (m *defaultUser) AdminChangeRole(ctx context.Context, in *AdminChangeRoleRe
 func (m *defaultUser) UserChangeStatus(ctx context.Context, in *UserChangeStatusReq, opts ...grpc.CallOption) (*UserNil, error) {
 	client := pb.NewUserClient(m.cli.Conn())
 	return client.UserChangeStatus(ctx, in, opts...)
+}
+
+func (m *defaultUser) UserFindByPhoneOrUsername(ctx context.Context, in *UserFindByPhoneOrUsernameReq, opts ...grpc.CallOption) (*UserInfoReply, error) {
+	client := pb.NewUserClient(m.cli.Conn())
+	return client.UserFindByPhoneOrUsername(ctx, in, opts...)
+}
+
+func (m *defaultUser) UserCheckPhone(ctx context.Context, in *PhoneReq, opts ...grpc.CallOption) (*UserNil, error) {
+	client := pb.NewUserClient(m.cli.Conn())
+	return client.UserCheckPhone(ctx, in, opts...)
 }
 
 // 商家相关

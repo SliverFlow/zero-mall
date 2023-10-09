@@ -7,3 +7,11 @@ export const userLoginApi = (data) => {
     data
   })
 }
+
+const userPhoneCaptchaApi = (data) => {
+  return service({
+    url: '/user/phoneCaptcha',
+    method: 'post',
+    data: data
+  })
+}

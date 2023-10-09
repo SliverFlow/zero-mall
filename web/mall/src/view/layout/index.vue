@@ -26,7 +26,7 @@
         <div class="right">
           <a @click="toLogin">登录</a>
           <span>|</span>
-          <a @click="toLogin">注册</a>
+          <a @click="toRegister">注册</a>
           <span>|</span>
           <a href="">消息通知</a>
           <div class="shop-car" @click="toCart" @mouseover="show = !show" @mouseout="show = !show">
@@ -139,6 +139,10 @@ const toLogin = () => {
 }
 const toCart = () => {
   router.push({ name: 'Cart' })
+}
+
+const toRegister = () => {
+  router.push({ name: 'Register' })
 }
 
 const search = () => {

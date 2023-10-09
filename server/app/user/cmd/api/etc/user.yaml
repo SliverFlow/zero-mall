@@ -25,6 +25,15 @@ Redis:
   Host: "120.77.237.246:6379"
   Pass: wjh20000905
 
+
+AliSms:
+  SingName: 'zero商城'
+  TemplateCode: 'SMS_463636924'
+  AccessKeyId: 'LTAI5t9mHsNJRH4YaHpkcVhc'
+  AccessKeySecret: '0XODnz6fREBgGnOAbkTfGX0OefK85p'
+  BaseStore: 'zero-mall:api:user-api:sms'
+  BaseExpire: 60
+
 #Prometheus:
 #  Host: 0.0.0.0
 #  Port: 7899

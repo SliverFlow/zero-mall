@@ -19,4 +19,13 @@ type Config struct {
 		BlackListPrefix string // 黑名单前缀
 	}
 	Redis redis.RedisConf
+
+	AliSms struct {
+		SingName        string
+		TemplateCode    string
+		AccessKeyID     string
+		AccessKeySecret string
+		BaseStore       string
+		BaseExpire      int
+	}
 }

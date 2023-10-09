@@ -2,8 +2,6 @@ package private
 
 import (
 	"context"
-	"github.com/jinzhu/copier"
-	"server/app/user/cmd/rpc/pb"
 
 	"server/app/user/cmd/api/internal/svc"
 	"server/app/user/cmd/api/internal/types"
@@ -25,13 +23,8 @@ func NewUserFindLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserFind
 	}
 }
 
-func (l *UserFindLogic) UserFind(req *types.IdReq) (resp *types.UserReply, err error) {
-	reply, err := l.svcCtx.UserRpc.UserFind(l.ctx, &pb.IDReq{ID: req.Id})
-	if err != nil {
-		return nil, err
-	}
-	user := reply.GetUser()
-	var u types.User
-	_ = copier.Copy(&u, user)
-	return &types.UserReply{User: u}, nil
+func (l *UserFindLogic) UserFind(req *types.Nil) (resp *types.UserReply, err error) {
+	// todo: add your logic here and delete this line
+
+	return
 }

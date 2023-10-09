@@ -9,7 +9,6 @@ info(
 )
 import "api/user.api"
 import "api/business.api"
-import "api/base.api"
 
 // user 不需要鉴权的
 @server(
@@ -17,11 +16,10 @@ import "api/base.api"
 	prefix : v1
 )
 service user {
-	@handler login
-	post /user/login (LoginReq) returns (LoginReply)
-	
-	@handler userCreate
-	post /user/create (CreateReq) returns (NilReply)
+	@handler phoneCaptcha
+	post /user/phoneCaptcha (PhoneCaptcheReq) returns (Nil)
+	@handler userRegisterByPhone
+	post /user/registerByPhone (RegisterByPhoneReq) returns (Nil)
 }
 
 // user 需要鉴权的
@@ -32,13 +30,10 @@ service user {
 )
 service user {
 	@handler userFind
-	post /user/find (IdReq) returns (UserReply)
-	
-	@handler userList
-	post /user/list (PageReq) returns (ListReply)
+	post /user/find (Nil) returns (UserReply)
 	
 	@handler userUpdate
-	post /user/update (UpdateReq) returns (NilReply)
+	post /user/update (UserUpdateReq) returns (Nil)
 }
 
 // business 不鉴权的

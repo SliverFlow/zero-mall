@@ -1,0 +1,121 @@
+.panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .panel-left {
+    width: 26%;
+    height: 100vh;
+    background-image: url("@/assets/login_bgc.jpg");
+    background-size: cover;
+    background-position: 50%;
+  }
+
+  .panel-right {
+    width: 74%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    .header {
+      height: 40px;
+      padding: 20px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .left {
+        display: flex;
+        align-items: center;
+
+        span {
+          font-family: 'fm';
+          font-size: 30px;
+          font-weight: 600;
+        }
+
+        img {
+          width: 40px;
+          height: 40px;
+          margin-right: 20px;
+        }
+      }
+
+      .right {
+        display: flex;
+        align-items: center;
+        margin-right: 60px;
+
+        span {
+          margin-left: 20px;
+          color: #838383;
+          font-size: 15px;
+          transition: all 0.3s;
+        }
+
+        span:hover {
+          cursor: pointer;
+          color: #ff6700;
+        }
+      }
+    }
+  }
+}
+
+.github {
+  height: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  p {
+    font-size: 12px;
+    margin: 0 15px;
+    color: #6b7284;
+  }
+
+  span {
+    font-size: 12px;
+    color: black;
+    font-weight: 600;
+  }
+
+  span:hover {
+    cursor: pointer;
+  }
+}
+
+.panel {
+  height: 100%;
+  width: 100%;
+
+  .login_panel {
+    width: 360px;
+    height: 490px;
+    padding: 40px 45px;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 20px 50px 0 hsla(0, 0%, 64%, .1);
+    margin: 0 auto 80px;
+  }
+}
+
+:deep(.el-tabs__item) {
+  font-size: 20px;
+  margin-bottom: 4px;
+  padding-right: 14px;
+}
+
+:deep(.el-tabs__active-bar) {
+  background-color: #ff6700;
+}
+
+:deep(.el-tabs__item:hover) {
+  color: #ff6700;
+}
+
+:deep(.el-tabs__item.is-active) {
+  color: #ff6700;
+}

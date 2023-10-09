@@ -21,6 +21,8 @@ type (
 		AdminChangeRole(ctx context.Context, username string, role int64) (err error)
 		CheckUsername(ctx context.Context, username string) (ok bool, err error)
 		UserChangeStatus(ctx context.Context, id int64, status int64) (err error)
+		UserFindByPhoneOrUsername(ctx context.Context, phone string, username string) (enter *User, err error)
+		CheckPhone(ctx context.Context, phone string) (ok bool, err error)
 	}
 
 	defaultUserModel struct {
@@ -154,4 +156,31 @@ func (d *defaultUserModel) UserChangeStatus(ctx context.Context, id int64, statu
 	tx := d.db.WithContext(ctx)
 
 	return tx.Model(&User{}).Where("id = ?", id).Update("status", status).Error
+}
+
+// UserFindByPhoneOrUsername 通过用户电话号码或者用户名查找用户
+func (d *defaultUserModel) UserFindByPhoneOrUsername(ctx context.Context, phone string, username string) (enter *User, err error) {
+	tx := d.db.WithContext(ctx)
+	span, _ := common.Tracer(ctx, "find-user-by-phone-or-username")
+	defer span.End()
+
+	var u User
+	if err = tx.Model(&User{}).Where("username = ? or phone = ?", username, phone).First(&u).Error; err != nil {
+		return nil, err
+	}
+
+	return &u, nil
+}
+
+// CheckPhone 验证手机号是否已经存在
+func (d *defaultUserModel) CheckPhone(ctx context.Context, phone string) (ok bool, err error) {
+	tx := d.db.WithContext(ctx)
+	var user User
+	if err = tx.Model(&User{}).Where("phone = ?", phone).First(&user).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return true, nil
+		}
+		return false, err
+	}
+	return false, nil
 }

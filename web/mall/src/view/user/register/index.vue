@@ -34,16 +34,16 @@
             @focus="captchaFocus = true"
             @focusout="captchaFocusOut"
           >
-          <p class="captcha">获取验证码</p>
+          <a class="captcha" @click.prevent="sendCaptchaMessage">{{ message }}</a>
         </div>
         <span :class="{isActive: captchaFocus || captchaInfo}">验证码</span>
         <span v-if="captchaInfo" class="info">请输入验证码</span>
       </div>
       <div class="info">
-        <el-checkbox v-model="isActiveInfo" :false-label="false" :true-label="true" size="large" />
+        <el-checkbox v-model="isActiveInfo" size="large" />
         <span>已阅读并同意 zero-mall 用户协议 和 隐私政策</span>
       </div>
-      <button>注册</button>
+      <button :class="{'is-disabled': !isDisabled}" :disabled="isDisabled">注册</button>
       <div class="phone">
         <span>收不到验证码？</span>
       </div>
@@ -52,7 +52,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 
 const captchaFocus = ref()
 const captchaInfo = ref(false)
@@ -85,6 +85,43 @@ const phoneFocusOut = () => {
   }
 }
 
+// ------------------------------------------
+// 显示的消息
+const message = ref('获取验证码')
+// 倒计时
+const count = ref(60)
+// 定时器
+const timer = ref(null)
+// 是否可以登录
+const isDisabled = ref(false)
+
+// 发送验证码消息
+const sendCaptchaMessage = () => {
+  if (formData.value.phone === '') {
+    alert('请输入手机号')
+    return
+  }
+  message.value = `${count.value}秒后重新发送`
+  if (timer.value) clearInterval(timer.value)
+  timer.value = setInterval(() => {
+    if (count.value <= 1) {
+      clearInterval(timer.value)
+      message.value = '获取验证码'
+      count.value = 60
+      return
+    }
+    count.value = count.value - 1
+    message.value = `${count.value}秒后重新发送`
+  }, 1000)
+}
+
+watchEffect(() => {
+  if (formData.value.phone !== '' && formData.value.captcha !== '' && isActiveInfo.value) {
+    isDisabled.value = true
+  } else {
+    isDisabled.value = false
+  }
+})
 </script>
 
 <style scoped lang="scss">
@@ -95,13 +132,15 @@ const phoneFocusOut = () => {
   top: 8px !important;
   font-size: 14px !important;
 }
+
 .input_item {
 
   .phone_span {
     position: relative;
-    left: calc(30% + 10px) !important;
+    left: calc(30% + 18px) !important;
   }
 }
+
 .captcha {
   position: absolute;
   right: 0;
@@ -112,5 +151,8 @@ const phoneFocusOut = () => {
   cursor: pointer;
 }
 
-
+.is-disabled {
+  background-color: rgba(90, 93, 90, 0.16) !important;
+  cursor: text !important;
+}
 </style>

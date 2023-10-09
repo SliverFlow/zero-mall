@@ -78,6 +78,16 @@ func (s *UserServer) UserChangeStatus(ctx context.Context, in *pb.UserChangeStat
 	return l.UserChangeStatus(in)
 }
 
+func (s *UserServer) UserFindByPhoneOrUsername(ctx context.Context, in *pb.UserFindByPhoneOrUsernameReq) (*pb.UserInfoReply, error) {
+	l := logic.NewUserFindByPhoneOrUsernameLogic(ctx, s.svcCtx)
+	return l.UserFindByPhoneOrUsername(in)
+}
+
+func (s *UserServer) UserCheckPhone(ctx context.Context, in *pb.PhoneReq) (*pb.UserNil, error) {
+	l := logic.NewUserCheckPhoneLogic(ctx, s.svcCtx)
+	return l.UserCheckPhone(in)
+}
+
 // 商家相关
 func (s *UserServer) BusinessCreate(ctx context.Context, in *pb.BusinessCreateReq) (*pb.UserNil, error) {
 	l := logic.NewBusinessCreateLogic(ctx, s.svcCtx)

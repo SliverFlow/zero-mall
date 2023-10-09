@@ -1,0 +1,185 @@
+nav {
+  width: 100%;
+  background-color: white;
+  border-bottom: 2px solid #ff6700;
+
+  .content {
+    width: 1220px;
+    height: 100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .left {
+      display: flex;
+      align-items: center;
+
+      p {
+        font-size: 28px;
+        line-height: 48px;
+      }
+
+      span {
+        height: 20px;
+        line-height: 20px;
+        margin-top: 20px;
+        margin-left: 15px;
+        color: #757575;
+        font-size: 12px;
+      }
+
+      img {
+        width: 48px;
+        height: 48px;
+        margin-right: 40px;
+      }
+    }
+
+    .right {
+      display: flex;
+      align-items: center;
+
+      .fg {
+        margin: 0 10px;
+        color: rgba(117, 117, 117, 0.58);
+        font-weight: 100;
+      }
+
+      p {
+        font-size: 14px;
+        color: #757575;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.cart_content {
+  width: 100%;
+  background-color: #f5f5f5;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  .cart_table {
+    width: 1220px;
+    background-color: white;
+    margin-top: 40px;
+
+    .delete_icon {
+
+      &:hover {
+        cursor: pointer;
+        color: #ff6700;
+      }
+    }
+  }
+
+  .settlement {
+    width: 1220px;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    background-color: white;
+    display: flex;
+    height: 50px;
+    align-items: center;
+    justify-content: space-between;
+
+    .left {
+      display: flex;
+      align-items: center;
+      margin-left: 30px;
+
+      p {
+        font-size: 14px;
+        color: #757575;
+      }
+
+      span {
+        margin: 0 20px;
+        color: rgba(117, 117, 117, 0.62);
+        font-weight: 100;
+      }
+    }
+
+    .right {
+      height:100%;
+      display: flex;
+      align-items: center;
+      color: #ff6700;
+      p {
+        font-size: 14px;
+        position: relative;
+        top: 4px;
+      }
+
+      span {
+        font-size: 24px;
+      }
+
+      a {
+        height: 100%;
+        width: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        background-color: rgba(255, 103, 0, 0.89);
+        margin-left: 20px;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      a:hover {
+        background-color: #ff6700;
+      }
+    }
+  }
+}
+
+// 下拉框黑边问题
+:deep(:focus-visible) {
+  outline: none;
+}
+
+:deep(.el-dropdown-menu__item) {
+  font-size: 12px;
+}
+
+:deep(.el-dropdown-menu__item):hover {
+  color: #ff6700;
+  background-color: rgba(204, 204, 204, 0.17);
+}
+:deep(.el-input__wrapper.is-focus) {
+  box-shadow: 0 0 0  1px  #ff6700 inset;
+}
+:deep(.el-input-number__decrease) {
+  background-color: white;
+  border-right: none;
+}
+:deep(.el-input-number__increase) {
+  background-color: white;
+  border-left: none;
+}
+:deep(.el-table tbody tr):hover>td {
+  background-color: white !important;
+}
+:deep(.el-checkbox__input.is-checked .el-checkbox__inner) {
+  background-color: #ff6700;
+  border-color: #ff6700;
+}
+:deep(.el-checkbox__inner):hover {
+  border-color: #ff6700;
+}
+:deep(.el-checkbox__input.is-indeterminate .el-checkbox__inner) {
+  background-color: #ff6700;
+  border-color: #ff6700;
+}
+:deep(.el-table__header) {
+  height: 70px
+}
+:deep(.cell) {
+  font-size: 14px;
+  font-weight: 500;
+  color: #424242;
+}

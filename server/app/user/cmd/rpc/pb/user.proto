@@ -93,6 +93,10 @@ message UserChangeStatusReq {
   int64 ID = 1;
   int64 Status = 2;
 }
+message UserFindByPhoneOrUsernameReq {
+  string Phone = 1;
+  string Username = 2;
+}
 
 
 // ------------------------------------- Business 相关 ---------------
@@ -129,6 +133,9 @@ message BusinessIDReq {
 message BusinessUUIDReq {
   string UUID = 1;
 }
+message PhoneReq {
+  string Phone = 1;
+}
 
 service user {
   // 用户相关
@@ -143,6 +150,8 @@ service user {
   rpc userFindByUUID (UUIDReq) returns (UserInfoReply);
   rpc adminChangeRole(AdminChangeRoleReq) returns (UserNil);
   rpc userChangeStatus (UserChangeStatusReq) returns (UserNil);
+  rpc userFindByPhoneOrUsername (UserFindByPhoneOrUsernameReq) returns (UserInfoReply);
+  rpc userCheckPhone (PhoneReq) returns (UserNil);
 
   // 商家相关
   rpc businessCreate (BusinessCreateReq) returns (UserNil);
