@@ -28,9 +28,9 @@ Redis:
 
 AliSms:
   SingName: 'zero商城'
-  TemplateCode: 'SMS_463636924'
-  AccessKeyId: 'LTAI5t9mHsNJRH4YaHpkcVhc'
-  AccessKeySecret: '0XODnz6fREBgGnOAbkTfGX0OefK85p'
+  TemplateCode: 'xxx'
+  AccessKeyId: 'xxx'
+  AccessKeySecret: 'xxx'
   BaseStore: 'zero-mall:api:user-api:sms'
   BaseExpire: 60
 
