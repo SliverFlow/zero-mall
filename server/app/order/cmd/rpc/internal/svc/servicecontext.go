@@ -33,7 +33,8 @@ func NewServiceContext(c config.Config) *ServiceContext {
 // 同步表
 func autoMigrate(db *gorm.DB) {
 	err := db.AutoMigrate(
-		&model.Order{}, // 订单表
+		&model.Order{},     // 订单表
+		&model.OrderItem{}, // 订单明细表
 	)
 	if err != nil {
 		logx.Error("[DATABASE AutoMigrate ERROR] : ", err)

@@ -9,7 +9,10 @@
           @focus="usernameFocus = true"
           @focusout="usernameFocusOut"
         >
-        <span v-if="loginType === 'password'" :class="{isActive: usernameFocus || usernameInfo}">手机号码 / 用户登录名</span>
+        <span
+          v-if="loginType === 'password'"
+          :class="{isActive: usernameFocus || usernameInfo}"
+        >手机号码 / 用户登录名</span>
         <span v-if="loginType === 'captcha'" :class="{isActive: usernameFocus || usernameInfo}">手机号码</span>
         <span v-if="usernameInfo && loginType === 'password'" class="info">请输入账号</span>
         <span v-if="usernameInfo && loginType === 'captcha'" class="info">请输入手机号码</span>
@@ -45,10 +48,10 @@
         <span v-if="passwordInfo && loginType ==='captcha'" class="info">请输入验证码</span>
       </div>
       <div class="info">
-        <el-checkbox v-model="isActiveInfo" :false-label="false" :true-label="true" size="large" />
+        <el-checkbox v-model="isActiveInfo" size="large" />
         <span>已阅读并同意 zero-mall 用户协议 和 隐私政策</span>
       </div>
-      <button :class="{'is-disabled': !isDisabled}" :disabled="isDisabled">登录</button>
+      <button :class="{'is-disabled': !isDisabled}" :disabled="!isDisabled" @click="enterLogin">登录</button>
       <div class="phone">
         <span>忘记密码？</span>
         <span v-if="loginType === 'password'" @click="initForm(); loginType = 'captcha'">手机验证码登录</span>
@@ -69,6 +72,10 @@
 
 <script setup>
 import { ref, watchEffect } from 'vue'
+import { ElMessage } from 'element-plus'
+import { phoneCaptchaApi, userLoginByPhoneApi, userLoginByPhoneOrUsernameApi } from '@/api/user.js'
+import { useUserStore } from '@/pinia/model/user.js'
+import { useRoute, useRouter } from 'vue-router'
 
 const passwordFocus = ref()
 const passwordInfo = ref(false)
@@ -81,6 +88,7 @@ const loginType = ref('password')
 const formData = ref({
   password: '',
   username: '',
+
 })
 
 const passwordFocusOut = () => {
@@ -111,27 +119,63 @@ const count = ref(60)
 const timer = ref(null)
 // 是否可以登录
 const isDisabled = ref(false)
+// 用户信息存储
+const userStore = useUserStore()
+const route = useRoute()
+const router = useRouter()
+// 记录路径
+const path = route.query.path || '/'
 
 // 发送验证码消息
-const sendCaptchaMessage = () => {
-  if (formData.value.phone === '') {
-    alert('请输入手机号')
+const sendCaptchaMessage = async() => {
+  if (!/^1[3456789]\d{9}$/.test(formData.value.username)) {
+    ElMessage({
+      message: '请按照要求填写信息',
+      type: 'warning',
+      showClose: true,
+    })
     return
   }
-  message.value = `${count.value}秒后重新发送`
-  if (timer.value) clearInterval(timer.value)
-  timer.value = setInterval(() => {
-    if (count.value <= 1) {
-      clearInterval(timer.value)
-      message.value = '获取验证码'
-      count.value = 60
-      return
-    }
-    count.value = count.value - 1
+  // 发送验证码
+  const res = await phoneCaptchaApi({ phone: formData.value.username })
+  if (res.code === 0) {
+    ElMessage({
+      message: '验证码发送成功',
+      type: 'success',
+      showClose: true,
+    })
     message.value = `${count.value}秒后重新发送`
-  }, 1000)
+    if (timer.value) clearInterval(timer.value)
+    timer.value = setInterval(() => {
+      if (count.value <= 1) {
+        clearInterval(timer.value)
+        message.value = '获取验证码'
+        count.value = 60
+        return
+      }
+      count.value = count.value - 1
+      message.value = `${count.value}秒后重新发送`
+    }, 1000)
+  }
 }
 
+// 提交登录
+const enterLogin = async() => {
+  let res
+  if (loginType.value === 'password') {
+    res = await userLoginByPhoneOrUsernameApi({ username: formData.value.username, password: formData.value.password })
+  } else {
+    res = await userLoginByPhoneApi({ phone: formData.value.username, captcha: formData.value.password })
+  }
+  if (res.code === 0) {
+    userStore.userinfo = res.data.user
+    userStore.setToken(res.data.token)
+    userStore.isLogin = true
+    await router.push({ path: path })
+  }
+}
+
+// 初始化表单
 const initForm = () => {
   formData.value = {
     password: '',
@@ -150,14 +194,4 @@ watchEffect(() => {
 
 <style scoped lang="scss">
 @import '@/style/login.scss';
-.captcha {
-  position: absolute;
-  right: 0;
-  top: 18px;
-  font-size: 15px;
-  margin-right: 10px;
-  color: #ff6700;
-  cursor: pointer;
-}
-
 </style>

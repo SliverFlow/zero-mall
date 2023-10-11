@@ -24,6 +24,9 @@ func NewBusinessCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Bu
 	}
 }
 
+// BusinessCreate
+// Author [SliverFlow]
+// @desc 用户端成为商家
 func (l *BusinessCreateLogic) BusinessCreate(req *types.CreateBusinessReq) (resp *types.Nil, err error) {
 
 	_, err = l.svcCtx.UserRpc.UserCreate(l.ctx, &pb.UserCreateReq{

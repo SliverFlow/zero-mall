@@ -8,4 +8,13 @@ info(
     version: "v1.0"
 )
 
-type Nil {}
+type Nil{
+}
+type OrderCreateReq {
+    ProductID string `json:"productId"`
+    Quantity int64 `json:"quantity"` // 数量
+}
+type OrderCreateReply {
+    OrderID string `json:"orderId"`
+    OrderItemID string `json:"orderItemId"`
+}

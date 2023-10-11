@@ -107,6 +107,11 @@ func (s *ProductServer) ProductUpdate(ctx context.Context, in *pb.ProductUpdateR
 	return l.ProductUpdate(in)
 }
 
+func (s *ProductServer) ProductDeductionStock(ctx context.Context, in *pb.ProductDeductionStockReq) (*pb.ProductNil, error) {
+	l := logic.NewProductDeductionStockLogic(ctx, s.svcCtx)
+	return l.ProductDeductionStock(in)
+}
+
 func (s *ProductServer) CategoryIDByProductList(ctx context.Context, in *pb.CategoryIDByProductListReq) (*pb.CategoryIDByProductListReply, error) {
 	l := logic.NewCategoryIDByProductListLogic(ctx, s.svcCtx)
 	return l.CategoryIDByProductList(in)

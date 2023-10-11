@@ -22,7 +22,9 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type OrderClient interface {
-	OrderCreate(ctx context.Context, in *OrderNil, opts ...grpc.CallOption) (*OrderNil, error)
+	OrderCreate(ctx context.Context, in *OrderCreateReq, opts ...grpc.CallOption) (*OrderIDReply, error)
+	OrderDelete(ctx context.Context, in *OrderIdReq, opts ...grpc.CallOption) (*OrderNil, error)
+	OrderItemDelete(ctx context.Context, in *OrderItemIdReq, opts ...grpc.CallOption) (*OrderNil, error)
 }
 
 type orderClient struct {
@@ -33,9 +35,27 @@ func NewOrderClient(cc grpc.ClientConnInterface) OrderClient {
 	return &orderClient{cc}
 }
 
-func (c *orderClient) OrderCreate(ctx context.Context, in *OrderNil, opts ...grpc.CallOption) (*OrderNil, error) {
-	out := new(OrderNil)
+func (c *orderClient) OrderCreate(ctx context.Context, in *OrderCreateReq, opts ...grpc.CallOption) (*OrderIDReply, error) {
+	out := new(OrderIDReply)
 	err := c.cc.Invoke(ctx, "/pb.order/orderCreate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orderClient) OrderDelete(ctx context.Context, in *OrderIdReq, opts ...grpc.CallOption) (*OrderNil, error) {
+	out := new(OrderNil)
+	err := c.cc.Invoke(ctx, "/pb.order/orderDelete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orderClient) OrderItemDelete(ctx context.Context, in *OrderItemIdReq, opts ...grpc.CallOption) (*OrderNil, error) {
+	out := new(OrderNil)
+	err := c.cc.Invoke(ctx, "/pb.order/orderItemDelete", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +66,9 @@ func (c *orderClient) OrderCreate(ctx context.Context, in *OrderNil, opts ...grp
 // All implementations must embed UnimplementedOrderServer
 // for forward compatibility
 type OrderServer interface {
-	OrderCreate(context.Context, *OrderNil) (*OrderNil, error)
+	OrderCreate(context.Context, *OrderCreateReq) (*OrderIDReply, error)
+	OrderDelete(context.Context, *OrderIdReq) (*OrderNil, error)
+	OrderItemDelete(context.Context, *OrderItemIdReq) (*OrderNil, error)
 	mustEmbedUnimplementedOrderServer()
 }
 
@@ -54,8 +76,14 @@ type OrderServer interface {
 type UnimplementedOrderServer struct {
 }
 
-func (UnimplementedOrderServer) OrderCreate(context.Context, *OrderNil) (*OrderNil, error) {
+func (UnimplementedOrderServer) OrderCreate(context.Context, *OrderCreateReq) (*OrderIDReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method OrderCreate not implemented")
+}
+func (UnimplementedOrderServer) OrderDelete(context.Context, *OrderIdReq) (*OrderNil, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method OrderDelete not implemented")
+}
+func (UnimplementedOrderServer) OrderItemDelete(context.Context, *OrderItemIdReq) (*OrderNil, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method OrderItemDelete not implemented")
 }
 func (UnimplementedOrderServer) mustEmbedUnimplementedOrderServer() {}
 
@@ -71,7 +99,7 @@ func RegisterOrderServer(s grpc.ServiceRegistrar, srv OrderServer) {
 }
 
 func _Order_OrderCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(OrderNil)
+	in := new(OrderCreateReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -83,7 +111,43 @@ func _Order_OrderCreate_Handler(srv interface{}, ctx context.Context, dec func(i
 		FullMethod: "/pb.order/orderCreate",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrderServer).OrderCreate(ctx, req.(*OrderNil))
+		return srv.(OrderServer).OrderCreate(ctx, req.(*OrderCreateReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Order_OrderDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OrderIdReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrderServer).OrderDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.order/orderDelete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrderServer).OrderDelete(ctx, req.(*OrderIdReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Order_OrderItemDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OrderItemIdReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrderServer).OrderItemDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.order/orderItemDelete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrderServer).OrderItemDelete(ctx, req.(*OrderItemIdReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -98,6 +162,14 @@ var Order_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "orderCreate",
 			Handler:    _Order_OrderCreate_Handler,
+		},
+		{
+			MethodName: "orderDelete",
+			Handler:    _Order_OrderDelete_Handler,
+		},
+		{
+			MethodName: "orderItemDelete",
+			Handler:    _Order_OrderItemDelete_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

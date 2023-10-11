@@ -22,7 +22,17 @@ func NewOrderServer(svcCtx *svc.ServiceContext) *OrderServer {
 	}
 }
 
-func (s *OrderServer) OrderCreate(ctx context.Context, in *pb.OrderNil) (*pb.OrderNil, error) {
+func (s *OrderServer) OrderCreate(ctx context.Context, in *pb.OrderCreateReq) (*pb.OrderIDReply, error) {
 	l := logic.NewOrderCreateLogic(ctx, s.svcCtx)
 	return l.OrderCreate(in)
+}
+
+func (s *OrderServer) OrderDelete(ctx context.Context, in *pb.OrderIdReq) (*pb.OrderNil, error) {
+	l := logic.NewOrderDeleteLogic(ctx, s.svcCtx)
+	return l.OrderDelete(in)
+}
+
+func (s *OrderServer) OrderItemDelete(ctx context.Context, in *pb.OrderItemIdReq) (*pb.OrderNil, error) {
+	l := logic.NewOrderItemDeleteLogic(ctx, s.svcCtx)
+	return l.OrderItemDelete(in)
 }

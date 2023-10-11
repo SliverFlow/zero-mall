@@ -5,7 +5,7 @@
  ./kafka-topics.sh --create --zookeeper zookeeper:2181 --replication-factor 1 -partitions 1 --topic zpshop-log
 ```
 
-## 目录结构
+ 目录结构
 ```shell
 app # 服务总目录
   cart # 购物车服务
@@ -46,4 +46,17 @@ user:
 product:
   api: 6660
   rpc: 6661  
+```
+为防止应用启动失败，推荐一下启动顺序（从前之后、依次）每个 api 都强依赖与自己对应的 rpc，另外也可能强/弱依赖于其他 rpc 服务
+```shell
+product-rpc 
+user-rpc(若依赖 product-rpc )
+order-rpc
+cart-rpc
+system-rpc
+user-api
+product-api (弱依赖 user-rpc)
+order-api (强依赖 product-rpc)
+cart-api
+system-api （强依赖 user-rpc,弱依赖 product-rpc,order-rpc）
 ```

@@ -25,6 +25,7 @@ type (
 	CategoryUpdateReq            = pb.CategoryUpdateReq
 	ProductChangeStatusReq       = pb.ProductChangeStatusReq
 	ProductCreateReq             = pb.ProductCreateReq
+	ProductDeductionStockReq     = pb.ProductDeductionStockReq
 	ProductDeleteReq             = pb.ProductDeleteReq
 	ProductFindReq               = pb.ProductFindReq
 	ProductListReply             = pb.ProductListReply
@@ -60,6 +61,7 @@ type (
 		ProductChangeStatus(ctx context.Context, in *ProductChangeStatusReq, opts ...grpc.CallOption) (*ProductNil, error)
 		ProductFind(ctx context.Context, in *ProductFindReq, opts ...grpc.CallOption) (*ProductReply, error)
 		ProductUpdate(ctx context.Context, in *ProductUpdateReq, opts ...grpc.CallOption) (*ProductNil, error)
+		ProductDeductionStock(ctx context.Context, in *ProductDeductionStockReq, opts ...grpc.CallOption) (*ProductNil, error)
 		CategoryIDByProductList(ctx context.Context, in *CategoryIDByProductListReq, opts ...grpc.CallOption) (*CategoryIDByProductListReply, error)
 	}
 
@@ -157,6 +159,11 @@ func (m *defaultProduct) ProductFind(ctx context.Context, in *ProductFindReq, op
 func (m *defaultProduct) ProductUpdate(ctx context.Context, in *ProductUpdateReq, opts ...grpc.CallOption) (*ProductNil, error) {
 	client := pb.NewProductClient(m.cli.Conn())
 	return client.ProductUpdate(ctx, in, opts...)
+}
+
+func (m *defaultProduct) ProductDeductionStock(ctx context.Context, in *ProductDeductionStockReq, opts ...grpc.CallOption) (*ProductNil, error) {
+	client := pb.NewProductClient(m.cli.Conn())
+	return client.ProductDeductionStock(ctx, in, opts...)
 }
 
 func (m *defaultProduct) CategoryIDByProductList(ctx context.Context, in *CategoryIDByProductListReq, opts ...grpc.CallOption) (*CategoryIDByProductListReply, error) {

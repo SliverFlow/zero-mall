@@ -36,6 +36,7 @@ type UserClient interface {
 	UserChangeStatus(ctx context.Context, in *UserChangeStatusReq, opts ...grpc.CallOption) (*UserNil, error)
 	UserFindByPhoneOrUsername(ctx context.Context, in *UserFindByPhoneOrUsernameReq, opts ...grpc.CallOption) (*UserInfoReply, error)
 	UserCheckPhone(ctx context.Context, in *PhoneReq, opts ...grpc.CallOption) (*UserNil, error)
+	UserFindByPhone(ctx context.Context, in *PhoneReq, opts ...grpc.CallOption) (*UserInfoReply, error)
 	// 商家相关
 	BusinessCreate(ctx context.Context, in *BusinessCreateReq, opts ...grpc.CallOption) (*UserNil, error)
 	BusinessList(ctx context.Context, in *PageReq, opts ...grpc.CallOption) (*BusinessPageReply, error)
@@ -170,6 +171,15 @@ func (c *userClient) UserCheckPhone(ctx context.Context, in *PhoneReq, opts ...g
 	return out, nil
 }
 
+func (c *userClient) UserFindByPhone(ctx context.Context, in *PhoneReq, opts ...grpc.CallOption) (*UserInfoReply, error) {
+	out := new(UserInfoReply)
+	err := c.cc.Invoke(ctx, "/pb.user/userFindByPhone", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *userClient) BusinessCreate(ctx context.Context, in *BusinessCreateReq, opts ...grpc.CallOption) (*UserNil, error) {
 	out := new(UserNil)
 	err := c.cc.Invoke(ctx, "/pb.user/businessCreate", in, out, opts...)
@@ -242,6 +252,7 @@ type UserServer interface {
 	UserChangeStatus(context.Context, *UserChangeStatusReq) (*UserNil, error)
 	UserFindByPhoneOrUsername(context.Context, *UserFindByPhoneOrUsernameReq) (*UserInfoReply, error)
 	UserCheckPhone(context.Context, *PhoneReq) (*UserNil, error)
+	UserFindByPhone(context.Context, *PhoneReq) (*UserInfoReply, error)
 	// 商家相关
 	BusinessCreate(context.Context, *BusinessCreateReq) (*UserNil, error)
 	BusinessList(context.Context, *PageReq) (*BusinessPageReply, error)
@@ -294,6 +305,9 @@ func (UnimplementedUserServer) UserFindByPhoneOrUsername(context.Context, *UserF
 }
 func (UnimplementedUserServer) UserCheckPhone(context.Context, *PhoneReq) (*UserNil, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserCheckPhone not implemented")
+}
+func (UnimplementedUserServer) UserFindByPhone(context.Context, *PhoneReq) (*UserInfoReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserFindByPhone not implemented")
 }
 func (UnimplementedUserServer) BusinessCreate(context.Context, *BusinessCreateReq) (*UserNil, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BusinessCreate not implemented")
@@ -560,6 +574,24 @@ func _User_UserCheckPhone_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_UserFindByPhone_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PhoneReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).UserFindByPhone(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.user/userFindByPhone",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).UserFindByPhone(ctx, req.(*PhoneReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _User_BusinessCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(BusinessCreateReq)
 	if err := dec(in); err != nil {
@@ -726,6 +758,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "userCheckPhone",
 			Handler:    _User_UserCheckPhone_Handler,
+		},
+		{
+			MethodName: "userFindByPhone",
+			Handler:    _User_UserFindByPhone_Handler,
 		},
 		{
 			MethodName: "businessCreate",

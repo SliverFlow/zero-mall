@@ -3,3 +3,13 @@ package types
 
 type Nil struct {
 }
+
+type OrderCreateReq struct {
+	ProductID string `json:"productId"`
+	Quantity  int64  `json:"quantity"` // 数量
+}
+
+type OrderCreateReply struct {
+	OrderID     string `json:"orderId"`
+	OrderItemID string `json:"orderItemId"`
+}

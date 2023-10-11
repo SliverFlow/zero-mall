@@ -17,8 +17,8 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
-					Path:    "/user/find",
-					Handler: private.OrderFindHandler(serverCtx),
+					Path:    "/order/create",
+					Handler: private.OrderCreateHandler(serverCtx),
 				},
 			}...,
 		),

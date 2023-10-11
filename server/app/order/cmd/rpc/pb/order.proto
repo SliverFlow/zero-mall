@@ -5,7 +5,46 @@ option go_package = "./pb";
 package pb;
 
 message OrderNil {}
+message OrderReply {
+  string OrderID = 1;
+  string UserID = 2;
+  string ShoppingID = 3;
+  double Payment = 4;
+  int64 PaymentType = 5;
+  int64  Postage = 6;
+  int64 Status = 7;
+  int64 PaymentTime = 8;
+  int64 SendTime = 9;
+  int64 EndTime = 10;
+  int64 CloseTime = 11;
+}
+message OrderCreateReq {
+  string UserID = 2;
+  string ShoppingID = 3;
+  string ProductID = 4;
+  int64  Postage = 6;
+  string ProdName = 7;
+  string ProdImage = 8;
+  double CurrentunitPrice = 9;
+  int64  Quantity = 10;
+  double TotalPrice = 11;
+}
+message OrderIDReply {
+  string OrderID = 1;
+  string OrderItemID = 2;
+}
+message OrderIdReq {
+  string OrderID = 1;
+}
+
+//--------------------------------------------------------
+message OrderItemIdReq {
+  string OrderItemID = 1;
+}
 
 service order {
-  rpc orderCreate (OrderNil) returns (OrderNil);
+  rpc orderCreate (OrderCreateReq) returns (OrderIDReply);
+  rpc orderDelete (OrderIdReq) returns (OrderNil);
+
+  rpc orderItemDelete (OrderItemIdReq) returns (OrderNil);
 }

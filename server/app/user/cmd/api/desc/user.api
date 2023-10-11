@@ -20,6 +20,10 @@ service user {
 	post /user/phoneCaptcha (PhoneCaptcheReq) returns (Nil)
 	@handler userRegisterByPhone
 	post /user/registerByPhone (RegisterByPhoneReq) returns (Nil)
+	@handler userLoginByPhoneOrUsername
+	post /user/login/phoneOrUsername (LoginByPhoneOrUsernameReq) returns (UserLoginReply)
+	@handler userLoginByPhone
+	post /user/login/phone (UserLoginByPhoneReq) returns (UserLoginReply)
 }
 
 // user 需要鉴权的

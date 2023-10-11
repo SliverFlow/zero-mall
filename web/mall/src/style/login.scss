@@ -151,3 +151,41 @@
   background-color: rgba(90, 93, 90, 0.16) !important;
   cursor: text !important;
 }
+
+.isPhoneActive {
+  left: calc(30% + 16px) !important;
+  top: 8px !important;
+  font-size: 14px !important;
+}
+
+.input_item {
+
+  .phone_span {
+    position: relative;
+    left: calc(30% + 18px) !important;
+  }
+}
+
+.captcha {
+  position: absolute;
+  right: 0;
+  top: 18px;
+  font-size: 15px;
+  margin-right: 10px;
+  color: #ff6700;
+  cursor: pointer;
+}
+
+.is-disabled {
+  background-color: rgba(90, 93, 90, 0.16) !important;
+  cursor: text !important;
+}
+.captcha {
+  position: absolute;
+  right: 0;
+  top: 18px;
+  font-size: 15px;
+  margin-right: 10px;
+  color: #ff6700;
+  cursor: pointer;
+}

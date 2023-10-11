@@ -17,6 +17,6 @@ import "api/order.api"
 	middleware : Auth
 )
 service order {
-	@handler orderFind
-	post /user/find (Nil) returns (Nil);
+	@handler orderCreate
+	post /order/create (OrderCreateReq) returns (OrderCreateReply);
 }

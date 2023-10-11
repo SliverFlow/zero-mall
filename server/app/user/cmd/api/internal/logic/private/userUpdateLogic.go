@@ -25,6 +25,9 @@ func NewUserUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserUp
 	}
 }
 
+// UserUpdate
+// Author [SliverFlow]
+// @desc 用户端更新信息
 func (l *UserUpdateLogic) UserUpdate(req *types.UserUpdateReq) (resp *types.Nil, err error) {
 	var u pb.UserUpdateReq
 	_ = copier.Copy(&u, req)

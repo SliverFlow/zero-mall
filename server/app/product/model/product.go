@@ -2,7 +2,7 @@ package model
 
 import (
 	"context"
-	"fmt"
+	"google.golang.org/grpc/status"
 	"gorm.io/gorm"
 	"server/common"
 )
@@ -17,6 +17,7 @@ type (
 
 		ProductStagingByBusinessID(ctx context.Context, businessId string) (err error)
 		ProductChangeStatus(ctx context.Context, productId string, status int64) (err error)
+		ProductDeductionStock(ctx context.Context, productId string, num int64) (err error)
 	}
 
 	defaultProductModel struct {
@@ -126,8 +127,6 @@ func (d *defaultProductModel) ProductUpdate(ctx context.Context, product *Produc
 	span, _ := d.tracer(ctx, "product-update")
 	defer span.End()
 
-	fmt.Println(product.Categories)
-
 	var p Product
 	// 更新关系
 	err = tx.Model(&Product{}).Preload("Categories").Where("product_id = ?", product.ProductID).First(&p).Error
@@ -159,4 +158,24 @@ func (d *defaultProductModel) ProductChangeStatus(ctx context.Context, productId
 	defer span.End()
 
 	return tx.Model(&Product{}).Where("product_id = ?", productId).Update("status", status).Error
+}
+
+// ProductDeductionStock
+// Author [SliverFlow]
+// @desc 扣减商品库存
+func (d *defaultProductModel) ProductDeductionStock(ctx context.Context, productId string, num int64) (err error) {
+	tx := d.db.WithContext(ctx)
+	span, _ := d.tracer(ctx, "product-deduction-stock")
+	defer span.End()
+
+	product, err := d.ProductFind(ctx, productId)
+	if err != nil {
+		return err
+	}
+
+	if product.Stock-num < 0 {
+		return status.Errorf(100001, "当前商品库存不足")
+	}
+
+	return tx.Model(&Product{}).Where("product_id = ?", productId).Update("stock", product.Stock-num).Error
 }

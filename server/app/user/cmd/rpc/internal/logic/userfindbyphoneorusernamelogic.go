@@ -30,7 +30,7 @@ func NewUserFindByPhoneOrUsernameLogic(ctx context.Context, svcCtx *svc.ServiceC
 // Author [SliverFlow]
 // @desc 通过手机号或用户名查找用户
 func (l *UserFindByPhoneOrUsernameLogic) UserFindByPhoneOrUsername(in *pb.UserFindByPhoneOrUsernameReq) (*pb.UserInfoReply, error) {
-	user, err := l.svcCtx.UserModel.UserFindByPhoneOrUsername(l.ctx, in.GetPhone(), in.GetUsername())
+	user, err := l.svcCtx.UserModel.UserFindByPhoneOrUsername(l.ctx, in.GetUsername())
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, status.Errorf(100001, "用户不存在")

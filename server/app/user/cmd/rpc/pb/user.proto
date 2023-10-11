@@ -94,8 +94,7 @@ message UserChangeStatusReq {
   int64 Status = 2;
 }
 message UserFindByPhoneOrUsernameReq {
-  string Phone = 1;
-  string Username = 2;
+  string Username = 1;
 }
 
 
@@ -152,6 +151,7 @@ service user {
   rpc userChangeStatus (UserChangeStatusReq) returns (UserNil);
   rpc userFindByPhoneOrUsername (UserFindByPhoneOrUsernameReq) returns (UserInfoReply);
   rpc userCheckPhone (PhoneReq) returns (UserNil);
+  rpc userFindByPhone (PhoneReq) returns (UserInfoReply);
 
   // 商家相关
   rpc businessCreate (BusinessCreateReq) returns (UserNil);

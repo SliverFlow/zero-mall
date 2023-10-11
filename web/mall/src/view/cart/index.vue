@@ -8,22 +8,7 @@
           <span>温馨提示：产品是否购买成功，以最终下单为准哦，请尽快结算</span>
         </div>
         <div class="right">
-          <el-dropdown style="position: relative;top:-1px">
-            <span>
-              你脑子挖掉了
-              <el-icon style="margin-left: 2px;position: relative;top: 2px">
-                <arrow-down />
-              </el-icon>
-            </span>
-            <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item>个人中心</el-dropdown-item>
-                <el-dropdown-item>评价晒单</el-dropdown-item>
-                <el-dropdown-item>我的喜欢</el-dropdown-item>
-                <el-dropdown-item divided>退出登录</el-dropdown-item>
-              </el-dropdown-menu>
-            </template>
-          </el-dropdown>
+          <user-info-com v-if="isLogin"/>
           <span class="fg">|</span>
           <p>我的订单</p>
         </div>
@@ -96,6 +81,8 @@
 <script setup>
 import MallFooter from '@/view/layout/footer/mallFooter.vue'
 import { ref } from 'vue'
+import UserInfoCom from '@/components/userInfo/UserInfoCom.vue'
+import { useUserStore } from '@/pinia/model/user.js'
 
 const tableData = ref([
   {
@@ -128,6 +115,10 @@ const handleSelectionChange = (e) => {
 // 删除购物车商品
 const deleteCartItem = (id) => {
 }
+
+//
+const userStore = useUserStore()
+const isLogin = userStore.isLogin
 </script>
 
 <style scoped lang="scss">

@@ -6,7 +6,6 @@ Log:
   ServiceName: order-api
   Level: info
 
-# user rpc 配置
 OrderRpc:
   Etcd:
     Hosts:
@@ -14,12 +13,27 @@ OrderRpc:
     #      - etcd:2379
     Key: order.rpc
 
+ProductRpc:
+  Etcd:
+    Hosts:
+      - 120.77.237.246:32379
+    #      - etcd:2379
+    Key: product.rpc
+
+UserRpc:
+  Etcd:
+    Hosts:
+      - 120.77.237.246:32379
+    #      - etcd:2379
+    Key: user.rpc
+
+
 XJwt:
   Secret: zhengjunxing
   Isuser: zjx
-  Expire: 86400
-  Buffer: 43200
-  BlackListPrefix: "zpshop:token_black_list:"
+  Expire: 1296000
+  Buffer: 604800
+  BlackListPrefix: "zero-mall:order-api:token_black_list:"
 
 Redis:
   Host: "120.77.237.246:6379"

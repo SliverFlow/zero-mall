@@ -52,6 +52,7 @@ type (
 		UserChangeStatus(ctx context.Context, in *UserChangeStatusReq, opts ...grpc.CallOption) (*UserNil, error)
 		UserFindByPhoneOrUsername(ctx context.Context, in *UserFindByPhoneOrUsernameReq, opts ...grpc.CallOption) (*UserInfoReply, error)
 		UserCheckPhone(ctx context.Context, in *PhoneReq, opts ...grpc.CallOption) (*UserNil, error)
+		UserFindByPhone(ctx context.Context, in *PhoneReq, opts ...grpc.CallOption) (*UserInfoReply, error)
 		// 商家相关
 		BusinessCreate(ctx context.Context, in *BusinessCreateReq, opts ...grpc.CallOption) (*UserNil, error)
 		BusinessList(ctx context.Context, in *PageReq, opts ...grpc.CallOption) (*BusinessPageReply, error)
@@ -136,6 +137,11 @@ func (m *defaultUser) UserFindByPhoneOrUsername(ctx context.Context, in *UserFin
 func (m *defaultUser) UserCheckPhone(ctx context.Context, in *PhoneReq, opts ...grpc.CallOption) (*UserNil, error) {
 	client := pb.NewUserClient(m.cli.Conn())
 	return client.UserCheckPhone(ctx, in, opts...)
+}
+
+func (m *defaultUser) UserFindByPhone(ctx context.Context, in *PhoneReq, opts ...grpc.CallOption) (*UserInfoReply, error) {
+	client := pb.NewUserClient(m.cli.Conn())
+	return client.UserFindByPhone(ctx, in, opts...)
 }
 
 // 商家相关

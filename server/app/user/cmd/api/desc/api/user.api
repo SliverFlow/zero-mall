@@ -20,6 +20,12 @@ type PhoneCaptcheReq {
 
 // 用户端 用户信息出参
 type UserReply {
+    UUID string `json:"uuid"`
+    Username string `json:"username"`
+    Nickname string `json:"nickname"`
+    Avatar string `json:"avatar"`
+    Phone string `json:"phone"`
+    Email string `json:"email"`
 }
 
 // 用户端更新信息入参
@@ -28,5 +34,19 @@ type UserUpdateReq {
 
 type RegisterByPhoneReq {
     Phone string `json:"phone"`
-    Captche string `json:"captche"`
+    Captcha string `json:"captcha"`
+}
+
+type LoginByPhoneOrUsernameReq {
+    Username string `json:"username"`
+    Password string `json:"password"`
+}
+
+type UserLoginReply {
+    Token string `json:"token"`
+    User UserReply `json:"user"`
+}
+type UserLoginByPhoneReq {
+    Phone string `json:"phone"`
+    Captcha string `json:"captcha"`
 }

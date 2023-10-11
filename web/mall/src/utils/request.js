@@ -1,6 +1,7 @@
 import axios from 'axios'
 // import { useUserStore } from '@/store/model/user.js'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import { useUserStore } from '@/pinia/model/user.js'
 // import router, { ng } from '@/router/index.js'
 
 const service = axios.create({
@@ -8,12 +9,14 @@ const service = axios.create({
   baseURL: import.meta.env.VITE_BASE_API
 })
 
+const userStore = useUserStore()
+
 // 请求拦截
 service.interceptors.request.use(
   config => {
     // const userStore = useUserStore()
     config.headers = {
-      // 'Authorization': userStore.token,
+      'Authorization': userStore.getToken(),
       ...config.headers
     }
     return config
@@ -35,7 +38,7 @@ service.interceptors.response.use(
     // const userStore = useUserStore()
     // 头信息里面有 token 就替换原来的 token
     if (response.headers['new-token']) {
-      // userStore.setToken(response.headers['new-token'])
+      userStore.setToken(response.headers['new-token'])
     }
     // 判断请求是否成功
     if (response.data.code !== 0) {

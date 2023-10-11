@@ -40,7 +40,10 @@ func (l *ProductFindLogic) ProductFind(req *types.ProductFindReq) (resp *types.P
 	_ = copier.Copy(&typroduct, pbreply)
 	_ = json.Unmarshal([]byte(pbreply.Image), &typroduct.Image)
 
-	pbnusiness, _ := l.svcCtx.UserRpc.BusinessFind(l.ctx, &userpb.BusinessIDReq{BusinessID: pbreply.BusinessID})
+	pbnusiness, err := l.svcCtx.UserRpc.BusinessFind(l.ctx, &userpb.BusinessIDReq{BusinessID: pbreply.BusinessID})
+	if err != nil {
+		return nil, err
+	}
 	typroduct.BudinessName = pbnusiness.Name
 
 	return &typroduct, nil

@@ -1,14 +1,29 @@
 import service from '@/utils/request.js'
 
-export const userLoginApi = (data) => {
+export const userFindApi = () => {
   return service({
-    url: '/user/login',
-    method: 'post',
-    data
+    url: '/user/find',
+    method: 'post'
   })
 }
 
-const userPhoneCaptchaApi = (data) => {
+export const userLoginByPhoneOrUsernameApi = (data) => {
+  return service({
+    url: '/user/login/phoneOrUsername',
+    method: 'post',
+    data: data
+  })
+}
+
+export const userLoginByPhoneApi = (data) => {
+  return service({
+    url: '/user/login/phone',
+    method: 'post',
+    data: data
+  })
+}
+
+export const phoneCaptchaApi = (data) => {
   return service({
     url: '/user/phoneCaptcha',
     method: 'post',

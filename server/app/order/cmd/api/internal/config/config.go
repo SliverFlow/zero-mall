@@ -9,7 +9,9 @@ import (
 type Config struct {
 	rest.RestConf
 
-	OrderRpc zrpc.RpcClientConf
+	OrderRpc   zrpc.RpcClientConf
+	ProductRpc zrpc.RpcClientConf
+	UserRpc    zrpc.RpcClientConf
 	// jwt 相关配置
 	XJwt struct {
 		Isuser          string // 签发者

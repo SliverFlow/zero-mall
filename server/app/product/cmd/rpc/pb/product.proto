@@ -76,7 +76,7 @@ message ProductReply {
   string Subtitle = 4;
   string Image = 5;
   string Detail = 6;
-  float Price = 7;
+  double Price = 7;
   int64 Stock = 8;
   int64 Status = 9;
   repeated Category Categories = 10;
@@ -130,6 +130,10 @@ message ProductUpdateReq {
   int64 Status = 9;
   repeated Category Categories = 10;
 }
+message ProductDeductionStockReq {
+  string ProductID = 1;
+  int64 Quantity = 2;
+}
 
 service product {
   // @desc 所有的分类列表
@@ -159,6 +163,7 @@ service product {
   rpc ProductChangeStatus (ProductChangeStatusReq) returns (ProductNil);
   rpc ProductFind (ProductFindReq) returns (ProductReply);
   rpc ProductUpdate (ProductUpdateReq) returns (ProductNil);
+  rpc ProductDeductionStock (ProductDeductionStockReq) returns (ProductNil);
 
   rpc categoryIDByProductList (CategoryIDByProductListReq) returns (categoryIDByProductListReply);
 }

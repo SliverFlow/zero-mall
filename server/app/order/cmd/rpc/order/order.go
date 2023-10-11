@@ -13,10 +13,17 @@ import (
 )
 
 type (
-	OrderNil = pb.OrderNil
+	OrderCreateReq = pb.OrderCreateReq
+	OrderIDReply   = pb.OrderIDReply
+	OrderIdReq     = pb.OrderIdReq
+	OrderItemIdReq = pb.OrderItemIdReq
+	OrderNil       = pb.OrderNil
+	OrderReply     = pb.OrderReply
 
 	Order interface {
-		OrderCreate(ctx context.Context, in *OrderNil, opts ...grpc.CallOption) (*OrderNil, error)
+		OrderCreate(ctx context.Context, in *OrderCreateReq, opts ...grpc.CallOption) (*OrderIDReply, error)
+		OrderDelete(ctx context.Context, in *OrderIdReq, opts ...grpc.CallOption) (*OrderNil, error)
+		OrderItemDelete(ctx context.Context, in *OrderItemIdReq, opts ...grpc.CallOption) (*OrderNil, error)
 	}
 
 	defaultOrder struct {
@@ -30,7 +37,17 @@ func NewOrder(cli zrpc.Client) Order {
 	}
 }
 
-func (m *defaultOrder) OrderCreate(ctx context.Context, in *OrderNil, opts ...grpc.CallOption) (*OrderNil, error) {
+func (m *defaultOrder) OrderCreate(ctx context.Context, in *OrderCreateReq, opts ...grpc.CallOption) (*OrderIDReply, error) {
 	client := pb.NewOrderClient(m.cli.Conn())
 	return client.OrderCreate(ctx, in, opts...)
+}
+
+func (m *defaultOrder) OrderDelete(ctx context.Context, in *OrderIdReq, opts ...grpc.CallOption) (*OrderNil, error) {
+	client := pb.NewOrderClient(m.cli.Conn())
+	return client.OrderDelete(ctx, in, opts...)
+}
+
+func (m *defaultOrder) OrderItemDelete(ctx context.Context, in *OrderItemIdReq, opts ...grpc.CallOption) (*OrderNil, error) {
+	client := pb.NewOrderClient(m.cli.Conn())
+	return client.OrderItemDelete(ctx, in, opts...)
 }

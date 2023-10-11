@@ -88,6 +88,11 @@ func (s *UserServer) UserCheckPhone(ctx context.Context, in *pb.PhoneReq) (*pb.U
 	return l.UserCheckPhone(in)
 }
 
+func (s *UserServer) UserFindByPhone(ctx context.Context, in *pb.PhoneReq) (*pb.UserInfoReply, error) {
+	l := logic.NewUserFindByPhoneLogic(ctx, s.svcCtx)
+	return l.UserFindByPhone(in)
+}
+
 // 商家相关
 func (s *UserServer) BusinessCreate(ctx context.Context, in *pb.BusinessCreateReq) (*pb.UserNil, error) {
 	l := logic.NewBusinessCreateLogic(ctx, s.svcCtx)

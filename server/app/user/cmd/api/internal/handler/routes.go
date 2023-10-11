@@ -24,6 +24,16 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/user/registerByPhone",
 				Handler: public.UserRegisterByPhoneHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/user/login/phoneOrUsername",
+				Handler: public.UserLoginByPhoneOrUsernameHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/user/login/phone",
+				Handler: public.UserLoginByPhoneHandler(serverCtx),
+			},
 		},
 		rest.WithPrefix("/v1"),
 	)

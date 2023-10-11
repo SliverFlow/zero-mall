@@ -24,9 +24,10 @@
           <a href="" style="color: #ff6700;">成为商家</a>
         </div>
         <div class="right">
-          <a @click="toLogin">登录</a>
-          <span>|</span>
-          <a @click="toRegister">注册</a>
+          <a v-if="!isLogin" style="cursor: pointer" @click="toLogin">登录</a>
+          <span v-if="!isLogin">|</span>
+          <a v-if="!isLogin" style="cursor: pointer" @click="toRegister">注册</a>
+          <user-info-com v-if="isLogin" style="color: #cecece"/>
           <span>|</span>
           <a href="">消息通知</a>
           <div class="shop-car" @click="toCart" @mouseover="show = !show" @mouseout="show = !show">
@@ -101,7 +102,7 @@
               :class="{icon_fover: isFocus,search_icon_hover: isFocus}"
               @click="search"
             >
-              <Search/>
+              <Search />
             </el-icon>
             <div v-if="isFocus" class="input_word">
               <a href="">全部商品</a>
@@ -116,26 +117,31 @@
       </div>
     </nav>
     <div class="content">
-      <router-view/>
+      <router-view />
     </div>
-    <mall-footer/>
+    <mall-footer />
   </div>
 </template>
 
 <script setup>
 import { ref, provide } from 'vue'
 import { Search } from '@element-plus/icons-vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import MallFooter from '@/view/layout/footer/mallFooter.vue'
 import { useActiveStore } from '@/pinia/model/active.js'
+import { useUserStore } from '@/pinia/model/user.js'
+import UserInfoCom from '@/components/userInfo/UserInfoCom.vue'
 
 const show = ref(false)
 const isFocus = ref(false)
 const router = useRouter()
+const route = useRoute()
 const keyWord = ref('')
+const userStore = useUserStore()
+const isLogin = ref(userStore.isLogin)
 
 const toLogin = () => {
-  router.push({ name: 'Login' })
+  router.push({ name: 'Login', query: { path: route.path }})
 }
 const toCart = () => {
   router.push({ name: 'Cart' })
@@ -161,4 +167,5 @@ provide('keyWord', keyWord)
 
 <style scoped lang="scss">
 @import '@/style/layout.scss';
+
 </style>

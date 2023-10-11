@@ -17,9 +17,9 @@ UserRpc:
 XJwt:
   Secret: zhengjunxing
   Isuser: zjx
-  Expire: 86400
-  Buffer: 43200
-  BlackListPrefix: "zpshop:token_black_list:"
+  Expire: 1296000
+  Buffer: 604800
+  BlackListPrefix: "zero-mall:user-api:token_black_list:"
 
 Redis:
   Host: "120.77.237.246:6379"
@@ -28,11 +28,11 @@ Redis:
 
 AliSms:
   SingName: 'zero商城'
-  TemplateCode: 'xxx'
-  AccessKeyId: 'xxx'
-  AccessKeySecret: 'xxx'
+  TemplateCode: 'SMS_463636924'
+  AccessKeyId: 'LTAI5t9mHsNJRH4YaHpkcVhc'
+  AccessKeySecret: '0XODnz6fREBgGnOAbkTfGX0OefK85p'
   BaseStore: 'zero-mall:api:user-api:sms'
-  BaseExpire: 60
+  BaseExpire: 300
 
 #Prometheus:
 #  Host: 0.0.0.0

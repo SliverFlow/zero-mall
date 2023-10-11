@@ -9,6 +9,12 @@ type PhoneCaptcheReq struct {
 }
 
 type UserReply struct {
+	UUID     string `json:"uuid"`
+	Username string `json:"username"`
+	Nickname string `json:"nickname"`
+	Avatar   string `json:"avatar"`
+	Phone    string `json:"phone"`
+	Email    string `json:"email"`
 }
 
 type UserUpdateReq struct {
@@ -16,7 +22,22 @@ type UserUpdateReq struct {
 
 type RegisterByPhoneReq struct {
 	Phone   string `json:"phone"`
-	Captcha string `json:"captche"`
+	Captcha string `json:"captcha"`
+}
+
+type LoginByPhoneOrUsernameReq struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
+type UserLoginReply struct {
+	Token string    `json:"token"`
+	User  UserReply `json:"user"`
+}
+
+type UserLoginByPhoneReq struct {
+	Phone   string `json:"phone"`
+	Captcha string `json:"captcha"`
 }
 
 type Business struct {
