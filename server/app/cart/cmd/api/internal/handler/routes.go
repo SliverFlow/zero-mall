@@ -17,8 +17,13 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
-					Path:    "/cart/find",
-					Handler: private.CartFindHandler(serverCtx),
+					Path:    "/cart/create",
+					Handler: private.CartCreateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/cart/list",
+					Handler: private.CartListHandler(serverCtx),
 				},
 			}...,
 		),

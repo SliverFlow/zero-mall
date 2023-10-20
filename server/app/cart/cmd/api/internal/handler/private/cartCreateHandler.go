@@ -10,16 +10,16 @@ import (
 	"server/app/cart/cmd/api/internal/types"
 )
 
-func CartFindHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func CartCreateHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.Nil
+		var req types.CartCreateReq
 		if err := httpx.Parse(r, &req); err != nil {
 			result.ParamErrorResult(r, w, err)
 			return
 		}
 
-		l := private.NewCartFindLogic(r.Context(), svcCtx)
-		resp, err := l.CartFind(&req)
+		l := private.NewCartCreateLogic(r.Context(), svcCtx)
+		resp, err := l.CartCreate(&req)
 		result.HttpResult(r, w, resp, err)
 	}
 }

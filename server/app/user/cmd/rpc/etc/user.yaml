@@ -16,7 +16,7 @@ Mysql:
 #  Path: 121.37.20.40
 #  Password: '123456'
   Port: 3306
-  Dbname: zpshop
+  Dbname: zero-mall
   Username: root
   MaxIdleConns: 10
   MaxOpenConns: 10

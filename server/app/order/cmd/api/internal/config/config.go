@@ -21,5 +21,8 @@ type Config struct {
 		BlackListPrefix string // 黑名单前缀
 	}
 
-	Redis redis.RedisConf
+	Redis      redis.RedisConf
+	EtcdLocker struct {
+		Hosts []string
+	}
 }

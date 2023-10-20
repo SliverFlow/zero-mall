@@ -3,3 +3,30 @@ package types
 
 type Nil struct {
 }
+
+type Cart struct {
+	CartID    string `json:"cartId"`
+	UserID    string `json:"userId"`
+	ProductID string `json:"productId"`
+	Quantity  int64  `json:"quantity"`
+	Checked   int64  `json:"checked"`
+}
+
+type CartCreateReq struct {
+	ProductID string `json:"productId"`
+	Quantity  int64  `json:"quantity"`
+	Checked   int64  `json:"checked"`
+}
+
+type CartListReq struct {
+	Page     int64  `json:"page"`
+	PageSize int64  `json:"pageSize"`
+	KeyWork  string `json:"keyWork"`
+}
+
+type CartListReply struct {
+	Page     int64  `json:"page"`
+	PageSize int64  `json:"pageSize"`
+	Total    int64  `json:"total"`
+	List     []Cart `json:"list"`
+}

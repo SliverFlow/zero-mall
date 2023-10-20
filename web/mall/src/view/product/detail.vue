@@ -10,7 +10,11 @@
     <div class="detail_container">
       <div class="left">
         <el-carousel style="width: 560px;height: 560px;">
-          <el-carousel-item v-for="item in product.image" :key="item.url" style="width: 560px;height: 560px;background-color:#ccc;">
+          <el-carousel-item
+            v-for="item in product.image"
+            :key="item.url"
+            style="width: 560px;height: 560px;background-color:#ccc;"
+          >
             <el-image
               style="width: 100%;height: 100%;"
               :src="item.url"
@@ -27,7 +31,7 @@
         <!--价钱-->
         <span class="price">{{ product.price }}元</span>
         <!--分割线-->
-        <div class="pr" />
+        <div class="pr"/>
         <!--总计-->
         <div class="count">
           <div class="info">
@@ -60,7 +64,7 @@
               />
             </svg>
             购买</a>
-          <a>
+          <a @click.prevent="addProductToCart">
             <svg
               t="1694941655090"
               class="icon"
@@ -330,19 +334,56 @@
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { ref } from 'vue'
 import { productFindApi } from '@/api/product.js'
+import { useUserStore } from '@/pinia/model/user.js'
+import { ElMessageBox, ElNotification } from 'element-plus'
+import { cartCreateApi } from '@/api/cart.js'
 
 const route = useRoute()
+const router = useRouter()
 const productId = ref(route.query.id)
 const product = ref({})
+const userStore = useUserStore()
+const isLogin = userStore.isLogin
 
 const loadData = async() => {
   const res = await productFindApi({ productId: productId.value })
   product.value = res.data
 }
 loadData()
+
+const addProductToCart = () => {
+  if (!isLogin) {
+    // 提示进入登录界面
+    ElMessageBox.confirm(
+      '加入购物车需要您登录账号，是否前往进入登录界面',
+      '提示',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+    ).then(() => {
+      router.push({ name: 'Login', query: { path: '/product/detail?id=' + productId.value } })
+    })
+  } else {
+    createCart()
+  }
+}
+
+// 创建购物车
+const createCart = async() => {
+  const res = await cartCreateApi({ productId: productId.value, quantity: 1, checked: 1 })
+  if (res.code === 0) {
+    ElNotification({
+      title: '通知',
+      message: '当前商品以成功添加您的进购物车',
+      type: 'success',
+    })
+  }
+}
 </script>
 
 <style scoped lang="scss">

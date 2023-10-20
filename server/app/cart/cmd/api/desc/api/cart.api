@@ -12,3 +12,29 @@ type Nil {
 
 }
 
+type Cart {
+    CartID string `json:"cartId"`
+    UserID string `json:"userId"`
+    ProductID string `json:"productId"`
+    Quantity int64 `json:"quantity"`
+    Checked int64 `json:"checked"`
+}
+
+type CartCreateReq {
+    ProductID string `json:"productId"`
+    Quantity int64 `json:"quantity"`
+    Checked int64 `json:"checked"`
+}
+
+type CartListReq {
+    Page int64 `json:"page"`
+    PageSize int64 `json:"pageSize"`
+    KeyWork string `json:"keyWork"`
+}
+
+type CartListReply {
+    Page int64 `json:"page"`
+    PageSize int64 `json:"pageSize"`
+    Total int64 `json:"total"`
+    List []Cart `json:"list"`
+}

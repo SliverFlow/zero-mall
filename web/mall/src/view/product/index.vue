@@ -1,6 +1,6 @@
 <template>
   <div class="content_container">
-    <div class="title"/>
+    <div class="title" />
     <!--分类显示-->
     <div class="category_container">
       <div class="category_content">
@@ -43,14 +43,13 @@
     <div class="product_list">
       <div class="content">
         <template v-for="(v) in productList">
-          <div class="prod" @click="toProductDetail(v.productId)">
+          <div style="position: relative" class="prod" @click="toProductDetail(v.productId)">
             <img
               :src="v.image[0].url"
               alt=""
             >
-            <el-text style="width: 240px;display: flex;align-items: center;justify-content: center" truncated>{{
-                v.name
-              }}
+            <el-text style="width: 240px;display: flex;align-items: center;justify-content: center" truncated>
+              {{ v.name }}
             </el-text>
             <span class="price">{{ v.price }}元</span>
             <ul>
@@ -65,6 +64,9 @@
             </ul>
             <div class="tag">
               <span>分期</span>
+            </div>
+            <div class="prod_no" v-if="v.stock > 0">
+              <span>已售罄</span>
             </div>
           </div>
         </template>
@@ -113,7 +115,7 @@ const handleSizeChange = (val) => {
 }
 
 const toProductDetail = (id) => {
-  router.push({ name: 'ProductDetail', query: { id: id } })
+  router.push({ name: 'ProductDetail', query: { id: id }})
 }
 
 const loadData = async() => {
@@ -136,6 +138,7 @@ const loadCategoryList = async() => {
 }
 
 const reload = async(id) => {
+  await router.push({ name: 'ProductList', query: { id: id }})
   categoryId.value = id
   await loadData()
 }
@@ -165,4 +168,12 @@ watch(() => activeStore.active, async(val, old) => {
 .active {
   color: #ff6700;
 }
+//:deep(.prod_no) {
+//  position: absolute;
+//  top: 0;
+//  left: 0;
+//  width: 100%;
+//  height: 100%;
+//  background-color: rgba(0, 0, 0, 0.07);
+//}
 </style>

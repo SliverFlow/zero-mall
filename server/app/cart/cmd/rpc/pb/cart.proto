@@ -3,7 +3,33 @@ option go_package = "./pb";
 package pb;
 
 message CartNil {}
+message CartInfo {
+  string UserID = 1;
+  string ProductID = 2;
+  int64 Quantity = 3;
+  int64 Checked = 4;
+  string CartID = 5;
+  string ProductName = 6;
+}
+message CartCreateReq {
+  string UserID = 1;
+  string ProductID = 2;
+  int64 Quantity = 3;
+  int64 Checked = 4;
+  string ProductName = 5;
+}
+message CartListReq {
+  int64 Page = 1;
+  int64 PageSize = 2;
+  string KeyWord = 3;
+  string UserID = 4;
+}
+message CartListReply {
+  int64 Total = 1;
+  repeated CartInfo List = 2;
+}
 
 service cart {
-  rpc cartCreate(CartNil) returns (CartNil);
+  rpc cartCreate(CartCreateReq) returns (CartNil);
+  rpc cartList (CartListReq) returns (CartListReply);
 }

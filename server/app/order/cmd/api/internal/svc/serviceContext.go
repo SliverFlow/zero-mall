@@ -7,6 +7,7 @@ import (
 	redis2 "github.com/zeromicro/go-zero/core/stores/redis"
 	"github.com/zeromicro/go-zero/rest"
 	"github.com/zeromicro/go-zero/zrpc"
+	clientv3 "go.etcd.io/etcd/client/v3"
 	"os"
 	"server/app/order/cmd/api/internal/config"
 	"server/app/order/cmd/rpc/order"
@@ -23,6 +24,7 @@ type ServiceContext struct {
 	OrderRpc   order.Order
 	ProductRpc product.Product
 	UserRpc    user.User
+	EtcdCli    *clientv3.Client
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -36,6 +38,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		OrderRpc:   newOrderRpc(c.OrderRpc),
 		ProductRpc: newProductRpc(c.ProductRpc),
 		UserRpc:    newUserRpc(c.UserRpc),
+		EtcdCli:    newEtcdClient(c.EtcdLocker.Hosts),
 	}
 }
 
@@ -86,4 +89,17 @@ func NewRedisClient(c redis2.RedisConf) *redis.Client {
 	}
 	logx.Info("[REDIS CONNECTION SUCCESS ] PING RESULT : ", result)
 	return cli
+}
+
+func newEtcdClient(endpoints []string) *clientv3.Client {
+	c, err := clientv3.New(clientv3.Config{
+		Endpoints: endpoints,
+	})
+	if err != nil {
+		logx.Errorf("[ETCD CONNECTION ERROR] ", err)
+		os.Exit(0)
+		return nil
+	}
+	logx.Info("[ETCD CONNECTION SUCCESS]")
+	return c
 }

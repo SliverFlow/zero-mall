@@ -22,7 +22,12 @@ func NewCartServer(svcCtx *svc.ServiceContext) *CartServer {
 	}
 }
 
-func (s *CartServer) CartCreate(ctx context.Context, in *pb.CartNil) (*pb.CartNil, error) {
+func (s *CartServer) CartCreate(ctx context.Context, in *pb.CartCreateReq) (*pb.CartNil, error) {
 	l := logic.NewCartCreateLogic(ctx, s.svcCtx)
 	return l.CartCreate(in)
+}
+
+func (s *CartServer) CartList(ctx context.Context, in *pb.CartListReq) (*pb.CartListReply, error) {
+	l := logic.NewCartListLogic(ctx, s.svcCtx)
+	return l.CartList(in)
 }

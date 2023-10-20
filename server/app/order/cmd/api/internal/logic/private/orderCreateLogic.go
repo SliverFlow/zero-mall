@@ -2,6 +2,7 @@ package private
 
 import (
 	"context"
+	"go.etcd.io/etcd/client/v3/concurrency"
 	"google.golang.org/grpc/status"
 	orderpb "server/app/order/cmd/rpc/pb"
 	productpb "server/app/product/cmd/rpc/pb"
@@ -76,6 +77,11 @@ func (l *OrderCreateLogic) OrderCreate(req *types.OrderCreateReq) (resp *types.O
 	if err != nil {
 		return nil, err
 	}
+
+	session, err := concurrency.NewSession(l.svcCtx.EtcdCli)
+	locker := concurrency.NewLocker(session, req.ProductID)
+	locker.Lock()
+	defer locker.Unlock()
 
 	// 扣减库存
 	_, err = l.svcCtx.ProductRpc.ProductDeductionStock(l.ctx, &productpb.ProductDeductionStockReq{

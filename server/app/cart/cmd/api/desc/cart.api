@@ -17,6 +17,8 @@ import "api/cart.api"
 	middleware : Auth
 )
 service cart {
-	@handler cartFind
-	post /cart/find (Nil) returns (Nil);
+	@handler cartCreate
+	post /cart/create (CartCreateReq) returns (Nil);
+	@handler cartList
+	post /cart/list (CartListReq) returns (CartListReply);
 }

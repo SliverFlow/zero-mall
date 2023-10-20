@@ -40,15 +40,15 @@
         <span v-if="loginType === 'captcha'" :class="{isActive: passwordFocus || passwordInfo}">验证码</span>
         <div v-if="loginType === 'password'" class="input_icon" @click="passwordFocus = true;isLock = !isLock;">
           <el-icon size="22" color="#959595">
-            <Unlock v-if="isLock" />
-            <lock v-if="!isLock" />
+            <Unlock v-if="isLock"/>
+            <lock v-if="!isLock"/>
           </el-icon>
         </div>
         <span v-if="passwordInfo && loginType ==='password'" class="info">请输入密码</span>
         <span v-if="passwordInfo && loginType ==='captcha'" class="info">请输入验证码</span>
       </div>
       <div class="info">
-        <el-checkbox v-model="isActiveInfo" size="large" />
+        <el-checkbox v-model="isActiveInfo" size="large"/>
         <span>已阅读并同意 zero-mall 用户协议 和 隐私政策</span>
       </div>
       <button :class="{'is-disabled': !isDisabled}" :disabled="!isDisabled" @click="enterLogin">登录</button>
@@ -144,7 +144,7 @@ const sendCaptchaMessage = async() => {
       type: 'success',
       showClose: true,
     })
-    message.value = `${count.value}秒后重新发送`
+    message.value = `${ count.value }秒后重新发送`
     if (timer.value) clearInterval(timer.value)
     timer.value = setInterval(() => {
       if (count.value <= 1) {
@@ -154,7 +154,7 @@ const sendCaptchaMessage = async() => {
         return
       }
       count.value = count.value - 1
-      message.value = `${count.value}秒后重新发送`
+      message.value = `${ count.value }秒后重新发送`
     }, 1000)
   }
 }
@@ -171,7 +171,8 @@ const enterLogin = async() => {
     userStore.userinfo = res.data.user
     userStore.setToken(res.data.token)
     userStore.isLogin = true
-    await router.push({ path: path })
+    // await router.push({ path: path })
+    window.location.href = '/#' + path
   }
 }
 

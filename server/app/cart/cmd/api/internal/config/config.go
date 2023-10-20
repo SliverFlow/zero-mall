@@ -9,7 +9,8 @@ import (
 type Config struct {
 	rest.RestConf
 
-	CartRpc zrpc.RpcClientConf
+	CartRpc    zrpc.RpcClientConf
+	ProductRpc zrpc.RpcClientConf
 
 	// jwt 相关配置
 	XJwt struct {

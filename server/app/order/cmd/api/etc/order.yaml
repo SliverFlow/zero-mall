@@ -38,3 +38,7 @@ XJwt:
 Redis:
   Host: "120.77.237.246:6379"
   Pass: wjh20000905
+
+EtcdLocker:
+  Hosts:
+    - 120.77.237.246:32379
