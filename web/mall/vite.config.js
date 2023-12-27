@@ -15,7 +15,7 @@ export default defineConfig((common, mode) => {
     server: { // 服务相关配置
       host: '127.0.0.1',
       port: env.VITE_CLI_PORT,
-      open: `http://127.0.0.1:${env.VITE_CLI_PORT}/#/index`,
+      open: `http://127.0.0.1:${env.VITE_CLI_PORT}/#/`,
       proxy: { // 请求代理
         '/api': {
           target: `http://127.0.0.1:20011/`,	// 实际请求地址

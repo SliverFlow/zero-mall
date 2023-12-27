@@ -35,10 +35,7 @@
     <!--图片信息-->
     <div style="width: 1220px;margin: 10px auto" class="image-info">
       <div class="info">
-        <div>
-          <span />
-          <span />
-        </div>
+        <img style="width: 234px;height: 170px;" src="@/assets/tp_info.png">
       </div>
       <div class="image">
         <template v-for="item in infoItemList">
@@ -96,7 +93,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { categoryIDByProductListApi, categoryListApi } from '@/api/category.js'
 
@@ -143,7 +140,6 @@ const loadCategoryList = async() => {
 loadCategoryList()
 // 去往商品详情页
 const toProductList = (id) => {
-  console.log(id)
   router.push({ name: 'ProductList', query: { id: id }})
 }
 </script>

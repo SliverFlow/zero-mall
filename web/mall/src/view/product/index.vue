@@ -65,7 +65,7 @@
             <div class="tag">
               <span>分期</span>
             </div>
-            <div class="prod_no" v-if="v.stock > 0">
+            <div class="prod_no" v-if="v.stock <= 0">
               <span>已售罄</span>
             </div>
           </div>

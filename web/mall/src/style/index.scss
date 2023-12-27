@@ -31,6 +31,7 @@
     width: 100%;
     height: 40px;
     cursor: pointer;
+
     p {
       font-size: 14px;
       color: white;
@@ -84,7 +85,15 @@
   .info {
     width: 234px;
     height: 170px;
-    background-color: blue;
+
+    .box {
+      padding: 5px;
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      background-color: #5F5750;
+
+    }
   }
 
   .image {

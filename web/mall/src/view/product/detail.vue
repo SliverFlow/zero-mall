@@ -46,7 +46,7 @@
 
         <!--购买或者加入购物车-->
         <div class="btn_list">
-          <a>
+          <a @click="addProductToOrder">
             <svg
               t="1694941740472"
               class="icon"
@@ -338,8 +338,9 @@ import { useRoute, useRouter } from 'vue-router'
 import { ref } from 'vue'
 import { productFindApi } from '@/api/product.js'
 import { useUserStore } from '@/pinia/model/user.js'
-import { ElMessageBox, ElNotification } from 'element-plus'
+import { ElMessage, ElMessageBox, ElNotification } from 'element-plus'
 import { cartCreateApi } from '@/api/cart.js'
+import { orderCreateApi } from '@/api/order.js'
 
 const route = useRoute()
 const router = useRouter()
@@ -370,6 +371,53 @@ const addProductToCart = () => {
     })
   } else {
     createCart()
+  }
+}
+
+const addProductToOrder = () => {
+  if (!isLogin) {
+    // 提示进入登录界面
+    ElMessageBox.confirm(
+      '加入购物车需要您登录账号，是否前往进入登录界面',
+      '提示',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+    ).then(() => {
+      router.push({ name: 'Login', query: { path: '/product/detail?id=' + productId.value } })
+    })
+  } else {
+    createOrder()
+  }
+}
+
+const createOrder = async() => {
+
+  const msgRes = await ElMessageBox.confirm(
+    '确认购买商品吗？',
+    '提示',
+    {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }
+  )
+  if (msgRes === 'cancel') {
+    return
+  }
+
+  const res = await orderCreateApi({
+    productId: productId.value,
+    quantity: 1,
+  })
+  if (res.code === 0) {
+    ElNotification({
+      title: '通知',
+      message: '购买商铺成功，可进入订单界面查看',
+      type: 'success',
+    })
   }
 }
 
