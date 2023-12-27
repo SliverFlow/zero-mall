@@ -27,12 +27,43 @@ func (s *OrderServer) OrderCreate(ctx context.Context, in *pb.OrderCreateReq) (*
 	return l.OrderCreate(in)
 }
 
-func (s *OrderServer) OrderDelete(ctx context.Context, in *pb.OrderIdReq) (*pb.OrderNil, error) {
+func (s *OrderServer) OrderDelete(ctx context.Context, in *pb.OrderDeleteReq) (*pb.OrderNil, error) {
 	l := logic.NewOrderDeleteLogic(ctx, s.svcCtx)
 	return l.OrderDelete(in)
 }
 
+func (s *OrderServer) OrderList(ctx context.Context, in *pb.OrderListReq) (*pb.OrderListReply, error) {
+	l := logic.NewOrderListLogic(ctx, s.svcCtx)
+	return l.OrderList(in)
+}
+
+func (s *OrderServer) OrderFind(ctx context.Context, in *pb.OrderFindReq) (*pb.OrderReply, error) {
+	l := logic.NewOrderFindLogic(ctx, s.svcCtx)
+	return l.OrderFind(in)
+}
+
+func (s *OrderServer) OrderDeleteByID(ctx context.Context, in *pb.OrderDeleteByIDReq) (*pb.OrderNil, error) {
+	l := logic.NewOrderDeleteByIDLogic(ctx, s.svcCtx)
+	return l.OrderDeleteByID(in)
+}
+
+// 订单子表相关
 func (s *OrderServer) OrderItemDelete(ctx context.Context, in *pb.OrderItemIdReq) (*pb.OrderNil, error) {
 	l := logic.NewOrderItemDeleteLogic(ctx, s.svcCtx)
 	return l.OrderItemDelete(in)
+}
+
+func (s *OrderServer) OrderPageList(ctx context.Context, in *pb.OrderPageListReq) (*pb.OrderPageListReply, error) {
+	l := logic.NewOrderPageListLogic(ctx, s.svcCtx)
+	return l.OrderPageList(in)
+}
+
+func (s *OrderServer) OrderDisable(ctx context.Context, in *pb.OrderDisableReq) (*pb.OrderNil, error) {
+	l := logic.NewOrderDisableLogic(ctx, s.svcCtx)
+	return l.OrderDisable(in)
+}
+
+func (s *OrderServer) OrderItemDeleteByID(ctx context.Context, in *pb.OrderItemDeleteByIDReq) (*pb.OrderNil, error) {
+	l := logic.NewOrderItemDeleteByIDLogic(ctx, s.svcCtx)
+	return l.OrderItemDeleteByID(in)
 }

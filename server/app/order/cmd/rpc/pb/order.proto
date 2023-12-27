@@ -17,6 +17,8 @@ message OrderReply {
   int64 SendTime = 9;
   int64 EndTime = 10;
   int64 CloseTime = 11;
+
+  OrderItemReply OrderItem = 12;
 }
 message OrderCreateReq {
   string UserID = 2;
@@ -28,23 +30,106 @@ message OrderCreateReq {
   double CurrentunitPrice = 9;
   int64  Quantity = 10;
   double TotalPrice = 11;
+  string BusinessID = 1;
 }
 message OrderIDReply {
   string OrderID = 1;
   string OrderItemID = 2;
 }
-message OrderIdReq {
+message OrderDeleteReq {
+  repeated string IDs = 1;
+}
+message OrderListReq {
+  int64 Page = 1;
+  int64 PageSize = 2;
+  string KeyWord = 3;
+  string UserID = 4;
+}
+message OrderListReply {
+  repeated OrderReply List = 1;
+  int64 Total = 2;
+}
+message OrderFindReq {
   string OrderID = 1;
+}
+
+message OrderPageListReq {
+  string BusinessID = 1;
+  int64 Page = 2;
+  int64 PageSize = 3;
+  int64 StartTime = 4;
+  int64 EndTime = 5;
+  int64 Status = 6;
+  string UserID = 7;
+}
+
+message OrderPageReply {
+  string OrderID = 1;
+  string OrderItemID = 12;
+  string Username = 2;
+  string BusinessName = 3; // 店铺名称
+  string ProductName = 4; // 商品名称
+  string ProductImage = 5; // 商品图片
+  int64 ProductNum = 6; // 商品数量
+  double Payment = 7; // 实际付款金额
+  int64 OrderStatus = 8; // 订单状态
+  int64 CreateTime = 9; // 订单创建时间
+  int64 EndTime = 10; // 订单结束时间
+  string BusinessID = 11; // 商家 ID
+  double Price = 13; // 商品单价
+  int64 PaymentType = 14; // 付款类型
+  int64 PaymentTime = 15; // 付款时间
+  int64 SendTime = 16; // 发货时间
+  int64 PayEndTime = 17; // 交易完成时间
+  int64 PayCloseTime = 18; // 交易关闭时间
+  double CurrentunitPrice = 19; // 生成订单时商品的单价
+  double TotalPrice = 20; // 商品总价
+
+}
+
+message OrderPageListReply {
+  int64 Total = 1;
+  repeated OrderPageReply List = 2;
 }
 
 //--------------------------------------------------------
 message OrderItemIdReq {
   string OrderItemID = 1;
 }
+message OrderDeleteByIDReq {
+  string ID = 1;
+}
+message OrderItemDeleteByIDReq {
+  string ID = 1;
+}
+
+message OrderItemReply {
+  string OrderItemID = 1;
+  string OrderID = 2;
+  string UserID = 3;
+  string ProductID = 4;
+  string ProductName = 5;
+  string  ProductImage = 6;
+  double CurrentunitPrice = 7;
+  int64 Quantity = 8;
+  double TotalPrice = 9;
+}
+message OrderDisableReq {
+  string OrderID = 1;
+}
+
 
 service order {
   rpc orderCreate (OrderCreateReq) returns (OrderIDReply);
-  rpc orderDelete (OrderIdReq) returns (OrderNil);
+  rpc orderDelete (OrderDeleteReq) returns (OrderNil);
+  rpc orderList (OrderListReq) returns (OrderListReply);
+  rpc orderFind (OrderFindReq) returns (OrderReply);
+  rpc orderDeleteByID(OrderDeleteByIDReq) returns (OrderNil);
 
+  // 订单子表相关
   rpc orderItemDelete (OrderItemIdReq) returns (OrderNil);
+
+  rpc orderPageList (OrderPageListReq) returns (OrderPageListReply);
+  rpc orderDisable (OrderDisableReq) returns (OrderNil);
+  rpc orderItemDeleteByID(OrderItemDeleteByIDReq) returns (OrderNil);
 }

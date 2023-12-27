@@ -9,7 +9,12 @@ import (
 type (
 	orderItemModel interface {
 		OrderItemCreate(ctx context.Context, orderItem *OrderItem) (err error)
-		OrderItemDelete(ctx context.Context, orderItemID string) (err error)
+		OrderItemDelete(ctx context.Context, orderItemIDs []string) (err error)
+		OrderItemDeleteByOrderID(ctx context.Context, orderId string) (err error)
+		OrderItemFindByOrderID(ctx context.Context, orderId string) (orderItem *OrderItem, err error)
+
+		OrderItemFindByOrderIDs(ctx context.Context, orderIds []string) (orderItems []OrderItem, err error)
+		OrderItemDeleteByID(ctx context.Context, orderItemId string) (err error)
 	}
 
 	defaultOrderItemModel struct {
@@ -51,9 +56,52 @@ func (d *defaultOrderItemModel) OrderItemCreate(ctx context.Context, orderItem *
 }
 
 // OrderItemDelete 删除订单详情
-func (d *defaultOrderItemModel) OrderItemDelete(ctx context.Context, orderItemId string) (err error) {
+func (d *defaultOrderItemModel) OrderItemDelete(ctx context.Context, orderItemIds []string) (err error) {
 	tx := d.db.WithContext(ctx)
-	span, _ := common.Tracer(ctx, "order_item-create")
+	span, _ := common.Tracer(ctx, "order_item-delete")
+	defer span.End()
+
+	return tx.Where("order_item_id in ?", orderItemIds).Delete(&OrderItem{}).Error
+}
+
+// OrderItemDeleteByOrderID 删除订单详情
+func (d *defaultOrderItemModel) OrderItemDeleteByOrderID(ctx context.Context, orderId string) (err error) {
+	tx := d.db.WithContext(ctx)
+	span, _ := common.Tracer(ctx, "order_item-delete-by-order_id")
+	defer span.End()
+
+	return tx.Where("order_id = ?", orderId).Delete(&OrderItem{}).Error
+}
+
+func (d *defaultOrderItemModel) OrderItemFindByOrderID(ctx context.Context, orderId string) (orderItem *OrderItem, err error) {
+	tx := d.db.WithContext(ctx)
+	span, _ := common.Tracer(ctx, "order_item-find-by-order_id")
+	defer span.End()
+
+	var enter OrderItem
+	if err = tx.Model(&OrderItem{}).Where("order_id = ?", orderId).First(&enter).Error; err != nil {
+		return nil, err
+	}
+	return &enter, nil
+}
+
+func (d *defaultOrderItemModel) OrderItemFindByOrderIDs(ctx context.Context, orderIds []string) (orderItems []OrderItem, err error) {
+
+	tx := d.db.WithContext(ctx)
+	span, _ := common.Tracer(ctx, "order_item-find-by-order_ids")
+	defer span.End()
+
+	var enter []OrderItem
+	if err = tx.Model(&OrderItem{}).Unscoped().Where("order_id in ?", orderIds).Find(&enter).Error; err != nil {
+		return nil, err
+	}
+
+	return enter, nil
+}
+
+func (d *defaultOrderItemModel) OrderItemDeleteByID(ctx context.Context, orderItemId string) (err error) {
+	tx := d.db.WithContext(ctx)
+	span, _ := common.Tracer(ctx, "order_item-delete-by-id")
 	defer span.End()
 
 	return tx.Where("order_item_id = ?", orderItemId).Delete(&OrderItem{}).Error

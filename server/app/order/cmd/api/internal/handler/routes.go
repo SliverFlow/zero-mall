@@ -20,6 +20,26 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Path:    "/order/create",
 					Handler: private.OrderCreateHandler(serverCtx),
 				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/order/list",
+					Handler: private.OrderListHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/order/delete",
+					Handler: private.OrderDeleteHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/order/find",
+					Handler: private.OrderFindHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/order/disable",
+					Handler: private.OrderDisableHandler(serverCtx),
+				},
 			}...,
 		),
 		rest.WithPrefix("/v1"),

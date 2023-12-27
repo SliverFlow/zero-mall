@@ -134,6 +134,17 @@ message ProductDeductionStockReq {
   string ProductID = 1;
   int64 Quantity = 2;
 }
+message ProductAddStockReq {
+  string ProductID = 1;
+  int64 Quantity = 2;
+}
+message ProductIDsReq {
+  repeated string Ids = 1;
+}
+message ProductFindListByBusinessIDReq {
+    string BusinessID = 1;
+}
+
 
 service product {
   // @desc 所有的分类列表
@@ -164,6 +175,9 @@ service product {
   rpc ProductFind (ProductFindReq) returns (ProductReply);
   rpc ProductUpdate (ProductUpdateReq) returns (ProductNil);
   rpc ProductDeductionStock (ProductDeductionStockReq) returns (ProductNil);
+  rpc ProductAddStock (ProductAddStockReq) returns (ProductNil);
+  rpc ProductFindListByIDs(ProductIDsReq) returns (ProductListReply);
+  rpc ProductFindListByBusinessID (ProductFindListByBusinessIDReq) returns (ProductListReply);
 
   rpc categoryIDByProductList (CategoryIDByProductListReq) returns (categoryIDByProductListReply);
 }

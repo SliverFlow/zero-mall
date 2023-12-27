@@ -154,7 +154,7 @@ const sendCaptchaMessage = async() => {
         return
       }
       count.value = count.value - 1
-      message.value = `${ count.value }秒后重新发送`
+      message.value = `${count.value}秒后重新发送`
     }, 1000)
   }
 }
@@ -172,6 +172,7 @@ const enterLogin = async() => {
     userStore.setToken(res.data.token)
     userStore.isLogin = true
     // await router.push({ path: path })
+    window.localStorage.setItem('token', res.data.token)
     window.location.href = '/#' + path
   }
 }

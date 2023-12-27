@@ -19,3 +19,16 @@ Mysql:
   LogMode: "dev"
   LogZap: false
   Config: charset=utf8mb4&parseTime=True&loc=Local
+
+ProductRpc:
+  Etcd:
+    Hosts:
+      - 120.77.237.246:32379
+    #      - etcd:2379
+    Key: product.rpc
+UserRpc:
+  Etcd:
+    Hosts:
+      - 120.77.237.246:32379
+    #      - etcd:2379
+    Key: user.rpc

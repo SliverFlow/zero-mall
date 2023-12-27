@@ -26,7 +26,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		logx.Error("init mysql database err", err.Error())
 		os.Exit(0)
 	}
-	autoMigrate(db)
+	// autoMigrate(db)
 
 	return &ServiceContext{
 		Config:     c,
@@ -48,11 +48,12 @@ func autoMigrate(db *gorm.DB) {
 	logx.Info("[DATABASE AutoMigrate SUCCESS]")
 }
 
-// 弱依赖 product rpc
+// 强依赖 product rpc
 func newProductRpc(c zrpc.RpcClientConf) pruductpb.ProductClient {
 	client, err := zrpc.NewClient(c)
 	if err != nil {
 		logx.Errorf("[RPC CONNECTION ERROR] product rpc client conn err: %v\n ", err)
+		os.Exit(0)
 		return nil
 	}
 	logx.Info("[RPC CONNECTION SUCCESS ] product rpc connection success : %v\n")

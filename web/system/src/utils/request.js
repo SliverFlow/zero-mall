@@ -39,13 +39,13 @@ service.interceptors.response.use(
     }
     // 判断请求是否成功
     if (response.data.code !== 0) {
+      console.log(response)
       ElMessage({
         message: response.data.message,
         type: 'error',
         showClose: true,
       })
     }
-
     // 业务错误类型
     switch (response.data.code) {
       case 200001:

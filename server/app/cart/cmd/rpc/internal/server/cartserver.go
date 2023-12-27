@@ -31,3 +31,23 @@ func (s *CartServer) CartList(ctx context.Context, in *pb.CartListReq) (*pb.Cart
 	l := logic.NewCartListLogic(ctx, s.svcCtx)
 	return l.CartList(in)
 }
+
+func (s *CartServer) CartDelete(ctx context.Context, in *pb.CartDeleteReq) (*pb.CartNil, error) {
+	l := logic.NewCartDeleteLogic(ctx, s.svcCtx)
+	return l.CartDelete(in)
+}
+
+func (s *CartServer) CartUpdate(ctx context.Context, in *pb.CartUpdateReq) (*pb.CartNil, error) {
+	l := logic.NewCartUpdateLogic(ctx, s.svcCtx)
+	return l.CartUpdate(in)
+}
+
+func (s *CartServer) CartFind(ctx context.Context, in *pb.CartFindReq) (*pb.CartInfo, error) {
+	l := logic.NewCartFindLogic(ctx, s.svcCtx)
+	return l.CartFind(in)
+}
+
+func (s *CartServer) CartFindByUserIDAndProductID(ctx context.Context, in *pb.CartFindByUserIDAndProductIDReq) (*pb.CartInfo, error) {
+	l := logic.NewCartFindByUserIDAndProductIDLogic(ctx, s.svcCtx)
+	return l.CartFindByUserIDAndProductID(in)
+}

@@ -2,8 +2,9 @@ package private
 
 import (
 	"context"
-	"github.com/jinzhu/copier"
-	"server/app/cart/cmd/rpc/pb"
+	"encoding/json"
+	orderpb "server/app/cart/cmd/rpc/pb"
+	productpb "server/app/product/cmd/rpc/pb"
 	"server/common/xerr"
 	"server/common/xjwt"
 
@@ -36,21 +37,43 @@ func (l *CartListLogic) CartList(req *types.CartListReq) (resp *types.CartListRe
 		return nil, xerr.NewErrMsg("获取用户信息失败")
 	}
 
-	pbreply, err := l.svcCtx.CartRpc.CartList(l.ctx, &pb.CartListReq{
+	pbreply, err := l.svcCtx.CartRpc.CartList(l.ctx, &orderpb.CartListReq{
 		Page:     req.Page,
 		PageSize: req.PageSize,
-		KeyWord:  req.KeyWork,
+		KeyWord:  req.KeyWord,
 		UserID:   uuid,
 	})
 	if err != nil {
 		return nil, err
 	}
 
+	var productIDs []string
+	for _, v := range pbreply.List {
+		productIDs = append(productIDs, v.ProductID)
+	}
+
+	productListReply, err := l.svcCtx.ProductRpc.ProductFindListByIDs(l.ctx, &productpb.ProductIDsReq{Ids: productIDs})
+	if err != nil {
+		return nil, err
+	}
+
 	var list []types.Cart
-	for _, pbcart := range pbreply.List {
-		var tycart types.Cart
-		_ = copier.Copy(&tycart, pbcart)
-		list = append(list, tycart)
+	for _, v := range pbreply.List {
+		var c types.Cart
+		c.UserID = v.UserID
+		c.ProductID = v.ProductID
+		c.CartID = v.CartID
+		c.Quantity = v.Quantity
+		c.ProductName = v.ProductName
+
+		for _, vv := range productListReply.List {
+			if v.ProductID == vv.ProductID {
+				c.ProductPrice = vv.Price
+				_ = json.Unmarshal([]byte(vv.Image), &c.ProductImage)
+			}
+		}
+		c.Price = c.ProductPrice * float64(c.Quantity)
+		list = append(list, c)
 	}
 
 	return &types.CartListReply{

@@ -25,6 +25,16 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Path:    "/cart/list",
 					Handler: private.CartListHandler(serverCtx),
 				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/cart/update",
+					Handler: private.CartUpdateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/cart/delete",
+					Handler: private.CartDeleteHandler(serverCtx),
+				},
 			}...,
 		),
 		rest.WithPrefix("/v1"),

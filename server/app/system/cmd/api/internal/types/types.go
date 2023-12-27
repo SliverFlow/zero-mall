@@ -72,6 +72,14 @@ type UserIDReq struct {
 	ID int64 `json:"ID"`
 }
 
+type UserUpdateByUUIDReq struct {
+	Username string `json:"username"`
+	Nickname string `json:"nickname"`
+	Phone    string `json:"phone"`
+	Password string `json:"password"`
+	Email    string `json:"email"`
+}
+
 type Role struct {
 	ID   int64  `json:"ID"`
 	Name string `json:"name"`
@@ -178,6 +186,15 @@ type BusinessUpdateReq struct {
 	Score      int64    `json:"score"`
 	Image      []string `json:"image"`
 	Status     int64    `json:"status"`
+}
+
+type BusinessDict struct {
+	Label string `json:"label"`
+	Value string `json:"value"`
+}
+
+type BusinessDictReply struct {
+	List []BusinessDict `json:"list"`
 }
 
 type Category struct {
@@ -313,4 +330,34 @@ type FileTokenReply struct {
 
 type FileTokenReq struct {
 	Path string `path:"path"`
+}
+
+type OrderListReq struct {
+	Page       int64  `json:"page"`
+	PageSize   int64  `json:"pageSize"`
+	BusinessId string `json:"businessId"`
+	StartTime  string `json:"startTime"`
+	EndTime    string `json:"endTime"`
+	Status     int64  `json:"status"`
+}
+
+type OrderReply struct {
+	OrderID      string  `json:"orderId"`
+	Username     string  `json:"username"`
+	BusinessName string  `json:"businessName"`
+	ProductName  string  `json:"productName"`
+	ProductImage []Image `json:"productImage"`
+	ProductNum   int64   `json:"productNum"`
+	Payment      float64 `json:"payment"`
+	OrderStatus  int64   `json:"orderStatus"`
+	CreateTime   int64   `json:"createTime"`
+	EndTime      int64   `json:"endTime"`
+	Quantity     int64   `json:"quantity"`
+}
+
+type OrderListReply struct {
+	List     []OrderReply `json:"list"`
+	Page     int64        `json:"page"`
+	PageSize int64        `json:"pageSize"`
+	Total    int64        `json:"total"`
 }

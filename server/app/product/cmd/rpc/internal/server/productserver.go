@@ -112,6 +112,21 @@ func (s *ProductServer) ProductDeductionStock(ctx context.Context, in *pb.Produc
 	return l.ProductDeductionStock(in)
 }
 
+func (s *ProductServer) ProductAddStock(ctx context.Context, in *pb.ProductAddStockReq) (*pb.ProductNil, error) {
+	l := logic.NewProductAddStockLogic(ctx, s.svcCtx)
+	return l.ProductAddStock(in)
+}
+
+func (s *ProductServer) ProductFindListByIDs(ctx context.Context, in *pb.ProductIDsReq) (*pb.ProductListReply, error) {
+	l := logic.NewProductFindListByIDsLogic(ctx, s.svcCtx)
+	return l.ProductFindListByIDs(in)
+}
+
+func (s *ProductServer) ProductFindListByBusinessID(ctx context.Context, in *pb.ProductFindListByBusinessIDReq) (*pb.ProductListReply, error) {
+	l := logic.NewProductFindListByBusinessIDLogic(ctx, s.svcCtx)
+	return l.ProductFindListByBusinessID(in)
+}
+
 func (s *ProductServer) CategoryIDByProductList(ctx context.Context, in *pb.CategoryIDByProductListReq) (*pb.CategoryIDByProductListReply, error) {
 	l := logic.NewCategoryIDByProductListLogic(ctx, s.svcCtx)
 	return l.CategoryIDByProductList(in)

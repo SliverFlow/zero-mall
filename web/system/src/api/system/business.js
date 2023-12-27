@@ -33,3 +33,10 @@ export const businessUpdateApi = (data) => {
     data: data
   })
 }
+
+export const businessDictApi = () => {
+  return service({
+    url: '/system/v1/business/dict',
+    method: 'post'
+  })
+}

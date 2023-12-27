@@ -3,7 +3,7 @@
     <header>
       <div>
         <div class="left">
-          <a href="#/index">mall官网</a>
+          <a href="#/">mall官网</a>
           <span>|</span>
           <a href="">mall商城</a>
           <span>|</span>
@@ -29,7 +29,7 @@
           <a v-if="!isLogin" style="cursor: pointer" @click="toRegister">注册</a>
           <user-info-com v-if="isLogin" style="color: #cecece"/>
           <span>|</span>
-          <a href="">消息通知</a>
+          <a @click.prevent="toOrder" style="cursor: pointer">订单列表</a>
           <div class="shop-car" @click="toCart" @mouseover="show = !show" @mouseout="show = !show">
             <svg
               t="1694517489223"
@@ -64,11 +64,11 @@
             </svg>
             <span>购物车</span>
             <span>（0）</span>
-            <el-collapse-transition style="transition: all 0.3s">
-              <div v-show="show" class="show-box">
-                <div>购物车中还没有商品，赶紧选购吧!</div>
-              </div>
-            </el-collapse-transition>
+<!--            <el-collapse-transition style="transition: all 0.3s">-->
+<!--              <div v-show="show" class="show-box">-->
+<!--                <div>购物车中还没有商品，赶紧选购吧!</div>-->
+<!--              </div>-->
+<!--            </el-collapse-transition>-->
           </div>
         </div>
       </div>
@@ -102,7 +102,7 @@
               :class="{icon_fover: isFocus,search_icon_hover: isFocus}"
               @click="search"
             >
-              <Search />
+              <Search/>
             </el-icon>
             <div v-if="isFocus" class="input_word">
               <a href="">全部商品</a>
@@ -117,9 +117,9 @@
       </div>
     </nav>
     <div class="content">
-      <router-view />
+      <router-view/>
     </div>
-    <mall-footer />
+    <mall-footer/>
   </div>
 </template>
 
@@ -140,8 +140,9 @@ const keyWord = ref('')
 const userStore = useUserStore()
 const isLogin = ref(userStore.isLogin)
 
+
 const toLogin = () => {
-  router.push({ name: 'Login', query: { path: route.path }})
+  router.push({ name: 'Login', query: { path: route.path } })
 }
 const toCart = () => {
   router.push({ name: 'Cart' })
@@ -155,10 +156,12 @@ const search = () => {
   if (router.currentRoute.value.name !== 'ProductList') {
     router.push({ name: 'ProductList' })
   } else {
-    console.log(useActiveStore().active)
     useActiveStore().active = true
-    console.log(useActiveStore().active)
   }
+}
+
+const toOrder = () => {
+  router.push({ name: 'Order' })
 }
 
 provide('keyWord', keyWord)

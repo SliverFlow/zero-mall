@@ -1,7 +1,7 @@
 <template>
   <el-dropdown style="position: relative;top:-1px">
     <span>
-      {{ userinfo.nickname }}
+      {{ nickname }}
       <el-icon style="margin-left: 2px;position: relative;top: 2px">
         <arrow-down />
       </el-icon>
@@ -18,13 +18,27 @@
 </template>
 <script setup>
 import { useUserStore } from '@/pinia/model/user.js'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
 
 const userStore = useUserStore()
 const userinfo = userStore.userinfo
+const nickname = ref(userinfo.nickname || '用户096876411')
+const router = useRouter()
+
 const logout = () => {
   userStore.logout()
-  window.location.reload()
+  ElMessage({
+    message: '成功退出登录，即将跳转到首页',
+    type: 'success',
+  })
+  setTimeout( () => {
+    router.push({ name: 'Index' })
+    if (router.currentRoute.value.path === '/') {
+      window.location.reload()
+    }
+  }, 1000)
 }
 </script>
 

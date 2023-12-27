@@ -5,11 +5,15 @@ type Nil struct {
 }
 
 type Cart struct {
-	CartID    string `json:"cartId"`
-	UserID    string `json:"userId"`
-	ProductID string `json:"productId"`
-	Quantity  int64  `json:"quantity"`
-	Checked   int64  `json:"checked"`
+	CartID       string  `json:"cartId"`
+	UserID       string  `json:"userId"`
+	ProductID    string  `json:"productId"`
+	ProductName  string  `json:"productName"`
+	Quantity     int64   `json:"quantity"`
+	Checked      int64   `json:"checked"`
+	ProductPrice float64 `json:"productPrice"`
+	ProductImage []Image `json:"productImage"`
+	Price        float64 `json:"price"`
 }
 
 type CartCreateReq struct {
@@ -21,7 +25,7 @@ type CartCreateReq struct {
 type CartListReq struct {
 	Page     int64  `json:"page"`
 	PageSize int64  `json:"pageSize"`
-	KeyWork  string `json:"keyWork"`
+	KeyWord  string `json:"keyWord"`
 }
 
 type CartListReply struct {
@@ -29,4 +33,18 @@ type CartListReply struct {
 	PageSize int64  `json:"pageSize"`
 	Total    int64  `json:"total"`
 	List     []Cart `json:"list"`
+}
+
+type CartDeleteReq struct {
+	CartID string `json:"cartId"`
+}
+
+type CartUpdateReq struct {
+	CartID   string `json:"cartId"`
+	Quantity int64  `json:"quantity"`
+	Checked  int64  `json:"checked"`
+}
+
+type Image struct {
+	Url string `json:"url"`
 }

@@ -3,14 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/core/logx"
-
+	"github.com/zeromicro/go-zero/rest"
 	"server/app/cart/cmd/api/internal/config"
 	"server/app/cart/cmd/api/internal/handler"
 	"server/app/cart/cmd/api/internal/svc"
-
-	"github.com/zeromicro/go-zero/core/conf"
-	"github.com/zeromicro/go-zero/rest"
 )
 
 var configFile = flag.String("f", "app/cart/cmd/api/etc/cart.yaml", "the config file")

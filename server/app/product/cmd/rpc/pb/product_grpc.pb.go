@@ -48,6 +48,9 @@ type ProductClient interface {
 	ProductFind(ctx context.Context, in *ProductFindReq, opts ...grpc.CallOption) (*ProductReply, error)
 	ProductUpdate(ctx context.Context, in *ProductUpdateReq, opts ...grpc.CallOption) (*ProductNil, error)
 	ProductDeductionStock(ctx context.Context, in *ProductDeductionStockReq, opts ...grpc.CallOption) (*ProductNil, error)
+	ProductAddStock(ctx context.Context, in *ProductAddStockReq, opts ...grpc.CallOption) (*ProductNil, error)
+	ProductFindListByIDs(ctx context.Context, in *ProductIDsReq, opts ...grpc.CallOption) (*ProductListReply, error)
+	ProductFindListByBusinessID(ctx context.Context, in *ProductFindListByBusinessIDReq, opts ...grpc.CallOption) (*ProductListReply, error)
 	CategoryIDByProductList(ctx context.Context, in *CategoryIDByProductListReq, opts ...grpc.CallOption) (*CategoryIDByProductListReply, error)
 }
 
@@ -203,6 +206,33 @@ func (c *productClient) ProductDeductionStock(ctx context.Context, in *ProductDe
 	return out, nil
 }
 
+func (c *productClient) ProductAddStock(ctx context.Context, in *ProductAddStockReq, opts ...grpc.CallOption) (*ProductNil, error) {
+	out := new(ProductNil)
+	err := c.cc.Invoke(ctx, "/pb.product/ProductAddStock", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productClient) ProductFindListByIDs(ctx context.Context, in *ProductIDsReq, opts ...grpc.CallOption) (*ProductListReply, error) {
+	out := new(ProductListReply)
+	err := c.cc.Invoke(ctx, "/pb.product/ProductFindListByIDs", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productClient) ProductFindListByBusinessID(ctx context.Context, in *ProductFindListByBusinessIDReq, opts ...grpc.CallOption) (*ProductListReply, error) {
+	out := new(ProductListReply)
+	err := c.cc.Invoke(ctx, "/pb.product/ProductFindListByBusinessID", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *productClient) CategoryIDByProductList(ctx context.Context, in *CategoryIDByProductListReq, opts ...grpc.CallOption) (*CategoryIDByProductListReply, error) {
 	out := new(CategoryIDByProductListReply)
 	err := c.cc.Invoke(ctx, "/pb.product/categoryIDByProductList", in, out, opts...)
@@ -242,6 +272,9 @@ type ProductServer interface {
 	ProductFind(context.Context, *ProductFindReq) (*ProductReply, error)
 	ProductUpdate(context.Context, *ProductUpdateReq) (*ProductNil, error)
 	ProductDeductionStock(context.Context, *ProductDeductionStockReq) (*ProductNil, error)
+	ProductAddStock(context.Context, *ProductAddStockReq) (*ProductNil, error)
+	ProductFindListByIDs(context.Context, *ProductIDsReq) (*ProductListReply, error)
+	ProductFindListByBusinessID(context.Context, *ProductFindListByBusinessIDReq) (*ProductListReply, error)
 	CategoryIDByProductList(context.Context, *CategoryIDByProductListReq) (*CategoryIDByProductListReply, error)
 	mustEmbedUnimplementedProductServer()
 }
@@ -297,6 +330,15 @@ func (UnimplementedProductServer) ProductUpdate(context.Context, *ProductUpdateR
 }
 func (UnimplementedProductServer) ProductDeductionStock(context.Context, *ProductDeductionStockReq) (*ProductNil, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProductDeductionStock not implemented")
+}
+func (UnimplementedProductServer) ProductAddStock(context.Context, *ProductAddStockReq) (*ProductNil, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ProductAddStock not implemented")
+}
+func (UnimplementedProductServer) ProductFindListByIDs(context.Context, *ProductIDsReq) (*ProductListReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ProductFindListByIDs not implemented")
+}
+func (UnimplementedProductServer) ProductFindListByBusinessID(context.Context, *ProductFindListByBusinessIDReq) (*ProductListReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ProductFindListByBusinessID not implemented")
 }
 func (UnimplementedProductServer) CategoryIDByProductList(context.Context, *CategoryIDByProductListReq) (*CategoryIDByProductListReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CategoryIDByProductList not implemented")
@@ -602,6 +644,60 @@ func _Product_ProductDeductionStock_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Product_ProductAddStock_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProductAddStockReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServer).ProductAddStock(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.product/ProductAddStock",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServer).ProductAddStock(ctx, req.(*ProductAddStockReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Product_ProductFindListByIDs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProductIDsReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServer).ProductFindListByIDs(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.product/ProductFindListByIDs",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServer).ProductFindListByIDs(ctx, req.(*ProductIDsReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Product_ProductFindListByBusinessID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProductFindListByBusinessIDReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServer).ProductFindListByBusinessID(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.product/ProductFindListByBusinessID",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServer).ProductFindListByBusinessID(ctx, req.(*ProductFindListByBusinessIDReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Product_CategoryIDByProductList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CategoryIDByProductListReq)
 	if err := dec(in); err != nil {
@@ -690,6 +786,18 @@ var Product_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ProductDeductionStock",
 			Handler:    _Product_ProductDeductionStock_Handler,
+		},
+		{
+			MethodName: "ProductAddStock",
+			Handler:    _Product_ProductAddStock_Handler,
+		},
+		{
+			MethodName: "ProductFindListByIDs",
+			Handler:    _Product_ProductFindListByIDs_Handler,
+		},
+		{
+			MethodName: "ProductFindListByBusinessID",
+			Handler:    _Product_ProductFindListByBusinessID_Handler,
 		},
 		{
 			MethodName: "categoryIDByProductList",

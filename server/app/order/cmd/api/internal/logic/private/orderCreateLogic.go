@@ -73,6 +73,7 @@ func (l *OrderCreateLogic) OrderCreate(req *types.OrderCreateReq) (resp *types.O
 		CurrentunitPrice: pbproduct.Price,
 		Quantity:         req.Quantity,
 		TotalPrice:       total * pbproduct.Price,
+		BusinessID:       pbproduct.BusinessID,
 	})
 	if err != nil {
 		return nil, err
@@ -90,8 +91,8 @@ func (l *OrderCreateLogic) OrderCreate(req *types.OrderCreateReq) (resp *types.O
 	})
 	if err != nil {
 		// 删除创建的订单
-		_, _ = l.svcCtx.OrderRpc.OrderDelete(l.ctx, &orderpb.OrderIdReq{OrderID: pbreply.OrderID})
-		_, _ = l.svcCtx.OrderRpc.OrderItemDelete(l.ctx, &orderpb.OrderItemIdReq{OrderItemID: pbreply.OrderItemID})
+		_, _ = l.svcCtx.OrderRpc.OrderDeleteByID(l.ctx, &orderpb.OrderDeleteByIDReq{ID: pbreply.OrderID})
+		_, _ = l.svcCtx.OrderRpc.OrderItemDeleteByID(l.ctx, &orderpb.OrderItemDeleteByIDReq{ID: pbreply.OrderItemID})
 		return nil, err
 	}
 

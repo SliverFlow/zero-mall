@@ -8,6 +8,8 @@ import (
 	"github.com/zeromicro/go-zero/rest"
 	"github.com/zeromicro/go-zero/zrpc"
 	"os"
+	"server/app/order/cmd/rpc/order"
+	orderpb "server/app/order/cmd/rpc/pb"
 	pruductpb "server/app/product/cmd/rpc/pb"
 	"server/app/product/cmd/rpc/product"
 	"server/app/system/cmd/api/internal/config"
@@ -26,6 +28,7 @@ type ServiceContext struct {
 	SystemRpc  system.System
 	UserRpc    user.User
 	ProductRpc product.Product
+	OrderRpc   order.Order
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -38,6 +41,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		SystemRpc:  newSystemRpc(c.SystemRpc),
 		UserRpc:    newUserRpc(c.UserRpc),
 		ProductRpc: newProductRpc(c.ProductRpc),
+		OrderRpc:   newOrderRpc(c.OrderRpc),
 	}
 }
 
@@ -81,13 +85,26 @@ func newUserRpc(c zrpc.RpcClientConf) userpb.UserClient {
 	return user.NewUser(client)
 }
 
-// 弱依赖 product rpc
+// 强依赖 product rpc
 func newProductRpc(c zrpc.RpcClientConf) pruductpb.ProductClient {
 	client, err := zrpc.NewClient(c)
 	if err != nil {
 		logx.Errorf("[RPC CONNECTION ERROR] product rpc client conn err: %v\n ", err)
+		os.Exit(0)
 		return nil
 	}
 	logx.Info("[RPC CONNECTION SUCCESS ] product rpc connection success : %v\n")
 	return product.NewProduct(client)
+}
+
+// 强依赖 order rpc
+func newOrderRpc(c zrpc.RpcClientConf) orderpb.OrderClient {
+	client, err := zrpc.NewClient(c)
+	if err != nil {
+		logx.Errorf("[RPC CONNECTION ERROR] order rpc client conn err: %v\n ", err)
+		os.Exit(0)
+		return nil
+	}
+	logx.Info("[RPC CONNECTION SUCCESS ] order rpc connection success : %v\n")
+	return order.NewOrder(client)
 }

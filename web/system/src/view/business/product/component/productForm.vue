@@ -94,9 +94,7 @@ const dialogVisible = ref(false)
 const loadCategoryOptions = async() => {
   // 获取分类列表
   const categoryReq = await categoryTressListApi()
-  if (categoryReq.code === 0) {
-    categoryOptions.value = categoryReq.data.list
-  }
+  categoryOptions.value = categoryReq.data.list
 }
 loadCategoryOptions()
 // 初始化表单值
@@ -149,11 +147,11 @@ const openDialog = async(val) => {
 
     if (res.data.categories && res.data.categories.length > 0) {
       res.data.categories.forEach(i => {
-        categoryOptions.value.forEach(v => {
-          if (v.categoryId === i.parentId) {
-            formData.value.category.push(v.ID)
-          }
-        })
+        // categoryOptions.value.forEach(v => {
+        //   if (v.categoryId === i.parentId) {
+        //     formData.value.category.push(v.ID)
+        //   }
+        // })
         formData.value.category.push(i.ID)
       })
     }

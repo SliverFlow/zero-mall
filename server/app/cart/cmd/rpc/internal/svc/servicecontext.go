@@ -22,7 +22,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		logx.Error("init mysql database err", err.Error())
 		os.Exit(0)
 	}
-	autoMigrate(db)
+	// autoMigrate(db)
 
 	return &ServiceContext{
 		Config:    c,

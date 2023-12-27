@@ -24,6 +24,8 @@ type (
 		UserFindByPhoneOrUsername(ctx context.Context, username string) (enter *User, err error)
 		CheckPhone(ctx context.Context, phone string) (ok bool, err error)
 		UserFindByPhone(ctx context.Context, phone string) (enter *User, err error)
+		UserUpdateByUUID(ctx context.Context, uuid string, u *User) (err error)
+		FindListByIDs(ctx context.Context, ids []string) (enter []User, err error)
 	}
 
 	defaultUserModel struct {
@@ -97,8 +99,13 @@ func (d *defaultUserModel) UserList(ctx context.Context, page *common.PageInfo) 
 	tx := d.db.WithContext(ctx)
 
 	limit, offset, keyWord := page.LimitAndOffsetAndKeyWord()
-
 	tx = tx.Model(&User{}).Where("nickname like ?", keyWord)
+	if page.StartTime != "" {
+		tx = tx.Where("created_at >= ?", page.StartTime)
+	}
+	if page.EndTime != "" {
+		tx = tx.Where("created_at <= ?", page.EndTime)
+	}
 	if err = tx.Count(&total).Error; err != nil {
 		return nil, 0, err
 	}
@@ -197,4 +204,23 @@ func (d *defaultUserModel) UserFindByPhone(ctx context.Context, phone string) (e
 		return nil, err
 	}
 	return &u, nil
+}
+
+func (d *defaultUserModel) UserUpdateByUUID(ctx context.Context, uuid string, u *User) (err error) {
+	tx := d.db.WithContext(ctx)
+	span, _ := common.Tracer(ctx, "update-user-by-uuid")
+	defer span.End()
+
+	return tx.Model(&User{}).Where("uuid = ?", uuid).Updates(u).Error
+}
+
+func (d *defaultUserModel) FindListByIDs(ctx context.Context, ids []string) (enter []User, err error) {
+	span, _ := common.Tracer(ctx, "find-user-list-by-ids")
+	defer span.End()
+
+	var list []User
+	if err = d.db.Model(&User{}).Where("uuid in ?", ids).Find(&list).Error; err != nil {
+		return nil, err
+	}
+	return list, nil
 }

@@ -34,5 +34,5 @@ export function formatTimestamp(stamp) {
   const y = now.getFullYear()
   const m = now.getMonth() + 1
   const d = now.getDate()
-  return y + '年' + (m < 10 ? '0' + m : m) + '月' + (d < 10 ? '0' + d : d) + '日 ' + now.toTimeString().substr(0, 8)
+  return y + '-' + (m < 10 ? '0' + m : m) + '-' + (d < 10 ? '0' + d : d) + ' ' + now.toTimeString().substr(0, 8)
 }

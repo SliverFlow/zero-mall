@@ -18,6 +18,8 @@ type (
 		ProductStagingByBusinessID(ctx context.Context, businessId string) (err error)
 		ProductChangeStatus(ctx context.Context, productId string, status int64) (err error)
 		ProductDeductionStock(ctx context.Context, productId string, num int64) (err error)
+		ProductAddStock(ctx context.Context, productId string, num int64) (err error)
+		ProductFindListByIDs(ctx context.Context, ids []string) (enter []Product, err error)
 	}
 
 	defaultProductModel struct {
@@ -113,7 +115,7 @@ func (d *defaultProductModel) ProductFind(ctx context.Context, productId string)
 	tx := d.db.WithContext(ctx)
 
 	var c Product
-	if err = tx.Model(&Product{}).Preload("Categories").Where("product_id = ?", productId).First(&c).Error; err != nil {
+	if err = tx.Model(&Product{}).Preload("Categories").Where("product_id", productId).First(&c).Error; err != nil {
 		return nil, err
 	}
 	return &c, nil
@@ -178,4 +180,33 @@ func (d *defaultProductModel) ProductDeductionStock(ctx context.Context, product
 	}
 
 	return tx.Model(&Product{}).Where("product_id = ?", productId).Update("stock", product.Stock-num).Error
+}
+
+// ProductAddStock
+// Author [SliverFlow]
+// @desc 返还库存或者商户添加库存
+func (d *defaultProductModel) ProductAddStock(ctx context.Context, productId string, num int64) (err error) {
+	tx := d.db.WithContext(ctx)
+	span, _ := d.tracer(ctx, "product-deduction-stock")
+	defer span.End()
+
+	product, err := d.ProductFind(ctx, productId)
+	if err != nil {
+		return err
+	}
+
+	return tx.Model(&Product{}).Where("product_id = ?", productId).Update("stock", product.Stock+num).Error
+}
+
+func (d *defaultProductModel) ProductFindListByIDs(ctx context.Context, ids []string) (enter []Product, err error) {
+	tx := d.db.WithContext(ctx)
+	span, _ := common.Tracer(ctx, "product-find-list-by-ids")
+	defer span.End()
+
+	var list []Product
+	if err = tx.Model(&Product{}).Where("product_id in ?", ids).Find(&list).Error; err != nil {
+		return nil, err
+	}
+
+	return list, nil
 }

@@ -29,7 +29,7 @@ func NewOrderItemDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *O
 // @desc 删除订单详细
 func (l *OrderItemDeleteLogic) OrderItemDelete(in *pb.OrderItemIdReq) (*pb.OrderNil, error) {
 
-	err := l.svcCtx.OrderModel.OrderItemDelete(l.ctx, in.GetOrderItemID())
+	err := l.svcCtx.OrderModel.OrderItemDeleteByID(l.ctx, in.GetOrderItemID())
 	if err != nil {
 		return nil, status.Errorf(100001, "订单详细删除失败")
 	}

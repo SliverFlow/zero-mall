@@ -6,10 +6,12 @@
           src="https://www.gin-vue-admin.com/img/logo.png"
           alt=""
         >
-        <p v-if="!asideStore.collapseType && userInfo.role === 3" style="font-family: 'fm'">zero-mall&nbsp;&nbsp;后台管理</p>
-        <p v-if="!asideStore.collapseType && userInfo.role === 2" style="font-family: 'fm'">zero-mall&nbsp;&nbsp;商家管理</p>
+        <p v-if="!asideStore.collapseType && userInfo.role === 3" style="font-family: 'fm'">
+          zero-mall&nbsp;&nbsp;后台管理</p>
+        <p v-if="!asideStore.collapseType && userInfo.role === 2" style="font-family: 'fm'">
+          zero-mall&nbsp;&nbsp;商家管理</p>
       </div>
-      <Aside />
+      <Aside/>
     </el-aside>
     <el-container class="container " :class="{hiddenContainer: !asideStore.collapseType}">
       <el-header class="header-con">
@@ -121,7 +123,7 @@
               </div>
               <span>{{ userInfo.nickname }}</span>
               <el-icon class="el-icon--right" style="position: relative;top:0;margin-left: 8px;">
-                <arrow-down />
+                <arrow-down/>
               </el-icon>
             </div>
             <template #dropdown>
@@ -131,32 +133,16 @@
                     当前角色：{{ userInfo.role === 3 ? '系统管理员' : '系统商家' }}
                   </span>
                 </el-dropdown-item>
-                <el-dropdown-item
-                  v-if="userInfo.username==='admin'"
-                  @click="changeRole(1)"
-                >
-                  <span>
-                    切换为：系统管理员
-                  </span>
-                </el-dropdown-item>
-                <el-dropdown-item
-                  v-if="userInfo.username==='admin'"
-                  @click="changeRole(2)"
-                >
-                  <span>
-                    切换为：系统商家角色
-                  </span>
-                </el-dropdown-item>
-                <el-dropdown-item icon="avatar" divided>个人信息</el-dropdown-item>
+                <el-dropdown-item icon="avatar" divided @click="toUserInfo">个人信息</el-dropdown-item>
                 <el-dropdown-item icon="reading-lamp" divided @click="toLogout">登 出</el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>
         </div>
       </el-header>
-      <tab />
+      <tab/>
       <el-main style="padding: 10px 14px">
-        <router-view class="router-con" />
+        <router-view class="router-con"/>
       </el-main>
     </el-container>
   </el-container>
@@ -205,6 +191,11 @@ const toLogout = async() => {
       router.push({ name: 'Login' })
     }, 400)
   }
+}
+
+// 去往个人信息
+const toUserInfo = () => {
+  router.push({ name: 'UserInfo' })
 }
 
 // 修改系统用户角色

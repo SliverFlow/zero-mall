@@ -36,18 +36,30 @@ func (l *CartCreateLogic) CartCreate(req *types.CartCreateReq) (resp *types.Nil,
 	if err != nil {
 		return nil, err
 	}
-
-	// 验证库存
-	if pbfind.Stock-req.Quantity < 0 {
-		return nil, xerr.NewErrMsg("当前商品库存不足")
-	}
-
 	// 获取用户信息
 	uuid, err := xjwt.GetUserUUID(l.ctx)
 	if err != nil {
 		return nil, xerr.NewErrMsg("获取用户信息失败")
 	}
 
+	// 验证用户是否已经添加过该商品
+
+	cartInfo, err := l.svcCtx.CartRpc.CartFindByUserIDAndProductID(l.ctx, &cartpb.CartFindByUserIDAndProductIDReq{
+		UserID:    uuid,
+		ProductID: req.ProductID,
+	})
+
+	if cartInfo.CartID != "" {
+		_, err = l.svcCtx.CartRpc.CartUpdate(l.ctx, &cartpb.CartUpdateReq{
+			CartID:   cartInfo.CartID,
+			Quantity: cartInfo.Quantity + req.Quantity,
+			Checked:  req.Checked,
+		})
+		if err != nil {
+			return nil, err
+		}
+		return
+	}
 	// 添加购物车
 	_, err = l.svcCtx.CartRpc.CartCreate(l.ctx, &cartpb.CartCreateReq{
 		UserID:      uuid,

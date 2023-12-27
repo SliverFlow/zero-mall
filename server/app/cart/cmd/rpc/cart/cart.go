@@ -13,15 +13,23 @@ import (
 )
 
 type (
-	CartCreateReq = pb.CartCreateReq
-	CartInfo      = pb.CartInfo
-	CartListReply = pb.CartListReply
-	CartListReq   = pb.CartListReq
-	CartNil       = pb.CartNil
+	CartCreateReq                   = pb.CartCreateReq
+	CartDeleteReq                   = pb.CartDeleteReq
+	CartFindByUserIDAndProductIDReq = pb.CartFindByUserIDAndProductIDReq
+	CartFindReq                     = pb.CartFindReq
+	CartInfo                        = pb.CartInfo
+	CartListReply                   = pb.CartListReply
+	CartListReq                     = pb.CartListReq
+	CartNil                         = pb.CartNil
+	CartUpdateReq                   = pb.CartUpdateReq
 
 	Cart interface {
 		CartCreate(ctx context.Context, in *CartCreateReq, opts ...grpc.CallOption) (*CartNil, error)
 		CartList(ctx context.Context, in *CartListReq, opts ...grpc.CallOption) (*CartListReply, error)
+		CartDelete(ctx context.Context, in *CartDeleteReq, opts ...grpc.CallOption) (*CartNil, error)
+		CartUpdate(ctx context.Context, in *CartUpdateReq, opts ...grpc.CallOption) (*CartNil, error)
+		CartFind(ctx context.Context, in *CartFindReq, opts ...grpc.CallOption) (*CartInfo, error)
+		CartFindByUserIDAndProductID(ctx context.Context, in *CartFindByUserIDAndProductIDReq, opts ...grpc.CallOption) (*CartInfo, error)
 	}
 
 	defaultCart struct {
@@ -43,4 +51,24 @@ func (m *defaultCart) CartCreate(ctx context.Context, in *CartCreateReq, opts ..
 func (m *defaultCart) CartList(ctx context.Context, in *CartListReq, opts ...grpc.CallOption) (*CartListReply, error) {
 	client := pb.NewCartClient(m.cli.Conn())
 	return client.CartList(ctx, in, opts...)
+}
+
+func (m *defaultCart) CartDelete(ctx context.Context, in *CartDeleteReq, opts ...grpc.CallOption) (*CartNil, error) {
+	client := pb.NewCartClient(m.cli.Conn())
+	return client.CartDelete(ctx, in, opts...)
+}
+
+func (m *defaultCart) CartUpdate(ctx context.Context, in *CartUpdateReq, opts ...grpc.CallOption) (*CartNil, error) {
+	client := pb.NewCartClient(m.cli.Conn())
+	return client.CartUpdate(ctx, in, opts...)
+}
+
+func (m *defaultCart) CartFind(ctx context.Context, in *CartFindReq, opts ...grpc.CallOption) (*CartInfo, error) {
+	client := pb.NewCartClient(m.cli.Conn())
+	return client.CartFind(ctx, in, opts...)
+}
+
+func (m *defaultCart) CartFindByUserIDAndProductID(ctx context.Context, in *CartFindByUserIDAndProductIDReq, opts ...grpc.CallOption) (*CartInfo, error) {
+	client := pb.NewCartClient(m.cli.Conn())
+	return client.CartFindByUserIDAndProductID(ctx, in, opts...)
 }

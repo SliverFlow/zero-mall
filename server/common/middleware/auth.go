@@ -54,7 +54,7 @@ func (m *Auth) Handle(next http.HandlerFunc) http.HandlerFunc {
 
 		claims, err := jwt.ParseToken(authorization)
 		if err != nil {
-			result.HttpResult(r, w, nil, xerr.NewCodeError(200003))
+			result.HttpResult(r, w, nil, err)
 			return
 		}
 		if claims.ExpiresAt-time.Now().Unix() < claims.BufferTime { // 更换 token

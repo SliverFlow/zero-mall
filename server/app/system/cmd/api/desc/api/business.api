@@ -42,3 +42,12 @@ type BusinessUpdateReq {
     Image []string `json:"image"`
     Status int64 `json:"status"`
 }
+
+type BusinessDict {
+    Label string `json:"label"`
+    Value string `json:"value"`
+}
+
+type BusinessDictReply {
+    List []BusinessDict `json:"list"`
+}

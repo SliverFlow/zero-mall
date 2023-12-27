@@ -19,4 +19,13 @@ import "api/order.api"
 service order {
 	@handler orderCreate
 	post /order/create (OrderCreateReq) returns (OrderCreateReply);
+	@handler orderList
+	post /order/list (OrderListReq) returns (OrderListReply);
+	@handler orderDelete
+	post /order/delete (OrderDeleteReq) returns (Nil);
+	@handler orderFind
+	post /order/find (OrderFindReq) returns (OrderFindReply);
+	@handler orderDisable
+	post /order/disable (OrderDisableReq) returns (Nil);
+	
 }

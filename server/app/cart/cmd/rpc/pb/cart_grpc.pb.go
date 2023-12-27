@@ -24,6 +24,10 @@ const _ = grpc.SupportPackageIsVersion7
 type CartClient interface {
 	CartCreate(ctx context.Context, in *CartCreateReq, opts ...grpc.CallOption) (*CartNil, error)
 	CartList(ctx context.Context, in *CartListReq, opts ...grpc.CallOption) (*CartListReply, error)
+	CartDelete(ctx context.Context, in *CartDeleteReq, opts ...grpc.CallOption) (*CartNil, error)
+	CartUpdate(ctx context.Context, in *CartUpdateReq, opts ...grpc.CallOption) (*CartNil, error)
+	CartFind(ctx context.Context, in *CartFindReq, opts ...grpc.CallOption) (*CartInfo, error)
+	CartFindByUserIDAndProductID(ctx context.Context, in *CartFindByUserIDAndProductIDReq, opts ...grpc.CallOption) (*CartInfo, error)
 }
 
 type cartClient struct {
@@ -52,12 +56,52 @@ func (c *cartClient) CartList(ctx context.Context, in *CartListReq, opts ...grpc
 	return out, nil
 }
 
+func (c *cartClient) CartDelete(ctx context.Context, in *CartDeleteReq, opts ...grpc.CallOption) (*CartNil, error) {
+	out := new(CartNil)
+	err := c.cc.Invoke(ctx, "/pb.cart/cartDelete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *cartClient) CartUpdate(ctx context.Context, in *CartUpdateReq, opts ...grpc.CallOption) (*CartNil, error) {
+	out := new(CartNil)
+	err := c.cc.Invoke(ctx, "/pb.cart/cartUpdate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *cartClient) CartFind(ctx context.Context, in *CartFindReq, opts ...grpc.CallOption) (*CartInfo, error) {
+	out := new(CartInfo)
+	err := c.cc.Invoke(ctx, "/pb.cart/cartFind", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *cartClient) CartFindByUserIDAndProductID(ctx context.Context, in *CartFindByUserIDAndProductIDReq, opts ...grpc.CallOption) (*CartInfo, error) {
+	out := new(CartInfo)
+	err := c.cc.Invoke(ctx, "/pb.cart/cartFindByUserIDAndProductID", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CartServer is the server API for Cart service.
 // All implementations must embed UnimplementedCartServer
 // for forward compatibility
 type CartServer interface {
 	CartCreate(context.Context, *CartCreateReq) (*CartNil, error)
 	CartList(context.Context, *CartListReq) (*CartListReply, error)
+	CartDelete(context.Context, *CartDeleteReq) (*CartNil, error)
+	CartUpdate(context.Context, *CartUpdateReq) (*CartNil, error)
+	CartFind(context.Context, *CartFindReq) (*CartInfo, error)
+	CartFindByUserIDAndProductID(context.Context, *CartFindByUserIDAndProductIDReq) (*CartInfo, error)
 	mustEmbedUnimplementedCartServer()
 }
 
@@ -70,6 +114,18 @@ func (UnimplementedCartServer) CartCreate(context.Context, *CartCreateReq) (*Car
 }
 func (UnimplementedCartServer) CartList(context.Context, *CartListReq) (*CartListReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CartList not implemented")
+}
+func (UnimplementedCartServer) CartDelete(context.Context, *CartDeleteReq) (*CartNil, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CartDelete not implemented")
+}
+func (UnimplementedCartServer) CartUpdate(context.Context, *CartUpdateReq) (*CartNil, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CartUpdate not implemented")
+}
+func (UnimplementedCartServer) CartFind(context.Context, *CartFindReq) (*CartInfo, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CartFind not implemented")
+}
+func (UnimplementedCartServer) CartFindByUserIDAndProductID(context.Context, *CartFindByUserIDAndProductIDReq) (*CartInfo, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CartFindByUserIDAndProductID not implemented")
 }
 func (UnimplementedCartServer) mustEmbedUnimplementedCartServer() {}
 
@@ -120,6 +176,78 @@ func _Cart_CartList_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Cart_CartDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CartDeleteReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CartServer).CartDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.cart/cartDelete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CartServer).CartDelete(ctx, req.(*CartDeleteReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Cart_CartUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CartUpdateReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CartServer).CartUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.cart/cartUpdate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CartServer).CartUpdate(ctx, req.(*CartUpdateReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Cart_CartFind_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CartFindReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CartServer).CartFind(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.cart/cartFind",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CartServer).CartFind(ctx, req.(*CartFindReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Cart_CartFindByUserIDAndProductID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CartFindByUserIDAndProductIDReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CartServer).CartFindByUserIDAndProductID(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.cart/cartFindByUserIDAndProductID",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CartServer).CartFindByUserIDAndProductID(ctx, req.(*CartFindByUserIDAndProductIDReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Cart_ServiceDesc is the grpc.ServiceDesc for Cart service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -134,6 +262,22 @@ var Cart_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "cartList",
 			Handler:    _Cart_CartList_Handler,
+		},
+		{
+			MethodName: "cartDelete",
+			Handler:    _Cart_CartDelete_Handler,
+		},
+		{
+			MethodName: "cartUpdate",
+			Handler:    _Cart_CartUpdate_Handler,
+		},
+		{
+			MethodName: "cartFind",
+			Handler:    _Cart_CartFind_Handler,
+		},
+		{
+			MethodName: "cartFindByUserIDAndProductID",
+			Handler:    _Cart_CartFindByUserIDAndProductID_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -13,27 +13,30 @@ import (
 )
 
 type (
-	Category                     = pb.Category
-	CategoryChangeStatusReq      = pb.CategoryChangeStatusReq
-	CategoryCreateReq            = pb.CategoryCreateReq
-	CategoryIDByProductListReply = pb.CategoryIDByProductListReply
-	CategoryIDByProductListReq   = pb.CategoryIDByProductListReq
-	CategoryIDReq                = pb.CategoryIDReq
-	CategoryIDSReply             = pb.CategoryIDSReply
-	CategoryIDSReq               = pb.CategoryIDSReq
-	CategoryListAllReply         = pb.CategoryListAllReply
-	CategoryUpdateReq            = pb.CategoryUpdateReq
-	ProductChangeStatusReq       = pb.ProductChangeStatusReq
-	ProductCreateReq             = pb.ProductCreateReq
-	ProductDeductionStockReq     = pb.ProductDeductionStockReq
-	ProductDeleteReq             = pb.ProductDeleteReq
-	ProductFindReq               = pb.ProductFindReq
-	ProductListReply             = pb.ProductListReply
-	ProductListReq               = pb.ProductListReq
-	ProductNil                   = pb.ProductNil
-	ProductReply                 = pb.ProductReply
-	ProductStagingReq            = pb.ProductStagingReq
-	ProductUpdateReq             = pb.ProductUpdateReq
+	Category                       = pb.Category
+	CategoryChangeStatusReq        = pb.CategoryChangeStatusReq
+	CategoryCreateReq              = pb.CategoryCreateReq
+	CategoryIDByProductListReply   = pb.CategoryIDByProductListReply
+	CategoryIDByProductListReq     = pb.CategoryIDByProductListReq
+	CategoryIDReq                  = pb.CategoryIDReq
+	CategoryIDSReply               = pb.CategoryIDSReply
+	CategoryIDSReq                 = pb.CategoryIDSReq
+	CategoryListAllReply           = pb.CategoryListAllReply
+	CategoryUpdateReq              = pb.CategoryUpdateReq
+	ProductAddStockReq             = pb.ProductAddStockReq
+	ProductChangeStatusReq         = pb.ProductChangeStatusReq
+	ProductCreateReq               = pb.ProductCreateReq
+	ProductDeductionStockReq       = pb.ProductDeductionStockReq
+	ProductDeleteReq               = pb.ProductDeleteReq
+	ProductFindListByBusinessIDReq = pb.ProductFindListByBusinessIDReq
+	ProductFindReq                 = pb.ProductFindReq
+	ProductIDsReq                  = pb.ProductIDsReq
+	ProductListReply               = pb.ProductListReply
+	ProductListReq                 = pb.ProductListReq
+	ProductNil                     = pb.ProductNil
+	ProductReply                   = pb.ProductReply
+	ProductStagingReq              = pb.ProductStagingReq
+	ProductUpdateReq               = pb.ProductUpdateReq
 
 	Product interface {
 		// @desc 所有的分类列表
@@ -62,6 +65,9 @@ type (
 		ProductFind(ctx context.Context, in *ProductFindReq, opts ...grpc.CallOption) (*ProductReply, error)
 		ProductUpdate(ctx context.Context, in *ProductUpdateReq, opts ...grpc.CallOption) (*ProductNil, error)
 		ProductDeductionStock(ctx context.Context, in *ProductDeductionStockReq, opts ...grpc.CallOption) (*ProductNil, error)
+		ProductAddStock(ctx context.Context, in *ProductAddStockReq, opts ...grpc.CallOption) (*ProductNil, error)
+		ProductFindListByIDs(ctx context.Context, in *ProductIDsReq, opts ...grpc.CallOption) (*ProductListReply, error)
+		ProductFindListByBusinessID(ctx context.Context, in *ProductFindListByBusinessIDReq, opts ...grpc.CallOption) (*ProductListReply, error)
 		CategoryIDByProductList(ctx context.Context, in *CategoryIDByProductListReq, opts ...grpc.CallOption) (*CategoryIDByProductListReply, error)
 	}
 
@@ -164,6 +170,21 @@ func (m *defaultProduct) ProductUpdate(ctx context.Context, in *ProductUpdateReq
 func (m *defaultProduct) ProductDeductionStock(ctx context.Context, in *ProductDeductionStockReq, opts ...grpc.CallOption) (*ProductNil, error) {
 	client := pb.NewProductClient(m.cli.Conn())
 	return client.ProductDeductionStock(ctx, in, opts...)
+}
+
+func (m *defaultProduct) ProductAddStock(ctx context.Context, in *ProductAddStockReq, opts ...grpc.CallOption) (*ProductNil, error) {
+	client := pb.NewProductClient(m.cli.Conn())
+	return client.ProductAddStock(ctx, in, opts...)
+}
+
+func (m *defaultProduct) ProductFindListByIDs(ctx context.Context, in *ProductIDsReq, opts ...grpc.CallOption) (*ProductListReply, error) {
+	client := pb.NewProductClient(m.cli.Conn())
+	return client.ProductFindListByIDs(ctx, in, opts...)
+}
+
+func (m *defaultProduct) ProductFindListByBusinessID(ctx context.Context, in *ProductFindListByBusinessIDReq, opts ...grpc.CallOption) (*ProductListReply, error) {
+	client := pb.NewProductClient(m.cli.Conn())
+	return client.ProductFindListByBusinessID(ctx, in, opts...)
 }
 
 func (m *defaultProduct) CategoryIDByProductList(ctx context.Context, in *CategoryIDByProductListReq, opts ...grpc.CallOption) (*CategoryIDByProductListReply, error) {

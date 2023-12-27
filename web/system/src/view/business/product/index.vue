@@ -7,11 +7,11 @@
         @click="addProduct"
       >添加商品
       </el-button>
-      <div >
+      <div>
         <el-input
           placeholder="请输入商品名"
           v-model="keyWord" style="width: 183px;margin-right: 16px"
-                  suffix-icon="MilkTea"/>
+          suffix-icon="MilkTea"/>
         <el-button
           type="primary"
           icon="search"
@@ -167,10 +167,8 @@ const productForm = ref(null)
 // 加载表格数据
 const loadTableData = async() => {
   const res = await productListApi({ page: page.value, pageSize: pageSize.value, keyWord: keyWord.value })
-  if (res.code === 0) {
-    tableData.value = res.data.list
-    total.value = res.data.total
-  }
+  tableData.value = res.data.list
+  total.value = res.data.total
 }
 loadTableData()
 // 页数发生变化
@@ -209,7 +207,7 @@ const deleteProduct = async(id) => {
 }
 
 // 修改商户状态
-const changeStatus = async (id,status) => {
+const changeStatus = async(id, status) => {
   const res = await productChangeStatusApi({ productId: id, status: status })
   if (res.code === 0) {
     ElMessage({

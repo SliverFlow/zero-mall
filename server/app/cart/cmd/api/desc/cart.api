@@ -21,4 +21,8 @@ service cart {
 	post /cart/create (CartCreateReq) returns (Nil);
 	@handler cartList
 	post /cart/list (CartListReq) returns (CartListReply);
+	@handler cartUpdate
+	post /cart/update (CartUpdateReq) returns (Nil);
+	@handler cartDelete
+	post /cart/delete (CartDeleteReq) returns (Nil);
 }

@@ -15,3 +15,11 @@ export const cartListApi = (data) => {
     data: data
   })
 }
+
+export const cartDeleteApi = (data) => {
+  return service({
+    method: 'post',
+    url: '/cart/delete',
+    data: data
+  })
+}

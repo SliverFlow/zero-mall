@@ -1,0 +1,40 @@
+syntax = "v1"
+
+
+info(
+    title: "order api"
+    desc: "order 相关 api model"
+    author: "SliverFlow"
+    email: "202606540@qq.com"
+    version: "v1.0"
+)
+
+type OrderListReq {
+    Page int64 `json:"page"`
+    PageSize int64 `json:"pageSize"`
+    BusinessId string `json:"businessId"`
+    StartTime string `json:"startTime"`
+    EndTime string `json:"endTime"`
+    Status int64 `json:"status"`
+}
+
+type OrderReply {
+    OrderID string `json:"orderId"`
+    Username string `json:"username"`
+    BusinessName string `json:"businessName"`
+    ProductName string `json:"productName"`
+    ProductImage []Image `json:"productImage"`
+    ProductNum int64 `json:"productNum"`
+    Payment float64 `json:"payment"`
+    OrderStatus int64 `json:"orderStatus"`
+    CreateTime int64 `json:"createTime"`
+    EndTime int64 `json:"endTime"`
+    Quantity int64 `json:"quantity"`
+}
+
+type OrderListReply {
+    List []OrderReply `json:"list"`
+    Page int64 `json:"page"`
+    PageSize int64 `json:"pageSize"`
+    Total int64 `json:"total"`
+}

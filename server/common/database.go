@@ -6,7 +6,11 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
+	"log"
+	"os"
 	"server/common/xconfig"
+	"time"
 )
 
 type InitMysqlDB struct {
@@ -66,7 +70,15 @@ func InitDB(c xconfig.Mysql) (db *gorm.DB, err error) {
 		SkipInitializeWithVersion: false,
 		DefaultStringSize:         191,
 	}
-	db, err = gorm.Open(mysql.New(mc))
+	db, err = gorm.Open(mysql.New(mc), &gorm.Config{
+
+		Logger: logger.New(log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
+			logger.Config{
+				SlowThreshold: time.Second, // 慢 SQL 阈值
+				LogLevel:      logger.Info, // Log level
+				Colorful:      false,       // 禁用彩色打印
+			}),
+	})
 	if err != nil {
 		logx.Error("[MYSQL CONNECTION ERROR] : ", err)
 		return nil, err

@@ -13,17 +13,34 @@ import (
 )
 
 type (
-	OrderCreateReq = pb.OrderCreateReq
-	OrderIDReply   = pb.OrderIDReply
-	OrderIdReq     = pb.OrderIdReq
-	OrderItemIdReq = pb.OrderItemIdReq
-	OrderNil       = pb.OrderNil
-	OrderReply     = pb.OrderReply
+	OrderCreateReq         = pb.OrderCreateReq
+	OrderDeleteByIDReq     = pb.OrderDeleteByIDReq
+	OrderDeleteReq         = pb.OrderDeleteReq
+	OrderDisableReq        = pb.OrderDisableReq
+	OrderFindReq           = pb.OrderFindReq
+	OrderIDReply           = pb.OrderIDReply
+	OrderItemDeleteByIDReq = pb.OrderItemDeleteByIDReq
+	OrderItemIdReq         = pb.OrderItemIdReq
+	OrderItemReply         = pb.OrderItemReply
+	OrderListReply         = pb.OrderListReply
+	OrderListReq           = pb.OrderListReq
+	OrderNil               = pb.OrderNil
+	OrderPageListReply     = pb.OrderPageListReply
+	OrderPageListReq       = pb.OrderPageListReq
+	OrderPageReply         = pb.OrderPageReply
+	OrderReply             = pb.OrderReply
 
 	Order interface {
 		OrderCreate(ctx context.Context, in *OrderCreateReq, opts ...grpc.CallOption) (*OrderIDReply, error)
-		OrderDelete(ctx context.Context, in *OrderIdReq, opts ...grpc.CallOption) (*OrderNil, error)
+		OrderDelete(ctx context.Context, in *OrderDeleteReq, opts ...grpc.CallOption) (*OrderNil, error)
+		OrderList(ctx context.Context, in *OrderListReq, opts ...grpc.CallOption) (*OrderListReply, error)
+		OrderFind(ctx context.Context, in *OrderFindReq, opts ...grpc.CallOption) (*OrderReply, error)
+		OrderDeleteByID(ctx context.Context, in *OrderDeleteByIDReq, opts ...grpc.CallOption) (*OrderNil, error)
+		// 订单子表相关
 		OrderItemDelete(ctx context.Context, in *OrderItemIdReq, opts ...grpc.CallOption) (*OrderNil, error)
+		OrderPageList(ctx context.Context, in *OrderPageListReq, opts ...grpc.CallOption) (*OrderPageListReply, error)
+		OrderDisable(ctx context.Context, in *OrderDisableReq, opts ...grpc.CallOption) (*OrderNil, error)
+		OrderItemDeleteByID(ctx context.Context, in *OrderItemDeleteByIDReq, opts ...grpc.CallOption) (*OrderNil, error)
 	}
 
 	defaultOrder struct {
@@ -42,12 +59,43 @@ func (m *defaultOrder) OrderCreate(ctx context.Context, in *OrderCreateReq, opts
 	return client.OrderCreate(ctx, in, opts...)
 }
 
-func (m *defaultOrder) OrderDelete(ctx context.Context, in *OrderIdReq, opts ...grpc.CallOption) (*OrderNil, error) {
+func (m *defaultOrder) OrderDelete(ctx context.Context, in *OrderDeleteReq, opts ...grpc.CallOption) (*OrderNil, error) {
 	client := pb.NewOrderClient(m.cli.Conn())
 	return client.OrderDelete(ctx, in, opts...)
 }
 
+func (m *defaultOrder) OrderList(ctx context.Context, in *OrderListReq, opts ...grpc.CallOption) (*OrderListReply, error) {
+	client := pb.NewOrderClient(m.cli.Conn())
+	return client.OrderList(ctx, in, opts...)
+}
+
+func (m *defaultOrder) OrderFind(ctx context.Context, in *OrderFindReq, opts ...grpc.CallOption) (*OrderReply, error) {
+	client := pb.NewOrderClient(m.cli.Conn())
+	return client.OrderFind(ctx, in, opts...)
+}
+
+func (m *defaultOrder) OrderDeleteByID(ctx context.Context, in *OrderDeleteByIDReq, opts ...grpc.CallOption) (*OrderNil, error) {
+	client := pb.NewOrderClient(m.cli.Conn())
+	return client.OrderDeleteByID(ctx, in, opts...)
+}
+
+// 订单子表相关
 func (m *defaultOrder) OrderItemDelete(ctx context.Context, in *OrderItemIdReq, opts ...grpc.CallOption) (*OrderNil, error) {
 	client := pb.NewOrderClient(m.cli.Conn())
 	return client.OrderItemDelete(ctx, in, opts...)
+}
+
+func (m *defaultOrder) OrderPageList(ctx context.Context, in *OrderPageListReq, opts ...grpc.CallOption) (*OrderPageListReply, error) {
+	client := pb.NewOrderClient(m.cli.Conn())
+	return client.OrderPageList(ctx, in, opts...)
+}
+
+func (m *defaultOrder) OrderDisable(ctx context.Context, in *OrderDisableReq, opts ...grpc.CallOption) (*OrderNil, error) {
+	client := pb.NewOrderClient(m.cli.Conn())
+	return client.OrderDisable(ctx, in, opts...)
+}
+
+func (m *defaultOrder) OrderItemDeleteByID(ctx context.Context, in *OrderItemDeleteByIDReq, opts ...grpc.CallOption) (*OrderNil, error) {
+	client := pb.NewOrderClient(m.cli.Conn())
+	return client.OrderItemDeleteByID(ctx, in, opts...)
 }

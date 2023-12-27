@@ -14,6 +14,8 @@ type (
 		BusinessFind(ctx context.Context, businessId string) (enter *Business, err error)
 		BusinessFindByUUID(ctx context.Context, uuid string) (enter *Business, err error)
 		BusinessUpdate(ctx context.Context, business *Business) (err error)
+		BusinessFindListByIDs(ctx context.Context, ids []string) (enter []Business, err error)
+		BusinessListAll(ctx context.Context) (enter []Business, err error)
 	}
 
 	defaultBusinessModel struct {
@@ -113,4 +115,26 @@ func (d *defaultBusinessModel) BusinessUpdate(ctx context.Context, business *Bus
 	bm["score"] = business.Score
 
 	return d.db.Model(&Business{}).Where("business_id = ?", business.BusinessID).Updates(&bm).Error
+}
+
+func (d *defaultBusinessModel) BusinessFindListByIDs(ctx context.Context, ids []string) (enter []Business, err error) {
+	span, _ := common.Tracer(ctx, "business-find-list-by-ids")
+	defer span.End()
+
+	var list []Business
+	if err = d.db.Model(&Business{}).Where("business_id in ?", ids).Find(&list).Error; err != nil {
+		return nil, err
+	}
+	return list, nil
+}
+
+func (d *defaultBusinessModel) BusinessListAll(ctx context.Context) (enter []Business, err error) {
+	span, _ := common.Tracer(ctx, "business-list-all")
+	defer span.End()
+
+	var list []Business
+	if err = d.db.Model(&Business{}).Find(&list).Error; err != nil {
+		return nil, err
+	}
+	return list, nil
 }

@@ -34,14 +34,14 @@ SystemRpc:
   Etcd:
     Hosts:
       - 120.77.237.246:32379
-#      - etcd:2379
+    #      - etcd:2379
     Key: system.rpc
 
 UserRpc:
   Etcd:
     Hosts:
       - 120.77.237.246:32379
-#      - etcd:2379
+    #      - etcd:2379
     Key: user.rpc
 
 ProductRpc:
@@ -50,6 +50,13 @@ ProductRpc:
       - 120.77.237.246:32379
     #      - etcd:2379
     Key: product.rpc
+
+OrderRpc:
+  Etcd:
+    Hosts:
+      - 120.77.237.246:32379
+    #      - etcd:2379
+    Key: order.rpc
 
 #Prometheus:
 #  Host: 0.0.0.0

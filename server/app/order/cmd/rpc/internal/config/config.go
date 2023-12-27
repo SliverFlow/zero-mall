@@ -8,5 +8,8 @@ import (
 type Config struct {
 	zrpc.RpcServerConf
 
+	UserRpc    zrpc.RpcClientConf
+	ProductRpc zrpc.RpcClientConf
+
 	Mysql xconfig.Mysql
 }

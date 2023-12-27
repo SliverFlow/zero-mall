@@ -15,13 +15,15 @@ type GloModel struct {
 	DeletedAt gorm.DeletedAt `gorm:"index" json:"-"`       // 删除时间
 }
 
-type (
-	PageInfo struct {
-		Page     int
-		PageSize int
-		KeyWord  string
-	}
-)
+type PageInfo struct {
+	Page      int    `json:"page"`
+	PageSize  int    `json:"pageSize"`
+	KeyWord   string `json:"keyWord"`
+	StartTime string `json:"startTime"`
+	EndTime   string `json:"endTime"`
+	Status    int    `json:"status"`
+	Role      int    `json:"role"`
+}
 
 // LimitAndOffsetAndKeyWord 获取分页以及偏移量
 func (pi *PageInfo) LimitAndOffsetAndKeyWord() (limit, offset int, keyWord string) {

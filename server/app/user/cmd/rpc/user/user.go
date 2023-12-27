@@ -17,7 +17,11 @@ type (
 	Business                     = pb.Business
 	BusinessChangeStatusReq      = pb.BusinessChangeStatusReq
 	BusinessCreateReq            = pb.BusinessCreateReq
+	BusinessDict                 = pb.BusinessDict
+	BusinessDictReply            = pb.BusinessDictReply
+	BusinessFindListReq          = pb.BusinessFindListReq
 	BusinessIDReq                = pb.BusinessIDReq
+	BusinessListReply            = pb.BusinessListReply
 	BusinessPageReply            = pb.BusinessPageReply
 	BusinessUUIDReq              = pb.BusinessUUIDReq
 	IDReq                        = pb.IDReq
@@ -30,10 +34,13 @@ type (
 	UserCreateReq                = pb.UserCreateReq
 	UserFindByPhoneOrUsernameReq = pb.UserFindByPhoneOrUsernameReq
 	UserInfoReply                = pb.UserInfoReply
+	UserListReply                = pb.UserListReply
 	UserLoginReply               = pb.UserLoginReply
 	UserLoginReq                 = pb.UserLoginReq
 	UserNil                      = pb.UserNil
+	UserPageListByIDsReq         = pb.UserPageListByIDsReq
 	UserReply                    = pb.UserReply
+	UserUpdateByUUIDReq          = pb.UserUpdateByUUIDReq
 	UserUpdateReq                = pb.UserUpdateReq
 	UsernameReq                  = pb.UsernameReq
 
@@ -53,6 +60,8 @@ type (
 		UserFindByPhoneOrUsername(ctx context.Context, in *UserFindByPhoneOrUsernameReq, opts ...grpc.CallOption) (*UserInfoReply, error)
 		UserCheckPhone(ctx context.Context, in *PhoneReq, opts ...grpc.CallOption) (*UserNil, error)
 		UserFindByPhone(ctx context.Context, in *PhoneReq, opts ...grpc.CallOption) (*UserInfoReply, error)
+		UserUpdateByUUID(ctx context.Context, in *UserUpdateByUUIDReq, opts ...grpc.CallOption) (*UserNil, error)
+		UserFindListByIDs(ctx context.Context, in *UserPageListByIDsReq, opts ...grpc.CallOption) (*UserListReply, error)
 		// 商家相关
 		BusinessCreate(ctx context.Context, in *BusinessCreateReq, opts ...grpc.CallOption) (*UserNil, error)
 		BusinessList(ctx context.Context, in *PageReq, opts ...grpc.CallOption) (*BusinessPageReply, error)
@@ -60,6 +69,8 @@ type (
 		BusinessFind(ctx context.Context, in *BusinessIDReq, opts ...grpc.CallOption) (*Business, error)
 		BusinessFindByUUID(ctx context.Context, in *BusinessUUIDReq, opts ...grpc.CallOption) (*Business, error)
 		BusinessUpdate(ctx context.Context, in *Business, opts ...grpc.CallOption) (*UserNil, error)
+		BusinessFindListByIDs(ctx context.Context, in *BusinessFindListReq, opts ...grpc.CallOption) (*BusinessListReply, error)
+		BusinessDict(ctx context.Context, in *UserNil, opts ...grpc.CallOption) (*BusinessDictReply, error)
 	}
 
 	defaultUser struct {
@@ -144,6 +155,16 @@ func (m *defaultUser) UserFindByPhone(ctx context.Context, in *PhoneReq, opts ..
 	return client.UserFindByPhone(ctx, in, opts...)
 }
 
+func (m *defaultUser) UserUpdateByUUID(ctx context.Context, in *UserUpdateByUUIDReq, opts ...grpc.CallOption) (*UserNil, error) {
+	client := pb.NewUserClient(m.cli.Conn())
+	return client.UserUpdateByUUID(ctx, in, opts...)
+}
+
+func (m *defaultUser) UserFindListByIDs(ctx context.Context, in *UserPageListByIDsReq, opts ...grpc.CallOption) (*UserListReply, error) {
+	client := pb.NewUserClient(m.cli.Conn())
+	return client.UserFindListByIDs(ctx, in, opts...)
+}
+
 // 商家相关
 func (m *defaultUser) BusinessCreate(ctx context.Context, in *BusinessCreateReq, opts ...grpc.CallOption) (*UserNil, error) {
 	client := pb.NewUserClient(m.cli.Conn())
@@ -173,4 +194,14 @@ func (m *defaultUser) BusinessFindByUUID(ctx context.Context, in *BusinessUUIDRe
 func (m *defaultUser) BusinessUpdate(ctx context.Context, in *Business, opts ...grpc.CallOption) (*UserNil, error) {
 	client := pb.NewUserClient(m.cli.Conn())
 	return client.BusinessUpdate(ctx, in, opts...)
+}
+
+func (m *defaultUser) BusinessFindListByIDs(ctx context.Context, in *BusinessFindListReq, opts ...grpc.CallOption) (*BusinessListReply, error) {
+	client := pb.NewUserClient(m.cli.Conn())
+	return client.BusinessFindListByIDs(ctx, in, opts...)
+}
+
+func (m *defaultUser) BusinessDict(ctx context.Context, in *UserNil, opts ...grpc.CallOption) (*BusinessDictReply, error) {
+	client := pb.NewUserClient(m.cli.Conn())
+	return client.BusinessDict(ctx, in, opts...)
 }

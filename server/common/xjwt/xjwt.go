@@ -5,6 +5,7 @@ import (
 	"errors"
 	"github.com/go-redis/redis/v8"
 	"github.com/golang-jwt/jwt"
+	"server/common/xerr"
 	"time"
 )
 
@@ -94,7 +95,7 @@ func (x *XJwt) ParseToken(token string) (custom *CustomClaims, err error) {
 				return nil, TokenMalformed
 			} else if ve.Errors&jwt.ValidationErrorExpired != 0 {
 				// Token is expired
-				return nil, TokenExpired
+				return nil, xerr.NewCodeError(200003)
 			} else if ve.Errors&jwt.ValidationErrorNotValidYet != 0 {
 				return nil, TokenNotValidYet
 			} else {

@@ -23,7 +23,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		os.Exit(0)
 	}
 
-	autoMigrate(db)
+	// autoMigrate(db)
 
 	return &ServiceContext{
 		Config:       c,

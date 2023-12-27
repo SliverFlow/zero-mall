@@ -1,4 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+import { useUserStore } from '@/pinia/model/user.js'
+import { ElMessageBox } from 'element-plus'
 
 const routes = [
   {
@@ -7,7 +9,7 @@ const routes = [
     component: () => import('@/view/layout/index.vue'),
     children: [
       {
-        path: 'index',
+        path: '',
         name: 'Index',
         component: () => import('@/view/index/index.vue'),
       }, {
@@ -41,12 +43,44 @@ const routes = [
     path: '/cart',
     name: 'Cart',
     component: () => import('@/view/cart/index.vue')
+  }, {
+    path: '/order',
+    name: 'Order',
+    component: () => import('@/view/order/index.vue')
   }
 ]
 
 const router = createRouter({
   routes,
   history: createWebHashHistory()
+})
+
+router.beforeEach(async(to) => {
+  if (to.name === 'Login' || to.name === 'Register') {
+    return true
+  }
+  const userStore = useUserStore()
+
+  if (to.name === 'Order' || to.name === 'Cart') {
+    if (!userStore.isLogin) {
+      const res = await ElMessageBox.confirm(
+        '加入购物车需要您登录账号，是否前往进入登录界面',
+        '提示',
+        {
+          confirmButtonText: '确认',
+          cancelButtonText: '取消',
+          type: 'warning',
+        }
+      )
+      if (res === 'confirm') {
+        return { name: 'Login', query: { 'path': to.path }}
+      } else {
+        return false
+      }
+    } else {
+      return true
+    }
+  }
 })
 
 export default router

@@ -4,7 +4,7 @@
 
     <div class="gva-table-box">
       <div class="gva-btn-list">
-        <el-button type="primary" icon="Plus" @click="addMenu(0)">添加根菜单</el-button>
+        <el-button type="primary" icon="Plus" @click="addMenu(0,0)">添加根菜单</el-button>
         <el-select
           v-model="roleData"
           placeholder="请选择角色"
@@ -64,7 +64,7 @@
             {{ formatTimestamp(scope.row.updatedAt) }}
           </template>
         </el-table-column>
-        <el-table-column label="操作" min-width="250" fixed="right">
+        <el-table-column label="操作" min-width="255" fixed="right">
           <template #default="scope">
             <el-button
               type="primary"
@@ -83,7 +83,7 @@
             >编辑
             </el-button>
             <el-button
-              :disabled="scope.row.ID === 2 || scope.row.ID === 3"
+              :disabled="scope.row.ID === 2 || scope.row.ID === 3 || scope.row.ID === 1 || scope.row.ID === 4"
               type="danger"
               link
               icon="delete"
@@ -189,7 +189,7 @@ import router from '@/router/index.js'
 import { useMenuStore } from '@/store/model/menu.js'
 import Icon from '@/view/system/menu/component/icon.vue'
 import WarningBar from '@/components/warningBar/warningBar.vue'
-import { formatTimestamp } from '../../../utils/date.js'
+import { formatTimestamp } from '@/utils/date.js'
 
 const routerStore = useRouterStore()
 const menuStore = useMenuStore()

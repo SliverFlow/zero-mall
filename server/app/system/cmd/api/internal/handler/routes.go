@@ -9,6 +9,7 @@ import (
 	category "server/app/system/cmd/api/internal/handler/category"
 	file "server/app/system/cmd/api/internal/handler/file"
 	menu "server/app/system/cmd/api/internal/handler/menu"
+	order "server/app/system/cmd/api/internal/handler/order"
 	product "server/app/system/cmd/api/internal/handler/product"
 	role "server/app/system/cmd/api/internal/handler/role"
 	user "server/app/system/cmd/api/internal/handler/user"
@@ -62,6 +63,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Method:  http.MethodPost,
 					Path:    "/user/delete",
 					Handler: user.UserDeleteHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/user/updateByUUID",
+					Handler: user.UserUpdateByUUIDHandler(serverCtx),
 				},
 			}...,
 		),
@@ -155,6 +161,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Path:    "/business/update",
 					Handler: business.BusinessUpdateHandler(serverCtx),
 				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/business/dict",
+					Handler: business.BusinessDictHandler(serverCtx),
+				},
 			}...,
 		),
 		rest.WithPrefix("/system/v1"),
@@ -242,6 +253,20 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Method:  http.MethodPost,
 					Path:    "/product/update",
 					Handler: product.ProductUpdateHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/system/v1"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/order/list",
+					Handler: order.OrderListHandler(serverCtx),
 				},
 			}...,
 		),

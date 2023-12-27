@@ -181,6 +181,13 @@ const selectionChange = (val) => {
 
 // 批量删除
 const batchDeleteCategory = async() => {
+  if (kvs.value.length === 0) {
+    ElMessage({
+      message: '请选择需要删除的分类',
+      type: 'warning',
+    })
+    return
+  }
   const res = await categoryBatchDeleteApi({ kvs: kvs.value })
   if (res.code === 0) {
     ElMessage({

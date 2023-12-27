@@ -16,8 +16,12 @@ type Cart {
     CartID string `json:"cartId"`
     UserID string `json:"userId"`
     ProductID string `json:"productId"`
+    ProductName string `json:"productName"`
     Quantity int64 `json:"quantity"`
     Checked int64 `json:"checked"`
+    ProductPrice float64 `json:"productPrice"`
+    ProductImage []Image `json:"productImage"`
+    Price float64 `json:"price"`
 }
 
 type CartCreateReq {
@@ -29,7 +33,7 @@ type CartCreateReq {
 type CartListReq {
     Page int64 `json:"page"`
     PageSize int64 `json:"pageSize"`
-    KeyWork string `json:"keyWork"`
+    KeyWord string `json:"keyWord"`
 }
 
 type CartListReply {
@@ -37,4 +41,16 @@ type CartListReply {
     PageSize int64 `json:"pageSize"`
     Total int64 `json:"total"`
     List []Cart `json:"list"`
+}
+type CartDeleteReq {
+    CartID string `json:"cartId"`
+}
+type CartUpdateReq {
+    CartID string `json:"cartId"`
+    Quantity int64 `json:"quantity"`
+    Checked int64 `json:"checked"`
+}
+
+type Image {
+    Url string `json:"url"`
 }

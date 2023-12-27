@@ -28,8 +28,27 @@ message CartListReply {
   int64 Total = 1;
   repeated CartInfo List = 2;
 }
+message CartDeleteReq {
+  string CartID = 1;
+}
+message CartUpdateReq {
+  int64 Quantity = 3;
+  int64 Checked = 4;
+  string CartID = 5;
+}
+message CartFindReq {
+  string CartID = 1;
+}
+message CartFindByUserIDAndProductIDReq {
+  string UserID = 1;
+  string ProductID = 2;
+}
 
 service cart {
   rpc cartCreate(CartCreateReq) returns (CartNil);
   rpc cartList (CartListReq) returns (CartListReply);
+  rpc cartDelete (CartDeleteReq) returns (CartNil);
+  rpc cartUpdate (CartUpdateReq) returns (CartNil);
+  rpc cartFind (CartFindReq) returns (CartInfo);
+  rpc cartFindByUserIDAndProductID (CartFindByUserIDAndProductIDReq) returns (CartInfo);
 }

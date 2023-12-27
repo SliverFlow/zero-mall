@@ -29,6 +29,14 @@ const routes = [
     path: '/layout',
     redirect: '/layout/dashboard',
     component: () => import('@/view/layout/index.vue'),
+    children: [
+      {
+        path: '/user/info',
+        name: 'UserInfo',
+        meta: { title: '个人信息' },
+        component: () => import('@/view/system/user/info/index.vue')
+      }
+    ]
   },
   // {
   //   path: '/404',
@@ -57,7 +65,7 @@ router.beforeEach(async(to) => {
   if (!userStore.isLogin && to.name !== 'Login') {
     // 这里的query就是为了记录用户最后一次访问的路径，这个路径是通过to的参数获取
     // 后续在登录成功以后，就可以根据这个path的参数，然后调整到你最后一次访问的路径
-    return { name: 'Login', query: { 'path': to.path }}
+    return { name: 'Login', query: { 'path': to.path } }
   }
   const routerStore = useRouterStore()
   // await routerStore.setAsyncRouter()

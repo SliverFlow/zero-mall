@@ -38,6 +38,7 @@ func (l *OrderCreateLogic) OrderCreate(in *pb.OrderCreateReq) (*pb.OrderIDReply,
 		UserID:     in.GetUserID(),
 		ShoppingID: in.GetShoppingID(),
 		Postage:    in.GetPostage(),
+		BusinessID: in.GetBusinessID(),
 		Status:     10,
 	})
 	if err != nil {
@@ -57,7 +58,7 @@ func (l *OrderCreateLogic) OrderCreate(in *pb.OrderCreateReq) (*pb.OrderIDReply,
 		TotalPrice:       in.GetTotalPrice(),
 	})
 	if err != nil {
-		_ = l.svcCtx.OrderModel.OrderDelete(l.ctx, orderId)
+		_ = l.svcCtx.OrderModel.OrderDeleteByID(l.ctx, orderId)
 		return nil, status.Errorf(100001, "订单创建失败")
 	}
 

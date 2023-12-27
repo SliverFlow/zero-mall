@@ -93,6 +93,16 @@ func (s *UserServer) UserFindByPhone(ctx context.Context, in *pb.PhoneReq) (*pb.
 	return l.UserFindByPhone(in)
 }
 
+func (s *UserServer) UserUpdateByUUID(ctx context.Context, in *pb.UserUpdateByUUIDReq) (*pb.UserNil, error) {
+	l := logic.NewUserUpdateByUUIDLogic(ctx, s.svcCtx)
+	return l.UserUpdateByUUID(in)
+}
+
+func (s *UserServer) UserFindListByIDs(ctx context.Context, in *pb.UserPageListByIDsReq) (*pb.UserListReply, error) {
+	l := logic.NewUserFindListByIDsLogic(ctx, s.svcCtx)
+	return l.UserFindListByIDs(in)
+}
+
 // 商家相关
 func (s *UserServer) BusinessCreate(ctx context.Context, in *pb.BusinessCreateReq) (*pb.UserNil, error) {
 	l := logic.NewBusinessCreateLogic(ctx, s.svcCtx)
@@ -122,4 +132,14 @@ func (s *UserServer) BusinessFindByUUID(ctx context.Context, in *pb.BusinessUUID
 func (s *UserServer) BusinessUpdate(ctx context.Context, in *pb.Business) (*pb.UserNil, error) {
 	l := logic.NewBusinessUpdateLogic(ctx, s.svcCtx)
 	return l.BusinessUpdate(in)
+}
+
+func (s *UserServer) BusinessFindListByIDs(ctx context.Context, in *pb.BusinessFindListReq) (*pb.BusinessListReply, error) {
+	l := logic.NewBusinessFindListByIDsLogic(ctx, s.svcCtx)
+	return l.BusinessFindListByIDs(in)
+}
+
+func (s *UserServer) BusinessDict(ctx context.Context, in *pb.UserNil) (*pb.BusinessDictReply, error) {
+	l := logic.NewBusinessDictLogic(ctx, s.svcCtx)
+	return l.BusinessDict(in)
 }

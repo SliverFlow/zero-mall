@@ -14,6 +14,7 @@ type (
 		CartFind(ctx context.Context, cartId string) (enter *Cart, err error)
 		CartCountByUserID(ctx context.Context, userId string) (total int64, err error)
 		CartListByUserID(ctx context.Context, userId string, page *common.PageInfo) (enter *[]Cart, total int64, err error)
+		CartFindByUserIDAndProductID(ctx context.Context, userId string, productId string) (enter *Cart, err error)
 	}
 
 	defaultCartModel struct {
@@ -115,4 +116,17 @@ func (d *defaultCartModel) CartListByUserID(ctx context.Context, userId string, 
 	}
 
 	return &list, total, nil
+}
+
+func (d *defaultCartModel) CartFindByUserIDAndProductID(ctx context.Context, userId string, productId string) (enter *Cart, err error) {
+	tx := d.db.WithContext(ctx)
+	span, _ := common.Tracer(ctx, "cart-find-by-userId-and-productId")
+	defer span.End()
+
+	var c Cart
+	if err = tx.Model(&Cart{}).Where("user_id = ? and product_id = ?", userId, productId).First(&c).Error; err != nil {
+		return nil, err
+	}
+
+	return &c, nil
 }

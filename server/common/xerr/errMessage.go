@@ -8,7 +8,7 @@ func init() {
 	message[DB_NOTFOUNR] = "未查找到数据"
 	message[DB_DELETE_NOTEXIST] = "数据库中没有此条数据"
 	message[FILE_UPLOAD_ERROR] = "文件上传失败"
-	message[TOKEN_NOT_EXIST] = "未登录，请登录后再使用"
+	message[TOKEN_NOT_EXIST] = "为获取到 token"
 	message[TOKEN_INBLACKLIST_ERROT] = "黑名单或异地登录"
 	message[TOKEN_EXPIRE_ERROR] = "登录已过期，请重新登录"
 	message[USERNAME_IS_EXIST] = "用户名已存在"

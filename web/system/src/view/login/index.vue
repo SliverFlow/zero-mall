@@ -2,7 +2,8 @@
   <div id="userLayout">
     <div class="login_panel">
       <div class="login_panel_form">
-        <div class="login_panel_form_title" style="display: flex;align-items: center;align-content: center;flex-direction: column">
+        <div class="login_panel_form_title"
+             style="display: flex;align-items: center;align-content: center;flex-direction: column">
           <!--          <img-->
           <!--            class="login_panel_form_title_logo"-->
           <!--            src=""-->
@@ -19,7 +20,7 @@
               <template #suffix>
                 <span class="input-icon">
                   <el-icon>
-                    <user />
+                    <user/>
                   </el-icon>
                 </span>
               </template>
@@ -29,12 +30,13 @@
             <el-input
               v-model="formData.password"
               placeholder="请输入密码"
-              type="password"
+              :type="isLock ? 'password' : 'text'"
             >
               <template #suffix>
-                <span class="input-icon">
+                <span class="input-icon" @click="isLock = !isLock">
                   <el-icon>
-                    <lock />
+                    <lock v-if="isLock"/>
+                    <unlock v-if="!isLock"/>
                   </el-icon>
                 </span>
               </template>
@@ -52,7 +54,7 @@
                   v-if="picPath"
                   :src="picPath"
                   alt="验证码"
-                  @click="loginVerify()"
+                  @click="getCaptcha"
                 >
               </div>
             </div>
@@ -68,7 +70,7 @@
           </el-form-item>
         </el-form>
       </div>
-      <div class="login_panel_right" />
+      <div class="login_panel_right"/>
     </div>
   </div>
 </template>
@@ -96,7 +98,8 @@ const formData = ref({
 })
 // 验证码图片地址
 const picPath = ref('')
-
+// 锁图标
+const isLock = ref(true)
 // 获取验证码
 const getCaptcha = async() => {
   const res = await captchaApi()

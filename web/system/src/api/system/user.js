@@ -46,3 +46,11 @@ export const userDeleteApi = (data) => {
     data: data
   })
 }
+
+export const userUpdateByUUIDApi = (data) => {
+  return service({
+    url: '/system/v1/user/updateByUUID',
+    method: 'post',
+    data: data
+  })
+}

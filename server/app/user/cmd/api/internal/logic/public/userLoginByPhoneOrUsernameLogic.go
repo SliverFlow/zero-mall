@@ -39,7 +39,7 @@ func (l *UserLoginByPhoneOrUsernameLogic) UserLoginByPhoneOrUsername(req *types.
 
 	user := pbreply.GetUser()
 	// 比对密码
-	if !common.BcryptCheck(req.Password, user.GetPassword()) {
+	if ok := common.BcryptCheck(req.Password, user.GetPassword()); !ok {
 		return nil, xerr.NewErrMsg("密码输入有误，请重新输入")
 	}
 

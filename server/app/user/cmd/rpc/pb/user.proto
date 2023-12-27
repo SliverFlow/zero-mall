@@ -96,6 +96,14 @@ message UserChangeStatusReq {
 message UserFindByPhoneOrUsernameReq {
   string Username = 1;
 }
+message UserPageListByIDsReq {
+  repeated string IDs = 1;
+}
+message UserListReply {
+  repeated UserReply List = 1;
+}
+
+
 
 
 // ------------------------------------- Business 相关 ---------------
@@ -135,6 +143,31 @@ message BusinessUUIDReq {
 message PhoneReq {
   string Phone = 1;
 }
+message UserUpdateByUUIDReq {
+  string UUID = 1;
+  string Phone = 2;
+  string Username = 4;
+  string Email = 5;
+  string Nickname = 6;
+  string Password = 7;
+  string Avatar = 8;
+  int64 Role = 9;
+  int64 Status = 10;
+}
+message BusinessListReply {
+  repeated Business List = 1;
+}
+message BusinessFindListReq {
+  repeated  string IDs = 1;
+}
+message BusinessDict {
+  string BusinessID = 1;
+  string BusinessName = 2;
+}
+message BusinessDictReply{
+  repeated BusinessDict List = 1;
+}
+
 
 service user {
   // 用户相关
@@ -152,6 +185,8 @@ service user {
   rpc userFindByPhoneOrUsername (UserFindByPhoneOrUsernameReq) returns (UserInfoReply);
   rpc userCheckPhone (PhoneReq) returns (UserNil);
   rpc userFindByPhone (PhoneReq) returns (UserInfoReply);
+  rpc userUpdateByUUID (UserUpdateByUUIDReq) returns (UserNil);
+  rpc userFindListByIDs (UserPageListByIDsReq) returns (UserListReply);
 
   // 商家相关
   rpc businessCreate (BusinessCreateReq) returns (UserNil);
@@ -160,5 +195,7 @@ service user {
   rpc businessFind (BusinessIDReq) returns (Business);
   rpc businessFindByUUID (BusinessUUIDReq) returns (Business);
   rpc businessUpdate (Business) returns (UserNil);
+  rpc businessFindListByIDs (BusinessFindListReq) returns (BusinessListReply);
+  rpc businessDict (UserNil) returns (BusinessDictReply);
 
 }

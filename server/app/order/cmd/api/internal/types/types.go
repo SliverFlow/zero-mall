@@ -13,3 +13,75 @@ type OrderCreateReply struct {
 	OrderID     string `json:"orderId"`
 	OrderItemID string `json:"orderItemId"`
 }
+
+type OrderListReq struct {
+	Page     int64 `json:"page"`
+	PageSize int64 `json:"pageSize"`
+}
+
+type OrderListInfo struct {
+	OrderID          string  `json:"orderId"`
+	OrderItemID      string  `json:"orderItemId"`
+	ProductName      string  `json:"productName"`      // 商品名称
+	ProductImage     []Image `json:"productImage"`     // 商品图片
+	BusinessName     string  `json:"businessName"`     // 商家名称
+	BusinessID       string  `json:"businessId"`       // 商家ID
+	Price            float64 `json:"price"`            // 商品单价
+	OrderStatus      int64   `json:"orderStatus"`      // 订单状态
+	Quantity         int64   `json:"quantity"`         // 商品数量
+	Payment          float64 `json:"payment"`          // 实际付款金额
+	PaymentType      int64   `json:"pymentType"`       // 付款类型
+	PaymentTime      int64   `json:"paymentTime"`      // 付款时间
+	SendTime         int64   `json:"sendTime"`         // 发货时间
+	PayEndTime       int64   `json:"payEndTime"`       // 交易完成时间
+	PayCloseTime     int64   `json:"payCloseTime"`     // 交易关闭时间
+	CurrentunitPrice float64 `json:"currentunitPrice"` // 生成订单时的商品单价，单位是元，保留两位小数
+	TotalPrice       float64 `json:"totalPrice"`       // 商品总价，单位是元，保留两位小数
+	CreateTime       int64   `json:"createTime"`       // 订单创建时间
+	EndTime          int64   `json:"endTime"`          // 订单结束时间
+}
+
+type OrderListReply struct {
+	Total    int64           `json:"total"`
+	Page     int64           `json:"page"`
+	PageSize int64           `json:"pageSize"`
+	List     []OrderListInfo `json:"list"`
+}
+
+type OrderDeleteReq struct {
+	IDs []string `json:"ids"`
+}
+
+type OrderFindReq struct {
+	OrderID string `json:"orderId"`
+}
+
+type OrderFindReply struct {
+	OrderID          string  `json:"orderId"`
+	OrderItemID      string  `json:"orderItemId"`
+	ProductName      string  `json:"productName"`      // 商品名称
+	ProductImage     []Image `json:"productImage"`     // 商品图片
+	BusinessName     string  `json:"businessName"`     // 商家名称
+	BusinessID       string  `json:"businessId"`       // 商家ID
+	Price            float64 `json:"price"`            // 商品单价
+	OrderStatus      int64   `json:"status"`           // 订单状态
+	Quantity         int64   `json:"quantity"`         // 商品数量
+	Payment          float64 `json:"payment"`          // 实际付款金额
+	PaymentType      int64   `json:"pymentType"`       // 付款类型
+	PaymentTime      int64   `json:"paymentTime"`      // 付款时间
+	SendTime         int64   `json:"sendTime"`         // 发货时间
+	PayEndTime       int64   `json:"endTime"`          // 交易完成时间
+	PayCloseTime     int64   `json:"closeTime"`        // 交易关闭时间
+	CurrentunitPrice float64 `json:"currentunitPrice"` // 生成订单时的商品单价，单位是元，保留两位小数
+	TotalPrice       float64 `json:"totalPrice"`       // 商品总价，单位是元，保留两位小数
+	CreateTime       int64   `json:"createTime"`       // 订单创建时间
+	EndTime          int64   `json:"endTime"`          // 订单结束时间
+}
+
+type Image struct {
+	Url string `json:"url"`
+}
+
+type OrderDisableReq struct {
+	OrderID string `json:"orderId"`
+}

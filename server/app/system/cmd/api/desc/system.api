@@ -15,6 +15,7 @@ import "api/business.api"
 import "api/category.api"
 import "api/product.api"
 import "api/file.api"
+import "api/order.api"
 
 // 公共部分 login captcha file
 @server(
@@ -45,6 +46,8 @@ service system {
 	post /user/changeStatus (UserChangeStatusReq) returns (NilReply)
 	@handler userDelete
 	post /user/delete (UserIDReq) returns (NilReply)
+	@handler userUpdateByUUID
+	post /user/updateByUUID (UserUpdateByUUIDReq) returns (NilReply)
 }
 
 // role 部分
@@ -99,6 +102,8 @@ service system {
 	post /business/find (NilReq) returns (Business)
 	@handler businessUpdate
 	post /business/update (BusinessUpdateReq) returns (NilReply)
+	@handler businessDict
+	post /business/dict (NilReq) returns (BusinessDictReply)
 }
 
 // 分类部分
@@ -145,6 +150,17 @@ service system {
 	post /product/find (ProductFindReq) returns (Product);
 	@handler productUpdate
 	post /product/update (ProductUpdateReq) returns (NilReply);
+}
+
+// 订单部分
+@server (
+	group: order
+	prefix: system/v1
+	middleware : Auth
+)
+service system {
+	@handler orderList
+	post /order/list (OrderListReq) returns (OrderListReply);
 }
 
 // 文件部分

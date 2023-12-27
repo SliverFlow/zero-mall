@@ -47,12 +47,12 @@ product:
   api: 6660
   rpc: 6661  
 ```
-为防止应用启动失败，推荐一下启动顺序（从前之后、依次）每个 api 都强依赖与自己对应的 rpc，另外也可能强/弱依赖于其他 rpc 服务
+为防止应用启动失败，推荐以下启动顺序（从前之后、依次）每个 api 都强依赖与自己对应的 rpc，另外也可能强于其他 rpc 服务
 ```shell
 product-rpc 
-user-rpc(若依赖 product-rpc )
+user-rpc(强依赖 product-rpc )
 order-rpc
-cart-rpc
+cart-rpc()
 system-rpc
 user-api
 product-api (弱依赖 user-rpc)
