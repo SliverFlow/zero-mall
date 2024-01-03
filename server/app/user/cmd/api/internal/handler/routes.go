@@ -58,24 +58,13 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	)
 
 	server.AddRoutes(
-		[]rest.Route{
-			{
-				Method:  http.MethodPost,
-				Path:    "/business/create",
-				Handler: public.BusinessCreateHandler(serverCtx),
-			},
-		},
-		rest.WithPrefix("/v1"),
-	)
-
-	server.AddRoutes(
 		rest.WithMiddlewares(
 			[]rest.Middleware{serverCtx.Auth},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
-					Path:    "/business/find",
-					Handler: private.BusinessFindHandler(serverCtx),
+					Path:    "/business/create",
+					Handler: private.BusinessCreateHandler(serverCtx),
 				},
 			}...,
 		),

@@ -1,4 +1,4 @@
-FROM golang:alpine AS builder
+FROM golang:1.20.1-alpine as builder
 
 LABEL stage=gobuilder
 
@@ -28,4 +28,4 @@ WORKDIR /app
 COPY --from=builder /app/user /app/user
 COPY --from=builder /app/etc /app/etc
 
-CMD ["./user", "-f", "etc/user.yaml"]
+CMD ["./user", "-f", "etc/user-prod.yaml"]

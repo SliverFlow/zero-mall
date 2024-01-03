@@ -1,0 +1,25 @@
+Name: cart
+Host: 0.0.0.0
+Port: 4440
+Log:
+  ServiceName: cart-api
+  Level: info
+XJwt:
+  Secret: zhengjunxing
+  Isuser: zjx
+  Expire: 1296000
+  Buffer: 604800
+  BlackListPrefix: "zero-mall:cart-api:token_black_list:"
+Redis:
+  Host: redis
+  Pass: wjh2000090
+CartRpc:
+  Etcd:
+    Hosts:
+      - etcd:2379
+    Key: cart.rpc
+ProductRpc:
+  Etcd:
+    Hosts:
+      - etcd:2379
+    Key: product.rpc

@@ -132,4 +132,5 @@ service order {
   rpc orderPageList (OrderPageListReq) returns (OrderPageListReply);
   rpc orderDisable (OrderDisableReq) returns (OrderNil);
   rpc orderItemDeleteByID(OrderItemDeleteByIDReq) returns (OrderNil);
+  rpc orderPageListForUser (OrderPageListReq) returns (OrderPageListReply);
 }

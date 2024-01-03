@@ -30,3 +30,10 @@ export const phoneCaptchaApi = (data) => {
     data: data
   })
 }
+
+export const createBusinessApi = () => {
+  return service({
+    url: '/business/create',
+    method: 'post'
+  })
+}

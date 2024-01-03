@@ -49,7 +49,7 @@ func (l *CartCreateLogic) CartCreate(req *types.CartCreateReq) (resp *types.Nil,
 		ProductID: req.ProductID,
 	})
 
-	if cartInfo.CartID != "" {
+	if cartInfo != nil && cartInfo.CartID != "" {
 		_, err = l.svcCtx.CartRpc.CartUpdate(l.ctx, &cartpb.CartUpdateReq{
 			CartID:   cartInfo.CartID,
 			Quantity: cartInfo.Quantity + req.Quantity,

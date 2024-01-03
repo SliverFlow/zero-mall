@@ -4,11 +4,9 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/jinzhu/copier"
-	"server/app/user/cmd/rpc/pb"
-	"server/common/xerr"
-
 	"server/app/system/cmd/api/internal/svc"
 	"server/app/system/cmd/api/internal/types"
+	"server/app/user/cmd/rpc/pb"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -46,7 +44,8 @@ func (l *BusinessListLogic) BusinessList(req *types.PageReq) (resp *types.Busine
 
 		err := json.Unmarshal([]byte(business.Image), &tyBusiness.Image)
 		if err != nil {
-			return nil, xerr.NewErrMsg("序列化失败")
+			tyBusiness.Image = []string{}
+			// return nil, xerr.NewErrMsg("序列化失败")
 		}
 		list = append(list, tyBusiness)
 	}

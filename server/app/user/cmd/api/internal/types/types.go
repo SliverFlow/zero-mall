@@ -53,11 +53,4 @@ type Business struct {
 }
 
 type CreateBusinessReq struct {
-	Name     string `json:"name"`
-	Detail   string `json:"detail"`
-	Image    string `json:"image"`
-	Username string `json:"username"`
-	Role     int64  `json:"role"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
 }

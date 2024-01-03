@@ -277,9 +277,10 @@ type ProductCreateReq struct {
 }
 
 type ProductListReq struct {
-	Page     int64  `json:"page"`
-	PageSize int64  `json:"pageSize"`
-	KeyWord  string `json:"keyWord"`
+	Page       int64  `json:"page"`
+	PageSize   int64  `json:"pageSize"`
+	KeyWord    string `json:"keyWord"`
+	BusinessID string `json:"businessId"`
 }
 
 type ProductListReply struct {

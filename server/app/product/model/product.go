@@ -11,7 +11,7 @@ type (
 	productModel interface {
 		ProductCreate(ctx context.Context, product *Product) (err error)
 		ProductDelete(ctx context.Context, ids []string) (err error)
-		ProductList(ctx context.Context, page *common.PageInfo) (enter *[]Product, total int64, err error)
+		ProductList(ctx context.Context, page *common.PageInfo, businessId string) (enter *[]Product, total int64, err error)
 		ProductFind(ctx context.Context, productId string) (enter *Product, err error)
 		ProductUpdate(ctx context.Context, product *Product) (err error)
 
@@ -90,12 +90,15 @@ func (d *defaultProductModel) ProductDelete(ctx context.Context, ids []string) (
 // ProductList
 // Author [SliverFlow]
 // @desc 分页查询分类
-func (d *defaultProductModel) ProductList(ctx context.Context, page *common.PageInfo) (enter *[]Product, total int64, err error) {
+func (d *defaultProductModel) ProductList(ctx context.Context, page *common.PageInfo, businessId string) (enter *[]Product, total int64, err error) {
 	tx := d.db.WithContext(ctx)
 
 	limit, offset, keyWord := page.LimitAndOffsetAndKeyWord()
 
 	tx = tx.Model(&Product{}).Where("name like ?", keyWord)
+	if businessId != "" {
+		tx = tx.Where("business_id = ?", businessId)
+	}
 	if err = tx.Count(&total).Error; err != nil {
 		return nil, 0, err
 	}

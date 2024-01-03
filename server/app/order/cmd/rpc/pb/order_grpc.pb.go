@@ -32,6 +32,7 @@ type OrderClient interface {
 	OrderPageList(ctx context.Context, in *OrderPageListReq, opts ...grpc.CallOption) (*OrderPageListReply, error)
 	OrderDisable(ctx context.Context, in *OrderDisableReq, opts ...grpc.CallOption) (*OrderNil, error)
 	OrderItemDeleteByID(ctx context.Context, in *OrderItemDeleteByIDReq, opts ...grpc.CallOption) (*OrderNil, error)
+	OrderPageListForUser(ctx context.Context, in *OrderPageListReq, opts ...grpc.CallOption) (*OrderPageListReply, error)
 }
 
 type orderClient struct {
@@ -123,6 +124,15 @@ func (c *orderClient) OrderItemDeleteByID(ctx context.Context, in *OrderItemDele
 	return out, nil
 }
 
+func (c *orderClient) OrderPageListForUser(ctx context.Context, in *OrderPageListReq, opts ...grpc.CallOption) (*OrderPageListReply, error) {
+	out := new(OrderPageListReply)
+	err := c.cc.Invoke(ctx, "/pb.order/orderPageListForUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // OrderServer is the server API for Order service.
 // All implementations must embed UnimplementedOrderServer
 // for forward compatibility
@@ -137,6 +147,7 @@ type OrderServer interface {
 	OrderPageList(context.Context, *OrderPageListReq) (*OrderPageListReply, error)
 	OrderDisable(context.Context, *OrderDisableReq) (*OrderNil, error)
 	OrderItemDeleteByID(context.Context, *OrderItemDeleteByIDReq) (*OrderNil, error)
+	OrderPageListForUser(context.Context, *OrderPageListReq) (*OrderPageListReply, error)
 	mustEmbedUnimplementedOrderServer()
 }
 
@@ -170,6 +181,9 @@ func (UnimplementedOrderServer) OrderDisable(context.Context, *OrderDisableReq) 
 }
 func (UnimplementedOrderServer) OrderItemDeleteByID(context.Context, *OrderItemDeleteByIDReq) (*OrderNil, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method OrderItemDeleteByID not implemented")
+}
+func (UnimplementedOrderServer) OrderPageListForUser(context.Context, *OrderPageListReq) (*OrderPageListReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method OrderPageListForUser not implemented")
 }
 func (UnimplementedOrderServer) mustEmbedUnimplementedOrderServer() {}
 
@@ -346,6 +360,24 @@ func _Order_OrderItemDeleteByID_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Order_OrderPageListForUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OrderPageListReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrderServer).OrderPageListForUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.order/orderPageListForUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrderServer).OrderPageListForUser(ctx, req.(*OrderPageListReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Order_ServiceDesc is the grpc.ServiceDesc for Order service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -388,6 +420,10 @@ var Order_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "orderItemDeleteByID",
 			Handler:    _Order_OrderItemDeleteByID_Handler,
+		},
+		{
+			MethodName: "orderPageListForUser",
+			Handler:    _Order_OrderPageListForUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

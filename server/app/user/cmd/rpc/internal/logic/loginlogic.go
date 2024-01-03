@@ -32,7 +32,7 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 // @desc 用户登录
 func (l *LoginLogic) Login(in *pb.UserLoginReq) (*pb.UserLoginReply, error) {
 
-	user, err := l.svcCtx.UserModel.UserFindByUsername(l.ctx, in.Username)
+	user, err := l.svcCtx.UserModel.UserFindByUsernameAndRole(l.ctx, in.Username)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, status.Errorf(100001, "not find user by username is %s", in.Username)

@@ -21,15 +21,15 @@
           <span>|</span>
           <a href="">协议规则</a>
           <span>|</span>
-          <a href="" style="color: #ff6700;">成为商家</a>
+          <a href="" style="color: #ff6700;" @click.prevent="createBusiness">成为商家</a>
         </div>
         <div class="right">
           <a v-if="!isLogin" style="cursor: pointer" @click="toLogin">登录</a>
           <span v-if="!isLogin">|</span>
           <a v-if="!isLogin" style="cursor: pointer" @click="toRegister">注册</a>
-          <user-info-com v-if="isLogin" style="color: #cecece"/>
+          <user-info-com v-if="isLogin" style="color: #cecece" />
           <span>|</span>
-          <a @click.prevent="toOrder" style="cursor: pointer">订单列表</a>
+          <a style="cursor: pointer" @click.prevent="toOrder">订单列表</a>
           <div class="shop-car" @click="toCart" @mouseover="show = !show" @mouseout="show = !show">
             <svg
               t="1694517489223"
@@ -64,11 +64,11 @@
             </svg>
             <span>购物车</span>
             <span>（0）</span>
-<!--            <el-collapse-transition style="transition: all 0.3s">-->
-<!--              <div v-show="show" class="show-box">-->
-<!--                <div>购物车中还没有商品，赶紧选购吧!</div>-->
-<!--              </div>-->
-<!--            </el-collapse-transition>-->
+            <!--            <el-collapse-transition style="transition: all 0.3s">-->
+            <!--              <div v-show="show" class="show-box">-->
+            <!--                <div>购物车中还没有商品，赶紧选购吧!</div>-->
+            <!--              </div>-->
+            <!--            </el-collapse-transition>-->
           </div>
         </div>
       </div>
@@ -102,7 +102,7 @@
               :class="{icon_fover: isFocus,search_icon_hover: isFocus}"
               @click="search"
             >
-              <Search/>
+              <Search />
             </el-icon>
             <div v-if="isFocus" class="input_word">
               <a href="">全部商品</a>
@@ -117,9 +117,9 @@
       </div>
     </nav>
     <div class="content">
-      <router-view/>
+      <router-view />
     </div>
-    <mall-footer/>
+    <mall-footer />
   </div>
 </template>
 
@@ -131,6 +131,8 @@ import MallFooter from '@/view/layout/footer/mallFooter.vue'
 import { useActiveStore } from '@/pinia/model/active.js'
 import { useUserStore } from '@/pinia/model/user.js'
 import UserInfoCom from '@/components/userInfo/UserInfoCom.vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import { createBusinessApi } from '@/api/user.js'
 
 const show = ref(false)
 const isFocus = ref(false)
@@ -140,9 +142,8 @@ const keyWord = ref('')
 const userStore = useUserStore()
 const isLogin = ref(userStore.isLogin)
 
-
 const toLogin = () => {
-  router.push({ name: 'Login', query: { path: route.path } })
+  router.push({ name: 'Login', query: { path: route.path }})
 }
 const toCart = () => {
   router.push({ name: 'Cart' })
@@ -166,6 +167,45 @@ const toOrder = () => {
 
 provide('keyWord', keyWord)
 
+// 成为商家
+const createBusiness = async() => {
+  if (!isLogin.value) {
+    const res = await ElMessageBox.confirm('成为商家需要您登录账号，是否登录？', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    })
+    if (res === 'confirm') {
+      toLogin()
+    }
+  } else {
+    createBusinessIn()
+  }
+}
+
+const createBusinessIn = async() => {
+  const confirm = await ElMessageBox.confirm('确认使用当前账号作为商家管理员账号？', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  })
+  let res
+  if (confirm === 'confirm') {
+    res = await createBusinessApi()
+    if (res.code === 0) {
+      console.log(111111111111)
+      await ElMessage.success('商户开启成功')
+      const confimRes = await ElMessageBox.confirm('点击确认前往商户后台？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'success'
+      })
+      if (confimRes === 'confirm') {
+        window.open('http://localhost:8080/#/')
+      }
+    }
+  }
+}
 </script>
 
 <style scoped lang="scss">

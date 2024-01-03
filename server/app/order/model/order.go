@@ -19,6 +19,7 @@ type (
 		OrderDisable(ctx context.Context, OrderId string) (err error)
 		OrderFindListByIDs(ctx context.Context, orderIds []string) (orders []Order, err error)
 		OrderDeleteByID(ctx context.Context, orderId string) (err error)
+		OrderListPageForUser(ctx context.Context, req *request.PageListReq) (enter []Order, total int64, err error)
 	}
 
 	defaultOrderModel struct {
@@ -191,4 +192,45 @@ func (d *defaultOrderModel) OrderDeleteByID(ctx context.Context, orderId string)
 	defer span.End()
 
 	return tx.Where("order_id = ?", orderId).Delete(&Order{}).Error
+}
+
+func (d *defaultOrderModel) OrderListPageForUser(ctx context.Context, req *request.PageListReq) (enter []Order, total int64, err error) {
+	tx := d.db.WithContext(ctx)
+	span, _ := common.Tracer(ctx, "orderListPage")
+	defer span.End()
+
+	query := tx.Model(&Order{})
+
+	if req.BusinessID != "" {
+		query = query.Where("business_id = ?", req.BusinessID)
+	}
+
+	if req.UserID != "" {
+		query = query.Where("user_id = ?", req.UserID)
+	}
+
+	if req.Status != 0 {
+		query = query.Where("status = ?", req.Status)
+	}
+
+	if req.StartTime != 0 {
+		query = query.Where("created_at >= ?", time.Unix(req.StartTime, 0))
+	}
+
+	if req.EndTime != 0 {
+		query = query.Where("created_at <= ?", time.Unix(req.EndTime, 0))
+	}
+
+	err = query.Count(&total).Error
+	if err != nil {
+		return nil, 0, err
+	}
+
+	limit, offset := req.LimitAndOffset()
+	err = query.Limit(limit).Offset(offset).Find(&enter).Error
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return enter, total, nil
 }

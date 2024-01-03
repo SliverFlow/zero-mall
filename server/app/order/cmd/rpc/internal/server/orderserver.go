@@ -67,3 +67,8 @@ func (s *OrderServer) OrderItemDeleteByID(ctx context.Context, in *pb.OrderItemD
 	l := logic.NewOrderItemDeleteByIDLogic(ctx, s.svcCtx)
 	return l.OrderItemDeleteByID(in)
 }
+
+func (s *OrderServer) OrderPageListForUser(ctx context.Context, in *pb.OrderPageListReq) (*pb.OrderPageListReply, error) {
+	l := logic.NewOrderPageListForUserLogic(ctx, s.svcCtx)
+	return l.OrderPageListForUser(in)
+}

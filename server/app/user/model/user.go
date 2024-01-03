@@ -26,6 +26,8 @@ type (
 		UserFindByPhone(ctx context.Context, phone string) (enter *User, err error)
 		UserUpdateByUUID(ctx context.Context, uuid string, u *User) (err error)
 		FindListByIDs(ctx context.Context, ids []string) (enter []User, err error)
+		UserListFindByUsername(ctx context.Context, username string) (enter []User, err error)
+		UserFindByUsernameAndRole(ctx context.Context, username string) (enter *User, err error)
 	}
 
 	defaultUserModel struct {
@@ -223,4 +225,28 @@ func (d *defaultUserModel) FindListByIDs(ctx context.Context, ids []string) (ent
 		return nil, err
 	}
 	return list, nil
+}
+
+func (d *defaultUserModel) UserListFindByUsername(ctx context.Context, username string) (enter []User, err error) {
+	tx := d.db.WithContext(ctx)
+	span, _ := common.Tracer(ctx, "find-user-list-by-username")
+	defer span.End()
+
+	var u []User
+	if err = tx.Model(&User{}).Where("username like ?", username).Find(&u).Error; err != nil {
+		return nil, err
+	}
+	return u, nil
+}
+
+func (d *defaultUserModel) UserFindByUsernameAndRole(ctx context.Context, username string) (enter *User, err error) {
+	tx := d.db.WithContext(ctx)
+	span, _ := common.Tracer(ctx, "find-user-by-username-and-role")
+	defer span.End()
+
+	var u User
+	if err = tx.Model(&User{}).Where("username = ? and role in ?", username, []int64{3, 2}).First(&u).Error; err != nil {
+		return nil, err
+	}
+	return &u, nil
 }

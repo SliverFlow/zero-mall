@@ -98,6 +98,7 @@ message ProductListReq {
   int64 Page = 1;
   int64 PageSize = 2;
   string KeyWord = 3;
+  string BusinessID = 4;
 }
 message ProductListReply {
   int64 Page = 1;

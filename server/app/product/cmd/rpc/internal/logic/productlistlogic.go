@@ -34,7 +34,7 @@ func (l *ProductListLogic) ProductList(in *pb.ProductListReq) (*pb.ProductListRe
 		Page:     int(in.GetPage()),
 		PageSize: int(in.GetPageSize()),
 		KeyWord:  in.GetKeyWord(),
-	})
+	}, in.GetBusinessID())
 	if err != nil {
 		logx.Error("productList find error", err.Error())
 		return nil, status.Errorf(100001, "商品列表查询失败")

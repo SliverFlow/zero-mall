@@ -1,0 +1,20 @@
+Name: cart.rpc
+ListenOn: 0.0.0.0:4441
+Etcd:
+  Hosts:
+    - etcd:2379
+  Key: cart.rpc
+Log:
+  ServiceName: cart-rpc
+  Level: info
+Mysql:
+  Path: 127.0.0.1
+  Password: ''
+  Port: 3306
+  Dbname: zero-mall
+  Username: root
+  MaxIdleConns: 10
+  MaxOpenConns: 10
+  LogMode: "dev"
+  LogZap: false
+  Config: charset=utf8mb4&parseTime=True&loc=Local

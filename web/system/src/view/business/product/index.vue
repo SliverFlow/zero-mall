@@ -166,7 +166,7 @@ const productForm = ref(null)
 
 // 加载表格数据
 const loadTableData = async() => {
-  const res = await productListApi({ page: page.value, pageSize: pageSize.value, keyWord: keyWord.value })
+  const res = await productListApi({ page: page.value, pageSize: pageSize.value, keyWord: keyWord.value ,businessId: ''})
   tableData.value = res.data.list
   total.value = res.data.total
 }

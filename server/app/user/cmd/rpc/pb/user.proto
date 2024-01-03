@@ -119,7 +119,6 @@ message Business {
   int64 UpdatedAt = 9;
 }
 message BusinessCreateReq {
-  Business Business = 1;
   string UUID = 2;
 }
 // 商家分页列表

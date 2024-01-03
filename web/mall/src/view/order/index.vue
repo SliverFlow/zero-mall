@@ -146,7 +146,7 @@ const handleSelectionChange = (e) => {
 }
 
 // 删除购物车商品
-const deleteOrderItem = async () => {
+const deleteOrderItem = async() => {
   if (selectOrderList.value.length === 0) {
     ElMessage.warning('请选择要删除的订单')
     return

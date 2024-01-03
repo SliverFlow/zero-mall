@@ -1,0 +1,27 @@
+Name: order.rpc
+ListenOn: 0.0.0.0:3331
+Etcd:
+  Hosts:
+    - etcd:2379
+  Key: order.rpc
+Mysql:
+  Path: 127.0.0.1
+  Password: ''
+  Port: 3306
+  Dbname: zero-mall
+  Username: root
+  MaxIdleConns: 10
+  MaxOpenConns: 10
+  LogMode: "dev"
+  LogZap: false
+  Config: charset=utf8mb4&parseTime=True&loc=Local
+ProductRpc:
+  Etcd:
+    Hosts:
+      - etcd:2379
+    Key: product.rpc
+UserRpc:
+  Etcd:
+    Hosts:
+      - etcd:2379
+    Key: user.rpc

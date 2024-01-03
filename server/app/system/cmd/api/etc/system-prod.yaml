@@ -1,0 +1,59 @@
+Name: system
+Host: 0.0.0.0
+Port: 2220
+Log:
+  Level: info
+  ServiceName: system-api
+XJwt:
+  Secret: zhengjunxing
+  Isuser: zjx
+  Expire: 86400
+  Buffer: 43200
+  BlackListPrefix: "zero-mall:system-api:token_black_list:"
+Redis:
+  Host: redis
+  Pass: wjh20000905
+StsAliOss:
+  AccessKeyId: "LTAI5t8ZHhFSdqPpDgPrQZAj"
+  AccessKeySecret: "BK7V5FMrTh2DYrElAf550C8kXVesWJ"
+  Endpoint: "sts.cn-hangzhou.aliyuncs.com"
+  Duration: 1500
+  RoleArn: "acs:ram::1619301782374409:role/zero-mall-web-role"
+  SessionName: "zero_mall_0905"
+  Region: "oss-cn-hangzhou"
+  Bucket: "zjxzero"
+Captcha:
+  KeyLong: 6
+  ImgHeight: 80
+  ImgWidth: 240
+SystemRpc:
+  Etcd:
+    Hosts:
+      - etcd:2379
+    Key: system.rpc
+UserRpc:
+  Etcd:
+    Hosts:
+      - etcd:2379
+    Key: user.rpc
+ProductRpc:
+  Etcd:
+    Hosts:
+      - etcd:2379
+    Key: product.rpc
+OrderRpc:
+  Etcd:
+    Hosts:
+      - etcd:2379
+    Key: order.rpc
+
+#Prometheus:
+#  Host: 0.0.0.0
+#  Port: 7899
+#  Path: /metrics
+#
+#Telemetry:
+#  Name: system-api
+#  Endpoint: http://jaeger:14268/api/traces
+#  Sampler: 1.0
+#  Batcher: jaeger

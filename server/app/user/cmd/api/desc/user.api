@@ -42,21 +42,11 @@ service user {
 
 // business 不鉴权的
 @server(
-	group : public
-	prefix : v1
-)
-service user {
-	@handler businessCreate
-	post /business/create (CreateBusinessReq) returns (Nil)
-}
-
-// business 需要鉴权的
-@server(
 	group : private
 	prefix : v1
 	middleware : Auth
 )
 service user {
-	@handler businessFind
-	post /business/find (Nil) returns (Nil)
+	@handler businessCreate
+	post /business/create (Nil) returns (Nil)
 }

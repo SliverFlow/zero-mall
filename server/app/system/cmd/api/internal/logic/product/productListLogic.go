@@ -4,10 +4,12 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/jinzhu/copier"
-	"server/app/product/cmd/rpc/pb"
-
+	productpb "server/app/product/cmd/rpc/pb"
 	"server/app/system/cmd/api/internal/svc"
 	"server/app/system/cmd/api/internal/types"
+	userpb "server/app/user/cmd/rpc/pb"
+	"server/common/xerr"
+	"server/common/xjwt"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -30,11 +32,36 @@ func NewProductListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Produ
 // Author [SliverFlow]
 // @desc   商品分页列表
 func (l *ProductListLogic) ProductList(req *types.ProductListReq) (resp *types.ProductListReply, err error) {
-	pbreply, err := l.svcCtx.ProductRpc.ProductList(l.ctx, &pb.ProductListReq{
+
+	pageReq := &productpb.ProductListReq{
 		Page:     req.Page,
 		PageSize: req.PageSize,
 		KeyWord:  req.KeyWord,
-	})
+	}
+
+	if req.BusinessID != "" {
+		pageReq.BusinessID = req.BusinessID
+	} else {
+		uuid, err := xjwt.GetUserUUID(l.ctx)
+		if err != nil {
+			return nil, xerr.NewErrMsg("获取 uuid 失败")
+		}
+
+		user, err := l.svcCtx.UserRpc.UserFindByUUID(l.ctx, &userpb.UUIDReq{UUID: uuid})
+		if err != nil {
+			return nil, err
+		}
+
+		if user.User.Role == 2 { // 商家
+			business, err := l.svcCtx.UserRpc.BusinessFindByUUID(l.ctx, &userpb.BusinessUUIDReq{UUID: user.User.UUID})
+			if err != nil {
+				return nil, err
+			}
+			pageReq.BusinessID = business.BusinessID
+		}
+	}
+
+	pbreply, err := l.svcCtx.ProductRpc.ProductList(l.ctx, pageReq)
 	if err != nil {
 		return nil, err
 	}

@@ -7,6 +7,9 @@ export default defineConfig((common, mode) => {
   const env = loadEnv(mode, process.cwd(), '')
   const config = {
     plugins: [vue()],
+    build: {
+      chunkSizeWarningLimit: 2000,
+    },
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
@@ -18,7 +21,7 @@ export default defineConfig((common, mode) => {
       open: `http://127.0.0.1:${env.VITE_CLI_PORT}/#/`,
       proxy: { // 请求代理
         '/api': {
-          target: `http://127.0.0.1:20011/`,	// 实际请求地址
+          target: `http://${env.VITE_SERVER_IP}:${env.VITE_SERVER_PORT}/`,	// 实际请求地址
           // rewrite: (path) => path.replace(/^\/api/, '')
         },
       }

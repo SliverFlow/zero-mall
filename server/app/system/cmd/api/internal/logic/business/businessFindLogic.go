@@ -47,7 +47,8 @@ func (l *BusinessFindLogic) BusinessFind(req *types.NilReq) (resp *types.Busines
 	_ = copier.Copy(&tybusiness, pbreply)
 	err = json.Unmarshal([]byte(pbreply.Image), &tybusiness.Image)
 	if err != nil {
-		return nil, xerr.NewErrMsg("序列化失败")
+		tybusiness.Image = []string{}
+		// return nil, xerr.NewErrMsg("序列化失败")
 	}
 	return &tybusiness, nil
 }

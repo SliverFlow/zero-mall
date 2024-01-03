@@ -41,6 +41,7 @@ type (
 		OrderPageList(ctx context.Context, in *OrderPageListReq, opts ...grpc.CallOption) (*OrderPageListReply, error)
 		OrderDisable(ctx context.Context, in *OrderDisableReq, opts ...grpc.CallOption) (*OrderNil, error)
 		OrderItemDeleteByID(ctx context.Context, in *OrderItemDeleteByIDReq, opts ...grpc.CallOption) (*OrderNil, error)
+		OrderPageListForUser(ctx context.Context, in *OrderPageListReq, opts ...grpc.CallOption) (*OrderPageListReply, error)
 	}
 
 	defaultOrder struct {
@@ -98,4 +99,9 @@ func (m *defaultOrder) OrderDisable(ctx context.Context, in *OrderDisableReq, op
 func (m *defaultOrder) OrderItemDeleteByID(ctx context.Context, in *OrderItemDeleteByIDReq, opts ...grpc.CallOption) (*OrderNil, error) {
 	client := pb.NewOrderClient(m.cli.Conn())
 	return client.OrderItemDeleteByID(ctx, in, opts...)
+}
+
+func (m *defaultOrder) OrderPageListForUser(ctx context.Context, in *OrderPageListReq, opts ...grpc.CallOption) (*OrderPageListReply, error) {
+	client := pb.NewOrderClient(m.cli.Conn())
+	return client.OrderPageListForUser(ctx, in, opts...)
 }

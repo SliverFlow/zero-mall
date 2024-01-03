@@ -1,0 +1,198 @@
+version: '3.5'
+# 网络配置
+networks:
+  mall_server_prod:
+    driver: bridge
+
+# 服务容器配置
+services:
+#  etcd:
+#    build:
+#      context: deploy/etcd
+#    environment:
+#      - TZ=Asia/Shanghai
+#      - ALLOW_NONE_AUTHENTICATION=yes
+#      - ETCD_ADVERTISE_CLIENT_URLS=http://etcd:2379
+#    ports:
+#      - "2379:2379"
+#    networks:
+#      - mall_server_prod
+#  mysql:
+#    build:
+#      context: deploy/mysql
+#    environment:
+#      # 时区上海
+#      TZ: Asia/Shanghai
+#      # root 密码
+#      MYSQL_ROOT_PASSWORD: 123456
+#      # 初始化数据库
+#    ports:
+#      - "3306:3306"
+#    volumes:
+#      # 数据挂载
+#      - ./deploy/mysql/data/:/var/lib/mysql/
+#      - ./deploy/mysql/logs/:/var/lib/logs/
+#      # 配置挂载
+#      - ./deploy/mysql/conf/:/etc/mysql/conf.d/
+#    command:
+#      # 将mysql8.0默认密码策略 修改为 原先 策略 (mysql8.0对其默认策略做了更改 会导致密码无法匹配)
+#      --default-authentication-plugin=mysql_native_password
+#      --character-set-server=utf8mb4
+#      --collation-server=utf8mb4_general_ci
+#      --explicit_defaults_for_timestamp=true
+#      --lower_case_table_names=1
+#    privileged: true
+#    # restart: always
+#
+#  redis:
+#    build:
+#      context: deploy/redis
+#    environment:
+#      - TZ=Asia/Shanghai
+#      - REDIS_PASSWORD=123456
+#    volumes:
+#      - ./deploy/redis/data:/data
+#      - ./deploy/redis/conf/redis.conf:/usr/local/etc/redis/redis.conf
+#      - ./deploy/redis/log:/var/log/redis
+#      - ./deploy/redis/redis.conf:/etc/redis/redis.conf
+#    command:
+#      redis-server /etc/redis/redis.conf
+#    ports:
+#      - "6379:6379"
+#    networks:
+#      - mall_server_prod
+
+  user-rpc:
+    build:
+      context: ./
+      dockerfile: app/user/cmd/rpc/Dockerfile
+    environment:
+      - TZ=Asia/Shanghai
+    privileged: true
+    ports:
+      - "5551:5551"
+    stdin_open: true
+    tty: true
+    networks:
+      - mall_server_prod
+  user-api:
+    build:
+      context: ./
+      dockerfile: app/user/cmd/api/Dockerfile
+    environment:
+      - TZ=Asia/Shanghai
+    privileged: true
+    ports:
+      - "5550:5550"
+    stdin_open: true
+    tty: true
+    networks:
+      - mall_server_prod
+
+  product-rpc:
+    build:
+      context: ./
+      dockerfile: app/product/cmd/rpc/Dockerfile
+    environment:
+      - TZ=Asia/Shanghai
+    privileged: true
+    ports:
+      - "6661:6661"
+    stdin_open: true
+    tty: true
+    networks:
+      - mall_server_prod
+  product-api:
+    build:
+      context: ./
+      dockerfile: app/product/cmd/api/Dockerfile
+    environment:
+      - TZ=Asia/Shanghai
+    privileged: true
+    ports:
+      - "6660:6660"
+    stdin_open: true
+    tty: true
+    networks:
+      - mall_server_prod
+
+  order-rpc:
+    build:
+      context: ./
+      dockerfile: app/order/cmd/rpc/Dockerfile
+    environment:
+      - TZ=Asia/Shanghai
+    privileged: true
+    ports:
+      - "3331:3331"
+    stdin_open: true
+    tty: true
+    networks:
+      - mall_server_prod
+  order-api:
+    build:
+      context: ./
+      dockerfile: app/order/cmd/api/Dockerfile
+    environment:
+      - TZ=Asia/Shanghai
+    privileged: true
+    ports:
+      - "3330:3330"
+    stdin_open: true
+    tty: true
+    networks:
+      - mall_server_prod
+
+  cart-rpc:
+    build:
+      context: ./
+      dockerfile: app/cart/cmd/rpc/Dockerfile
+    environment:
+      - TZ=Asia/Shanghai
+    privileged: true
+    ports:
+      - "4441:4441"
+    stdin_open: true
+    tty: true
+    networks:
+      - mall_server_prod
+  cart-api:
+    build:
+      context: ./
+      dockerfile: app/cart/cmd/api/Dockerfile
+    environment:
+      - TZ=Asia/Shanghai
+    privileged: true
+    ports:
+      - "4440:4440"
+    stdin_open: true
+    tty: true
+    networks:
+      - mall_server_prod
+
+  system-rpc:
+    build:
+      context: ./
+      dockerfile: app/system/cmd/rpc/Dockerfile
+    environment:
+      - TZ=Asia/Shanghai
+    privileged: true
+    ports:
+      - "2221:2221"
+    stdin_open: true
+    tty: true
+    networks:
+      - mall_server_prod
+  system-api:
+    build:
+      context: ./
+      dockerfile: app/system/cmd/api/Dockerfile
+    environment:
+      - TZ=Asia/Shanghai
+    privileged: true
+    ports:
+      - "2220:2220"
+    stdin_open: true
+    tty: true
+    networks:
+      - mall_server_prod

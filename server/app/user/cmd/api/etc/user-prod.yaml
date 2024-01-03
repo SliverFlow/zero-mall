@@ -1,0 +1,46 @@
+Name: user
+Host: 0.0.0.0
+Port: 5550
+
+Log:
+  ServiceName: user-api
+  Level: info
+
+# user rpc 配置
+UserRpc:
+  Etcd:
+    Hosts:
+      - 120.77.237.246:32379
+#      - etcd:2379
+    Key: user.rpc
+
+XJwt:
+  Secret: zhengjunxing
+  Isuser: zjx
+  Expire: 1296000
+  Buffer: 604800
+  BlackListPrefix: "zero-mall:user-api:token_black_list:"
+
+Redis:
+  Host: "120.77.237.246:6379"
+  Pass: wjh20000905
+
+
+AliSms:
+  SingName: 'zero商城'
+  TemplateCode: 'SMS_463636924'
+  AccessKeyId: 'LTAI5t9mHsNJRH4YaHpkcVhc'
+  AccessKeySecret: '0XODnz6fREBgGnOAbkTfGX0OefK85p'
+  BaseStore: 'zero-mall:api:user-api:sms'
+  BaseExpire: 300
+
+#Prometheus:
+#  Host: 0.0.0.0
+#  Port: 7899
+#  Path: /metrics
+#
+#Telemetry:
+#  Name: user-api
+#  Endpoint: http://jaeger:14268/api/traces
+#  Sampler: 1.0
+#  Batcher: jaeger

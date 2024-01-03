@@ -14,6 +14,9 @@ export default defineConfig(({ common, mode }) => {
       GvaPosition(),
       // WindiCSS()
     ],
+    build: {
+      chunkSizeWarningLimit: 2000,
+    },
     css: {
       preprocessorOptions: {
         scss: {

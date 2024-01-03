@@ -36,7 +36,7 @@ func (l *OrderListLogic) OrderList(req *types.OrderListReq) (resp *types.OrderLi
 		return nil, xerr.NewErrMsg("用户 uuid 获取失败")
 	}
 
-	pbreply, err := l.svcCtx.OrderRpc.OrderPageList(l.ctx, &pb.OrderPageListReq{
+	pbreply, err := l.svcCtx.OrderRpc.OrderPageListForUser(l.ctx, &pb.OrderPageListReq{
 		UserID:   uuid,
 		Page:     req.Page,
 		PageSize: req.PageSize,

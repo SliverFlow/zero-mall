@@ -69,7 +69,7 @@
             >
             <div class="product_list">
               <template v-for="(i,k) in v.productList">
-                <div class="product">
+                <div class="product" @click="toProductDetail(i)">
                   <img
                     :src="i.image[0].url"
                     style="margin-top: 14px"
@@ -93,7 +93,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { categoryIDByProductListApi, categoryListApi } from '@/api/category.js'
 
@@ -138,9 +138,14 @@ const loadCategoryList = async() => {
   productList.value.push(list1.data, list2.data)
 }
 loadCategoryList()
-// 去往商品详情页
+// 去往商品列表页
 const toProductList = (id) => {
   router.push({ name: 'ProductList', query: { id: id }})
+}
+
+// 去往商品详情页
+const toProductDetail = (item) => {
+  router.push({ name: 'ProductDetail', query: { id: item.productId }})
 }
 </script>
 

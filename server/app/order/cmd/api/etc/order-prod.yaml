@@ -1,0 +1,34 @@
+Name: order
+Host: 0.0.0.0
+Port: 3330
+Redis:
+  Host: redis
+  Pass: wjh20000905
+EtcdLocker:
+  Hosts:
+    - etcd:2379
+Log:
+  ServiceName: order-api
+  Level: info
+OrderRpc:
+  Etcd:
+    Hosts:
+      - etcd:2379
+    Key: order.rpc
+ProductRpc:
+  Etcd:
+    Hosts:
+      - etcd:2379
+    Key: product.rpc
+UserRpc:
+  Etcd:
+    Hosts:
+      - etcd:2379
+    Key: user.rpc
+XJwt:
+  Secret: zhengjunxing
+  Isuser: zjx
+  Expire: 1296000
+  Buffer: 604800
+  BlackListPrefix: "zero-mall:order-api:token_black_list:"
+
