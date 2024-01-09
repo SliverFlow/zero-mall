@@ -16,6 +16,7 @@ import "api/category.api"
 import "api/product.api"
 import "api/file.api"
 import "api/order.api"
+import "api/log.api"
 
 // 公共部分 login captcha file
 @server(
@@ -161,6 +162,17 @@ service system {
 service system {
 	@handler orderList
 	post /order/list (OrderListReq) returns (OrderListReply);
+}
+
+// 日志部分
+@server (
+	group: log
+	prefix: system/v1
+	middleware : Auth
+)
+service system {
+	@handler computer
+	post /log/computer (NilReq) returns (ComputerReply);
 }
 
 // 文件部分

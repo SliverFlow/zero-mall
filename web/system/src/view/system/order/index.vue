@@ -51,6 +51,7 @@
     </div>
     <el-table
       :data="tableData"
+      style="z-index: 0;height: calc(100vh - 284px)"
       row-key="orderId"
     >
       <el-table-column align="left" label="订单编号" min-width="220" prop="orderId" fixed="left"/>

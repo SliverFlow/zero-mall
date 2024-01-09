@@ -362,3 +362,17 @@ type OrderListReply struct {
 	PageSize int64        `json:"pageSize"`
 	Total    int64        `json:"total"`
 }
+
+type ComputerReply struct {
+	Cores       int64  `json:"cores"`       // cpu 核数
+	ModelName   string `json:"modelName"`   // cpu 型号
+	VendorID    string `json:"vendorID"`    // cpu 厂商
+	Family      string `json:"family"`      // cpu 系列
+	Stepping    string `json:"stepping"`    // cpu 步进
+	CacheSize   string `json:"cacheSize"`   // cpu 缓存大小
+	CpuUsage    string `json:"cpuUsage"`    // cpu 使用率
+	MemSize     string `json:"memSize"`     // 内存大小
+	Available   string `json:"available"`   // 可用内存
+	Used        string `json:"used"`        // 已用内存
+	UsedPercent string `json:"usedPercent"` // 内存使用率
+}

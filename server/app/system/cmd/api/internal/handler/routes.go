@@ -8,6 +8,7 @@ import (
 	business "server/app/system/cmd/api/internal/handler/business"
 	category "server/app/system/cmd/api/internal/handler/category"
 	file "server/app/system/cmd/api/internal/handler/file"
+	log "server/app/system/cmd/api/internal/handler/log"
 	menu "server/app/system/cmd/api/internal/handler/menu"
 	order "server/app/system/cmd/api/internal/handler/order"
 	product "server/app/system/cmd/api/internal/handler/product"
@@ -267,6 +268,20 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Method:  http.MethodPost,
 					Path:    "/order/list",
 					Handler: order.OrderListHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/system/v1"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/log/computer",
+					Handler: log.ComputerHandler(serverCtx),
 				},
 			}...,
 		),

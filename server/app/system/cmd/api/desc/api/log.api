@@ -1,0 +1,23 @@
+syntax = "v1"
+
+info(
+    title: "type title here"
+    desc: "type desc here"
+    author: "type author here"
+    email: "type email here"
+    version: "type version here"
+)
+
+type ComputerReply {
+    Cores int64 `json:"cores"`                // cpu 核数
+    ModelName string `json:"modelName"`       // cpu 型号
+    VendorID string `json:"vendorID"`         // cpu 厂商
+    Family string `json:"family"`             // cpu 系列
+    Stepping string `json:"stepping"`         // cpu 步进
+    CacheSize string `json:"cacheSize"`       // cpu 缓存大小
+    CpuUsage string `json:"cpuUsage"`         // cpu 使用率
+    MemSize string `json:"memSize"`           // 内存大小
+    Available string `json:"available"`       // 可用内存
+    Used string `json:"used"`                 // 已用内存
+    UsedPercent string `json:"usedPercent"`   // 内存使用率
+}
