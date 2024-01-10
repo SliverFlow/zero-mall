@@ -21,3 +21,34 @@ type ComputerReply {
     Used string `json:"used"`                 // 已用内存
     UsedPercent string `json:"usedPercent"`   // 内存使用率
 }
+
+type LoggerReply {
+ID int64 `json:"id"`                             // id
+    Username string `json:"username"`             // 用户名
+    IP string `json:"ip"`                         // ip 地址
+    Time int64 `json:"time"`                      // 时间
+    Method string `json:"method"`                 // 请求方法
+    Path string `json:"path"`                     // 请求路径
+    StatusCode int64 `json:"statusCode"`          // 状态码
+    Latency int64 `json:"latency"`               // 响应时间
+    RequestParams string `json:"requestParams"`   // 请求参数
+    ResponseParams string `json:"responseParams"` // 响应参数
+}
+
+type LogListReply {
+    Total int64 `json:"total"`                    // 总数
+    List []LoggerReply `json:"list"`              // 列表
+    Page int64 `json:"page"`                      // 页码
+    PageSize int64 `json:"pageSize"`              // 每页数量
+}
+
+type LogListReq {
+    Page int64 `json:"page"`                       // 页码
+    PageSize int64 `json:"pageSize"`               // 每页数量
+    Username string `json:"username"`              // 用户名
+    Method string `json:"method"`                  // 请求方法
+    Path string `json:"path"`                      // 请求路径
+    StatusCode int64 `json:"statusCode"`           // 状态码
+    StartTime string `json:"startTime"`            // 开始时间
+    EndTime string `json:"endTime"`                // 结束时间
+}

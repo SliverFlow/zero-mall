@@ -119,9 +119,7 @@ const handleClose = () => {
 // 弹出层提交
 const enterDialog = async() => {
   let res
-  console.log(formData.value)
   formData.value.sorted = parseInt(formData.value.sorted)
-  console.log(formData.value)
   if (isEdit.value) { // 编辑菜单
     res = await categoryUpdateApi(formData.value)
   } else { // 添加菜单

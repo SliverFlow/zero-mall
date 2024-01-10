@@ -38,6 +38,9 @@ func NewAuthMiddleware(secret string, expire, buffer int64, isuser, blackListPre
 func (m *Auth) Handle(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		logx.Info("request for auth middleware")
+
+		timer := time.Now().UnixNano() / int64(time.Millisecond)
+
 		authorization := r.Header.Get("Authorization")
 		if authorization == "" { // 未获取到 token
 			result.HttpResult(r, w, nil, xerr.NewCodeError(200001))
@@ -67,8 +70,11 @@ func (m *Auth) Handle(next http.HandlerFunc) http.HandlerFunc {
 			_ = jwt.RedisBlackList(authorization, m.rsc)
 		}
 		// 传递 claims
-		ctx := context.WithValue(r.Context(), "claims", claims)
-		// Passthrough to next handler if need
+		ctx := r.Context()
+
+		ctx = context.WithValue(ctx, "claims", claims)
+		ctx = context.WithValue(ctx, "timer", timer)
+
 		next(w, r.WithContext(ctx))
 	}
 }

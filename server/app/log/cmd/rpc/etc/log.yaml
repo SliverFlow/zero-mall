@@ -1,0 +1,17 @@
+Name: log.rpc
+ListenOn: 0.0.0.0:7771
+Etcd:
+  Hosts:
+    - 120.77.237.246:32379
+  Key: log.rpc
+Mysql:
+  Path: 127.0.0.1
+  Password: ''
+  Port: 3306
+  Dbname: zero-mall
+  Username: root
+  MaxIdleConns: 10
+  MaxOpenConns: 10
+  LogMode: "dev"
+  LogZap: false
+  Config: charset=utf8mb4&parseTime=True&loc=Local

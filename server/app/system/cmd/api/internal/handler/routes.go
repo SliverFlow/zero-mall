@@ -38,7 +38,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Middleware{serverCtx.Auth, serverCtx.Logging},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -77,7 +77,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Middleware{serverCtx.Auth, serverCtx.Logging},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -96,7 +96,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Middleware{serverCtx.Auth, serverCtx.Logging},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -140,7 +140,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Middleware{serverCtx.Auth, serverCtx.Logging},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -174,7 +174,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Middleware{serverCtx.Auth, serverCtx.Logging},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -223,7 +223,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Middleware{serverCtx.Auth, serverCtx.Logging},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -262,7 +262,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Middleware{serverCtx.Auth, serverCtx.Logging},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -283,6 +283,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Path:    "/log/computer",
 					Handler: log.ComputerHandler(serverCtx),
 				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/log/list",
+					Handler: log.LogListHandler(serverCtx),
+				},
 			}...,
 		),
 		rest.WithPrefix("/system/v1"),
@@ -290,7 +295,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Middleware{serverCtx.Auth, serverCtx.Logging},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,

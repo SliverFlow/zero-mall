@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+option go_package = "./pb";
+package pb;
+
+
+message LogNil{}
+message LogCreateReq {
+    string  Username = 1;
+    string IP = 2;
+    string  Method =3;
+    string Path = 4;
+    int64 StatusCode = 5;
+    int64 Latency = 6;
+    string RequestParams = 7;
+    string ResponseParams = 8;
+    string UserID = 9;
+}
+
+message LogReply {
+    string  Username = 1;
+    string IP = 2;
+    string  Method =3;
+    string Path = 4;
+    int64 StatusCode = 5;
+    int64 Latency = 6;
+    string RequestParams = 7;
+    string ResponseParams = 8;
+    string UserID = 9;
+    int64 ID = 10;
+    int64 Time = 11;
+}
+
+message LogPageListReq {
+    int64 Page = 1;
+    int64 PageSize = 2;
+    string Username = 3;
+    string Method = 4;
+    string Path = 5;
+    int64 StartTime = 6;
+    int64 EndTime = 7;
+}
+message LogPageListReply {
+    repeated LogReply List = 1;
+    int64 Total = 2;
+}
+
+
+service log {
+  rpc logCreate (LogCreateReq) returns (LogNil);
+  rpc logPageList (LogPageListReq) returns (LogPageListReply);
+}

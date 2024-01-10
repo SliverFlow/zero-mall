@@ -1167,7 +1167,6 @@ if (!metaData.value) {
 }
 
 const emitClick = (val) => {
-  console.log(val)
   emit('update:icon', val)
 }
 </script>

@@ -45,7 +45,7 @@ const uploadFile = async (file) => {
   }
 }
 const uploadSuccess = (response,file,fileList) => {
-  console.log(response,file,fileList)
+
 }
 </script>
 

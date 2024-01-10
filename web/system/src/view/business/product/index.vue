@@ -25,6 +25,7 @@
       style="z-index: 0;height: calc(100vh - 284px)"
       row-key="ID"
       :tree-props="{'children': 'children'}"
+      v-loading="loading"
     >
       <el-table-column align="left" label="商品编号" min-width="180" prop="productId" fixed="left"/>
       <el-table-column align="left" label="图片" min-width="150" prop="image">
@@ -162,13 +163,15 @@ const total = ref(0)
 const tableData = ref([])
 // 弹出层
 const productForm = ref(null)
-
+const loading = ref(false)
 
 // 加载表格数据
 const loadTableData = async() => {
+  loading.value = true
   const res = await productListApi({ page: page.value, pageSize: pageSize.value, keyWord: keyWord.value ,businessId: ''})
   tableData.value = res.data.list
   total.value = res.data.total
+  loading.value = false
 }
 loadTableData()
 // 页数发生变化

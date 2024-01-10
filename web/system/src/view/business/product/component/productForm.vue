@@ -165,9 +165,6 @@ const closeDialog = () => {
 }
 // 提交表单
 const enterDialog = async() => {
-  console.log(formData.value)
-  // TODO 表单验证
-  console.log(formData.value)
   let res
   if (isEdit.value) {
     // 商品更新

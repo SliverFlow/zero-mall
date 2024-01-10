@@ -34,7 +34,7 @@ service system {
 @server(
 	group : user
 	prefix : system/v1
-	middleware : Auth
+	middleware : Auth,Logging
 )
 service system {
 	@handler userFindByUUID
@@ -55,7 +55,7 @@ service system {
 @server(
 	group : role
 	prefix : system/v1
-	middleware : Auth
+	middleware : Auth,Logging
 )
 service system {
 	@handler roleCreate
@@ -68,7 +68,7 @@ service system {
 @server(
 	group : menu
 	prefix : system/v1
-	middleware : Auth
+	middleware : Auth,Logging
 )
 service system {
 	@handler menuListByUUID
@@ -92,7 +92,7 @@ service system {
 @server(
 	group: business
 	prefix: system/v1
-	middleware : Auth
+	middleware : Auth,Logging
 )
 service system {
 	@handler businessList
@@ -111,7 +111,7 @@ service system {
 @server(
 	group: category
 	prefix: system/v1
-	middleware : Auth
+	middleware : Auth,Logging
 )
 service system {
 	@handler categoryListAll
@@ -136,7 +136,7 @@ service system {
 @server (
 	group: product
 	prefix: system/v1
-	middleware : Auth
+	middleware : Auth,Logging
 )
 service system {
 	@handler productCreate
@@ -157,7 +157,7 @@ service system {
 @server (
 	group: order
 	prefix: system/v1
-	middleware : Auth
+	middleware : Auth,Logging
 )
 service system {
 	@handler orderList
@@ -173,13 +173,16 @@ service system {
 service system {
 	@handler computer
 	post /log/computer (NilReq) returns (ComputerReply);
+	
+	@handler logList
+	post /log/list (LogListReq) returns (LogListReply);
 }
 
 // 文件部分
 @server (
 	group: file
 	prefix: system/v1
-	middleware : Auth
+	middleware : Auth,Logging
 )
 service system {
 	@handler fileToken

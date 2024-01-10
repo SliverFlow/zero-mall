@@ -70,7 +70,6 @@ const data = ref({})
 const loadData = async () => {
   const [res] = await Promise.all([computerLogApi()])
   data.value = res.data
-  console.log(res)
 }
 loadData()
 </script>

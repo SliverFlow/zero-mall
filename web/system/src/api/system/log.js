@@ -6,3 +6,11 @@ export const computerLogApi = () => {
         method: 'post',
     })
 }
+
+export const pageListLogApi = (data) => {
+    return service({
+        url: "/system/v1/log/list",
+        method: 'post',
+        data: data
+    })
+}

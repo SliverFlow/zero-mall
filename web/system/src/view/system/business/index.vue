@@ -20,6 +20,7 @@
       style="z-index: 0"
       row-key="ID"
       :tree-props="{'children': 'children'}"
+      v-loading="loading"
     >
       <el-table-column align="left" label="商户编号" min-width="180" prop="businessId" fixed="left"/>
       <el-table-column align="left" label="封面" min-width="150" prop="image">
@@ -166,6 +167,7 @@ import { ElMessage } from 'element-plus'
 const page = ref(1)
 const pageSize = ref(10)
 const keyWord = ref('')
+const loading = ref(false)
 // 表格相关
 const total = ref(0)
 const tableData = ref([])
@@ -184,18 +186,22 @@ const formData = ref({
 
 // 当前页发生变化
 const handleCurrentChange = (val) => {
-  console.log(val)
+  page.value = val
+  loadTableData()
 }
 // 页面大小发生变化
-const handleSizeChange = () => {
-  console.log(val)
+const handleSizeChange = (val) => {
+  pageSize.value = val
+  loadTableData()
 }
 const loadTableData = async() => {
+  loading.value = true
   const res = await businessListApi({ page: page.value, pageSize: pageSize.value, keyWord: keyWord.value })
   if (res['code'] === 0) {
     tableData.value = res.data.list
     total.value = res.data.total
   }
+  loading.value = false
 }
 loadTableData()
 

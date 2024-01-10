@@ -22,6 +22,7 @@
         row-key="ID"
         :tree-props="{'children': 'children'}"
         @selection-change="selectionChange"
+        v-loading="loading"
       >
         <el-table-column type="selection" width="30"/>
         <el-table-column align="left" label="分类编号" min-width="220" prop="categoryId" fixed="left"/>
@@ -130,12 +131,15 @@ const statusOptions = ref([
     value: 1
   }
 ])
+const loading = ref(false)
 
 const loadTableData = async() => {
+  loading.value = true
   const res = await categoryListAllApi()
   if (res.code === 0) {
     tableData.value = res.data.list
   }
+  loading.value = false
 }
 loadTableData()
 

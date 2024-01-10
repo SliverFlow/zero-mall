@@ -1,6 +1,8 @@
 package model
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 
 // MenuModel 菜单模型 所有的数据库操作将挂载在 MenuModel 上
 type (

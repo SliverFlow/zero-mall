@@ -25,6 +25,7 @@
       </div>
     </div>
     <el-table
+        v-loading="loading"
       :data="tableData"
       style="z-index: 0;height: calc(100vh - 284px)"
       row-key="ID"
@@ -153,13 +154,15 @@ const total = ref(0)
 const tableData = ref([])
 const businessId = ref('')
 const businessDict = ref([])
-
+const loading = ref(false)
 
 // 加载表格数据
 const loadTableData = async() => {
+  loading.value = true
   const res = await productListApi({ page: page.value, pageSize: pageSize.value, keyWord: keyWord.value ,businessId: businessId.value})
   tableData.value = res.data.list
   total.value = res.data.total
+  loading.value = false
 }
 
 // 页数发生变化

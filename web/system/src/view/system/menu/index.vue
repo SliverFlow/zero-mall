@@ -24,6 +24,7 @@
         row-key="ID"
         :tree-props="{'children': 'children'}"
         :header-cell-style="{background:'#f7fbff'}"
+        v-loading="loading"
       >
         <el-table-column align="left" label="ID" min-width="100" prop="ID" fixed="left" />
         <el-table-column align="left" label="菜单名称" min-width="150" prop="meta.title" />
@@ -193,6 +194,7 @@ import { formatTimestamp } from '@/utils/date.js'
 
 const routerStore = useRouterStore()
 const menuStore = useMenuStore()
+const loading = ref(false)
 // 表格数据
 const tableData = ref([])
 // 角色列表
@@ -246,8 +248,10 @@ const roleData = ref(10)
 
 // 加载表格数据
 const loadData = async() => {
+  loading.value = true
   const res = await menuTreeListAllApi({ ID: roleData.value })
   tableData.value = res.data.list
+  loading.value = false
 }
 loadData()
 

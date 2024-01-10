@@ -15,6 +15,7 @@
       :data="tableData"
       row-key="ID"
       :tree-props="{'children': 'children'}"
+      v-loading="loading"
     >
       <el-table-column align="left" label="ID" min-width="50" prop="ID" fixed="left"/>
       <el-table-column align="left" label="头像" min-width="70" prop="avatar">
@@ -102,6 +103,7 @@ const keyWord = ref('')
 // 表格相关
 const total = ref(0)
 const tableData = ref([])
+const loading = ref(false)
 
 const handleCurrentChange = async(val) => {
   page.value = val
@@ -112,11 +114,13 @@ const handleSizeChange = async(val) => {
   await loadTableData()
 }
 const loadTableData = async() => {
+  loading.value = true
   const res = await userListApi({ page: page.value, pageSize: pageSize.value, keyWord: keyWord.value })
   if (res['code'] === 0) {
     tableData.value = res.data.user
     total.value = res.data.total
   }
+  loading.value = false
 }
 loadTableData()
 

@@ -8,6 +8,8 @@ import (
 	"github.com/zeromicro/go-zero/rest"
 	"github.com/zeromicro/go-zero/zrpc"
 	"os"
+	"server/app/log/cmd/rpc/log"
+	logpb "server/app/log/cmd/rpc/pb"
 	"server/app/order/cmd/rpc/order"
 	orderpb "server/app/order/cmd/rpc/pb"
 	pruductpb "server/app/product/cmd/rpc/pb"
@@ -22,26 +24,33 @@ import (
 )
 
 type ServiceContext struct {
-	Config config.Config
-	Auth   rest.Middleware
+	Config  config.Config
+	Auth    rest.Middleware
+	Logging rest.Middleware
 
 	SystemRpc  system.System
 	UserRpc    user.User
 	ProductRpc product.Product
 	OrderRpc   order.Order
+	LogRpc     log.Log
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
 	jwtConf := c.XJwt
 	client := NewRedisClient(c.Redis)
 
+	userRpc := newUserRpc(c.UserRpc)
+	logRpc := newLogRpc(c.LogRpc)
+
 	return &ServiceContext{
 		Config:     c,
 		Auth:       middleware.NewAuthMiddleware(jwtConf.Secret, jwtConf.Expire, jwtConf.Buffer, jwtConf.Isuser, jwtConf.BlackListPrefix, client).Handle, // 认证中间件
 		SystemRpc:  newSystemRpc(c.SystemRpc),
-		UserRpc:    newUserRpc(c.UserRpc),
+		UserRpc:    userRpc,
 		ProductRpc: newProductRpc(c.ProductRpc),
 		OrderRpc:   newOrderRpc(c.OrderRpc),
+		Logging:    middleware.NewLoggingMiddleware(userRpc, logRpc).Handle, // 日志中间件
+		LogRpc:     logRpc,
 	}
 }
 
@@ -107,4 +116,16 @@ func newOrderRpc(c zrpc.RpcClientConf) orderpb.OrderClient {
 	}
 	logx.Info("[RPC CONNECTION SUCCESS ] order rpc connection success : %v\n")
 	return order.NewOrder(client)
+}
+
+// 强依赖 log rpc
+func newLogRpc(c zrpc.RpcClientConf) logpb.LogClient {
+	client, err := zrpc.NewClient(c)
+	if err != nil {
+		logx.Errorf("[RPC CONNECTION ERROR] log rpc client conn err: %v\n ", err)
+		os.Exit(0)
+		return nil
+	}
+	logx.Info("[RPC CONNECTION SUCCESS ] log rpc connection success : %v\n")
+	return log.NewLog(client)
 }

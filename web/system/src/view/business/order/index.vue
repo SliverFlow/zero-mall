@@ -38,6 +38,7 @@
     <el-table
       :data="tableData"
       row-key="orderId"
+      v-loading="loading"
     >
       <el-table-column align="left" label="订单编号" min-width="220" prop="orderId" fixed="left"/>
       <el-table-column align="left" label="购买者" min-width="150" prop="username"/>
@@ -155,6 +156,7 @@ const statusList = ref([
   { label: '交易完成', value: '50' },
   { label: '交易关闭', value: '60' },
 ])
+const loading = ref(false)
 
 const loadBusinessInfo = async() => {
   const res = await businessFindApi()
@@ -182,7 +184,7 @@ const handleSizeChange = (val) => {
 }
 
 const loadTableData = async() => {
-
+  loading.value = true
   const data = {
     page: page.value,
     pageSize: pageSize.value,
@@ -202,6 +204,7 @@ const loadTableData = async() => {
   if (res.code !== 0) return
   tableData.value = res.data.list
   total.value = res.data.total
+  loading.value = false
 }
 
 onMounted(async() => {
