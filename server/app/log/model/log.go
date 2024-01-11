@@ -58,13 +58,13 @@ func (d *defaultLogModel) FindPageList(ctx context.Context, req *LogPageReq) ([]
 	var total int64
 
 	if req.Username != "" {
-		tx = tx.Where("username = ?", req.Username)
+		tx = tx.Where("username like ?", "%"+req.Username+"%")
 	}
 	if req.Method != "" {
 		tx = tx.Where("method = ?", req.Method)
 	}
 	if req.Path != "" {
-		tx = tx.Where("path = ?", req.Path)
+		tx = tx.Where("path like ?", "%"+req.Path+"%")
 	}
 
 	if req.StartTime != 0 {
