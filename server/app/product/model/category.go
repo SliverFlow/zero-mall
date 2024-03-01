@@ -191,7 +191,7 @@ func (d *defaultCategoryModel) CategoryBatchDelete(ctx context.Context, ids []st
 // @desc 查询某个分类下的所有商品
 func (d *defaultProductModel) CategoryIDByProductList(ctx context.Context, categoryId string, page *common.PageInfo) (enter *Category, total int64, err error) {
 	tx := d.db.WithContext(ctx)
-	span, _ := d.tracer(ctx, "category-id-by-product-list")
+	span, _ := common.Tracer(ctx, "category-id-by-product-list")
 	defer span.End()
 
 	limit, offset, keyWord := page.LimitAndOffsetAndKeyWord()

@@ -76,6 +76,7 @@ import { ElMessage } from 'element-plus'
 import { phoneCaptchaApi, userLoginByPhoneApi, userLoginByPhoneOrUsernameApi } from '@/api/user.js'
 import { useUserStore } from '@/pinia/model/user.js'
 import { useRoute, useRouter } from 'vue-router'
+import axios from "axios";
 
 const passwordFocus = ref()
 const passwordInfo = ref(false)
@@ -88,7 +89,6 @@ const loginType = ref('password')
 const formData = ref({
   password: '',
   username: '',
-
 })
 
 const passwordFocusOut = () => {
@@ -158,7 +158,13 @@ const sendCaptchaMessage = async() => {
     }, 1000)
   }
 }
-
+console.log('进入登录页面')
+const wxloginReq = () => {
+  axios.get('https://login.vicy.cn/8lXdSX7FSMykbl9nFDWESdc6zfouSAEz/wxLogin/tempUserId?secretKey=a378daa99f084b56a897206d0d540ff7').then(res => {
+    console.log(res)
+  })
+}
+wxloginReq()
 // 提交登录
 const enterLogin = async() => {
   let res

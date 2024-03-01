@@ -7,6 +7,8 @@ type Nil struct {
 type OrderCreateReq struct {
 	ProductID string `json:"productId"`
 	Quantity  int64  `json:"quantity"` // 数量
+	IsCart    int64  `json:"isCart"`
+	CartId    string `json:"cartId"`
 }
 
 type OrderCreateReply struct {

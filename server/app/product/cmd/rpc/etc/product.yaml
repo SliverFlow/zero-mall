@@ -23,3 +23,9 @@ Mysql:
   LogMode: "dev"
   LogZap: false
   Config: charset=utf8mb4&parseTime=True&loc=Local
+
+CRedis:
+  Host: '120.77.237.246'
+  Port: '6379'
+  Password: 'wjh20000905'
+  Db: 0

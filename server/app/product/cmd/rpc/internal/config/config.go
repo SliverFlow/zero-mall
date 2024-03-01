@@ -8,5 +8,6 @@ import (
 type Config struct {
 	zrpc.RpcServerConf
 
-	Mysql xconfig.Mysql
+	Mysql  xconfig.Mysql
+	CRedis xconfig.Redis
 }

@@ -2,6 +2,7 @@ package model
 
 import (
 	"context"
+	"github.com/go-redis/redis/v8"
 	"google.golang.org/grpc/status"
 	"gorm.io/gorm"
 	"server/common"
@@ -23,8 +24,8 @@ type (
 	}
 
 	defaultProductModel struct {
-		db *gorm.DB
-		*defaultProductCustomModel
+		db    *gorm.DB
+		cache *defaultProductCustomModel
 	}
 
 	// Product
@@ -50,11 +51,11 @@ func (p *Product) TableName() string {
 	return "product"
 }
 
-func newDefaultProductModel(db *gorm.DB) *defaultProductModel {
+func newDefaultProductModel(db *gorm.DB, rdb *redis.Client) *defaultProductModel {
 	return &defaultProductModel{
 		db: db,
-		defaultProductCustomModel: &defaultProductCustomModel{
-			cache: "name",
+		cache: &defaultProductCustomModel{
+			c: rdb,
 		},
 	}
 }
@@ -73,7 +74,7 @@ func (d *defaultProductModel) ProductCreate(ctx context.Context, product *Produc
 // @desc 商品删除
 func (d *defaultProductModel) ProductDelete(ctx context.Context, ids []string) (err error) {
 	tx := d.db.WithContext(ctx)
-	span, _ := d.tracer(ctx, "product-delete")
+	span, _ := common.Tracer(ctx, "product-delete")
 	defer span.End()
 
 	var p Product
@@ -116,11 +117,19 @@ func (d *defaultProductModel) ProductList(ctx context.Context, page *common.Page
 // @desc 根据分类 id 查询分类
 func (d *defaultProductModel) ProductFind(ctx context.Context, productId string) (enter *Product, err error) {
 	tx := d.db.WithContext(ctx)
+	span, _ := common.Tracer(ctx, "product-find")
+	defer span.End()
+
+	product, ok := d.cache.CacheGetProductByID(ctx, productId)
+	if ok {
+		return product, nil
+	}
 
 	var c Product
 	if err = tx.Model(&Product{}).Preload("Categories").Where("product_id", productId).First(&c).Error; err != nil {
 		return nil, err
 	}
+	d.cache.CacheInsertProduct(ctx, &c)
 	return &c, nil
 }
 
@@ -129,7 +138,7 @@ func (d *defaultProductModel) ProductFind(ctx context.Context, productId string)
 // @desc 更新分类信息
 func (d *defaultProductModel) ProductUpdate(ctx context.Context, product *Product) (err error) {
 	tx := d.db.WithContext(ctx)
-	span, _ := d.tracer(ctx, "product-update")
+	span, _ := common.Tracer(ctx, "product-update")
 	defer span.End()
 
 	var p Product
@@ -148,7 +157,7 @@ func (d *defaultProductModel) ProductUpdate(ctx context.Context, product *Produc
 // @desc 根据商户 id 下架所有商品
 func (d *defaultProductModel) ProductStagingByBusinessID(ctx context.Context, businessId string) (err error) {
 	tx := d.db.WithContext(ctx)
-	span, _ := d.tracer(ctx, "product-update-status-staging")
+	span, _ := common.Tracer(ctx, "product-staging-by-business-id")
 	defer span.End()
 
 	return tx.Model(&Product{}).Where("business_id = ?", businessId).Update("status", 0).Error
@@ -159,7 +168,7 @@ func (d *defaultProductModel) ProductStagingByBusinessID(ctx context.Context, bu
 // @desc 更新商品状态
 func (d *defaultProductModel) ProductChangeStatus(ctx context.Context, productId string, status int64) (err error) {
 	tx := d.db.WithContext(ctx)
-	span, _ := d.tracer(ctx, "product-update-status")
+	span, _ := common.Tracer(ctx, "product-change-status")
 	defer span.End()
 
 	return tx.Model(&Product{}).Where("product_id = ?", productId).Update("status", status).Error
@@ -170,7 +179,7 @@ func (d *defaultProductModel) ProductChangeStatus(ctx context.Context, productId
 // @desc 扣减商品库存
 func (d *defaultProductModel) ProductDeductionStock(ctx context.Context, productId string, num int64) (err error) {
 	tx := d.db.WithContext(ctx)
-	span, _ := d.tracer(ctx, "product-deduction-stock")
+	span, _ := common.Tracer(ctx, "product-deduction-stock")
 	defer span.End()
 
 	product, err := d.ProductFind(ctx, productId)
@@ -190,7 +199,7 @@ func (d *defaultProductModel) ProductDeductionStock(ctx context.Context, product
 // @desc 返还库存或者商户添加库存
 func (d *defaultProductModel) ProductAddStock(ctx context.Context, productId string, num int64) (err error) {
 	tx := d.db.WithContext(ctx)
-	span, _ := d.tracer(ctx, "product-deduction-stock")
+	span, _ := common.Tracer(ctx, "product-add-stock")
 	defer span.End()
 
 	product, err := d.ProductFind(ctx, productId)

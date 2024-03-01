@@ -13,10 +13,13 @@ type Nil {
 type OrderCreateReq {
     ProductID string `json:"productId"`
     Quantity int64 `json:"quantity"` // 数量
+    IsCart int64 `json:"isCart"`
+    CartId string `json:"cartId"`
 }
 type OrderCreateReply {
     OrderID string `json:"orderId"`
     OrderItemID string `json:"orderItemId"`
+
 }
 type OrderListReq {
     Page int64 `json:"page"`

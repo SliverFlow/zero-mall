@@ -9,6 +9,7 @@ import (
 	"github.com/zeromicro/go-zero/zrpc"
 	clientv3 "go.etcd.io/etcd/client/v3"
 	"os"
+	"server/app/cart/cmd/rpc/cart"
 	"server/app/order/cmd/api/internal/config"
 	"server/app/order/cmd/rpc/order"
 	"server/app/product/cmd/rpc/product"
@@ -24,6 +25,7 @@ type ServiceContext struct {
 	OrderRpc   order.Order
 	ProductRpc product.Product
 	UserRpc    user.User
+	CartRpc    cart.Cart
 	EtcdCli    *clientv3.Client
 }
 
@@ -39,6 +41,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		ProductRpc: newProductRpc(c.ProductRpc),
 		UserRpc:    newUserRpc(c.UserRpc),
 		EtcdCli:    newEtcdClient(c.EtcdLocker.Hosts),
+		CartRpc:    newCartRpc(c.CartRpc),
 	}
 }
 
@@ -73,6 +76,17 @@ func newUserRpc(c zrpc.RpcClientConf) user.User {
 	}
 	logx.Info("[RPC CONNECTION SUCCESS ] user rpc connection success : %v\n")
 	return user.NewUser(client)
+}
+
+func newCartRpc(c zrpc.RpcClientConf) cart.Cart {
+	client, err := zrpc.NewClient(c)
+	if err != nil {
+		logx.Errorf("[RPC CONNECTION ERROR] user rpc client conn err: %v\n ", err)
+		os.Exit(0)
+		return nil
+	}
+	logx.Info("[RPC CONNECTION SUCCESS ] user rpc connection success : %v\n")
+	return cart.NewCart(client)
 }
 
 func NewRedisClient(c redis2.RedisConf) *redis.Client {

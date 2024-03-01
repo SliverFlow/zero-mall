@@ -32,13 +32,9 @@ func NewProductListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Produ
 // Author [SliverFlow]
 // @desc   商品分页列表
 func (l *ProductListLogic) ProductList(req *types.ProductListReq) (resp *types.ProductListReply, err error) {
-
-	pageReq := &productpb.ProductListReq{
-		Page:     req.Page,
-		PageSize: req.PageSize,
-		KeyWord:  req.KeyWord,
-	}
-
+	// 请求入参
+	pageReq := &productpb.ProductListReq{Page: req.Page, PageSize: req.PageSize, KeyWord: req.KeyWord}
+	// 结合用户角色查询商品列表 验证用户角色
 	if req.BusinessID != "" {
 		pageReq.BusinessID = req.BusinessID
 	} else {
@@ -60,12 +56,12 @@ func (l *ProductListLogic) ProductList(req *types.ProductListReq) (resp *types.P
 			pageReq.BusinessID = business.BusinessID
 		}
 	}
-
+	// 调用 product rpc 获取商品列表
 	pbreply, err := l.svcCtx.ProductRpc.ProductList(l.ctx, pageReq)
 	if err != nil {
 		return nil, err
 	}
-
+	// 组装商品列表
 	var productList []types.Product
 	for _, v := range pbreply.List {
 		var p types.Product
@@ -84,7 +80,7 @@ func (l *ProductListLogic) ProductList(req *types.ProductListReq) (resp *types.P
 		}
 		productList = append(productList, p)
 	}
-
+	// 返回商品列表
 	return &types.ProductListReply{
 		Page:     pbreply.Page,
 		PageSize: pbreply.PageSize,

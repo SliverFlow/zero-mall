@@ -30,6 +30,7 @@ func NewCategoryIDByProductListLogic(ctx context.Context, svcCtx *svc.ServiceCon
 // Author [SliverFlow]
 // @desc 用户端按照分类 ID 查询商品列表
 func (l *CategoryIDByProductListLogic) CategoryIDByProductList(req *types.CategoryIDByProductListReq) (resp *types.CategoryIDByProductListReply, err error) {
+	// 调用 product rpc 获取商品列表
 	pbreply, err := l.svcCtx.ProductRpc.CategoryIDByProductList(l.ctx, &pb.CategoryIDByProductListReq{
 		CategoryID: req.CategoryID,
 		KeyWord:    req.KeyWord,
@@ -39,10 +40,10 @@ func (l *CategoryIDByProductListLogic) CategoryIDByProductList(req *types.Catego
 	if err != nil {
 		return nil, err
 	}
-
+	// 返回商品列表
 	var tycategory types.CategoryIDByProductListReply
 	_ = copier.Copy(&tycategory, pbreply)
-
+	// 组装数据
 	tycategory.ProductList = make([]types.Product, 0)
 	for _, product := range pbreply.Products {
 		var typroduct types.Product
@@ -50,6 +51,5 @@ func (l *CategoryIDByProductListLogic) CategoryIDByProductList(req *types.Catego
 		_ = json.Unmarshal([]byte(product.Image), &typroduct.Image)
 		tycategory.ProductList = append(tycategory.ProductList, typroduct)
 	}
-
 	return &tycategory, nil
 }

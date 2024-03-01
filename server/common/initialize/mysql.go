@@ -1,4 +1,4 @@
-package common
+package initialize
 
 import (
 	"database/sql"

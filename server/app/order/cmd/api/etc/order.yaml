@@ -10,23 +10,25 @@ OrderRpc:
   Etcd:
     Hosts:
       - 120.77.237.246:32379
-    #      - etcd:2379
     Key: order.rpc
 
 ProductRpc:
   Etcd:
     Hosts:
       - 120.77.237.246:32379
-    #      - etcd:2379
     Key: product.rpc
 
 UserRpc:
   Etcd:
     Hosts:
       - 120.77.237.246:32379
-    #      - etcd:2379
     Key: user.rpc
 
+CartRpc:
+  Etcd:
+    Hosts:
+      - 120.77.237.246:32379
+    Key: cart.rpc
 
 XJwt:
   Secret: zhengjunxing

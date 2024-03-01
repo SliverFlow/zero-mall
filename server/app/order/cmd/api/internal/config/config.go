@@ -12,6 +12,7 @@ type Config struct {
 	OrderRpc   zrpc.RpcClientConf
 	ProductRpc zrpc.RpcClientConf
 	UserRpc    zrpc.RpcClientConf
+	CartRpc    zrpc.RpcClientConf
 	// jwt 相关配置
 	XJwt struct {
 		Isuser          string // 签发者

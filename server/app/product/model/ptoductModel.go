@@ -1,22 +1,28 @@
 package model
 
-import "gorm.io/gorm"
+import (
+	"github.com/go-redis/redis/v8"
+	"gorm.io/gorm"
+)
 
 type (
 	ProductModel interface {
 		productModel
 		categoryModel
+		fkProductModel
 	}
 
 	customProductModel struct {
 		*defaultProductModel
 		*defaultCategoryModel
+		*defaultFkProductModel
 	}
 )
 
-func NewProductModel(db *gorm.DB) ProductModel {
+func NewProductModel(db *gorm.DB, rdb *redis.Client) ProductModel {
 	return customProductModel{
-		defaultProductModel:  newDefaultProductModel(db),
-		defaultCategoryModel: newDefaultCategoryModel(db),
+		defaultProductModel:   newDefaultProductModel(db, rdb),
+		defaultCategoryModel:  newDefaultCategoryModel(db),
+		defaultFkProductModel: newDefaultFkProductModel(db, rdb),
 	}
 }

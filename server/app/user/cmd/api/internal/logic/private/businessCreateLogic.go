@@ -39,6 +39,5 @@ func (l *BusinessCreateLogic) BusinessCreate(req *types.Nil) (resp *types.Nil, e
 	if err != nil {
 		return nil, err
 	}
-
 	return
 }

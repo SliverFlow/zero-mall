@@ -32,32 +32,31 @@ func NewUserLoginByPhoneLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 // Author [SliverFlow]
 // @desc 用户端使用电话号码加验证码登录
 func (l *UserLoginByPhoneLogic) UserLoginByPhone(req *types.UserLoginByPhoneReq) (resp *types.UserLoginReply, err error) {
-
+	// 验证短信验证码
 	ok, err := l.checkCaptcha(req.Phone, req.Captcha)
 	if err != nil || !ok {
 		return nil, err
 	}
-
+	// 调用 user rpc 获取用户信息
 	pbreply, err := l.svcCtx.UserRpc.UserFindByPhone(l.ctx, &pb.PhoneReq{Phone: req.Phone})
 	if err != nil {
 		return nil, err
 	}
-
 	user := pbreply.GetUser()
-
+	// 验证用户状态
 	if user.GetStatus() == 0 {
 		return nil, xerr.NewErrMsg("当前用户已被禁用，请联系管理员进行解禁")
 	}
+	// 验证用户角色
 	if user.Role != 1 {
 		return nil, xerr.NewErrMsg("当前账号不能登录用户端，请注册用户端账号")
 	}
-
 	// 派发 token
 	token, err := l.nextToken(user.GetUUID())
 	if err != nil {
 		return nil, xerr.NewErrMsg(err.Error())
 	}
-
+	// 返回用户信息
 	return &types.UserLoginReply{
 		Token: token,
 		User: types.UserReply{

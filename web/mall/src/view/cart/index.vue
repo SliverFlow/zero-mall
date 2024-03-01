@@ -18,11 +18,11 @@
     <div class="cart_content">
       <div class="cart_table">
         <el-table
-          ref="multipleTableRef"
-          :data="tableData"
-          style="width: 100%"
+            ref="multipleTableRef"
+            :data="tableData"
+            style="width: 100%"
 
-          @selection-change="handleSelectionChange"
+            @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55"/>
           <el-table-column label="封面" align="center" width="120">
@@ -30,14 +30,14 @@
               <el-carousel :interval="3000" arrow="never" indicator-position="none" style="height: 100px;width: 100px">
                 <el-carousel-item v-for="(v,k) in scope.row.productImage">
                   <el-image
-                    style="width: 100px; height: 100px;z-index: 100;"
-                    :zoom-rate="1.2"
-                    close-on-press-escape
-                    preview-teleported
-                    :src="v.url"
-                    lazy
-                    :initial-index="4"
-                    fit="cover"
+                      style="width: 100px; height: 100px;z-index: 100;"
+                      :zoom-rate="1.2"
+                      close-on-press-escape
+                      preview-teleported
+                      :src="v.url"
+                      lazy
+                      :initial-index="4"
+                      fit="cover"
                   />
                   {{ v.url }}
                 </el-carousel-item>
@@ -84,7 +84,7 @@
           <p>合计：</p>
           <span>{{ totalPrice }}</span>
           <p>&nbsp;元</p>
-          <a>去结算</a>
+          <a @click.prevent="jiesuan">去结算</a>
         </div>
       </div>
     </div>
@@ -95,12 +95,13 @@
 
 <script setup>
 import MallFooter from '@/view/layout/footer/mallFooter.vue'
-import { ref } from 'vue'
+import {ref} from 'vue'
 import UserInfoCom from '@/components/userInfo/UserInfoCom.vue'
-import { useUserStore } from '@/pinia/model/user.js'
-import { useRouter } from 'vue-router'
-import { cartDeleteApi, cartListApi } from '@/api/cart.js'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import {useUserStore} from '@/pinia/model/user.js'
+import {useRouter} from 'vue-router'
+import {cartDeleteApi, cartListApi} from '@/api/cart.js'
+import {ElMessage, ElMessageBox} from 'element-plus'
+import {orderCreateApi} from "../../api/order.js";
 
 const tableData = ref([])
 
@@ -108,13 +109,14 @@ const router = useRouter()
 const userStore = useUserStore()
 const isLogin = userStore.isLogin
 const totalPrice = ref(0)
-
+const selectionData = ref([])
 const toOrder = () => {
-  router.push({ name: 'Order' })
+  router.push({name: 'Order'})
 }
 
 // 多选框回调
 const handleSelectionChange = (e) => {
+  selectionData.value = []
   if (e.length === 0) {
     totalPrice.value = 0
     return
@@ -122,28 +124,29 @@ const handleSelectionChange = (e) => {
   e.forEach((v) => {
     totalPrice.value += v.price
   })
+  selectionData.value = e
 }
 
 // 删除购物车商品
-const deleteCartItem = async(id) => {
+const deleteCartItem = async (id) => {
   await ElMessageBox.confirm(
-    '确定将这个商品从购物车中移除吗?',
-    'Warning',
-    {
-      confirmButtonText: '确认',
-      cancelButtonText: '取消',
-      type: 'warning',
-    }
+      '确定将这个商品从购物车中移除吗?',
+      'Warning',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
   )
   // 删除购物车信息
-  const [res] = await Promise.all([cartDeleteApi({ cartId: id })])
+  const [res] = await Promise.all([cartDeleteApi({cartId: id})])
   if (res.code === 0) {
     ElMessage.success('商品移除成功')
     await loadTableData()
   }
 }
 
-const loadTableData = async() => {
+const loadTableData = async () => {
   const [res] = await Promise.all([cartListApi({
     page: 1,
     pageSize: 9999,
@@ -154,6 +157,27 @@ const loadTableData = async() => {
   }
 }
 loadTableData()
+
+const jiesuan = async () => {
+  if (selectionData.value.length > 1) {
+    ElMessage.warning('一次只能结算一个商品')
+    return
+  }
+  if (selectionData.value.length === 0) {
+    ElMessage.warning('请选择要结算的商品')
+    return
+  }
+  const res = await orderCreateApi({
+    productId: selectionData.value[0].productId,
+    quantity: selectionData.value[0].quantity,
+    isCart: 1,
+    cartId: selectionData.value[0].cartId
+  })
+  if (res.code === 0) {
+    ElMessage.success('商品结算成功，可前往订单中心查看')
+    await loadTableData()
+  }
+}
 </script>
 
 <style scoped lang="scss">

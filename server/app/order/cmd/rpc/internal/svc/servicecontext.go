@@ -11,7 +11,7 @@ import (
 	"server/app/product/cmd/rpc/product"
 	userpb "server/app/user/cmd/rpc/pb"
 	"server/app/user/cmd/rpc/user"
-	"server/common"
+	"server/common/initialize"
 )
 
 type ServiceContext struct {
@@ -24,7 +24,7 @@ type ServiceContext struct {
 
 func NewServiceContext(c config.Config) *ServiceContext {
 
-	db, err := common.InitDB(c.Mysql)
+	db, err := initialize.InitDB(c.Mysql)
 	if err != nil {
 		logx.Error("init mysql database err", err.Error())
 		os.Exit(0)

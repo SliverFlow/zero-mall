@@ -4,6 +4,7 @@ import (
 	"context"
 	"go.etcd.io/etcd/client/v3/concurrency"
 	"google.golang.org/grpc/status"
+	cartpb "server/app/cart/cmd/rpc/pb"
 	orderpb "server/app/order/cmd/rpc/pb"
 	productpb "server/app/product/cmd/rpc/pb"
 	userpb "server/app/user/cmd/rpc/pb"
@@ -31,71 +32,55 @@ func NewOrderCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Order
 	}
 }
 
-// OrderCreate
-// Author [SliverFlow]
-// @desc 用户下单
 func (l *OrderCreateLogic) OrderCreate(req *types.OrderCreateReq) (resp *types.OrderCreateReply, err error) {
 	uuid, err := xjwt.GetUserUUID(l.ctx)
 	if err != nil {
 		return nil, xerr.NewErrMsg("用户 uuid 获取失败")
 	}
-
-	// 查询用户信息
 	pbuser, err := l.svcCtx.UserRpc.UserFindByUUID(l.ctx, &userpb.UUIDReq{UUID: uuid})
 	if err != nil {
 		return nil, err
 	}
-
 	if pbuser.GetUser().Role != 1 {
 		return nil, status.Errorf(100001, "当前用户不能购买商品，请注册普通用户进行购买")
 	}
-
 	pbproduct, err := l.svcCtx.ProductRpc.ProductFind(l.ctx, &productpb.ProductFindReq{ProductID: req.ProductID})
 	if err != nil {
 		return nil, err
 	}
-
 	if pbproduct.Stock-req.Quantity < 0 {
 		return nil, xerr.NewErrMsg("当前商品库存不足")
 	}
-
 	totalS := strconv.FormatInt(req.Quantity, 10)
 	total, _ := strconv.ParseFloat(totalS, 64)
-
-	// 创建订单
-	pbreply, err := l.svcCtx.OrderRpc.OrderCreate(l.ctx, &orderpb.OrderCreateReq{
-		UserID:           uuid,
-		ShoppingID:       "",
-		ProductID:        pbproduct.ProductID,
-		Postage:          0,
-		ProdName:         pbproduct.Name,
-		ProdImage:        pbproduct.Image,
-		CurrentunitPrice: pbproduct.Price,
-		Quantity:         req.Quantity,
-		TotalPrice:       total * pbproduct.Price,
-		BusinessID:       pbproduct.BusinessID,
-	})
+	pbreply, err := l.svcCtx.OrderRpc.OrderCreate(l.ctx, &orderpb.OrderCreateReq{UserID: uuid, ProductID: pbproduct.ProductID, Postage: 0, ProdName: pbproduct.Name, ProdImage: pbproduct.Image, CurrentunitPrice: pbproduct.Price, Quantity: req.Quantity, TotalPrice: total * pbproduct.Price, BusinessID: pbproduct.BusinessID})
 	if err != nil {
 		return nil, err
 	}
-
+	// etcd 分布式锁
 	session, err := concurrency.NewSession(l.svcCtx.EtcdCli)
+	if err != nil {
+		return nil, err
+	}
+	// 加锁
 	locker := concurrency.NewLocker(session, req.ProductID)
 	locker.Lock()
 	defer locker.Unlock()
-
 	// 扣减库存
 	_, err = l.svcCtx.ProductRpc.ProductDeductionStock(l.ctx, &productpb.ProductDeductionStockReq{
 		ProductID: req.ProductID,
 		Quantity:  req.Quantity,
 	})
+	// 扣减库存失败 回滚订单
 	if err != nil {
-		// 删除创建的订单
 		_, _ = l.svcCtx.OrderRpc.OrderDeleteByID(l.ctx, &orderpb.OrderDeleteByIDReq{ID: pbreply.OrderID})
 		_, _ = l.svcCtx.OrderRpc.OrderItemDeleteByID(l.ctx, &orderpb.OrderItemDeleteByIDReq{ID: pbreply.OrderItemID})
 		return nil, err
 	}
-
+	// 如果是购物车 删除购物车信息
+	if req.IsCart == 1 {
+		_, _ = l.svcCtx.CartRpc.CartDelete(l.ctx, &cartpb.CartDeleteReq{CartID: req.CartId})
+	}
 	return &types.OrderCreateReply{
 		OrderID:     pbreply.OrderID,
 		OrderItemID: pbreply.GetOrderItemID(),
